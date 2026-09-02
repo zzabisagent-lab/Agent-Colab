@@ -1,0 +1,18 @@
+{
+  "test_id": "V-P1-26",
+  "evidence_id": "SELF-V-P1-26",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_rest_mcp_parity.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "9a732f24d61b2555e23f7f881f2247f18aa07b69",
+  "started_at": "2026-09-02T14:57:37.283403+00:00",
+  "finished_at": "2026-09-02T14:57:41.462050+00:00",
+  "output_sha256": "423b1d0e014eb1eab96f4420f7b344c2615be505dd574b756ac884826ca74f2d"
+}

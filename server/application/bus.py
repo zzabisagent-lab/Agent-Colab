@@ -132,7 +132,7 @@ def require_permission(ctx: CommandContext, permission: str, **scope: Any) -> No
         raise CommandError("POLICY_DENIED", "no authorizer configured", status=403)
     ctx.authorizer.require(
         ctx.session,
-        ctx.principal.account_uuid,
+        ctx.principal.account_id,
         permission,
         correlation_id=ctx.correlation_id,
         **scope,

@@ -169,11 +169,12 @@ def get_task(task_id: str, request: Request, principal: PrincipalDep) -> dict[st
         row = (
             session.execute(
                 text(
-                    "SELECT task_id, root_task_id, parent_task_id, title, domain, risk, status, verification_status, "
-                    "delegation_depth, criteria_revision, latest_progress, last_event_id, last_aggregate_seq "
+                    "SELECT task_id, root_task_id, parent_task_id, title, domain, risk, status, "
+                    "verification_status, delegation_depth, criteria_revision, latest_progress, "
+                    "last_event_id, last_aggregate_seq "
                     "FROM tasks_projection WHERE task_id = :t AND workspace_id = :ws"
                 ),
-                {"t": task_id, "ws": runtime.resolve_workspace(session)},
+                {"t": task_id, "ws": runtime.resolve_workspace(session, principal.account_uuid)},
             )
             .mappings()
             .first()
@@ -197,11 +198,12 @@ def list_tasks(
         rows = (
             session.execute(
                 text(
-                    "SELECT task_id, title, status, risk, domain FROM tasks_projection WHERE workspace_id = :ws "
-                    "AND (:status IS NULL OR status = :status) AND task_id > :after ORDER BY task_id LIMIT :lim"
+                    "SELECT task_id, title, status, risk, domain FROM tasks_projection "
+                    "WHERE workspace_id = :ws AND (:status IS NULL OR status = :status) "
+                    "AND task_id > :after ORDER BY task_id LIMIT :lim"
                 ),
                 {
-                    "ws": runtime.resolve_workspace(session),
+                    "ws": runtime.resolve_workspace(session, principal.account_uuid),
                     "status": status,
                     "after": after,
                     "lim": limit,

@@ -21,7 +21,7 @@ from server.application.authz import BusAuthorizer
 from server.db.engine import session_scope
 from server.domain.clock import Clock, SystemClock
 from server.events.postgres_store import PostgresEventStore
-from server.events.store import EventStore
+from server.events.store import EventStore, EventStoreError
 from server.identity.principals import Principal as CredentialPrincipal
 from server.secrets.envelope import EnvelopeCrypto
 
@@ -39,10 +39,17 @@ class Runtime:
     def store_for(self, session: Session) -> EventStore:
         return PostgresEventStore(session, crypto=self.crypto, clock=self.clock)
 
-    def resolve_workspace(self, session: Session) -> str:
-        if self.workspace_id is None:
-            from sqlalchemy import text
+    def resolve_workspace(self, session: Session, account_uuid: str | None = None) -> str:
+        """The principal's Workspace (single-Workspace instance: every Account belongs to it)."""
+        from sqlalchemy import text
 
+        if account_uuid is not None:
+            row = session.execute(
+                text("SELECT workspace_id FROM accounts WHERE id = :a"), {"a": account_uuid}
+            ).first()
+            if row is not None:
+                return str(row[0])
+        if self.workspace_id is None:
             row = session.execute(
                 text("SELECT id FROM workspaces ORDER BY created_at LIMIT 1")
             ).first()
@@ -102,7 +109,7 @@ def execute_command(
             authorizer=runtime.authorizer,
             clock=runtime.clock,
             principal=to_bus_principal(principal),
-            workspace_id=runtime.resolve_workspace(session),
+            workspace_id=runtime.resolve_workspace(session, principal.account_uuid),
             correlation_id=correlation_id,
             idempotency_key=idempotency_key,
             expected_seq=expected_seq,
@@ -112,6 +119,8 @@ def execute_command(
             return bus.execute(command, ctx)
         except bus.CommandError as exc:
             raise command_error_to_api(exc) from exc
+        except EventStoreError as exc:
+            raise ApiError(409, exc.code, exc.detail) from exc
 
 
 def dispatch(

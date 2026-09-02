@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import dataclasses
 import inspect
+import typing
 import uuid
 from collections.abc import Callable
 from typing import Any
@@ -88,7 +89,8 @@ def _principal_from_token() -> Principal:
 
 
 def _make_tool(runtime: Runtime, name: str, command_type: type[bus.Command]) -> Callable[..., Any]:
-    fields = [f for f in dataclasses.fields(command_type)]  # type: ignore[arg-type]
+    fields = list(dataclasses.fields(command_type))  # type: ignore[arg-type]
+    hints = typing.get_type_hints(command_type)
 
     async def tool(**kwargs: Any) -> dict[str, Any]:
         idem = kwargs.pop("idempotency_key", None) or f"mcp-{uuid.uuid4().hex}"
@@ -128,16 +130,22 @@ def _make_tool(runtime: Runtime, name: str, command_type: type[bus.Command]) -> 
             **result.data,
         }
 
+    def _default(f: dataclasses.Field[Any]) -> Any:
+        if f.default is not dataclasses.MISSING:
+            return f.default
+        if f.default_factory is not dataclasses.MISSING:
+            return f.default_factory()
+        return inspect.Parameter.empty
+
     params = [
         inspect.Parameter(
             f.name,
             inspect.Parameter.KEYWORD_ONLY,
-            default=(
-                f.default if f.default is not dataclasses.MISSING else inspect.Parameter.empty
-            ),
-            annotation=f.type,
+            default=_default(f),
+            annotation=hints.get(f.name, Any),
         )
         for f in fields
+        if f.name != "idempotency_scope"
     ] + [
         inspect.Parameter(
             "idempotency_key", inspect.Parameter.KEYWORD_ONLY, default=None, annotation=str | None

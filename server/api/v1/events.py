@@ -46,11 +46,11 @@ def envelope(ev: dict[str, Any]) -> dict[str, Any]:
     return out
 
 
-def _read(request: Request, after: int, limit: int) -> list[dict[str, Any]]:
+def _read(request: Request, principal: Principal, after: int, limit: int) -> list[dict[str, Any]]:
     runtime = request.app.state.runtime
     with session_scope(runtime.session_factory) as session:
         store = runtime.store_for(session)
-        ws = runtime.resolve_workspace(session)
+        ws = runtime.resolve_workspace(session, principal.account_uuid)
         assert isinstance(store, PostgresEventStore)
         return [envelope(e) for e in store.read_since(ws, after, limit)]
 
@@ -62,7 +62,7 @@ def list_events(
     after: int = Query(default=0, ge=0),
     limit: int = Query(default=50, ge=1, le=100),
 ) -> dict[str, Any]:
-    items = _read(request, after, limit)
+    items = _read(request, principal, after, limit)
     next_cursor = items[-1]["recorded_seq"] if len(items) == limit else None
     return {"items": items, "next_after": next_cursor}
 
@@ -87,7 +87,7 @@ async def stream_events(
         while True:
             if await request.is_disconnected():
                 return
-            batch = await asyncio.to_thread(_read, request, cursor, 100)
+            batch = await asyncio.to_thread(_read, request, principal, cursor, 100)
             for ev in batch:
                 cursor = int(ev["recorded_seq"])
                 data = json.dumps(ev, ensure_ascii=False)
