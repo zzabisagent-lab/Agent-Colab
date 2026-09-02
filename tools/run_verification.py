@@ -66,12 +66,8 @@ def _worktree_modifications(worktree: Path, phase: int) -> list[str]:
         cwd=worktree,
         check=False,
     ).stdout
-    allowed = f"verification/phase-{phase}/"
-    return [
-        line[3:]
-        for line in out.splitlines()
-        if line[3:] and not line[3:].startswith(allowed) and not line[3:].startswith(".venv/")
-    ]
+    allowed = (f"verification/phase-{phase}/", f"evidence/phase-{phase}/manifest.yaml", ".venv/")
+    return [line[3:] for line in out.splitlines() if line[3:] and not line[3:].startswith(allowed)]
 
 
 def prepare_worktree(commit: str, phase: int, revision: int) -> Path:
@@ -158,12 +154,34 @@ def main(argv: list[str] | None = None) -> int:
         print(f"refusing to overwrite existing report {report_name}; use a new --revision")
         return 2
     worktree = prepare_worktree(commit, phase, rev)
+    run_dir = out_dir / f"run-r{rev:03d}"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    manifest_out = run_dir / "manifest.yaml"
+    subprocess.run(
+        [
+            "uv",
+            "run",
+            "python",
+            "-m",
+            "tools.evidence_manifest",
+            "--phase",
+            str(phase),
+            "--commit",
+            commit,
+            "--out",
+            str(manifest_out),
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+    )
+    wt_manifest = worktree / "evidence" / f"phase-{phase}" / "manifest.yaml"
+    wt_manifest.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(manifest_out, wt_manifest)
     wt_report = f"verification/phase-{phase}/{report_name}"
     wt_evidence = f"verification/phase-{phase}/evidence-r{rev:03d}"
     (worktree / wt_evidence).mkdir(parents=True, exist_ok=True)
     prompt = render_prompt(phase, commit, rev, wt_report, wt_evidence, ns.db_url, ns.extra_env)
-    run_dir = out_dir / f"run-r{rev:03d}"
-    run_dir.mkdir(parents=True, exist_ok=True)
     (run_dir / "prompt.md").write_text(prompt, encoding="utf-8")
     started = dt.datetime.now(dt.UTC)
     env = {

@@ -10,7 +10,7 @@
       "type": "",
       "props": null,
       "goto_location": "",
-      "trigger_id": "1gf6wuoomjd1tfrhbpk73kfg7r",
+      "trigger_id": "<redacted:len=26>",
       "skip_slack_parsing": false,
       "attachments": null,
       "extra_responses": null
@@ -22,12 +22,12 @@
       "channel_id": "kg4d6h94bpnt7cnsp3pm17xf6a",
       "channel_name": "work-a",
       "command": "/colab",
-      "response_url": "http://127.0.0.1:8065/hooks/commands/kd4jmcmd1fb88g8bc4y551dx7a",
+      "response_url": "<redacted:len=63>",
       "team_domain": "colab-test",
       "team_id": "dhmmszncpjb1ir1n4qdomygnsc",
       "text": "task create \"Spike task\" --criteria \"x\"",
       "token": "<redacted>",
-      "trigger_id": "MWdmNnd1b29tamQxdGZyaGJwazcza2ZnN3I6cTd6MXJ0dGg0cGd3OGNoZWkxeDhnd3Njc2U6MTc4ODM1NDczNTU2MTpNRVFDSURnUnVQSlFwOGdjRHBGc0NuclVldVhiejFFTG5PVTZZUS82US91Wjd0V0pBaUI3RjA0OUhXOVdNcXdib04zUmk3Uis0U282WGVzYVpIeXdjMVR1dGcrb2d3PT0=",
+      "trigger_id": "<redacted:len=220>",
       "user_id": "q7z1rtth4pgw8chei1x8gwscse",
       "user_name": "colabadmin"
     },

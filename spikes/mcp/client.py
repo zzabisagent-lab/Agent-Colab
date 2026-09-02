@@ -49,7 +49,7 @@ async def scenario_a_empty_long_poll() -> float:
         out = await _call(s, "work_poll", agent_id=AGENT, max_wait_s=30)
         elapsed = time.time() - t0
         log("a_empty_poll", elapsed_s=round(elapsed, 3), items=out["items"])
-        assert out["items"] == [] and elapsed <= 30.5, elapsed
+        assert out["items"] == [] and elapsed <= 30.0, elapsed
         return elapsed
 
 

@@ -1,0 +1,4 @@
+
+--- stderr ---
+[90m1:41PM[0m [32mINF[0m [1mscanned ~3003580 bytes (3 MB) in 564ms[0m
+[90m1:41PM[0m [32mINF[0m [1mno leaks found[0m

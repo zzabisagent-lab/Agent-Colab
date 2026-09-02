@@ -6,11 +6,30 @@ title = "Agent-Colab gitleaks config"
 [extend]
 useDefault = true
 
+# Exceptions documented in docs/security/secret-scan.md: test canaries, baseline example snippets,
+# fixture hashes/keys of fake data, and the two pre-remediation commits of Finding F-P0-002-02
+# (revoked local test-instance callback material; later commits carry redacted copies only).
 [allowlist]
-description = "Documented test canaries and baseline example snippets"
-regexes = ['''CANARY-NOT-A-SECRET-\d+''']
+description = "Documented test canaries, baseline snippets, fixture hashes, and revoked spike material"
+regexTarget = "line"
+regexes = [
+  '''CANARY-NOT-A-SECRET-\d+''',
+  '''token_hash: "[0-9a-f]{64}"''',
+  '''"idempotency_key": "[a-z]+-\d{4}-[a-z]+-\d+"''',
+]
 paths = [
   '''^docs/baseline/.*\.md$''',
   '''(^|/)\.venv/''',
   '''(^|/)node_modules/''',
 ]
+commits = [
+  "0e43f203558b3b275de600f668cf59a45b3d5f10",
+  "4c1adf6258be01e73e569c2cdf2680fffc4211eb",
+]
+
+# Provider callback material (Finding F-P0-002-02): Mattermost slash-command tokens, trigger IDs
+# and response_url hook capabilities must never be committed unredacted.
+[[rules]]
+id = "agent-colab-mattermost-callback-material"
+description = "Mattermost slash-command token / trigger_id / response_url hook id in evidence or fixtures"
+regex = '''(?i)"(token|trigger_id)"\s*:\s*"[A-Za-z0-9+/=_-]{20,}"|/hooks/commands/[A-Za-z0-9]{20,}'''

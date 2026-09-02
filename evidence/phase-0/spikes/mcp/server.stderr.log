@@ -1,54 +1,54 @@
-[09/02/26 13:14:21] INFO     StreamableHTTP       streamable_http_manager.py:148
+[09/02/26 13:38:40] INFO     StreamableHTTP       streamable_http_manager.py:148
                              session manager                                    
                              started                                            
-[09/02/26 13:14:24] INFO     Created new          streamable_http_manager.py:300
+[09/02/26 13:38:44] INFO     Created new          streamable_http_manager.py:300
                              transport with                                     
                              session ID:                                        
-                             ff74ed27dc9945b3874b                               
-                             a8a45a816e14                                       
-[09/02/26 13:14:54] INFO     Terminating session:         streamable_http.py:814
-                             ff74ed27dc9945b3874ba8a45a81                       
-                             6e14                                               
+                             d59ca104176c4327af38                               
+                             2b5f503a0686                                       
+[09/02/26 13:39:14] INFO     Terminating session:         streamable_http.py:814
+                             d59ca104176c4327af382b5f503a                       
+                             0686                                               
                     INFO     Created new          streamable_http_manager.py:300
                              transport with                                     
                              session ID:                                        
-                             bd902ce6373941be8c8a                               
-                             8c7f4c61b94c                                       
+                             25fcdec625d3420e8b56                               
+                             404acc482d2d                                       
                     INFO     Terminating session:         streamable_http.py:814
-                             bd902ce6373941be8c8a8c7f4c61                       
-                             b94c                                               
+                             25fcdec625d3420e8b56404acc48                       
+                             2d2d                                               
                     INFO     Created new          streamable_http_manager.py:300
                              transport with                                     
                              session ID:                                        
-                             2580363a7728458db878                               
-                             2fbd6fca2589                                       
+                             92a67320297b4280be77                               
+                             9f0ee08abd72                                       
                     INFO     Terminating session:         streamable_http.py:814
-                             2580363a7728458db8782fbd6fca                       
-                             2589                                               
+                             92a67320297b4280be779f0ee08a                       
+                             bd72                                               
                     INFO     Created new          streamable_http_manager.py:300
                              transport with                                     
                              session ID:                                        
-                             eeff5cf1395048e0a3bd                               
-                             7b2d1ecee384                                       
-[09/02/26 13:14:56] INFO     Terminating session:         streamable_http.py:814
-                             eeff5cf1395048e0a3bd7b2d1ece                       
-                             e384                                               
+                             6b2af434a9014c12baf7                               
+                             9144977b8828                                       
+[09/02/26 13:39:16] INFO     Terminating session:         streamable_http.py:814
+                             6b2af434a9014c12baf79144977b                       
+                             8828                                               
                     INFO     Created new          streamable_http_manager.py:300
                              transport with                                     
                              session ID:                                        
-                             918b62e0ba684cbd8421                               
-                             4252e153bd76                                       
+                             f80dc3c096d8486bb1c4                               
+                             afc363710bc6                                       
                     INFO     Terminating session:         streamable_http.py:814
-                             918b62e0ba684cbd84214252e153                       
-                             bd76                                               
+                             f80dc3c096d8486bb1c4afc36371                       
+                             0bc6                                               
                     INFO     Created new          streamable_http_manager.py:300
                              transport with                                     
                              session ID:                                        
-                             b1523da506c644db8971                               
-                             4ab775a6a557                                       
+                             10ee998a26f747009274                               
+                             ba6d60ae201e                                       
                     INFO     Terminating session:         streamable_http.py:814
-                             b1523da506c644db89714ab775a6                       
-                             a557                                               
+                             10ee998a26f747009274ba6d60ae                       
+                             201e                                               
                     INFO     StreamableHTTP       streamable_http_manager.py:152
                              session manager                                    
                              shutting down                                      

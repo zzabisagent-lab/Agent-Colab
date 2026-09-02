@@ -19,6 +19,9 @@ from mcp.server.mcpserver import MCPServer
 from mcp.server.subscriptions import InMemorySubscriptionBus, ResourceUpdated
 
 MAX_WAIT_S = 30
+# The server stops waiting this long before the caller's deadline so that the end-to-end response
+# (including transport overhead) arrives within max_wait_s (V-P0-17, Finding F-P0-002-01).
+SAFETY_MARGIN_S = 0.5
 bus = InMemorySubscriptionBus()
 server = MCPServer(name="agent-colab-spike", version="0.0.0", subscriptions=bus)
 INBOX: dict[str, dict[str, dict[str, Any]]] = {}  # agent_id -> work_item_id -> item
@@ -50,7 +53,7 @@ async def enqueue(agent_id: str, work_item_id: str) -> dict[str, Any]:
 @server.tool()
 async def work_poll(agent_id: str, max_wait_s: int = MAX_WAIT_S) -> dict[str, Any]:
     """Long-poll: return un-acked items now, or wait up to max_wait_s (≤ 30) for one."""
-    max_wait_s = max(0, min(int(max_wait_s), MAX_WAIT_S))
+    deadline_s = max(0.0, min(int(max_wait_s), MAX_WAIT_S) - SAFETY_MARGIN_S)
     started = time.time()
     wake = _wake(agent_id)
     while True:
@@ -65,7 +68,7 @@ async def work_poll(agent_id: str, max_wait_s: int = MAX_WAIT_S) -> dict[str, An
                 waited_s=round(time.time() - started, 3),
             )
             return {"items": [dict(i) for i in pending]}
-        remaining = max_wait_s - (time.time() - started)
+        remaining = deadline_s - (time.time() - started)
         if remaining <= 0:
             log("poll_empty", agent_id=agent_id, waited_s=round(time.time() - started, 3))
             return {"items": []}

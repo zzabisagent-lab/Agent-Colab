@@ -1,1 +1,6 @@
-{'EnablePostUsernameOverride': None, 'EnablePostIconOverride': None, 'EnableCommands': None, 'Version': '11.10.1'}
+{
+  "EnablePostUsernameOverride": null,
+  "EnablePostIconOverride": null,
+  "EnableCommands": null,
+  "Version": "11.10.1"
+}

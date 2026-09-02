@@ -27,9 +27,11 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 19.5 / 20.5 (P0-13 blocked)
 
 ### Latest verification result
 
-r001 aborted (Codex sandbox cannot execute on this host; see verification/phase-0/run-r001/ABORTED.md). VR-P0-002 requested (Codex, revision 2, unsandboxed in an isolated worktree). Known NOT_RUN: V-P0-04 (no container runtime), V-P0-19 (no Telegram bot).
+**VR-P0-002: FAILED** (Codex, 2026-09-02, `verification/phase-0/VR-P0-002.yaml`). 16 PASS, 2 FAIL (V-P0-09, V-P0-17), 2 NOT_RUN (V-P0-04 no container runtime, V-P0-19 no Telegram bot). Findings: F-P0-002-01 Medium (MCP long-poll 30.083 s > 30 s) — fixed, spike re-run 29.587 s; F-P0-002-02 Medium (spike artifact held live-issued Mattermost callback material) — token regenerated, artifacts and runner log redacted, gitleaks rule + incident record; F-P0-002-03 Low (manifest pinned to an earlier commit) — runner now generates the manifest at verification time for the exact target commit. r001 was aborted (sandbox could not execute; run-r001/ABORTED.md). Next revision (r003) is requested once B-001/B-002 are resolved so that V-P0-04 and V-P0-19 can run.
 
 ### Open findings / blockers
+
+- F-P0-002-01/02/03 fixed on phase-0 (pending recheck in r003).
 
 - B-001 Container runtime (Docker + Compose) absent on the build host; root required. Affects V-P0-04, ClamAV, Compose-based tests.
 - B-002 Telegram bot token and two test chats/topics not available. Affects P0-13/V-P0-19 and Phase 2.

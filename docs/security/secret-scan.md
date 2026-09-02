@@ -37,3 +37,22 @@ overlap is a common English word that the baseline documents use in an unrelated
 - Evidence and Verifier reports are scanned before commit; `.env` values are never echoed.
 - Test canaries must use the `CANARY-NOT-A-SECRET-<digits>` form so that any other secret-looking
   string is a finding.
+
+## Incident record: F-P0-002-02 (Verifier Report VR-P0-002, 2026-09-02)
+
+- **What**: `evidence/phase-0/spikes/mattermost/slash-command-delivery.json` (committed in
+  `0e43f20`) contained callback material issued by the *local* Mattermost Team Edition test
+  instance during the P0-10 spike: a `trigger_id`, a `response_url` hook capability, and
+  (redacted at the time) the slash-command verification token. The raw Codex run log of r002
+  (`verification/phase-0/run-r002/events.jsonl`, commit `4c1adf6`) reproduced the same content.
+- **Exposure**: the instance listens on `127.0.0.1:8065` only and is stopped between uses; the
+  repository is private. No production or third-party credential was involved.
+- **Revocation**: the slash-command token was regenerated with `PUT /api/v4/commands/{id}/regen_token`
+  (HTTP 200, 2026-09-02 13:37 UTC); `trigger_id` and `response_url` hooks expire by design.
+- **Remediation**: all spike artifacts and the runner log were redacted (`<redacted:len=…>`), a
+  dedicated gitleaks rule (`agent-colab-mattermost-callback-material`) now blocks recurrence, and
+  the two pre-remediation commits are listed in the gitleaks commit allowlist with this record as
+  the reason. The Verifier Report and verifier evidence were not modified.
+- **Fixture false positives** (`generic-api-key`): `token_hash` SHA-256 values in
+  `tests/fixtures/setup/store-documents.yaml` and generated `idempotency_key` values in
+  `tests/fixtures/events/valid/` are allow-listed by line pattern; they are hashes/keys of fake data.

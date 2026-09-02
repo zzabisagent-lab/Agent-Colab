@@ -1,8 +1,8 @@
-{"t": 1788354894.433894, "event": "poll_empty", "agent_id": "agent-spike-0001", "waited_s": 30.001}
-{"t": 1788354894.5320525, "event": "enqueued", "agent_id": "agent-spike-0001", "work_item_id": "wi-00000000000000ff"}
-{"t": 1788354894.5429537, "event": "poll_delivered", "agent_id": "agent-spike-0001", "items": ["wi-00000000000000ff"], "waited_s": 0.0}
-{"t": 1788354894.5668275, "event": "poll_delivered", "agent_id": "agent-spike-0001", "items": ["wi-00000000000000ff"], "waited_s": 0.0}
-{"t": 1788354894.5962708, "event": "acked", "agent_id": "agent-spike-0001", "work_item_id": "wi-00000000000000ff"}
-{"t": 1788354894.6072068, "event": "result_accepted", "work_item_id": "wi-00000000000000ff"}
-{"t": 1788354894.6127326, "event": "duplicate_result_ignored", "work_item_id": "wi-00000000000000ff"}
-{"t": 1788354896.618425, "event": "poll_empty", "agent_id": "agent-spike-0001", "waited_s": 2.001}
+{"t": 1788356354.3739426, "event": "poll_empty", "agent_id": "agent-spike-0001", "waited_s": 29.502}
+{"t": 1788356354.475493, "event": "enqueued", "agent_id": "agent-spike-0001", "work_item_id": "wi-00000000000000ff"}
+{"t": 1788356354.4866905, "event": "poll_delivered", "agent_id": "agent-spike-0001", "items": ["wi-00000000000000ff"], "waited_s": 0.0}
+{"t": 1788356354.5109577, "event": "poll_delivered", "agent_id": "agent-spike-0001", "items": ["wi-00000000000000ff"], "waited_s": 0.0}
+{"t": 1788356354.5416524, "event": "acked", "agent_id": "agent-spike-0001", "work_item_id": "wi-00000000000000ff"}
+{"t": 1788356354.5530694, "event": "result_accepted", "work_item_id": "wi-00000000000000ff"}
+{"t": 1788356354.5589128, "event": "duplicate_result_ignored", "work_item_id": "wi-00000000000000ff"}
+{"t": 1788356356.0646203, "event": "poll_empty", "agent_id": "agent-spike-0001", "waited_s": 1.501}

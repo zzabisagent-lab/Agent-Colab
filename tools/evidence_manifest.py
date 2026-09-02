@@ -1,9 +1,11 @@
 """Build the Implementer Evidence Manifest for a phase (validation plan §6.1).
 
-``python -m tools.evidence_manifest --phase 0 [--known-gap "..."]*`` collects the latest
+``python -m tools.evidence_manifest --phase 0 [--commit SHA] [--out PATH]`` collects the latest
 ``SELF-*`` attempts under ``evidence/phase-<n>/``, the phase's requirements from the traceability
-matrix, changed files and migrations since ``main``, and writes ``evidence/phase-<n>/manifest.yaml``
-validated against ``schemas/documents/evidence-manifest.v1.schema.json``.
+matrix, changed files and migrations since ``main``, known gaps and reproduction steps from
+``evidence/phase-<n>/manifest-inputs.yaml`` (committed), and writes the manifest validated against
+``schemas/documents/evidence-manifest.v1.schema.json``. The verification runner generates the
+manifest at run time so that ``commit_sha`` is exactly the verified commit (Finding F-P0-002-03).
 """
 
 from __future__ import annotations
@@ -13,6 +15,7 @@ import hashlib
 import json
 import subprocess
 import sys
+from pathlib import Path
 
 import yaml
 from jsonschema import Draft202012Validator
@@ -34,7 +37,12 @@ def _git(*args: str) -> str:
     ).stdout
 
 
-def build(phase: int, known_gaps: list[str], reproduction: list[str]) -> dict[str, object]:
+def build(
+    phase: int,
+    known_gaps: list[str],
+    reproduction: list[str],
+    commit: str | None = None,
+) -> dict[str, object]:
     b = load_baseline()
     evidence_dir = ROOT / "evidence" / f"phase-{phase}"
     tests_run: list[dict[str, str]] = []
@@ -57,9 +65,9 @@ def build(phase: int, known_gaps: list[str], reproduction: list[str]) -> dict[st
             }
         )
         evidence_refs.append(ref)
-    commit = _git("rev-parse", "HEAD").strip()
-    merge_base = _git("merge-base", "origin/main", "HEAD").strip()
-    changed = [f for f in _git("diff", "--name-only", merge_base, "HEAD").splitlines() if f]
+    commit = commit or _git("rev-parse", "HEAD").strip()
+    merge_base = _git("merge-base", "origin/main", commit).strip()
+    changed = [f for f in _git("diff", "--name-only", merge_base, commit).splitlines() if f]
     migrations = [f for f in changed if f.startswith("migrations/versions/")]
     reqs = sorted(
         r.req_id for r in b.requirements.values() if any(phase_of(p) == phase for p in r.packages)
@@ -94,9 +102,19 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--known-gap", action="append", default=[])
     ap.add_argument("--repro", action="append", default=[])
     ap.add_argument("--print", action="store_true")
+    ap.add_argument("--commit", default=None, help="exact target commit (default HEAD)")
+    ap.add_argument(
+        "--out", default=None, help="output path (default evidence/phase-N/manifest.yaml)"
+    )
     ns = ap.parse_args(argv)
-    manifest = build(ns.phase, ns.known_gap, ns.repro)
-    out = ROOT / "evidence" / f"phase-{ns.phase}" / "manifest.yaml"
+    inputs_path = ROOT / "evidence" / f"phase-{ns.phase}" / "manifest-inputs.yaml"
+    known_gaps, repro = list(ns.known_gap), list(ns.repro)
+    if inputs_path.exists():
+        inputs = yaml.safe_load(inputs_path.read_text(encoding="utf-8")) or {}
+        known_gaps = list(inputs.get("known_gaps", [])) + known_gaps
+        repro = list(inputs.get("reproduction", [])) + repro
+    manifest = build(ns.phase, known_gaps, repro, ns.commit)
+    out = Path(ns.out) if ns.out else ROOT / "evidence" / f"phase-{ns.phase}" / "manifest.yaml"
     out.write_text(yaml.safe_dump(manifest, sort_keys=False, allow_unicode=True), encoding="utf-8")
     tests_run = manifest["tests_run"]
     assert isinstance(tests_run, list)

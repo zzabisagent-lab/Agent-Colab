@@ -20,7 +20,7 @@ notifications are available. Spike code: `spikes/mcp/server.py`, `spikes/mcp/cli
 
 | Scenario | Result |
 |---|---|
-| (a) `work_poll(max_wait_s=30)` on an empty inbox | returned `items: []` after **30.084 s** (≤ 30 s wait + transport overhead; within the 30 s long-poll bound of §21.1) |
+| (a) `work_poll(max_wait_s=30)` on an empty inbox | returned `items: []` after **29.587 s** (re-run after Finding F-P0-002-01: the server stops waiting `SAFETY_MARGIN_S = 0.5 s` before the caller's `max_wait_s`, so the end-to-end response including transport overhead is ≤ 30.000 s; the first run measured 30.084 s and violated the bound) |
 | (b) enqueue → poll → disconnect **without ack** → new session → poll | first poll delivered `wi-00000000000000ff` with `delivery_count=1` in 0.007 s; after reconnect the same item was redelivered with `delivery_count=2` in 0.016 s |
 | (c) `work_ack` then `work_result` twice, then poll | first result `RESULT_ACCEPTED`, second `DUPLICATE_RESULT_IGNORED`; poll after ack returned `[]` after the 2 s wait (no redelivery) |
 | (d) `subscriptions/listen` on `colab://inbox/{agent_id}` | **not available**: `ListenNotSupportedError` — listen requires protocol `2026-07-28`; the SDK's session client negotiates at most `2025-11-25` |
