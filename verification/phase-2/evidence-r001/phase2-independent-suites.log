@@ -1,0 +1,14 @@
+started_at: 2026-09-02T16:36:22Z
+cwd: /home/master/.local/verify/phase-2-r001
+commit: 8680e799277790b11fa9fc858f53e678888cfb46
+command: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py tests/unit/test_gateway.py tests/integration/test_channel_outbox.py tests/integration/test_telegram_provider.py tests/integration/test_telegram_commands_db.py tests/unit/test_command_router.py tests/integration/test_task_cards.py tests/integration/test_actions_db.py tests/unit/test_interactive_actions.py tests/unit/test_identity_display.py tests/integration/test_i18n_channels.py tests/unit/test_i18n.py tests/integration/test_external_identity_commands.py tests/unit/test_link_challenge.py tests/integration/test_channel_config_db.py tests/integration/test_channels_db.py tests/unit/test_message_ingestion.py tests/integration/test_message_retention.py tests/integration/test_notification_delivery.py tests/unit/test_notification_providers.py -q -rs
+environment: Linux 6.8.0-138-generic x86_64; python 3.12.3; node v22.23.2; postgres 16.15
+--- output ---
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+...............................................s........................ [ 52%]
+.................................................................        [100%]
+=========================== short test summary info ============================
+SKIPPED [1] tests/integration/test_telegram_provider.py:167: TELEGRAM_BOT_TOKEN not configured in .env
+--- result ---
+exit_code: 0
+completed_at: 2026-09-02T16:36:39Z

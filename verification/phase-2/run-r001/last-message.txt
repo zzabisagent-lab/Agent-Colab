@@ -1,0 +1,9 @@
+Verification report: [VR-P2-001.yaml](/home/master/.local/verify/phase-2-r001/verification/phase-2/VR-P2-001.yaml)
+
+- 28 PASS, 3 FAIL
+- Three Medium findings recorded
+- Schema validation passed
+- No secrets detected in verification artifacts
+- Report SHA-256: `08c36ffc093840a3909e52e2f0248d9efeb244c40ecbc9042e2ea2e4ac273731`
+
+result: FAILED
