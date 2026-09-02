@@ -35,13 +35,15 @@ def engine(database_url: str) -> Iterator[Engine]:
         )
         c.execute(
             text(
-                "INSERT INTO accounts (id, account_id, workspace_id, account_type, display_name) VALUES (:i, 'acct-ev', :w, 'service', 'ev')"
+                "INSERT INTO accounts (id, account_id, workspace_id, account_type, display_name) "
+                "VALUES (:i, 'acct-ev', :w, 'service', 'ev')"
             ),
             {"i": ACTOR, "w": WS},
         )
         c.execute(
             text(
-                "INSERT INTO service_credentials (id, account_id, fingerprint, token_hash) VALUES (:i, :a, 'sha256:ev', :h)"
+                "INSERT INTO service_credentials (id, account_id, fingerprint, token_hash) "
+                "VALUES (:i, :a, 'sha256:ev', :h)"
             ),
             {"i": uuid.uuid4(), "a": ACTOR, "h": token_hash(TOKEN)},
         )
@@ -136,6 +138,7 @@ async def test_sse_resume_without_gaps_or_duplicates(app) -> None:  # type: igno
         assert ids == sorted(ids) and len(set(ids)) == 12
         events = [e for _, e in first + rest]
         assert len(set(events)) == 12
-        # a Last-Event-ID beyond the end yields nothing new until events arrive (bounded by max_events)
+        # a Last-Event-ID beyond the end yields nothing new until events arrive (bounded by max_even\
+            ts)
         resp = await client.get("/api/v1/events", params={"after": last_id}, headers=HEADERS)
         assert [i["event_id"] for i in resp.json()["items"]] == events[5:]
