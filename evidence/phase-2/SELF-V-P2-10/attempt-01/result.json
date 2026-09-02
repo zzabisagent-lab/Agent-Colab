@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P2-10",
+  "evidence_id": "SELF-V-P2-10",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_bridge_db.py",
+    "tests/unit/test_bridge_rules.py",
+    "-q",
+    "-s",
+    "-k",
+    "canary or redaction"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "d59ff36317f7d269a0981892b3705ef2627047a1",
+  "started_at": "2026-09-02T16:05:59.098768+00:00",
+  "finished_at": "2026-09-02T16:06:01.056270+00:00",
+  "output_sha256": "bb4b7428b142ae862efac34d4a2d17eb29d6168379ccda363c517486716aa5c4"
+}

@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P2-06",
+  "evidence_id": "SELF-V-P2-06",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_bridge_db.py",
+    "tests/unit/test_bridge_rules.py",
+    "-q",
+    "-s",
+    "-k",
+    "per_channel_isolation or round_trips"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "d59ff36317f7d269a0981892b3705ef2627047a1",
+  "started_at": "2026-09-02T16:05:39.126147+00:00",
+  "finished_at": "2026-09-02T16:05:41.144644+00:00",
+  "output_sha256": "489f4472a452efbe41e158668293d7478801bc5c4136dde585dc9d990e5a9b9f"
+}

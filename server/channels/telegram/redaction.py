@@ -13,12 +13,18 @@ from dataclasses import dataclass
 
 _PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("canary", re.compile(r"CANARY-NOT-A-SECRET-\d+")),
-    ("private_key", re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----.*?-----END [A-Z ]*PRIVATE KEY-----", re.S)),
+    (
+        "private_key",
+        re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----.*?-----END [A-Z ]*PRIVATE KEY-----", re.S),
+    ),
     ("bearer_token", re.compile(r"(?i)\bbearer\s+[A-Za-z0-9._~+/=-]{16,}")),
     ("aws_access_key", re.compile(r"\b(?:AKIA|ASIA)[0-9A-Z]{16}\b")),
     ("telegram_bot_token", re.compile(r"\b\d{6,12}:[A-Za-z0-9_-]{30,}\b")),
     ("dsn_credentials", re.compile(r"\b[a-z][a-z0-9+.-]*://[^\s/:@]+:[^\s@]+@[^\s]+")),
-    ("password_assignment", re.compile(r"(?i)\b(?:password|passwd|pwd|secret|api[_-]?key|token)\s*[=:]\s*\S{6,}")),
+    (
+        "password_assignment",
+        re.compile(r"(?i)\b(?:password|passwd|pwd|secret|api[_-]?key|token)\s*[=:]\s*\S{6,}"),
+    ),
 )
 _HIGH_ENTROPY = re.compile(r"\b[A-Za-z0-9+/=_-]{40,}\b")
 

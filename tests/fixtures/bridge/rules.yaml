@@ -1,0 +1,35 @@
+# Bridge rule fixtures (P2-05/P2-06). Directions use the P0-13 contract values.
+direction_matrix:
+  - {direction: bidirectional, platform: mattermost, allowed: true}
+  - {direction: bidirectional, platform: telegram, allowed: true}
+  - {direction: mattermost_to_telegram, platform: mattermost, allowed: true}
+  - {direction: mattermost_to_telegram, platform: telegram, allowed: false}
+  - {direction: telegram_to_mattermost, platform: telegram, allowed: true}
+  - {direction: telegram_to_mattermost, platform: mattermost, allowed: false}
+content_filters:
+  - {policy: {text: true, attachment: true, system_event: false}, kind: text, allowed: true}
+  - {policy: {text: true, attachment: true, system_event: false}, kind: system_event, allowed: false}
+  - {policy: {text: false}, kind: text, allowed: false}
+  - {policy: {approval_notice: false}, kind: approval_notice, allowed: false}
+  - {policy: {mention: false}, kind: mention, allowed: false}
+  - {policy: {}, kind: mention, allowed: true}
+loop_cases:
+  - {name: bridge bot author, is_bridge_bot: true, hop: 0, origin: null, blocked: true}
+  - {name: hop one, is_bridge_bot: false, hop: 1, origin: null, blocked: true}
+  - {name: origin marker from the other platform, is_bridge_bot: false, hop: 0, origin: telegram, blocked: true}
+  - {name: plain human post, is_bridge_bot: false, hop: 0, origin: null, blocked: false}
+  - {name: altered marker with high hop, is_bridge_bot: false, hop: 5, origin: mattermost, blocked: true}
+redaction_cases:
+  - {text: "hello world", findings: []}
+  - {text: "token CANARY-NOT-A-SECRET-0042 leaked", findings: [canary]}
+  - {text: "Authorization: Bearer abcdefghijklmnopqrstuvwxyz0123456789", findings: [bearer_token]}
+  - {text: "aws AKIAABCDEFGHIJKLMNOP key", findings: [aws_access_key]}
+  - {text: "dsn postgres://user:hunter2secret@db.internal/x", findings: [dsn_credentials]}
+  - {text: "password=SuperSecret123!", findings: [password_assignment]}
+  - {text: "bot 123456789:AAHfiKQyQrTd2a0FEnFYMIyTd0YrZqE3cP8 token", findings: [telegram_bot_token]}
+  - {text: "-----BEGIN PRIVATE KEY-----\nMIIE...\n-----END PRIVATE KEY-----", findings: [private_key]}
+prefix_cases:
+  - {text: "[alice via Telegram] hi", origin: telegram}
+  - {text: "[bob via Mattermost] hi", origin: mattermost}
+  - {text: "hi [alice via Telegram]", origin: null}
+  - {text: "plain", origin: null}

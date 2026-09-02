@@ -121,7 +121,7 @@ class BridgeMetrics:
 class RelayOutcome:
     bridge_id: str
     accepted: bool
-    code: str  # ENQUEUED | BRIDGE_LOOP_DETECTED | BRIDGE_DUPLICATE_SOURCE | BRIDGE_DIRECTION_DENIED | ...
+    code: str  # ENQUEUED | BRIDGE_LOOP_DETECTED | BRIDGE_DUPLICATE_SOURCE | ...
     dedupe_key: str | None = None
     target: tc.Target | None = None
 
@@ -158,11 +158,16 @@ _SELECT = (
 
 
 def bridges_for_mattermost_channel(
-    session: Session, mm_provider_instance_id: str, channel_ext_id: str, *, enabled_only: bool = True
+    session: Session,
+    mm_provider_instance_id: str,
+    channel_ext_id: str,
+    *,
+    enabled_only: bool = True,
 ) -> list[BridgeRow]:
     rows = session.execute(
         text(
-            _SELECT + "WHERE c.external_channel_id = :ext AND p.provider_instance_id = :pi "
+            _SELECT
+            + "WHERE c.external_channel_id = :ext AND p.provider_instance_id = :pi "
             + ("AND b.status = 'enabled' " if enabled_only else "")
             + "ORDER BY b.bridge_id"
         ),
@@ -176,7 +181,8 @@ def bridges_for_telegram_chat(
 ) -> list[BridgeRow]:
     rows = session.execute(
         text(
-            _SELECT + "WHERE b.provider_instance_id = :pi AND b.telegram_chat_id = :chat "
+            _SELECT
+            + "WHERE b.provider_instance_id = :pi AND b.telegram_chat_id = :chat "
             + ("AND b.status = 'enabled' " if enabled_only else "")
             + "ORDER BY b.bridge_id"
         ),
@@ -186,7 +192,11 @@ def bridges_for_telegram_chat(
 
 
 def load_bridge(session: Session, bridge_id: str) -> BridgeRow | None:
-    row = session.execute(text(_SELECT + "WHERE b.bridge_id = :b"), {"b": bridge_id}).mappings().first()
+    row = (
+        session.execute(text(_SELECT + "WHERE b.bridge_id = :b"), {"b": bridge_id})
+        .mappings()
+        .first()
+    )
     return _row(row) if row else None
 
 
@@ -194,7 +204,8 @@ def completed_mappings(session: Session, bridge_id: str) -> dict[str, tc.Mapping
     """Mappings whose destination is known; the contract resolves threads against these."""
     rows = session.execute(
         text(
-            "SELECT bridge_id, source_platform, source_message_id, origin_platform, origin_message_id, "
+            "SELECT bridge_id, source_platform, source_message_id, origin_platform, "
+            "origin_message_id, "
             "hop_count, mm_channel_id, mm_post_id, mm_root_post_id, tg_chat_id, tg_message_id, "
             "tg_thread_id, tg_reply_to_message_id, dedupe_key FROM message_mappings "
             "WHERE bridge_id = :b AND delivery_status = 'sent' AND mm_post_id IS NOT NULL "
@@ -218,7 +229,9 @@ def completed_mappings(session: Session, bridge_id: str) -> dict[str, tc.Mapping
             tg_message_id=int(r["tg_message_id"]),
             tg_thread_id=int(r["tg_thread_id"]) if r["tg_thread_id"] is not None else None,
             tg_reply_to_message_id=(
-                int(r["tg_reply_to_message_id"]) if r["tg_reply_to_message_id"] is not None else None
+                int(r["tg_reply_to_message_id"])
+                if r["tg_reply_to_message_id"] is not None
+                else None
             ),
         )
     return out
@@ -244,7 +257,7 @@ def parse_origin_prop(props: dict[str, Any]) -> tuple[tc.Platform | None, str | 
 
 
 def _prefix_origin(message: str) -> tc.Platform | None:
-    """A relayed text always starts with ``[sender via <Source>]``; that prefix is an origin mark."""
+    """A relayed text starts with ``[sender via <Source>]``; that prefix is an origin mark."""
     m = _PREFIX_RE.match(message)
     if not m:
         return None
@@ -288,7 +301,9 @@ class Bridge:
         )
         for bridge in bridges:
             outcomes.append(
-                self._relay(session, clock, bridge, event, post.message, post.kind, post.attachments)
+                self._relay(
+                    session, clock, bridge, event, post.message, post.kind, post.attachments
+                )
             )
         return outcomes
 
@@ -312,8 +327,7 @@ class Bridge:
             tg_chat_id=msg.chat_id,
             tg_thread_id=msg.message_thread_id,
             tg_reply_to_message_id=msg.reply_to_message_id,
-            is_bridge_bot=msg.from_is_bot
-            and (msg.from_user_id in (bot_id, *self.tg_bot_user_ids)),
+            is_bridge_bot=msg.from_is_bot and (msg.from_user_id in (bot_id, *self.tg_bot_user_ids)),
         )
         kind = "system_event" if msg.forum_topic_created is not None else "text"
         attachments = tuple(
@@ -322,7 +336,10 @@ class Bridge:
         )
         for bridge in bridges:
             # fixed-topic bridges only relay their own topic
-            if bridge.thread_mode == "fixed_topic" and msg.message_thread_id != bridge.telegram_thread_id:
+            if (
+                bridge.thread_mode == "fixed_topic"
+                and msg.message_thread_id != bridge.telegram_thread_id
+            ):
                 continue
             outcomes.append(self._relay(session, clock, bridge, event, msg.text, kind, attachments))
         return outcomes
@@ -352,36 +369,61 @@ class Bridge:
             tc.check_direction(bridge.config(), event)
         except tc.BridgeError as exc:
             self.metrics.direction_denied += 1
-            self._audit(session, clock, bridge, "bridge.direction_denied", event, exc.code, exc.detail)
+            self._audit(
+                session, clock, bridge, "bridge.direction_denied", event, exc.code, exc.detail
+            )
             return RelayOutcome(bridge.bridge_id, False, exc.code)
         dedupe_key = tc.mapping_key(bridge.bridge_id, event.platform, event.message_id)
         if dedupe_key in existing or self._mapping_exists(session, bridge.bridge_id, event):
             self.metrics.duplicates_prevented += 1
             self._audit(
-                session, clock, bridge, "bridge.duplicate_source", event, "BRIDGE_DUPLICATE_SOURCE", ""
+                session,
+                clock,
+                bridge,
+                "bridge.duplicate_source",
+                event,
+                "BRIDGE_DUPLICATE_SOURCE",
+                "",
             )
             return RelayOutcome(bridge.bridge_id, False, "BRIDGE_DUPLICATE_SOURCE", dedupe_key)
         if not self._content_allowed(bridge, kind):
             self.metrics.content_filtered += 1
-            self._audit(session, clock, bridge, "bridge.content_filtered", event, "CONTENT_FILTERED", kind)
+            self._audit(
+                session, clock, bridge, "bridge.content_filtered", event, "CONTENT_FILTERED", kind
+            )
             return RelayOutcome(bridge.bridge_id, False, "BRIDGE_CONTENT_FILTERED", dedupe_key)
         try:
             target = tc.resolve_target(existing, bridge.config(), event)
         except tc.BridgeError as exc:
-            self._audit(session, clock, bridge, "bridge.target_unmapped", event, exc.code, exc.detail)
+            self._audit(
+                session, clock, bridge, "bridge.target_unmapped", event, exc.code, exc.detail
+            )
             return RelayOutcome(bridge.bridge_id, False, exc.code, dedupe_key)
         redaction = redact(body)
         if redaction.redacted:
             self.metrics.redacted += 1
             self._audit(
-                session, clock, bridge, "bridge.redacted", event, "REDACTED",
+                session,
+                clock,
+                bridge,
+                "bridge.redacted",
+                event,
+                "REDACTED",
                 ",".join(redaction.findings),
             )
-        allowed_attachments = tuple(a for a in attachments if self._content_allowed(bridge, "attachment"))
+        allowed_attachments = tuple(
+            a for a in attachments if self._content_allowed(bridge, "attachment")
+        )
         text_out = self._compose(bridge, target, redaction.text, allowed_attachments)
-        marker = origin_marker(target.origin_platform or event.platform, target.origin_message_id or event.message_id, 1)
+        marker = origin_marker(
+            target.origin_platform or event.platform,
+            target.origin_message_id or event.message_id,
+            1,
+        )
         now = clock.now()
-        self._insert_mapping(session, bridge, event, target, dedupe_key, marker, redaction.findings, now)
+        self._insert_mapping(
+            session, bridge, event, target, dedupe_key, marker, redaction.findings, now
+        )
         delivery = self._delivery(bridge, event, target, text_out, dedupe_key, marker)
         enqueue_delivery(
             session,
@@ -443,7 +485,13 @@ class Bridge:
             {
                 "message": text_out,
                 "root_id": target.mm_root_id,
-                "props": {ORIGIN_PROP: {"origin": marker.split(":", 1)[1].rsplit(":hop", 1)[0], "hop": 1, "bridge_id": bridge.bridge_id}},
+                "props": {
+                    ORIGIN_PROP: {
+                        "origin": marker.split(":", 1)[1].rsplit(":hop", 1)[0],
+                        "hop": 1,
+                        "bridge_id": bridge.bridge_id,
+                    }
+                },
                 "bridge_id": bridge.bridge_id,
                 "origin_marker": marker,
             },
@@ -535,7 +583,10 @@ class Bridge:
     ) -> bool:
         """Complete a mapping with the destination id returned by the provider (idempotent)."""
         row = session.execute(
-            text("SELECT destination_platform, delivery_status FROM message_mappings WHERE dedupe_key = :k"),
+            text(
+                "SELECT destination_platform, delivery_status FROM message_mappings "
+                "WHERE dedupe_key = :k"
+            ),
             {"k": dedupe_key},
         ).first()
         if row is None:
@@ -550,7 +601,13 @@ class Bridge:
                     "tg_thread_id = COALESCE(:t, tg_thread_id), delivery_status = 'sent', "
                     "delivered_at = :now WHERE dedupe_key = :k"
                 ),
-                {"d": mid, "m": int(mid), "t": int(thread) if thread else None, "now": now, "k": dedupe_key},
+                {
+                    "d": mid,
+                    "m": int(mid),
+                    "t": int(thread) if thread else None,
+                    "now": now,
+                    "k": dedupe_key,
+                },
             )
         else:
             session.execute(
@@ -575,7 +632,12 @@ class Bridge:
     ) -> dict[str, int]:
         """Drain the outbox for Bridge kinds and complete mappings from the providers' results."""
         result = drain_channels(
-            session, providers, clock, workspace_id, batch=batch, max_attempts=max_attempts,
+            session,
+            providers,
+            clock,
+            workspace_id,
+            batch=batch,
+            max_attempts=max_attempts,
             kinds_prefix=("telegram.", "mattermost."),
         )
         now = clock.now()
@@ -586,15 +648,23 @@ class Bridge:
                     self.record_delivered(session, str(key), str(dest_id), now)
         failed_rows = session.execute(
             text(
-                "SELECT o.outbox_id, o.dedupe_key, o.last_error, m.bridge_id, o.payload FROM delivery_outbox o "
+                "SELECT o.outbox_id, o.dedupe_key, o.last_error, m.bridge_id, o.payload FROM "
+                "delivery_outbox o "
                 "JOIN message_mappings m ON m.dedupe_key = o.dedupe_key WHERE o.status = 'dead' "
                 "AND m.delivery_status <> 'dead' AND o.workspace_id = :ws"
             ),
             {"ws": uuid.UUID(workspace_id)},
         ).all()
         for outbox_id, dedupe_key, last_error, bridge_id, payload in failed_rows:
-            self._dead_letter(session, clock, workspace_id, bridge_id, outbox_id, dedupe_key, last_error, payload)
-        return {"sent": result.sent, "failed": result.failed, "dead": result.dead, **self.metrics.snapshot()}
+            self._dead_letter(
+                session, clock, workspace_id, bridge_id, outbox_id, dedupe_key, last_error, payload
+            )
+        return {
+            "sent": result.sent,
+            "failed": result.failed,
+            "dead": result.dead,
+            **self.metrics.snapshot(),
+        }
 
     def _dead_letter(
         self,
@@ -613,39 +683,56 @@ class Bridge:
                 AppendRequest(
                     workspace_id=workspace_id,
                     aggregate_type="bridge",
-                    aggregate_id=f"bridge-{bridge_id}" if not bridge_id.startswith("bridge-") else bridge_id,
+                    aggregate_id=f"bridge-{bridge_id}"
+                    if not bridge_id.startswith("bridge-")
+                    else bridge_id,
                     type="BRIDGE_DELIVERY_FAILED",
                     actor_account_id=self.service_account_uuid,
                     correlation_id=f"bridge-dead-{dedupe_key[:16]}",
                     idempotency_scope="bridge:delivery_failed",
                     idempotency_key=dedupe_key,
-                    payload={"bridge_id": bridge_id, "outbox_id": outbox_id, "error_code": "DELIVERY_DEAD"},
+                    payload={
+                        "bridge_id": bridge_id,
+                        "outbox_id": outbox_id,
+                        "error_code": "DELIVERY_DEAD",
+                    },
                 )
             )
             event_id = res.event_id
         data = payload if isinstance(payload, dict) else json.loads(payload)
         session.execute(
             text(
-                "INSERT INTO bridge_dead_letters (workspace_id, bridge_id, dedupe_key, outbox_id, reason, "
-                "payload, event_id, created_at) VALUES (:ws, :b, :k, :o, :r, CAST(:p AS jsonb), :e, :now) "
+                "INSERT INTO bridge_dead_letters (workspace_id, bridge_id, dedupe_key, outbox_id, "
+                "reason, "
+                "payload, event_id, created_at) VALUES (:ws, :b, :k, :o, :r, CAST(:p AS jsonb), "
+                ":e, :now) "
                 "ON CONFLICT (dedupe_key) DO NOTHING"
             ),
             {
-                "ws": uuid.UUID(workspace_id), "b": bridge_id, "k": dedupe_key, "o": outbox_id,
-                "r": (last_error or "delivery failed")[:200], "p": json.dumps(data), "e": event_id,
+                "ws": uuid.UUID(workspace_id),
+                "b": bridge_id,
+                "k": dedupe_key,
+                "o": outbox_id,
+                "r": (last_error or "delivery failed")[:200],
+                "p": json.dumps(data),
+                "e": event_id,
                 "now": clock.now(),
             },
         )
         session.execute(
-            text("UPDATE message_mappings SET delivery_status = 'dead' WHERE dedupe_key = :k"), {"k": dedupe_key}
+            text("UPDATE message_mappings SET delivery_status = 'dead' WHERE dedupe_key = :k"),
+            {"k": dedupe_key},
         )
         self.metrics.dead_lettered += 1
 
-    def replay_dead_letters(self, session: Session, clock: Clock, workspace_id: str, bridge_id: str | None = None) -> int:
+    def replay_dead_letters(
+        self, session: Session, clock: Clock, workspace_id: str, bridge_id: str | None = None
+    ) -> int:
         """Re-enqueue dead letters exactly once each (a second replay is a no-op)."""
         rows = session.execute(
             text(
-                "SELECT dedupe_key FROM bridge_dead_letters WHERE workspace_id = :ws AND replayed_at IS NULL "
+                "SELECT dedupe_key FROM bridge_dead_letters WHERE workspace_id = :ws AND "  # noqa: S608
+                "replayed_at IS NULL "
                 + ("AND bridge_id = :b " if bridge_id else "")
                 + "ORDER BY id FOR UPDATE SKIP LOCKED"
             ),
@@ -656,13 +743,16 @@ class Bridge:
         for (dedupe_key,) in rows:
             session.execute(
                 text(
-                    "UPDATE delivery_outbox SET status = 'pending', attempts = 0, next_attempt_at = :now, "
+                    "UPDATE delivery_outbox SET status = 'pending', attempts = 0, next_attempt_at "
+                    "= :now, "
                     "last_error = NULL WHERE dedupe_key = :k AND status = 'dead'"
                 ),
                 {"now": now, "k": dedupe_key},
             )
             session.execute(
-                text("UPDATE message_mappings SET delivery_status = 'pending' WHERE dedupe_key = :k"),
+                text(
+                    "UPDATE message_mappings SET delivery_status = 'pending' WHERE dedupe_key = :k"
+                ),
                 {"k": dedupe_key},
             )
             session.execute(
@@ -694,7 +784,9 @@ class TelegramBridgeProvider:
         topic_name = payload.get("create_topic")
         if topic_name and thread is None:
             if key not in self.topics:
-                self.topics[key] = self.client.create_forum_topic(chat_id, str(topic_name)).message_thread_id
+                self.topics[key] = self.client.create_forum_topic(
+                    chat_id, str(topic_name)
+                ).message_thread_id
             thread = self.topics[key]
         sent = self.client.send_message(
             chat_id,
@@ -721,7 +813,10 @@ class MattermostBridgeProvider:
             return self.delivered[key]
         channel = destination.split(":", 1)[1]
         post = self.client.create_post(
-            channel, str(payload["message"]), root_id=payload.get("root_id"), props=payload.get("props")
+            channel,
+            str(payload["message"]),
+            root_id=payload.get("root_id"),
+            props=payload.get("props"),
         )
         post_id = str(post["id"] if isinstance(post, dict) else getattr(post, "id", post))
         self.delivered[key] = post_id
