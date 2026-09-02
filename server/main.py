@@ -7,7 +7,10 @@ import argparse
 import uvicorn
 from fastapi import FastAPI
 
+from server.api.dispatch import default_runtime
 from server.api.errors import ApiError, api_error_handler
+from server.api.v1.events import router as events_router
+from server.api.v1.identity import router as identity_router
 from server.api.v1.verification import router as verification_router
 from server.config import PRODUCT_NAME, Settings, get_settings
 from server.db.engine import make_engine, make_session_factory
@@ -23,9 +26,19 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.session_factory = (
         make_session_factory(make_engine(settings.database_url)) if settings.database_url else None
     )
+    app.state.runtime = (
+        default_runtime(app.state.session_factory, settings) if app.state.session_factory else None
+    )
     app.add_exception_handler(ApiError, api_error_handler)
     app.include_router(health_router)
     app.include_router(verification_router)
+    app.include_router(identity_router)
+    app.include_router(events_router)
+    if app.state.runtime is not None:
+        from server.agents.mcp_server import build_mcp_server
+
+        mcp = build_mcp_server(app.state.runtime, settings.base_url)
+        app.mount("/mcp", mcp.streamable_http_app(streamable_http_path="/"))
     return app
 
 
