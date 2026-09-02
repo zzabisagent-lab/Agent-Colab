@@ -1,0 +1,24 @@
+# occurrence_key = SHA256("schedule_id|timezone|YYYY-MM-DDTHH:mm")
+cases:
+  - {schedule_id: sch-0001, timezone: America/New_York, local: "2026-11-01T01:30", material: "sch-0001|America/New_York|2026-11-01T01:30"}
+  - {schedule_id: sch-0001, timezone: UTC, local: "2026-01-15T10:05", material: "sch-0001|UTC|2026-01-15T10:05"}
+fold_same_key:
+  schedule_id: sch-0001
+  timezone: America/New_York
+  local: "2026-11-01T01:30"
+  utc_instants: ["2026-11-01T05:30:00Z", "2026-11-01T06:30:00Z"]
+distinct:
+  - {a: [sch-0001, UTC, "2026-01-15T10:05"], b: [sch-0002, UTC, "2026-01-15T10:05"]}
+  - {a: [sch-0001, UTC, "2026-01-15T10:05"], b: [sch-0001, Asia/Seoul, "2026-01-15T10:05"]}
+  - {a: [sch-0001, UTC, "2026-01-15T10:05"], b: [sch-0001, UTC, "2026-01-15T10:06"]}
+manual_keys:
+  - {schedule_id: sch-0001, requester: acct-1, client_key: click-42, expect: "MANUAL:sch-0001:acct-1:click-42"}
+retry_keys:
+  - {original_run_id: run-0001, retry_no: 1, expect: "RETRY:run-0001:1"}
+  - {original_run_id: run-0001, retry_no: 2, expect: "RETRY:run-0001:2"}
+invalid_manual:
+  - {schedule_id: "sch:1", requester: acct-1, client_key: k}
+  - {schedule_id: sch-1, requester: "", client_key: k}
+invalid_retry:
+  - {original_run_id: run-1, retry_no: 0}
+  - {original_run_id: "", retry_no: 1}

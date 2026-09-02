@@ -1,0 +1,19 @@
+# each case: patch applied to schedule-version.valid.json (null = delete key) and expected code
+cases:
+  - {name: missing-timezone, patch: {timezone: null}, code: SCHEDULE_VERSION_INVALID}
+  - {name: bad-timezone, patch: {timezone: "Mars/Olympus"}, code: TIMEZONE_INVALID}
+  - {name: cron-names, patch: {cron_expression: "0 9 * * MON"}, code: SCHEDULE_VERSION_INVALID}
+  - {name: cron-dow7, patch: {cron_expression: "0 9 * * 7"}, code: CRON_DOW7_REJECTED}
+  - {name: cron-too-frequent, patch: {cron_expression: "* * * * *"}, code: CRON_INTERVAL_TOO_SHORT}
+  - {name: cron-1-min-allowed-with-floor, patch: {cron_expression: "* * * * *", min_interval_minutes: 1}, code: null}
+  - {name: bad-concurrency, patch: {concurrency_policy: "SERIAL"}, code: SCHEDULE_VERSION_INVALID}
+  - {name: bad-missed, patch: {missed_run_policy: "BACKFILL_ALL"}, code: SCHEDULE_VERSION_INVALID}
+  - {name: negative-backfill, patch: {backfill_limit: -1}, code: SCHEDULE_VERSION_INVALID}
+  - {name: negative-duration, patch: {max_duration_seconds: -5}, code: SCHEDULE_VERSION_INVALID}
+  - {name: retry-4-attempts, patch: {retry_policy: {max_attempts: 4}}, code: SCHEDULE_VERSION_INVALID}
+  - {name: shell-template, patch: {action_template: {schema_id: action-template.v1, action: task_create, input: {command: "rm -rf /"}}}, code: ACTION_TEMPLATE_FORBIDDEN}
+  - {name: product-selection, patch: {agent_selection: {mode: fixed, agent_id: agent-1, product: X}}, code: AGENT_SELECTION_PRODUCT_FORBIDDEN}
+  - {name: ends-before-starts, patch: {starts_at: "2026-02-01T00:00:00.000Z", ends_at: "2026-01-01T00:00:00.000Z"}, code: SCHEDULE_VERSION_INVALID}
+  - {name: bad-hash, patch: {snapshot_hash: "xyz"}, code: SCHEDULE_VERSION_INVALID}
+  - {name: unknown-field, patch: {shell: "true"}, code: SCHEDULE_VERSION_INVALID}
+  - {name: version-zero, patch: {version: 0}, code: SCHEDULE_VERSION_INVALID}

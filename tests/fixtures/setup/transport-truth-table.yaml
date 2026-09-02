@@ -1,0 +1,28 @@
+# V-P4-27 / V-P0-12: full combination of the four remote conditions plus loopback.
+# Columns: tls, mtls, allowlisted, token -> expected code (allowed only when all four hold).
+allowlist: ["10.0.0.0/8", "192.168.1.10/32"]
+remote_in_allowlist: "10.1.2.3"
+remote_outside_allowlist: "203.0.113.9"
+cases:
+  - {name: loopback-default-bind, bind_loopback: true, remote: "127.0.0.1", tls: false, mtls: false, allowlisted: false, token: SETUP_TOKEN_INVALID, allowed: true, code: SETUP_TRANSPORT_LOCAL}
+  - {name: loopback-ipv6, bind_loopback: true, remote: "::1", tls: false, mtls: false, allowlisted: false, token: SETUP_TOKEN_INVALID, allowed: true, code: SETUP_TRANSPORT_LOCAL}
+  - {name: loopback-source-but-remote-bind, bind_loopback: false, remote: "127.0.0.1", tls: false, mtls: false, allowlisted: false, token: OK, allowed: false, code: SETUP_REMOTE_TLS_REQUIRED}
+  - {name: r-0000, bind_loopback: true, tls: false, mtls: false, allowlisted: false, token: SETUP_TOKEN_INVALID, allowed: false, code: SETUP_REMOTE_TLS_REQUIRED}
+  - {name: r-0001, bind_loopback: true, tls: false, mtls: false, allowlisted: false, token: OK, allowed: false, code: SETUP_REMOTE_TLS_REQUIRED}
+  - {name: r-0010, bind_loopback: true, tls: false, mtls: false, allowlisted: true, token: SETUP_TOKEN_INVALID, allowed: false, code: SETUP_REMOTE_TLS_REQUIRED}
+  - {name: r-0011, bind_loopback: true, tls: false, mtls: false, allowlisted: true, token: OK, allowed: false, code: SETUP_REMOTE_TLS_REQUIRED}
+  - {name: r-0100, bind_loopback: true, tls: false, mtls: true, allowlisted: false, token: SETUP_TOKEN_INVALID, allowed: false, code: SETUP_REMOTE_TLS_REQUIRED}
+  - {name: r-0101, bind_loopback: true, tls: false, mtls: true, allowlisted: false, token: OK, allowed: false, code: SETUP_REMOTE_TLS_REQUIRED}
+  - {name: r-0110, bind_loopback: true, tls: false, mtls: true, allowlisted: true, token: SETUP_TOKEN_INVALID, allowed: false, code: SETUP_REMOTE_TLS_REQUIRED}
+  - {name: r-0111, bind_loopback: true, tls: false, mtls: true, allowlisted: true, token: OK, allowed: false, code: SETUP_REMOTE_TLS_REQUIRED}
+  - {name: r-1000, bind_loopback: true, tls: true, mtls: false, allowlisted: false, token: SETUP_TOKEN_INVALID, allowed: false, code: SETUP_REMOTE_MTLS_REQUIRED}
+  - {name: r-1001, bind_loopback: true, tls: true, mtls: false, allowlisted: false, token: OK, allowed: false, code: SETUP_REMOTE_MTLS_REQUIRED}
+  - {name: r-1010, bind_loopback: true, tls: true, mtls: false, allowlisted: true, token: SETUP_TOKEN_INVALID, allowed: false, code: SETUP_REMOTE_MTLS_REQUIRED}
+  - {name: r-1011, bind_loopback: true, tls: true, mtls: false, allowlisted: true, token: OK, allowed: false, code: SETUP_REMOTE_MTLS_REQUIRED}
+  - {name: r-1100, bind_loopback: true, tls: true, mtls: true, allowlisted: false, token: SETUP_TOKEN_INVALID, allowed: false, code: SETUP_REMOTE_NOT_ALLOWLISTED}
+  - {name: r-1101, bind_loopback: true, tls: true, mtls: true, allowlisted: false, token: OK, allowed: false, code: SETUP_REMOTE_NOT_ALLOWLISTED}
+  - {name: r-1110-invalid, bind_loopback: true, tls: true, mtls: true, allowlisted: true, token: SETUP_TOKEN_INVALID, allowed: false, code: SETUP_TOKEN_INVALID}
+  - {name: r-1110-expired, bind_loopback: true, tls: true, mtls: true, allowlisted: true, token: SETUP_TOKEN_EXPIRED, allowed: false, code: SETUP_TOKEN_EXPIRED}
+  - {name: r-1110-used, bind_loopback: true, tls: true, mtls: true, allowlisted: true, token: SETUP_TOKEN_USED, allowed: false, code: SETUP_TOKEN_USED}
+  - {name: r-1110-blocked, bind_loopback: true, tls: true, mtls: true, allowlisted: true, token: SETUP_TOKEN_BLOCKED, allowed: false, code: SETUP_TOKEN_BLOCKED}
+  - {name: r-1111, bind_loopback: true, tls: true, mtls: true, allowlisted: true, token: OK, allowed: true, code: SETUP_TRANSPORT_REMOTE_VERIFIED}

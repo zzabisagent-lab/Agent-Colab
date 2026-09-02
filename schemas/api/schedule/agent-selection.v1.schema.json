@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/schedule/agent-selection.v1.schema.json",
+  "title": "Schedule agent selection v1",
+  "description": "Fixed Agent or capability query (development plan §10A.1). Product/vendor names are not selection criteria.",
+  "type": "object",
+  "oneOf": [
+    {
+      "properties": {
+        "mode": {"const": "fixed"},
+        "agent_id": {"type": "string", "pattern": "^agent-[A-Za-z0-9_-]+$"},
+        "fallback": {"type": "boolean", "default": false}
+      },
+      "required": ["mode", "agent_id"],
+      "additionalProperties": false
+    },
+    {
+      "properties": {
+        "mode": {"const": "capability"},
+        "required_capabilities": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "domain": {"type": "string"},
+        "exclude_agent_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      },
+      "required": ["mode", "required_capabilities"],
+      "additionalProperties": false
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+# Normative five-field cron grammar fixtures (spec §8.6). `expect: ok` or a stable error code.
+valid:
+  - {expr: "* * * * *", minutes: 60, hours: 24, dom_restricted: false, dow_restricted: false, min_interval: 1}
+  - {expr: "*/5 * * * *", minutes: 12, min_interval: 5}
+  - {expr: "0 * * * *", minutes: 1, min_interval: 60}
+  - {expr: "0 0 * * *", min_interval: 1440}
+  - {expr: "0,30 * * * *", minutes: 2, min_interval: 30}
+  - {expr: "1,2,3 4,5 * * *", minutes: 3, hours: 2}
+  - {expr: "10-20 * * * *", minutes: 11, min_interval: 1}
+  - {expr: "10-20/5 * * * *", minutes: 3, minute_set: [10, 15, 20]}
+  - {expr: "0 9-17 * * 1-5", hours: 9, dow_restricted: true, dom_restricted: false}
+  - {expr: "0 0 1 1 *", dom_restricted: true, min_interval: 525600}
+  - {expr: "0 0 1 * *", dom_restricted: true}
+  - {expr: "0 0 31 12 *", dom_restricted: true}
+  - {expr: "0 0 * * 0", dow_restricted: true, min_interval: 10080}
+  - {expr: "0 0 * * 6", dow_restricted: true}
+  - {expr: "0 0 * * 0-6", dow_restricted: true, dow_count: 7}
+  - {expr: "59 23 31 12 6", dom_restricted: true, dow_restricted: true}
+  - {expr: "0 12 15 * 1", dom_restricted: true, dow_restricted: true}
+  - {expr: "0 */2 * * *", hours: 12, min_interval: 120}
+  - {expr: "0 0-23/6 * * *", hours: 4, hour_set: [0, 6, 12, 18]}
+  - {expr: "*/15 9-17 * * 1-5", minutes: 4, hours: 9}
+  - {expr: "05 04 * * *", minute_set: [5], hour_set: [4]}
+  - {expr: "0 0 1-31/10 * *", dom_set: [1, 11, 21, 31]}
+  - {expr: "0 0 * 1-12/3 *", month_set: [1, 4, 7, 10]}
+  - {expr: "  0  0  *  *  *  ", normalized: "0 0 * * *"}
+  - {expr: "0 0 * * */2", dow_set: [0, 2, 4, 6]}
+  - {expr: "0 0 29 2 *", min_interval: 2103840}
+invalid:
+  - {expr: "", code: CRON_FIELD_COUNT}
+  - {expr: "* * * *", code: CRON_FIELD_COUNT}
+  - {expr: "* * * * * * *", code: CRON_FIELD_COUNT}
+  - {expr: "0 * * * * *", code: CRON_SECONDS_REJECTED}
+  - {expr: "@daily", code: CRON_ALIAS_REJECTED}
+  - {expr: "@hourly", code: CRON_ALIAS_REJECTED}
+  - {expr: "0 0 * * MON", code: CRON_NAME_REJECTED}
+  - {expr: "0 0 * JAN *", code: CRON_NAME_REJECTED}
+  - {expr: "0 0 * * mon-fri", code: CRON_NAME_REJECTED}
+  - {expr: "0 0 ? * *", code: CRON_EXTENDED_TOKEN_REJECTED}
+  - {expr: "0 0 L * *", code: CRON_EXTENDED_TOKEN_REJECTED}
+  - {expr: "0 0 15W * *", code: CRON_EXTENDED_TOKEN_REJECTED}
+  - {expr: "0 0 * * 1#2", code: CRON_EXTENDED_TOKEN_REJECTED}
+  - {expr: "0 0 * * 7", code: CRON_DOW7_REJECTED}
+  - {expr: "0 0 * * 1-7", code: CRON_DOW7_REJECTED}
+  - {expr: "60 * * * *", code: CRON_RANGE_INVALID}
+  - {expr: "* 24 * * *", code: CRON_RANGE_INVALID}
+  - {expr: "* * 0 * *", code: CRON_RANGE_INVALID}
+  - {expr: "* * 32 * *", code: CRON_RANGE_INVALID}
+  - {expr: "* * * 0 *", code: CRON_RANGE_INVALID}
+  - {expr: "* * * 13 *", code: CRON_RANGE_INVALID}
+  - {expr: "* * * * 8", code: CRON_RANGE_INVALID}
+  - {expr: "20-10 * * * *", code: CRON_RANGE_INVALID}
+  - {expr: "*/0 * * * *", code: CRON_STEP_INVALID}
+  - {expr: "*/x * * * *", code: CRON_NAME_REJECTED}
+  - {expr: "*/1.5 * * * *", code: CRON_STEP_INVALID}
+  - {expr: "0-10/0 * * * *", code: CRON_STEP_INVALID}
+  - {expr: "5/15 * * * *", code: CRON_STEP_INVALID}
+  - {expr: "*/ * * * *", code: CRON_STEP_INVALID}
+  - {expr: "1,,2 * * * *", code: CRON_TOKEN_INVALID}
+  - {expr: ",1 * * * *", code: CRON_TOKEN_INVALID}
+  - {expr: "1- * * * *", code: CRON_TOKEN_INVALID}
+  - {expr: "-5 * * * *", code: CRON_TOKEN_INVALID}
+  - {expr: "1.5 * * * *", code: CRON_TOKEN_INVALID}
+  - {expr: "* * * * *", code: CRON_INTERVAL_TOO_SHORT, min_interval: 5}
+  - {expr: "*/4 * * * *", code: CRON_INTERVAL_TOO_SHORT, min_interval: 5}
+  - {expr: "*/5 * * * *", code: CRON_INTERVAL_FLOOR, min_interval: 0}
+  - {expr: "0 0 30 2 *", code: CRON_UNREACHABLE, min_interval: 5}
+interval_ok:
+  - {expr: "*/5 * * * *", min_interval: 5}
+  - {expr: "* * * * *", min_interval: 1}
+  - {expr: "0,30 * * * *", min_interval: 30}
+# Vixie DOM/DOW semantics: both restricted -> OR; one restricted -> that field only
+day_semantics:
+  - {expr: "0 0 15 * 1", date: "2026-06-15", match: true, note: "Monday 15th: both"}
+  - {expr: "0 0 15 * 1", date: "2026-06-08", match: true, note: "Monday not 15th: OR"}
+  - {expr: "0 0 15 * 1", date: "2026-07-15", match: true, note: "Wednesday 15th: OR"}
+  - {expr: "0 0 15 * 1", date: "2026-06-16", match: false, note: "Tuesday 16th: neither"}
+  - {expr: "0 0 15 * *", date: "2026-06-08", match: false, note: "dom only"}
+  - {expr: "0 0 * * 1", date: "2026-06-15", match: true, note: "dow only"}
+  - {expr: "0 0 * * 1", date: "2026-06-16", match: false, note: "dow only"}
+  - {expr: "0 0 * * 0", date: "2026-06-14", match: true, note: "Sunday = 0"}
+  - {expr: "0 0 * 2 *", date: "2026-03-01", match: false, note: "month filter"}
