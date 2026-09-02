@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P2-18",
+  "evidence_id": "SELF-V-P2-18",
+  "attempt": 1,
+  "command": [
+    "env",
+    "AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test",
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_channel_config_db.py::test_soft_delete_after_archive_keeps_references",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "ab95efc4055368f2a3e981ed261f0a77575fcd3e",
+  "started_at": "2026-09-02T16:15:46.911554+00:00",
+  "finished_at": "2026-09-02T16:15:49.767417+00:00",
+  "output_sha256": "423b1d0e014eb1eab96f4420f7b344c2615be505dd574b756ac884826ca74f2d"
+}

@@ -1,0 +1,31 @@
+# P2-08 Telegram command policy cases (V-P2-16 unit part) and command detection cases.
+# policy: Bridge columns `allow_commands` + `content_policy.telegram_commands` → decision per verb.
+policy_cases:
+  - {name: default policy blocks a read verb, allow_commands: false, resource: task, verb: show, expect: {allowed: false, code: TELEGRAM_COMMANDS_DISABLED}}
+  - {name: default policy blocks a write verb, allow_commands: false, resource: task, verb: create, expect: {allowed: false, code: TELEGRAM_COMMANDS_DISABLED}}
+  - {name: default policy ignores extra verbs while disabled, allow_commands: false, telegram_commands: {allowed_verbs: [task.create]}, resource: task, verb: create, expect: {allowed: false, code: TELEGRAM_COMMANDS_DISABLED}}
+  - {name: enabled allows task show, allow_commands: true, resource: task, verb: show, expect: {allowed: true, code: OK}}
+  - {name: enabled allows task list, allow_commands: true, resource: task, verb: list, expect: {allowed: true, code: OK}}
+  - {name: enabled allows approve show, allow_commands: true, resource: approve, verb: show, expect: {allowed: true, code: OK}}
+  - {name: enabled allows doc show, allow_commands: true, resource: doc, verb: show, expect: {allowed: true, code: OK}}
+  - {name: enabled still blocks task create, allow_commands: true, resource: task, verb: create, expect: {allowed: false, code: TELEGRAM_VERB_NOT_ALLOWED}}
+  - {name: enabled still blocks approve grant, allow_commands: true, resource: approve, verb: grant, expect: {allowed: false, code: TELEGRAM_VERB_NOT_ALLOWED}}
+  - {name: enabled still blocks verify pass, allow_commands: true, resource: verify, verb: pass, expect: {allowed: false, code: TELEGRAM_VERB_NOT_ALLOWED}}
+  - {name: policy opens task create, allow_commands: true, telegram_commands: {allowed_verbs: [task.create]}, resource: task, verb: create, expect: {allowed: true, code: OK}}
+  - {name: policy opens task progress (list form), allow_commands: true, telegram_commands: [task.progress], resource: task, verb: progress, expect: {allowed: true, code: OK}}
+  - {name: opened verbs keep the defaults, allow_commands: true, telegram_commands: {allowed_verbs: [task.create]}, resource: doc, verb: show, expect: {allowed: true, code: OK}}
+  - {name: opened verbs do not open siblings, allow_commands: true, telegram_commands: {allowed_verbs: [task.create]}, resource: task, verb: cancel, expect: {allowed: false, code: TELEGRAM_VERB_NOT_ALLOWED}}
+  - {name: link never executes from telegram, allow_commands: true, telegram_commands: {allowed_verbs: [link.start]}, resource: link, verb: start, expect: {allowed: false, code: TELEGRAM_VERB_NOT_ALLOWED}}
+  - {name: malformed policy entries are ignored, allow_commands: true, telegram_commands: {allowed_verbs: ["", "task", 42]}, resource: task, verb: delegate, expect: {allowed: false, code: TELEGRAM_VERB_NOT_ALLOWED}}
+  - {name: non-mapping policy value is ignored, allow_commands: true, telegram_commands: "task.create", resource: task, verb: create, expect: {allowed: false, code: TELEGRAM_VERB_NOT_ALLOWED}}
+normalize_cases:
+  - {name: plain colab command, text: "/colab task show t-1", expect: "/colab task show t-1"}
+  - {name: bot-suffixed command, text: "/colab@agent_colab_bot task list --status OPEN", expect: "/colab task list --status OPEN"}
+  - {name: mention prefix, text: "@colab doc show t-1", expect: "@colab doc show t-1"}
+  - {name: bare prefix is a command (help), text: "/colab", expect: "/colab"}
+  - {name: surrounding whitespace trimmed, text: "  /colab@bot help \n", expect: "/colab help"}
+  - {name: free text is not a command, text: "please create a task for me", expect: null}
+  - {name: other slash command is not a command, text: "/start", expect: null}
+  - {name: prefix inside text is not a command, text: "run /colab task show t-1 later", expect: null}
+  - {name: empty text is not a command, text: "", expect: null}
+  - {name: prefix glued to a word is not a command, text: "/colabx task show", expect: null}

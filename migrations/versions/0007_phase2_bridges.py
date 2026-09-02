@@ -24,4 +24,4 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     for table in ("bridge_dead_letters", "message_mappings", "telegram_bridges"):
-        op.execute(f"DROP TABLE IF EXISTS {table}")  # noqa: S608 - constant identifiers
+        op.execute(f"DROP TABLE IF EXISTS {table}")

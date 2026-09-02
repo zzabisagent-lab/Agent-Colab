@@ -118,7 +118,8 @@ def test_failure_between_event_and_outbox_rolls_back_both(engine: Engine) -> Non
         assert (
             s.execute(
                 text(
-                    "SELECT count(*) FROM delivery_outbox WHERE destination = :d AND payload->>'message' LIKE '%a1%'"
+                    "SELECT count(*) FROM delivery_outbox WHERE destination = :d AND "
+                    "payload->>'message' LIKE '%a1%'"
                 ),
                 {"d": f"mattermost:{EXT}"},
             ).scalar_one()
@@ -268,7 +269,8 @@ def test_renderer_latency_p95_under_normal_profile(engine: Engine) -> None:  # V
         rows = s.execute(
             text(
                 "SELECT EXTRACT(EPOCH FROM (o.sent_at - e.recorded_at)) FROM delivery_outbox o "
-                "JOIN events e ON e.event_id = o.source_event_id WHERE e.aggregate_id = 'task-obx-lat' "
+                "JOIN events e ON e.event_id = o.source_event_id WHERE e.aggregate_id "
+                "= 'task-obx-lat' "
                 "AND o.status = 'sent'"
             )
         ).all()
@@ -285,7 +287,8 @@ def _virtual_latencies(engine: Engine) -> list[int]:
         rows = s.execute(
             text(
                 "SELECT EXTRACT(EPOCH FROM (sent_at - created_at)) * 1000 FROM delivery_outbox "
-                "WHERE destination = :d AND status = 'sent' AND payload->>'message' LIKE 'Progress: step l%'"
+                "WHERE destination = :d AND status = 'sent' AND payload->>'message' "
+                "LIKE 'Progress: step l%'"
             ),
             {"d": f"mattermost:{EXT}"},
         ).all()

@@ -675,7 +675,7 @@ def _field_schema(f: Field) -> dict[str, Any]:
     elif f.kind == "ref":
         base = {"type": "string", "pattern": r"^[A-Za-z0-9._:/#@+-]{1,300}$"}
     elif f.kind == "code":
-        base = {"type": "string", "pattern": r"^[0-9]{6}$"}
+        base = {"type": "string", "pattern": r"^[0-9]{6,8}$"}  # 8-digit challenge codes (P1-05)
     elif f.kind == "bool":
         base = {"type": "boolean"}
     else:

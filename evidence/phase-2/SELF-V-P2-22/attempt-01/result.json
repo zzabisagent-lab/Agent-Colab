@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P2-22",
+  "evidence_id": "SELF-V-P2-22",
+  "attempt": 1,
+  "command": [
+    "env",
+    "AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test",
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_external_identity_commands.py::test_links_are_per_provider_instance",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 1,
+  "result": "fail",
+  "commit_sha": "ab95efc4055368f2a3e981ed261f0a77575fcd3e",
+  "started_at": "2026-09-02T16:15:58.696920+00:00",
+  "finished_at": "2026-09-02T16:16:01.044997+00:00",
+  "output_sha256": "785ce9ac96cad5528f80e7a5e7fab42fc3c56f62900c900ddcc9c70627c23469"
+}

@@ -55,14 +55,25 @@ policy" holds by construction.
 ## Wiring (parent, `create_app`)
 
 ```python
-from server.notifications.providers import (CompositeProvider, MattermostNotificationProvider,
-    NoopProvider, SmtpNotificationProvider, TelegramRelayGate)
-mm = MattermostNotificationProvider(app.state.session_factory, relay_gate=TelegramRelayGate(),
-                                    clock=runtime.clock)
-smtp = SmtpNotificationProvider(os.environ.get("AGENT_COLAB_SMTP_HOST"), int(os.environ.get(
-    "AGENT_COLAB_SMTP_PORT", "587")), os.environ.get("AGENT_COLAB_SMTP_SENDER", "agent-colab@localhost"))
-app.state.notification_provider = CompositeProvider({"mattermost": mm, "smtp": smtp,
-                                                     "work_item": NoopProvider()})
+from server.notifications.providers import (
+    CompositeProvider,
+    MattermostNotificationProvider,
+    NoopProvider,
+    SmtpNotificationProvider,
+    TelegramRelayGate,
+)
+
+mm = MattermostNotificationProvider(
+    app.state.session_factory, relay_gate=TelegramRelayGate(), clock=runtime.clock
+)
+smtp = SmtpNotificationProvider(
+    os.environ.get("AGENT_COLAB_SMTP_HOST"),
+    int(os.environ.get("AGENT_COLAB_SMTP_PORT", "587")),
+    os.environ.get("AGENT_COLAB_SMTP_SENDER", "agent-colab@localhost"),
+)
+app.state.notification_provider = CompositeProvider(
+    {"mattermost": mm, "smtp": smtp, "work_item": NoopProvider()}
+)
 app.include_router(notifications_router)  # before the MCP root mount
 ```
 

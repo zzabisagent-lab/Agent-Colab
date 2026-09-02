@@ -101,6 +101,17 @@ def _db_audit_sink(session: Session, record: AuditRecord) -> str | None:
     )
 
 
+def independent_audit_sink(session: Session, record: AuditRecord) -> str | None:
+    """Write the audit entry in its own transaction on the same bind.
+
+    A denial raises out of the caller's command transaction, which is then rolled back; the
+    audit entry must survive that rollback (spec: every denied action is audited).
+    """
+    bind = session.get_bind()
+    with Session(bind) as own, own.begin():
+        return _db_audit_sink(own, record)
+
+
 class Authorizer:
     def __init__(
         self,

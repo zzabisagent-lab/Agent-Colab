@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import argparse
 import os
-from pathlib import Path
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI
@@ -16,9 +16,11 @@ from server.api.errors import ApiError, api_error_handler
 from server.api.v1.approvals import router as approvals_router
 from server.api.v1.auth import router as auth_router
 from server.api.v1.bridges import router as bridges_router
+from server.api.v1.channel_members import router as channel_members_router
 from server.api.v1.channels import router as channels_router
 from server.api.v1.events import router as events_router
 from server.api.v1.identity import router as identity_router
+from server.api.v1.identity_admin import router as identity_admin_router
 from server.api.v1.notifications import router as notifications_router
 from server.api.v1.providers_mattermost import router as providers_mattermost_router
 from server.api.v1.providers_mattermost_actions import router as mattermost_actions_router
@@ -27,6 +29,7 @@ from server.api.v1.tasks import router as tasks_router
 from server.api.v1.verification import router as verification_router
 from server.config import PRODUCT_NAME, Settings, get_settings
 from server.db.engine import make_engine, make_session_factory
+from server.identity import mattermost_link
 from server.observability.health import router as health_router
 
 API_VERSION = "v1"
@@ -76,6 +79,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(bridges_router)
     app.include_router(mattermost_actions_router)
     app.include_router(notifications_router)
+    app.include_router(channel_members_router)
+    app.include_router(identity_admin_router)
+    mattermost_link.register()  # P2-13: `link start|confirm` slash handlers
     app.state.telegram_webhook_secret = None  # env AGENT_COLAB_TELEGRAM_WEBHOOK_SECRET by default
     app.state.gateway = None
     app.state.telegram_inbound_handler = None
@@ -110,9 +116,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         )
     dist = Path(__file__).resolve().parents[1] / "web-admin" / "dist"
     if dist.exists():  # built console (production images copy it here); dev uses Vite's proxy
-        from fastapi.staticfiles import StaticFiles
-
         from fastapi.responses import FileResponse
+        from fastapi.staticfiles import StaticFiles
 
         index = dist / "index.html"
 
