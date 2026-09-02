@@ -8,21 +8,21 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 
 | ID | Work | Size | Prereq | Status | SELF evidence |
 |---|---|---|---|---|---|
-| P3-01 | Agent Registry | M | P1-05 | NOT_STARTED | — |
-| P3-02 | Role/Capability | M | P1-03 | NOT_STARTED | — |
-| P3-03 | Adapter SDK/contract | M | P1-12 | NOT_STARTED | — |
-| P3-04 | default Adapters (MCP, REST/Webhook, Mattermost bot) | M | P3-03, P3-10, P3-11, P3-12 | NOT_STARTED | — |
-| P3-05 | conformance suite CS-01~12 | M | P3-03 | NOT_STARTED | — |
-| P3-06 | routing | M | P3-01, P3-02 | NOT_STARTED | — |
-| P3-07 | Agent Admin UI | M | P3-01 | NOT_STARTED | — |
-| P3-08 | Limits enforcement | M | P1-14, P3-01 | NOT_STARTED | — |
-| P3-09 | multi-Agent orchestration | L | P3-06 | NOT_STARTED | — |
-| P3-10 | MCP server transport | M | P1-07, P1-12, P0-11 | NOT_STARTED | — |
-| P3-11 | Webhook push delivery | M | P1-12, P0-11 | NOT_STARTED | — |
-| P3-12 | Mattermost bot adapter delivery | M | P1-12, P2-11 | NOT_STARTED | — |
-| P3-13 | Verifier assignment engine | M | P1-06, P3-06 | NOT_STARTED | — |
-| P3-14 | accept timeout/re-routing | S | P3-06, P1-12 | NOT_STARTED | — |
-| P3-15 | usage reporting conformance | S | P1-14, P3-03 | NOT_STARTED | — |
+| P3-01 | Agent Registry | M | P1-05 | IN_PROGRESS (fork) | — |
+| P3-02 | Role/Capability | M | P1-03 | IN_PROGRESS (fork) | — |
+| P3-03 | Adapter SDK/contract | M | P1-12 | IN_PROGRESS (fork) | — |
+| P3-04 | default Adapters (MCP, REST/Webhook, Mattermost bot) | M | P3-03, P3-10, P3-11, P3-12 | IN_PROGRESS (fork) | — |
+| P3-05 | conformance suite CS-01~12 | M | P3-03 | IN_PROGRESS (fork) | — |
+| P3-06 | routing | M | P3-01, P3-02 | IN_PROGRESS (fork) | — |
+| P3-07 | Agent Admin UI | M | P3-01 | IN_PROGRESS | — |
+| P3-08 | Limits enforcement | M | P1-14, P3-01 | IN_PROGRESS (fork) | — |
+| P3-09 | multi-Agent orchestration | L | P3-06 | IN_PROGRESS (fork) | — |
+| P3-10 | MCP server transport | M | P1-07, P1-12, P0-11 | IN_PROGRESS (fork) | — |
+| P3-11 | Webhook push delivery | M | P1-12, P0-11 | IN_PROGRESS (fork) | — |
+| P3-12 | Mattermost bot adapter delivery | M | P1-12, P2-11 | IN_PROGRESS (fork) | — |
+| P3-13 | Verifier assignment engine | M | P1-06, P3-06 | IN_PROGRESS (fork) | — |
+| P3-14 | accept timeout/re-routing | S | P3-06, P1-12 | IN_PROGRESS (fork) | — |
+| P3-15 | usage reporting conformance | S | P1-14, P3-03 | IN_PROGRESS (fork) | — |
 
 Phase 3 progress (size-weighted): 0 / 32
 

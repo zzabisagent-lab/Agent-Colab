@@ -1,8 +1,10 @@
 import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
+import { AgentsPage } from '../features/agents/AgentsPage'
 import { LoginPage } from '../features/auth/LoginPage'
 import { SessionProvider, useSession } from '../features/auth/session'
 import { BridgesPage } from '../features/bridges/BridgesPage'
 import { ChannelsPage } from '../features/channels/ChannelsPage'
+import { RolesPage } from '../features/roles/RolesPage'
 
 function Shell({ children }: { children: React.ReactNode }) {
   const { me, loading, logout } = useSession()
@@ -14,6 +16,8 @@ function Shell({ children }: { children: React.ReactNode }) {
       <header>
         <nav aria-label="Primary">
           <Link to="/channels">Channels</Link>
+          <Link to="/agents">Agents</Link>
+          <Link to="/roles">Roles</Link>
         </nav>
         <span>{me.account_id}</span>
         <button onClick={() => void logout()}>Sign out</button>
@@ -31,6 +35,8 @@ export function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/channels" element={<Shell><ChannelsPage /></Shell>} />
           <Route path="/channels/:channelId/bridges" element={<Shell><BridgesPage /></Shell>} />
+          <Route path="/agents" element={<Shell><AgentsPage /></Shell>} />
+          <Route path="/roles" element={<Shell><RolesPage /></Shell>} />
           <Route path="*" element={<Navigate to="/channels" replace />} />
         </Routes>
       </BrowserRouter>
