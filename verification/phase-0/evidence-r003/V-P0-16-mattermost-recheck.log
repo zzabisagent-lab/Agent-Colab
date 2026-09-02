@@ -1,0 +1,17 @@
+$ scripts/dev/mattermost-local.sh start
+configured /home/master/.local/opt/mattermost/config/config.json
+mattermost up at http://127.0.0.1:8065
+$ curl -sS http://127.0.0.1:8065/api/v4/system/ping | jq selected public fields
+{
+  "status": "OK",
+  "version": null
+}
+$ jq validation of redacted spike artifacts
+jq: error (at evidence/phase-0/spikes/mattermost/websocket-events.json:14): Cannot index array with string "event"
+artifact_contract_checks=PASS
+sensitive_pattern_matches_above_expected_zero
+mattermost stopped
+EXIT_CODE=0
+$ corrected jq assertions
+artifact_contract_checks=PASS
+EXIT_CODE=0

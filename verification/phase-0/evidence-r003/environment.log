@@ -1,0 +1,16 @@
+started_at=2026-09-02T14:13:29Z
+target_expected=f11e37666a331009c32cf86a1c2fc3792d9bd54a
+f11e37666a331009c32cf86a1c2fc3792d9bd54a
+?? evidence/phase-0/manifest.yaml
+?? verification/phase-0/evidence-r003/
+Linux ai 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Python 3.12.3
+uv 0.12.9 (x86_64-unknown-linux-gnu)
+v22.23.2
+11.25.0
+Docker version 29.1.3, build 29.1.3-0ubuntu3~24.04.2
+Docker Compose version 2.40.3+ds1-0ubuntu1~24.04.1
+psql (PostgreSQL) 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)
+63d63d386dd1a703039252506687a82f2af7be765150cb765e40929d987462ed  uv.lock
+85a6f2454ddca343d85c7a73d1bc1ed7ae7bb90588018792ffb34050b1a6f0eb  web-admin/pnpm-lock.yaml
+d212cf94a477caf9c1ba354f41443215954f49e8f10a0cdb1b98fdab4a9d372a  compose.yaml

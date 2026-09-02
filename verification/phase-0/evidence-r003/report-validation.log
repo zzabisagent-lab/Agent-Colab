@@ -1,0 +1,9 @@
+$ validate verifier report schema and mandatory test set
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+schema=PASS
+mandatory_test_ids=20_exact_order
+all_mandatory_results=PASS
+$ gitleaks dir --no-banner --redact verification/phase-0
+2:20PM INF scanned ~507846 bytes (507.85 KB) in 256ms
+2:20PM INF no leaks found
+EXIT_CODE=0
