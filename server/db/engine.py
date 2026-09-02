@@ -5,10 +5,11 @@ from __future__ import annotations
 from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
+from typing import Any
 
 from alembic import command
 from alembic.config import Config
-from sqlalchemy import Engine, create_engine
+from sqlalchemy import Engine, create_engine, event
 from sqlalchemy.orm import Session, sessionmaker
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -20,6 +21,26 @@ def normalize_url(url: str) -> str:
 
 def make_engine(url: str) -> Engine:
     return create_engine(normalize_url(url), future=True, pool_pre_ping=True)
+
+
+RUNTIME_ROLE = "agent_colab_runtime"
+ADMIN_ROLE = "agent_colab_admin"
+
+
+def make_engine_for_role(url: str, role: str) -> Engine:
+    """Engine whose connections run as the given application role (SET ROLE on connect).
+
+    The login user owns the schema and runs migrations; the application never uses it directly.
+    """
+    engine = make_engine(url)
+
+    @event.listens_for(engine, "connect")
+    def _set_role(dbapi_connection: Any, _record: Any) -> None:
+        cursor = dbapi_connection.cursor()
+        cursor.execute(f"SET ROLE {role}")
+        cursor.close()
+
+    return engine
 
 
 def make_session_factory(engine: Engine) -> sessionmaker[Session]:
