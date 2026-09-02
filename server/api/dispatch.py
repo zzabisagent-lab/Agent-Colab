@@ -116,11 +116,23 @@ def execute_command(
             extras=extras or {},
         )
         try:
-            return bus.execute(command, ctx)
+            result = bus.execute(command, ctx)
         except bus.CommandError as exc:
             raise command_error_to_api(exc) from exc
         except EventStoreError as exc:
             raise ApiError(409, exc.code, exc.detail) from exc
+        if not result.replayed and result.event_id:
+            # Renderer (P2-11): card patch + thread reply enqueued in the same transaction
+            from server.channels.task_cards import after_command
+
+            after_command(
+                session,
+                workspace_id=ctx.workspace_id,
+                actor_uuid=ctx.principal.account_uuid,
+                event_id=result.event_id,
+                now=runtime.clock.now(),
+            )
+        return result
 
 
 def dispatch(

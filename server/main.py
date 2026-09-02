@@ -12,8 +12,11 @@ from fastapi import FastAPI
 from server.api.dispatch import default_runtime
 from server.api.errors import ApiError, api_error_handler
 from server.api.v1.approvals import router as approvals_router
+from server.api.v1.channels import router as channels_router
 from server.api.v1.events import router as events_router
 from server.api.v1.identity import router as identity_router
+from server.api.v1.providers_mattermost import router as providers_mattermost_router
+from server.api.v1.providers_telegram import router as providers_telegram_router
 from server.api.v1.tasks import router as tasks_router
 from server.api.v1.verification import router as verification_router
 from server.config import PRODUCT_NAME, Settings, get_settings
@@ -53,6 +56,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(events_router)
     app.include_router(tasks_router)
     app.include_router(approvals_router)
+    app.include_router(providers_telegram_router)
+    app.include_router(providers_mattermost_router)
+    app.include_router(channels_router)
+    app.state.telegram_inbound_handler = None  # set by the Bridge (P2-05)
+    app.state.telegram_webhook_secret = None  # env AGENT_COLAB_TELEGRAM_WEBHOOK_SECRET by default
     app.state.mcp = None
     if app.state.runtime is not None:
         from server.agents.mcp_server import build_mcp_server
