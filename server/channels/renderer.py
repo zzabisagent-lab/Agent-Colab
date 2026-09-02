@@ -87,9 +87,15 @@ EN_DEFAULTS: dict[str, str] = {
     "renderer.transition.cancelled": "Cancelled: {reason_code}",
     "renderer.transition.submitted": "Implementation submitted (criteria rev. {criteria_revision})",
     "renderer.transition.verifying": "Verification started: {verification_id}",
-    "renderer.transition.verification_passed": "Verification PASSED ({verification_id} r{revision})",
-    "renderer.transition.verification_failed": "Verification FAILED ({verification_id} r{revision})",
-    "renderer.transition.verification_blocked": "Verification BLOCKED ({verification_id} r{revision})",
+    "renderer.transition.verification_passed": (
+        "Verification PASSED ({verification_id} r{revision})"
+    ),
+    "renderer.transition.verification_failed": (
+        "Verification FAILED ({verification_id} r{revision})"
+    ),
+    "renderer.transition.verification_blocked": (
+        "Verification BLOCKED ({verification_id} r{revision})"
+    ),
     "renderer.transition.completed": "Completed. Document: {document_id}",
     "renderer.transition.approval_requested": "Approval requested: {action} ({risk}) {approval_id}",
     "renderer.transition.approval_granted": "Approval granted: {approval_id}",
