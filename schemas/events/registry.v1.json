@@ -1,0 +1,939 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/registry.v1.json",
+  "title": "Agent-Colab Event registry v1",
+  "version": 1,
+  "aggregates": {
+    "workspace": {
+      "id_prefix": "ws-",
+      "states": [
+        "ACTIVE",
+        "SUSPENDED"
+      ]
+    },
+    "account": {
+      "id_prefix": "acct-",
+      "states": [
+        "ACTIVE",
+        "SUSPENDED",
+        "DELETED"
+      ]
+    },
+    "agent": {
+      "id_prefix": "agent-",
+      "states": [
+        "pending",
+        "active",
+        "suspended",
+        "revoked",
+        "offline"
+      ]
+    },
+    "role": {
+      "id_prefix": "role-",
+      "states": [
+        "active",
+        "retired"
+      ]
+    },
+    "external_identity_link": {
+      "id_prefix": "link-",
+      "states": [
+        "pending",
+        "pending_admin",
+        "active",
+        "suspended",
+        "revoked"
+      ]
+    },
+    "channel": {
+      "id_prefix": "chan-",
+      "states": [
+        "active",
+        "archived",
+        "deleted"
+      ]
+    },
+    "bridge": {
+      "id_prefix": "bridge-",
+      "states": [
+        "enabled",
+        "disabled"
+      ]
+    },
+    "task": {
+      "id_prefix": "task-",
+      "states": [
+        "OPEN",
+        "DELEGATED",
+        "ACCEPTED",
+        "RUNNING",
+        "WAITING",
+        "IMPLEMENTED",
+        "VERIFYING",
+        "VERIFIED",
+        "COMPLETED",
+        "CANCEL_REQUESTED",
+        "CANCELLED"
+      ]
+    },
+    "approval": {
+      "id_prefix": "apr-",
+      "states": [
+        "REQUESTED",
+        "PENDING",
+        "APPROVED",
+        "PARTIALLY_CONSUMED",
+        "CONSUMED",
+        "REJECTED",
+        "CANCELLED",
+        "EXPIRED",
+        "REVOKED"
+      ]
+    },
+    "artifact": {
+      "id_prefix": "art-",
+      "states": [
+        "registered",
+        "verified",
+        "quarantined",
+        "archived"
+      ]
+    },
+    "document": {
+      "id_prefix": "doc-",
+      "states": [
+        "DRAFT_PRE_VERIFICATION",
+        "ATTEMPT_FINALIZED",
+        "FINALIZED",
+        "REVIEWED",
+        "PUBLISHED"
+      ]
+    },
+    "verification_run": {
+      "id_prefix": "vr-",
+      "states": [
+        "PLANNED",
+        "ASSIGNED",
+        "RUNNING",
+        "PASSED",
+        "FAILED",
+        "BLOCKED",
+        "CANCELLED"
+      ]
+    },
+    "work_item": {
+      "id_prefix": "wi-",
+      "states": [
+        "QUEUED",
+        "DELIVERED",
+        "ACKED",
+        "IN_PROGRESS",
+        "RESULT_RECEIVED",
+        "REJECTED",
+        "EXPIRED",
+        "CANCELLED"
+      ]
+    },
+    "budget": {
+      "id_prefix": "bud-",
+      "states": [
+        "reserved",
+        "settled",
+        "exceeded"
+      ]
+    },
+    "brainstorm": {
+      "id_prefix": "bs-",
+      "states": [
+        "OPEN",
+        "PAUSED",
+        "SUMMARY",
+        "DECISION",
+        "CLOSED"
+      ]
+    },
+    "decision": {
+      "id_prefix": "dec-",
+      "states": [
+        "recorded",
+        "taskified",
+        "superseded"
+      ]
+    },
+    "secret": {
+      "id_prefix": "sec-",
+      "states": [
+        "registered",
+        "rotated",
+        "retired"
+      ]
+    },
+    "secret_grant": {
+      "id_prefix": "grant-",
+      "states": [
+        "active",
+        "expired",
+        "revoked"
+      ]
+    },
+    "schedule": {
+      "id_prefix": "sch-",
+      "states": [
+        "DRAFT",
+        "ENABLED",
+        "PAUSED",
+        "DISABLED"
+      ]
+    },
+    "schedule_run": {
+      "id_prefix": "run-",
+      "states": [
+        "PENDING",
+        "DUE",
+        "CLAIMED",
+        "TASK_CREATED",
+        "RUNNING",
+        "VERIFYING",
+        "SUCCEEDED",
+        "FAILED",
+        "SKIPPED",
+        "TIMED_OUT",
+        "CANCEL_REQUESTED",
+        "CANCELLED"
+      ]
+    },
+    "setting": {
+      "id_prefix": "set-",
+      "states": [
+        "active"
+      ]
+    },
+    "break_glass": {
+      "id_prefix": "bg-",
+      "states": [
+        "active",
+        "ended"
+      ]
+    },
+    "hard_delete": {
+      "id_prefix": "hd-",
+      "states": [
+        "requested",
+        "approved",
+        "executed",
+        "rejected"
+      ]
+    },
+    "notification": {
+      "id_prefix": "ntf-",
+      "states": [
+        "sent"
+      ]
+    }
+  },
+  "authority": {
+    "approval_consumption": "approval_grants + approval_consumptions ledger (row lock in the append transaction)",
+    "run_uniqueness": "schedule_runs UNIQUE(schedule_id, occurrence_key) + idempotency_key",
+    "task_graph": "task_edges (append-only) + trigger cycle check",
+    "assignments": "task_assignments append-only revisions",
+    "permissions": "policy engine over committed RoleVersions; never tasks_projection/approvals_projection",
+    "verification_independence": "verification_runs CHECK constraints + application alias/credential check",
+    "idempotency": "events UNIQUE(workspace_id, actor_account_id, idempotency_scope, idempotency_key)"
+  },
+  "events": {
+    "AGENT_REGISTERED": {
+      "aggregate_type": "agent",
+      "phase": 3,
+      "schema_version": 1,
+      "payload_schema": "types/AGENT_REGISTERED.v1.schema.json",
+      "extension": false
+    },
+    "AGENT_UPDATED": {
+      "aggregate_type": "agent",
+      "phase": 3,
+      "schema_version": 1,
+      "payload_schema": "types/AGENT_UPDATED.v1.schema.json",
+      "extension": false
+    },
+    "AGENT_ACTIVATED": {
+      "aggregate_type": "agent",
+      "phase": 3,
+      "schema_version": 1,
+      "payload_schema": "types/AGENT_ACTIVATED.v1.schema.json",
+      "extension": false
+    },
+    "AGENT_SUSPENDED": {
+      "aggregate_type": "agent",
+      "phase": 3,
+      "schema_version": 1,
+      "payload_schema": "types/AGENT_SUSPENDED.v1.schema.json",
+      "extension": false
+    },
+    "AGENT_REVOKED": {
+      "aggregate_type": "agent",
+      "phase": 3,
+      "schema_version": 1,
+      "payload_schema": "types/AGENT_REVOKED.v1.schema.json",
+      "extension": false
+    },
+    "AGENT_HEARTBEAT_RECORDED": {
+      "aggregate_type": "agent",
+      "phase": 3,
+      "schema_version": 1,
+      "payload_schema": "types/AGENT_HEARTBEAT_RECORDED.v1.schema.json",
+      "extension": false
+    },
+    "AGENT_MARKED_OFFLINE": {
+      "aggregate_type": "agent",
+      "phase": 3,
+      "schema_version": 1,
+      "payload_schema": "types/AGENT_MARKED_OFFLINE.v1.schema.json",
+      "extension": false
+    },
+    "PRINCIPAL_ROLE_ASSIGNED": {
+      "aggregate_type": "account",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/PRINCIPAL_ROLE_ASSIGNED.v1.schema.json",
+      "extension": false
+    },
+    "PRINCIPAL_ROLE_REVOKED": {
+      "aggregate_type": "account",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/PRINCIPAL_ROLE_REVOKED.v1.schema.json",
+      "extension": false
+    },
+    "ACCOUNT_SUSPENDED": {
+      "aggregate_type": "account",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/ACCOUNT_SUSPENDED.v1.schema.json",
+      "extension": false
+    },
+    "SETTING_CHANGED": {
+      "aggregate_type": "setting",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/SETTING_CHANGED.v1.schema.json",
+      "extension": false
+    },
+    "BREAK_GLASS_STARTED": {
+      "aggregate_type": "break_glass",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/BREAK_GLASS_STARTED.v1.schema.json",
+      "extension": false
+    },
+    "BREAK_GLASS_ENDED": {
+      "aggregate_type": "break_glass",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/BREAK_GLASS_ENDED.v1.schema.json",
+      "extension": false
+    },
+    "HARD_DELETE_REQUESTED": {
+      "aggregate_type": "hard_delete",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/HARD_DELETE_REQUESTED.v1.schema.json",
+      "extension": false
+    },
+    "HARD_DELETE_APPROVED": {
+      "aggregate_type": "hard_delete",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/HARD_DELETE_APPROVED.v1.schema.json",
+      "extension": false
+    },
+    "HARD_DELETE_EXECUTED": {
+      "aggregate_type": "hard_delete",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/HARD_DELETE_EXECUTED.v1.schema.json",
+      "extension": false
+    },
+    "CHANNEL_CONFIGURED": {
+      "aggregate_type": "channel",
+      "phase": 2,
+      "schema_version": 1,
+      "payload_schema": "types/CHANNEL_CONFIGURED.v1.schema.json",
+      "extension": false
+    },
+    "CHANNEL_ARCHIVED": {
+      "aggregate_type": "channel",
+      "phase": 2,
+      "schema_version": 1,
+      "payload_schema": "types/CHANNEL_ARCHIVED.v1.schema.json",
+      "extension": false
+    },
+    "TELEGRAM_BRIDGE_ENABLED": {
+      "aggregate_type": "bridge",
+      "phase": 2,
+      "schema_version": 1,
+      "payload_schema": "types/TELEGRAM_BRIDGE_ENABLED.v1.schema.json",
+      "extension": false
+    },
+    "TELEGRAM_BRIDGE_DISABLED": {
+      "aggregate_type": "bridge",
+      "phase": 2,
+      "schema_version": 1,
+      "payload_schema": "types/TELEGRAM_BRIDGE_DISABLED.v1.schema.json",
+      "extension": false
+    },
+    "BRIDGE_DELIVERY_FAILED": {
+      "aggregate_type": "bridge",
+      "phase": 2,
+      "schema_version": 1,
+      "payload_schema": "types/BRIDGE_DELIVERY_FAILED.v1.schema.json",
+      "extension": false
+    },
+    "TASK_CREATED": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/TASK_CREATED.v1.schema.json",
+      "extension": false
+    },
+    "SUBTASK_CREATED": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/SUBTASK_CREATED.v1.schema.json",
+      "extension": false
+    },
+    "TASK_DELEGATED": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/TASK_DELEGATED.v1.schema.json",
+      "extension": false
+    },
+    "TASK_REASSIGNED": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/TASK_REASSIGNED.v1.schema.json",
+      "extension": false
+    },
+    "TASK_ACCEPTED": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/TASK_ACCEPTED.v1.schema.json",
+      "extension": false
+    },
+    "TASK_STARTED": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/TASK_STARTED.v1.schema.json",
+      "extension": false
+    },
+    "TASK_WAITING": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/TASK_WAITING.v1.schema.json",
+      "extension": false
+    },
+    "TASK_PROGRESS_REPORTED": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/TASK_PROGRESS_REPORTED.v1.schema.json",
+      "extension": false
+    },
+    "TASK_JOIN_SATISFIED": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/TASK_JOIN_SATISFIED.v1.schema.json",
+      "extension": false
+    },
+    "TASK_CANCEL_REQUESTED": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/TASK_CANCEL_REQUESTED.v1.schema.json",
+      "extension": false
+    },
+    "TASK_CANCELLED": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/TASK_CANCELLED.v1.schema.json",
+      "extension": false
+    },
+    "IMPLEMENTATION_SUBMITTED": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/IMPLEMENTATION_SUBMITTED.v1.schema.json",
+      "extension": false
+    },
+    "TASK_COMPLETED": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/TASK_COMPLETED.v1.schema.json",
+      "extension": false
+    },
+    "APPROVAL_REQUESTED": {
+      "aggregate_type": "approval",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/APPROVAL_REQUESTED.v1.schema.json",
+      "extension": false
+    },
+    "APPROVAL_GRANTED": {
+      "aggregate_type": "approval",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/APPROVAL_GRANTED.v1.schema.json",
+      "extension": false
+    },
+    "APPROVAL_REJECTED": {
+      "aggregate_type": "approval",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/APPROVAL_REJECTED.v1.schema.json",
+      "extension": false
+    },
+    "APPROVAL_CANCELLED": {
+      "aggregate_type": "approval",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/APPROVAL_CANCELLED.v1.schema.json",
+      "extension": false
+    },
+    "APPROVAL_EXPIRED": {
+      "aggregate_type": "approval",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/APPROVAL_EXPIRED.v1.schema.json",
+      "extension": false
+    },
+    "APPROVAL_ESCALATED": {
+      "aggregate_type": "approval",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/APPROVAL_ESCALATED.v1.schema.json",
+      "extension": false
+    },
+    "APPROVAL_REVOKED": {
+      "aggregate_type": "approval",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/APPROVAL_REVOKED.v1.schema.json",
+      "extension": false
+    },
+    "APPROVAL_CONSUMED": {
+      "aggregate_type": "approval",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/APPROVAL_CONSUMED.v1.schema.json",
+      "extension": false
+    },
+    "BRAINSTORM_OPENED": {
+      "aggregate_type": "brainstorm",
+      "phase": 6,
+      "schema_version": 1,
+      "payload_schema": "types/BRAINSTORM_OPENED.v1.schema.json",
+      "extension": false
+    },
+    "IDEA_RECORDED": {
+      "aggregate_type": "brainstorm",
+      "phase": 6,
+      "schema_version": 1,
+      "payload_schema": "types/IDEA_RECORDED.v1.schema.json",
+      "extension": false
+    },
+    "BRAINSTORM_PAUSED": {
+      "aggregate_type": "brainstorm",
+      "phase": 6,
+      "schema_version": 1,
+      "payload_schema": "types/BRAINSTORM_PAUSED.v1.schema.json",
+      "extension": false
+    },
+    "BRAINSTORM_RESUMED": {
+      "aggregate_type": "brainstorm",
+      "phase": 6,
+      "schema_version": 1,
+      "payload_schema": "types/BRAINSTORM_RESUMED.v1.schema.json",
+      "extension": false
+    },
+    "SUMMARY_RECORDED": {
+      "aggregate_type": "brainstorm",
+      "phase": 6,
+      "schema_version": 1,
+      "payload_schema": "types/SUMMARY_RECORDED.v1.schema.json",
+      "extension": false
+    },
+    "DECISION_RECORDED": {
+      "aggregate_type": "decision",
+      "phase": 6,
+      "schema_version": 1,
+      "payload_schema": "types/DECISION_RECORDED.v1.schema.json",
+      "extension": false
+    },
+    "BRAINSTORM_CLOSED": {
+      "aggregate_type": "brainstorm",
+      "phase": 6,
+      "schema_version": 1,
+      "payload_schema": "types/BRAINSTORM_CLOSED.v1.schema.json",
+      "extension": false
+    },
+    "WORK_ITEM_QUEUED": {
+      "aggregate_type": "work_item",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/WORK_ITEM_QUEUED.v1.schema.json",
+      "extension": false
+    },
+    "WORK_ITEM_DELIVERED": {
+      "aggregate_type": "work_item",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/WORK_ITEM_DELIVERED.v1.schema.json",
+      "extension": false
+    },
+    "WORK_ITEM_ACKED": {
+      "aggregate_type": "work_item",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/WORK_ITEM_ACKED.v1.schema.json",
+      "extension": false
+    },
+    "WORK_ITEM_RESULT_RECEIVED": {
+      "aggregate_type": "work_item",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/WORK_ITEM_RESULT_RECEIVED.v1.schema.json",
+      "extension": false
+    },
+    "WORK_ITEM_EXPIRED": {
+      "aggregate_type": "work_item",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/WORK_ITEM_EXPIRED.v1.schema.json",
+      "extension": false
+    },
+    "BUDGET_RESERVED": {
+      "aggregate_type": "budget",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/BUDGET_RESERVED.v1.schema.json",
+      "extension": false
+    },
+    "BUDGET_EXCEEDED": {
+      "aggregate_type": "budget",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/BUDGET_EXCEEDED.v1.schema.json",
+      "extension": false
+    },
+    "IDENTITY_LINK_CHALLENGED": {
+      "aggregate_type": "external_identity_link",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/IDENTITY_LINK_CHALLENGED.v1.schema.json",
+      "extension": false
+    },
+    "IDENTITY_LINK_VERIFIED": {
+      "aggregate_type": "external_identity_link",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/IDENTITY_LINK_VERIFIED.v1.schema.json",
+      "extension": false
+    },
+    "NOTIFICATION_SENT": {
+      "aggregate_type": "notification",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/NOTIFICATION_SENT.v1.schema.json",
+      "extension": false
+    },
+    "ARTIFACT_REGISTERED": {
+      "aggregate_type": "artifact",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/ARTIFACT_REGISTERED.v1.schema.json",
+      "extension": false
+    },
+    "ARTIFACT_VERIFIED": {
+      "aggregate_type": "artifact",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/ARTIFACT_VERIFIED.v1.schema.json",
+      "extension": false
+    },
+    "ARTIFACT_QUARANTINED": {
+      "aggregate_type": "artifact",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/ARTIFACT_QUARANTINED.v1.schema.json",
+      "extension": false
+    },
+    "VERIFIER_ASSIGNED": {
+      "aggregate_type": "verification_run",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/VERIFIER_ASSIGNED.v1.schema.json",
+      "extension": false
+    },
+    "VERIFICATION_PASSED": {
+      "aggregate_type": "verification_run",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/VERIFICATION_PASSED.v1.schema.json",
+      "extension": false
+    },
+    "VERIFICATION_FAILED": {
+      "aggregate_type": "verification_run",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/VERIFICATION_FAILED.v1.schema.json",
+      "extension": false
+    },
+    "VERIFICATION_BLOCKED": {
+      "aggregate_type": "verification_run",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/VERIFICATION_BLOCKED.v1.schema.json",
+      "extension": false
+    },
+    "SECRET_REGISTERED": {
+      "aggregate_type": "secret",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/SECRET_REGISTERED.v1.schema.json",
+      "extension": false
+    },
+    "SECRET_GRANT_CREATED": {
+      "aggregate_type": "secret_grant",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/SECRET_GRANT_CREATED.v1.schema.json",
+      "extension": false
+    },
+    "SECRET_ACCESSED": {
+      "aggregate_type": "secret_grant",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/SECRET_ACCESSED.v1.schema.json",
+      "extension": false
+    },
+    "SECRET_GRANT_REVOKED": {
+      "aggregate_type": "secret_grant",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/SECRET_GRANT_REVOKED.v1.schema.json",
+      "extension": false
+    },
+    "DOCUMENT_DRAFTED": {
+      "aggregate_type": "document",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/DOCUMENT_DRAFTED.v1.schema.json",
+      "extension": false
+    },
+    "DOCUMENT_FINALIZED": {
+      "aggregate_type": "document",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/DOCUMENT_FINALIZED.v1.schema.json",
+      "extension": false
+    },
+    "DOCUMENT_REVIEWED": {
+      "aggregate_type": "document",
+      "phase": 6,
+      "schema_version": 1,
+      "payload_schema": "types/DOCUMENT_REVIEWED.v1.schema.json",
+      "extension": false
+    },
+    "DOCUMENT_PUBLISHED": {
+      "aggregate_type": "document",
+      "phase": 6,
+      "schema_version": 1,
+      "payload_schema": "types/DOCUMENT_PUBLISHED.v1.schema.json",
+      "extension": false
+    },
+    "SCHEDULE_CREATED": {
+      "aggregate_type": "schedule",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/SCHEDULE_CREATED.v1.schema.json",
+      "extension": false
+    },
+    "SCHEDULE_UPDATED": {
+      "aggregate_type": "schedule",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/SCHEDULE_UPDATED.v1.schema.json",
+      "extension": false
+    },
+    "SCHEDULE_ENABLED": {
+      "aggregate_type": "schedule",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/SCHEDULE_ENABLED.v1.schema.json",
+      "extension": false
+    },
+    "SCHEDULE_PAUSED": {
+      "aggregate_type": "schedule",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/SCHEDULE_PAUSED.v1.schema.json",
+      "extension": false
+    },
+    "SCHEDULE_RESUMED": {
+      "aggregate_type": "schedule",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/SCHEDULE_RESUMED.v1.schema.json",
+      "extension": false
+    },
+    "SCHEDULE_DISABLED": {
+      "aggregate_type": "schedule",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/SCHEDULE_DISABLED.v1.schema.json",
+      "extension": false
+    },
+    "RUN_DUE": {
+      "aggregate_type": "schedule_run",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/RUN_DUE.v1.schema.json",
+      "extension": false
+    },
+    "RUN_CLAIMED": {
+      "aggregate_type": "schedule_run",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/RUN_CLAIMED.v1.schema.json",
+      "extension": false
+    },
+    "RUN_STARTED": {
+      "aggregate_type": "schedule_run",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/RUN_STARTED.v1.schema.json",
+      "extension": false
+    },
+    "RUN_CANCEL_REQUESTED": {
+      "aggregate_type": "schedule_run",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/RUN_CANCEL_REQUESTED.v1.schema.json",
+      "extension": false
+    },
+    "RUN_CANCELLED": {
+      "aggregate_type": "schedule_run",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/RUN_CANCELLED.v1.schema.json",
+      "extension": false
+    },
+    "RUN_SUCCEEDED": {
+      "aggregate_type": "schedule_run",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/RUN_SUCCEEDED.v1.schema.json",
+      "extension": false
+    },
+    "RUN_FAILED": {
+      "aggregate_type": "schedule_run",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/RUN_FAILED.v1.schema.json",
+      "extension": false
+    },
+    "RUN_SKIPPED": {
+      "aggregate_type": "schedule_run",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/RUN_SKIPPED.v1.schema.json",
+      "extension": false
+    },
+    "RUN_TIMED_OUT": {
+      "aggregate_type": "schedule_run",
+      "phase": 5,
+      "schema_version": 1,
+      "payload_schema": "types/RUN_TIMED_OUT.v1.schema.json",
+      "extension": false
+    },
+    "WORKSPACE_CREATED": {
+      "aggregate_type": "workspace",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/WORKSPACE_CREATED.v1.schema.json",
+      "extension": true
+    },
+    "ACCOUNT_CREATED": {
+      "aggregate_type": "account",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/ACCOUNT_CREATED.v1.schema.json",
+      "extension": true
+    },
+    "ROLE_VERSION_CREATED": {
+      "aggregate_type": "role",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/ROLE_VERSION_CREATED.v1.schema.json",
+      "extension": true
+    },
+    "IDENTITY_LINK_SUSPENDED": {
+      "aggregate_type": "external_identity_link",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/IDENTITY_LINK_SUSPENDED.v1.schema.json",
+      "extension": true
+    },
+    "IDENTITY_LINK_REVOKED": {
+      "aggregate_type": "external_identity_link",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/IDENTITY_LINK_REVOKED.v1.schema.json",
+      "extension": true
+    },
+    "WORK_ITEM_STARTED": {
+      "aggregate_type": "work_item",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/WORK_ITEM_STARTED.v1.schema.json",
+      "extension": true
+    },
+    "WORK_ITEM_REJECTED": {
+      "aggregate_type": "work_item",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/WORK_ITEM_REJECTED.v1.schema.json",
+      "extension": true
+    },
+    "WORK_ITEM_CANCELLED": {
+      "aggregate_type": "work_item",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/WORK_ITEM_CANCELLED.v1.schema.json",
+      "extension": true
+    },
+    "DOCUMENT_ATTEMPT_FINALIZED": {
+      "aggregate_type": "document",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/DOCUMENT_ATTEMPT_FINALIZED.v1.schema.json",
+      "extension": true
+    },
+    "TASK_VERIFICATION_STARTED": {
+      "aggregate_type": "task",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/TASK_VERIFICATION_STARTED.v1.schema.json",
+      "extension": true
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/TASK_ACCEPTED.v1.schema.json",
+  "title": "TASK_ACCEPTED payload v1",
+  "description": "Non-sensitive payload of TASK_ACCEPTED (task aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assignee_account_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "task_id",
+    "assignee_account_id"
+  ],
+  "additionalProperties": true
+}

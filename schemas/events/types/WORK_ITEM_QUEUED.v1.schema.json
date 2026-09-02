@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/WORK_ITEM_QUEUED.v1.schema.json",
+  "title": "WORK_ITEM_QUEUED payload v1",
+  "description": "Non-sensitive payload of WORK_ITEM_QUEUED (work_item aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "work_item_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "agent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deadline": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    }
+  },
+  "required": [
+    "work_item_id",
+    "kind",
+    "agent_id",
+    "deadline"
+  ],
+  "additionalProperties": true
+}

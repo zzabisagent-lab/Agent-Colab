@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/IDENTITY_LINK_SUSPENDED.v1.schema.json",
+  "title": "IDENTITY_LINK_SUSPENDED payload v1",
+  "description": "Non-sensitive payload of IDENTITY_LINK_SUSPENDED (external_identity_link aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "link_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "link_id",
+    "reason_code"
+  ],
+  "additionalProperties": true,
+  "x-extension": "development plan §6.5 suspend/revoke blocks commands"
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/TASK_REASSIGNED.v1.schema.json",
+  "title": "TASK_REASSIGNED payload v1",
+  "description": "Non-sensitive payload of TASK_REASSIGNED (task aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assignee_account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assignment_revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "task_id",
+    "assignee_account_id",
+    "assignment_revision",
+    "reason_code"
+  ],
+  "additionalProperties": true
+}

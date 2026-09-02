@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/BRAINSTORM_OPENED.v1.schema.json",
+  "title": "BRAINSTORM_OPENED payload v1",
+  "description": "Non-sensitive payload of BRAINSTORM_OPENED (brainstorm aggregate, Phase 6). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "brainstorm_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "channel_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "topic": {
+      "type": "string",
+      "minLength": 1
+    },
+    "facilitator_account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "limits": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "brainstorm_id",
+    "channel_id",
+    "topic",
+    "facilitator_account_id",
+    "limits"
+  ],
+  "additionalProperties": true
+}

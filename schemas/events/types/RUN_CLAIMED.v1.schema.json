@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/RUN_CLAIMED.v1.schema.json",
+  "title": "RUN_CLAIMED payload v1",
+  "description": "Non-sensitive payload of RUN_CLAIMED (schedule_run aggregate, Phase 5). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claimed_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lease_expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    }
+  },
+  "required": [
+    "run_id",
+    "claimed_by",
+    "lease_expires_at"
+  ],
+  "additionalProperties": true
+}

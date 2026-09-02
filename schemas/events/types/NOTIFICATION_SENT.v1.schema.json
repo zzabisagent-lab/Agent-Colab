@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/NOTIFICATION_SENT.v1.schema.json",
+  "title": "NOTIFICATION_SENT payload v1",
+  "description": "Non-sensitive payload of NOTIFICATION_SENT (notification aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "notification_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recipient_account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "channel": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "notification_id",
+    "rule_id",
+    "recipient_account_id",
+    "channel"
+  ],
+  "additionalProperties": true
+}

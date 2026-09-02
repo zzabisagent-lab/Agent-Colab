@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/RUN_DUE.v1.schema.json",
+  "title": "RUN_DUE payload v1",
+  "description": "Non-sensitive payload of RUN_DUE (schedule_run aggregate, Phase 5). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schedule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schedule_version_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_kind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scheduled_for": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    }
+  },
+  "required": [
+    "run_id",
+    "schedule_id",
+    "schedule_version_id",
+    "run_kind",
+    "scheduled_for"
+  ],
+  "additionalProperties": true
+}

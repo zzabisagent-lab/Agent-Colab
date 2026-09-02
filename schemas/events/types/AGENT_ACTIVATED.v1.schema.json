@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/AGENT_ACTIVATED.v1.schema.json",
+  "title": "AGENT_ACTIVATED payload v1",
+  "description": "Non-sensitive payload of AGENT_ACTIVATED (agent aggregate, Phase 3). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "agent_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "agent_id"
+  ],
+  "additionalProperties": true
+}

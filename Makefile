@@ -37,6 +37,9 @@ check-docs:
 	$(UV) run python -m tools.phase_dag_lint
 	$(UV) run python -m tools.plan_baseline_lint
 	$(UV) run python -m tools.policy_lint
+	$(UV) run python -m tools.threat_model_lint
+	$(UV) run python -m tools.gen_event_schemas --check
+	$(UV) run python -m tools.gen_event_fixtures --check
 
 secret-scan:
 	gitleaks git --no-banner --redact . || (echo "gitleaks not installed or findings present" && exit 1)

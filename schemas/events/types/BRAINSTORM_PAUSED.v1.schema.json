@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/BRAINSTORM_PAUSED.v1.schema.json",
+  "title": "BRAINSTORM_PAUSED payload v1",
+  "description": "Non-sensitive payload of BRAINSTORM_PAUSED (brainstorm aggregate, Phase 6). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "brainstorm_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "brainstorm_id",
+    "reason_code"
+  ],
+  "additionalProperties": true
+}

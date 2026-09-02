@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/HARD_DELETE_APPROVED.v1.schema.json",
+  "title": "HARD_DELETE_APPROVED payload v1",
+  "description": "Non-sensitive payload of HARD_DELETE_APPROVED (hard_delete aggregate, Phase 4). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approved_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "executable_after": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    }
+  },
+  "required": [
+    "request_id",
+    "approved_by",
+    "executable_after"
+  ],
+  "additionalProperties": true
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/WORK_ITEM_STARTED.v1.schema.json",
+  "title": "WORK_ITEM_STARTED payload v1",
+  "description": "Non-sensitive payload of WORK_ITEM_STARTED (work_item aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "work_item_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "work_item_id"
+  ],
+  "additionalProperties": true,
+  "x-extension": "development plan §7B.1 IN_PROGRESS state"
+}

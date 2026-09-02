@@ -1,0 +1,153 @@
+# Agent-Colab Event catalog v1 (spec §9.3, development plan §6.1–6.3). Authority for event types,
+# their aggregate, the phase that implements them, and the minimum non-sensitive payload.
+# `python -m tools.gen_event_schemas` generates schemas/events/types/*.schema.json and
+# schemas/events/registry.v1.json from this file; CI fails on drift. Additive changes only; a
+# breaking change is a new major version (docs/protocol/event-contract.md).
+version: 1
+aggregates:
+  workspace:      {id_prefix: "ws-",    states: [ACTIVE, SUSPENDED]}
+  account:        {id_prefix: "acct-",  states: [ACTIVE, SUSPENDED, DELETED]}
+  agent:          {id_prefix: "agent-", states: [pending, active, suspended, revoked, offline]}
+  role:           {id_prefix: "role-",  states: [active, retired]}
+  external_identity_link: {id_prefix: "link-", states: [pending, pending_admin, active, suspended, revoked]}
+  channel:        {id_prefix: "chan-",  states: [active, archived, deleted]}
+  bridge:         {id_prefix: "bridge-", states: [enabled, disabled]}
+  task:           {id_prefix: "task-",  states: [OPEN, DELEGATED, ACCEPTED, RUNNING, WAITING, IMPLEMENTED, VERIFYING, VERIFIED, COMPLETED, CANCEL_REQUESTED, CANCELLED]}
+  approval:       {id_prefix: "apr-",   states: [REQUESTED, PENDING, APPROVED, PARTIALLY_CONSUMED, CONSUMED, REJECTED, CANCELLED, EXPIRED, REVOKED]}
+  artifact:       {id_prefix: "art-",   states: [registered, verified, quarantined, archived]}
+  document:       {id_prefix: "doc-",   states: [DRAFT_PRE_VERIFICATION, ATTEMPT_FINALIZED, FINALIZED, REVIEWED, PUBLISHED]}
+  verification_run: {id_prefix: "vr-", states: [PLANNED, ASSIGNED, RUNNING, PASSED, FAILED, BLOCKED, CANCELLED]}
+  work_item:      {id_prefix: "wi-",    states: [QUEUED, DELIVERED, ACKED, IN_PROGRESS, RESULT_RECEIVED, REJECTED, EXPIRED, CANCELLED]}
+  budget:         {id_prefix: "bud-",   states: [reserved, settled, exceeded]}
+  brainstorm:     {id_prefix: "bs-",    states: [OPEN, PAUSED, SUMMARY, DECISION, CLOSED]}
+  decision:       {id_prefix: "dec-",   states: [recorded, taskified, superseded]}
+  secret:         {id_prefix: "sec-",   states: [registered, rotated, retired]}
+  secret_grant:   {id_prefix: "grant-", states: [active, expired, revoked]}
+  schedule:       {id_prefix: "sch-",   states: [DRAFT, ENABLED, PAUSED, DISABLED]}
+  schedule_run:   {id_prefix: "run-",   states: [PENDING, DUE, CLAIMED, TASK_CREATED, RUNNING, VERIFYING, SUCCEEDED, FAILED, SKIPPED, TIMED_OUT, CANCEL_REQUESTED, CANCELLED]}
+  setting:        {id_prefix: "set-",   states: [active]}
+  break_glass:    {id_prefix: "bg-",    states: [active, ended]}
+  hard_delete:    {id_prefix: "hd-",    states: [requested, approved, executed, rejected]}
+  notification:   {id_prefix: "ntf-",  states: [sent]}
+# authority declarations (V-P0-13): decisions that must never be taken from a projection
+authority:
+  approval_consumption: approval_grants + approval_consumptions ledger (row lock in the append transaction)
+  run_uniqueness: schedule_runs UNIQUE(schedule_id, occurrence_key) + idempotency_key
+  task_graph: task_edges (append-only) + trigger cycle check
+  assignments: task_assignments append-only revisions
+  permissions: policy engine over committed RoleVersions; never tasks_projection/approvals_projection
+  verification_independence: verification_runs CHECK constraints + application alias/credential check
+  idempotency: events UNIQUE(workspace_id, actor_account_id, idempotency_scope, idempotency_key)
+events:
+  # Agent/Admin
+  AGENT_REGISTERED:        {aggregate: agent, phase: 3, required: [agent_id, account_id, adapter_type, display_name]}
+  AGENT_UPDATED:           {aggregate: agent, phase: 3, required: [agent_id, changed_fields]}
+  AGENT_ACTIVATED:         {aggregate: agent, phase: 3, required: [agent_id]}
+  AGENT_SUSPENDED:         {aggregate: agent, phase: 3, required: [agent_id, reason_code]}
+  AGENT_REVOKED:           {aggregate: agent, phase: 3, required: [agent_id, reason_code]}
+  AGENT_HEARTBEAT_RECORDED: {aggregate: agent, phase: 3, required: [agent_id, capacity]}
+  AGENT_MARKED_OFFLINE:    {aggregate: agent, phase: 3, required: [agent_id, missed_heartbeats]}
+  PRINCIPAL_ROLE_ASSIGNED: {aggregate: account, phase: 1, required: [account_id, role_id, role_version, scope]}
+  PRINCIPAL_ROLE_REVOKED:  {aggregate: account, phase: 1, required: [account_id, role_id, reason_code]}
+  ACCOUNT_SUSPENDED:       {aggregate: account, phase: 1, required: [account_id, reason_code]}
+  SETTING_CHANGED:         {aggregate: setting, phase: 4, required: [setting_key, version, secret]}
+  BREAK_GLASS_STARTED:     {aggregate: break_glass, phase: 4, required: [session_id, scope, reason, expires_at]}
+  BREAK_GLASS_ENDED:       {aggregate: break_glass, phase: 4, required: [session_id, ended_reason]}
+  HARD_DELETE_REQUESTED:   {aggregate: hard_delete, phase: 4, required: [request_id, target_type, target_id, requested_by]}
+  HARD_DELETE_APPROVED:    {aggregate: hard_delete, phase: 4, required: [request_id, approved_by, executable_after]}
+  HARD_DELETE_EXECUTED:    {aggregate: hard_delete, phase: 4, required: [request_id, key_ref, tombstone_id]}
+  # Channel/Bridge
+  CHANNEL_CONFIGURED:      {aggregate: channel, phase: 2, required: [channel_id, channel_type, policy_version]}
+  CHANNEL_ARCHIVED:        {aggregate: channel, phase: 2, required: [channel_id]}
+  TELEGRAM_BRIDGE_ENABLED: {aggregate: bridge, phase: 2, required: [bridge_id, channel_id, direction]}
+  TELEGRAM_BRIDGE_DISABLED: {aggregate: bridge, phase: 2, required: [bridge_id, channel_id]}
+  BRIDGE_DELIVERY_FAILED:  {aggregate: bridge, phase: 2, required: [bridge_id, outbox_id, error_code]}
+  # Work
+  TASK_CREATED:            {aggregate: task, phase: 1, required: [task_id, root_task_id, channel_id, title, domain, risk]}
+  SUBTASK_CREATED:         {aggregate: task, phase: 1, required: [task_id, parent_task_id, root_task_id, depth, channel_id, title, domain, risk]}
+  TASK_DELEGATED:          {aggregate: task, phase: 1, required: [task_id, assignee_account_id, assignment_revision, policy_snapshot_hash]}
+  TASK_REASSIGNED:         {aggregate: task, phase: 1, required: [task_id, assignee_account_id, assignment_revision, reason_code]}
+  TASK_ACCEPTED:           {aggregate: task, phase: 1, required: [task_id, assignee_account_id]}
+  TASK_STARTED:            {aggregate: task, phase: 1, required: [task_id]}
+  TASK_WAITING:            {aggregate: task, phase: 1, required: [task_id, reason_code]}
+  TASK_PROGRESS_REPORTED:  {aggregate: task, phase: 1, required: [task_id, summary]}
+  TASK_JOIN_SATISFIED:     {aggregate: task, phase: 1, required: [task_id, join_policy, satisfied_children]}
+  TASK_CANCEL_REQUESTED:   {aggregate: task, phase: 1, required: [task_id, reason_code]}
+  TASK_CANCELLED:          {aggregate: task, phase: 1, required: [task_id, reason_code]}
+  IMPLEMENTATION_SUBMITTED: {aggregate: task, phase: 1, required: [task_id, evidence_refs, criteria_revision]}
+  TASK_COMPLETED:          {aggregate: task, phase: 1, required: [task_id, verification_id, document_id]}
+  # Approval
+  APPROVAL_REQUESTED:      {aggregate: approval, phase: 1, required: [approval_id, subject_type, subject_id, action, risk, expires_at]}
+  APPROVAL_GRANTED:        {aggregate: approval, phase: 1, required: [approval_id, decided_by, quorum_count]}
+  APPROVAL_REJECTED:       {aggregate: approval, phase: 1, required: [approval_id, decided_by, reason_code]}
+  APPROVAL_CANCELLED:      {aggregate: approval, phase: 1, required: [approval_id, reason_code]}
+  APPROVAL_EXPIRED:        {aggregate: approval, phase: 1, required: [approval_id]}
+  APPROVAL_ESCALATED:      {aggregate: approval, phase: 1, required: [approval_id, escalated_to_role]}
+  APPROVAL_REVOKED:        {aggregate: approval, phase: 1, required: [approval_id, reason_code]}
+  APPROVAL_CONSUMED:       {aggregate: approval, phase: 1, required: [approval_id, consumption_key, used_count]}
+  # Brainstorm/Decision
+  BRAINSTORM_OPENED:       {aggregate: brainstorm, phase: 6, required: [brainstorm_id, channel_id, topic, facilitator_account_id, limits]}
+  IDEA_RECORDED:           {aggregate: brainstorm, phase: 6, required: [brainstorm_id, contribution_type, contributor_account_id, turn_no]}
+  BRAINSTORM_PAUSED:       {aggregate: brainstorm, phase: 6, required: [brainstorm_id, reason_code]}
+  BRAINSTORM_RESUMED:      {aggregate: brainstorm, phase: 6, required: [brainstorm_id]}
+  SUMMARY_RECORDED:        {aggregate: brainstorm, phase: 6, required: [brainstorm_id, summarizer_account_id, artifact_id]}
+  DECISION_RECORDED:       {aggregate: decision, phase: 6, required: [decision_id, brainstorm_id, statement, decided_by]}
+  BRAINSTORM_CLOSED:       {aggregate: brainstorm, phase: 6, required: [brainstorm_id]}
+  # Work delivery/Budget
+  WORK_ITEM_QUEUED:        {aggregate: work_item, phase: 1, required: [work_item_id, kind, agent_id, deadline]}
+  WORK_ITEM_DELIVERED:     {aggregate: work_item, phase: 1, required: [work_item_id, delivery_no]}
+  WORK_ITEM_ACKED:         {aggregate: work_item, phase: 1, required: [work_item_id]}
+  WORK_ITEM_RESULT_RECEIVED: {aggregate: work_item, phase: 1, required: [work_item_id, result_ref]}
+  WORK_ITEM_EXPIRED:       {aggregate: work_item, phase: 1, required: [work_item_id, reason_code]}
+  BUDGET_RESERVED:         {aggregate: budget, phase: 1, required: [reservation_id, scope_type, scope_id, cost_units]}
+  BUDGET_EXCEEDED:         {aggregate: budget, phase: 1, required: [scope_type, scope_id, limit_cost_units, requested_cost_units]}
+  # Identity/Notification
+  IDENTITY_LINK_CHALLENGED: {aggregate: external_identity_link, phase: 1, required: [link_id, provider_instance_id, expires_at]}
+  IDENTITY_LINK_VERIFIED:  {aggregate: external_identity_link, phase: 1, required: [link_id, account_id, verification_method]}
+  NOTIFICATION_SENT:       {aggregate: notification, phase: 1, required: [notification_id, rule_id, recipient_account_id, channel]}
+  # Artifact
+  ARTIFACT_REGISTERED:     {aggregate: artifact, phase: 1, required: [artifact_id, sha256, size, mime]}
+  ARTIFACT_VERIFIED:       {aggregate: artifact, phase: 1, required: [artifact_id, sha256]}
+  ARTIFACT_QUARANTINED:    {aggregate: artifact, phase: 1, required: [artifact_id, reason_code]}
+  # Verification
+  VERIFIER_ASSIGNED:       {aggregate: verification_run, phase: 1, required: [verification_id, target_type, target_id, verifier_account_id, implementer_account_id, criteria_version]}
+  VERIFICATION_PASSED:     {aggregate: verification_run, phase: 1, required: [verification_id, revision, evidence_refs]}
+  VERIFICATION_FAILED:     {aggregate: verification_run, phase: 1, required: [verification_id, revision, finding_ids]}
+  VERIFICATION_BLOCKED:    {aggregate: verification_run, phase: 1, required: [verification_id, revision, reason_code]}
+  # Secret
+  SECRET_REGISTERED:       {aggregate: secret, phase: 4, required: [secret_id, provider, version]}
+  SECRET_GRANT_CREATED:    {aggregate: secret_grant, phase: 4, required: [grant_id, secret_id, grantee_agent_id, task_id, action_scope, expires_at]}
+  SECRET_ACCESSED:         {aggregate: secret_grant, phase: 4, required: [grant_id, secret_id, version, result]}
+  SECRET_GRANT_REVOKED:    {aggregate: secret_grant, phase: 4, required: [grant_id, reason_code]}
+  # Documentation
+  DOCUMENT_DRAFTED:        {aggregate: document, phase: 1, required: [document_id, source_type, source_id, version, sha256]}
+  DOCUMENT_FINALIZED:      {aggregate: document, phase: 1, required: [document_id, version, verification_id, sha256]}
+  DOCUMENT_REVIEWED:       {aggregate: document, phase: 6, required: [document_id, version, reviewer_account_id, result]}
+  DOCUMENT_PUBLISHED:      {aggregate: document, phase: 6, required: [document_id, version, publisher, external_ref]}
+  # Schedule
+  SCHEDULE_CREATED:        {aggregate: schedule, phase: 5, required: [schedule_id, schedule_version_id, version, snapshot_hash]}
+  SCHEDULE_UPDATED:        {aggregate: schedule, phase: 5, required: [schedule_id, schedule_version_id, version, snapshot_hash]}
+  SCHEDULE_ENABLED:        {aggregate: schedule, phase: 5, required: [schedule_id]}
+  SCHEDULE_PAUSED:         {aggregate: schedule, phase: 5, required: [schedule_id]}
+  SCHEDULE_RESUMED:        {aggregate: schedule, phase: 5, required: [schedule_id]}
+  SCHEDULE_DISABLED:       {aggregate: schedule, phase: 5, required: [schedule_id]}
+  RUN_DUE:                 {aggregate: schedule_run, phase: 5, required: [run_id, schedule_id, schedule_version_id, run_kind, scheduled_for]}
+  RUN_CLAIMED:             {aggregate: schedule_run, phase: 5, required: [run_id, claimed_by, lease_expires_at]}
+  RUN_STARTED:             {aggregate: schedule_run, phase: 5, required: [run_id, attempt_no, task_id]}
+  RUN_CANCEL_REQUESTED:    {aggregate: schedule_run, phase: 5, required: [run_id, reason_code]}
+  RUN_CANCELLED:           {aggregate: schedule_run, phase: 5, required: [run_id]}
+  RUN_SUCCEEDED:           {aggregate: schedule_run, phase: 5, required: [run_id, attempt_no]}
+  RUN_FAILED:              {aggregate: schedule_run, phase: 5, required: [run_id, attempt_no, error_code]}
+  RUN_SKIPPED:             {aggregate: schedule_run, phase: 5, required: [run_id, error_code]}
+  RUN_TIMED_OUT:           {aggregate: schedule_run, phase: 5, required: [run_id, attempt_no]}
+  # Additive extensions (not in spec §9.3; needed by state machines fixed elsewhere in the baseline)
+  WORKSPACE_CREATED:       {aggregate: workspace, phase: 1, required: [workspace_id, name], extension: "development plan §7H single Workspace created at Setup"}
+  ACCOUNT_CREATED:         {aggregate: account, phase: 1, required: [account_id, account_type], extension: "spec §9.1 Account entity lifecycle"}
+  ROLE_VERSION_CREATED:    {aggregate: role, phase: 1, required: [role_id, role_version, permissions_hash], extension: "spec §4.2 role changes are versioned policy"}
+  IDENTITY_LINK_SUSPENDED: {aggregate: external_identity_link, phase: 1, required: [link_id, reason_code], extension: "development plan §6.5 suspend/revoke blocks commands"}
+  IDENTITY_LINK_REVOKED:   {aggregate: external_identity_link, phase: 1, required: [link_id, reason_code], extension: "development plan §6.5 suspend/revoke blocks commands"}
+  WORK_ITEM_STARTED:       {aggregate: work_item, phase: 1, required: [work_item_id], extension: "development plan §7B.1 IN_PROGRESS state"}
+  WORK_ITEM_REJECTED:      {aggregate: work_item, phase: 1, required: [work_item_id, reason_code], extension: "development plan §7B.1 REJECTED state"}
+  WORK_ITEM_CANCELLED:     {aggregate: work_item, phase: 1, required: [work_item_id, reason_code], extension: "development plan §7B.1 CANCELLED state"}
+  DOCUMENT_ATTEMPT_FINALIZED: {aggregate: document, phase: 1, required: [document_id, version, verification_id, result, sha256], extension: "development plan §10.1 ATTEMPT_FINALIZED version"}
+  TASK_VERIFICATION_STARTED: {aggregate: task, phase: 1, required: [task_id, verification_id], extension: "spec §8.2 VERIFYING state entry"}

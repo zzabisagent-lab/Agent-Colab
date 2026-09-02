@@ -1,0 +1,16 @@
+# Agent-Colab secret scanning configuration (P0-06 / V-P0-09).
+# Extends the gitleaks default rule set; only the documented DLP canary pattern and the
+# baseline documents' example YAML are allow-listed. Real credentials are never allow-listed.
+title = "Agent-Colab gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Documented test canaries and baseline example snippets"
+regexes = ['''CANARY-NOT-A-SECRET-\d+''']
+paths = [
+  '''^docs/baseline/.*\.md$''',
+  '''(^|/)\.venv/''',
+  '''(^|/)node_modules/''',
+]

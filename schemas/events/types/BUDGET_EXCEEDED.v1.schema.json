@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/BUDGET_EXCEEDED.v1.schema.json",
+  "title": "BUDGET_EXCEEDED payload v1",
+  "description": "Non-sensitive payload of BUDGET_EXCEEDED (budget aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "scope_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "limit_cost_units": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "requested_cost_units": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "scope_type",
+    "scope_id",
+    "limit_cost_units",
+    "requested_cost_units"
+  ],
+  "additionalProperties": true
+}

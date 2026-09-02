@@ -1,0 +1,18 @@
+{
+  "test_id": "V-P0-06",
+  "evidence_id": "SELF-V-P0-06",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_policy_engine.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "34e1c9aff56b9a6585100a800cc44118f786585e",
+  "started_at": "2026-09-02T13:04:24.848409+00:00",
+  "finished_at": "2026-09-02T13:04:25.422262+00:00",
+  "output_sha256": "ecf57d762b443151696ef4727347520d0d5715719bac1e0cd93caddf627ffa61"
+}

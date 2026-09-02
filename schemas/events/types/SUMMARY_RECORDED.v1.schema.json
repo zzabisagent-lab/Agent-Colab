@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/SUMMARY_RECORDED.v1.schema.json",
+  "title": "SUMMARY_RECORDED payload v1",
+  "description": "Non-sensitive payload of SUMMARY_RECORDED (brainstorm aggregate, Phase 6). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "brainstorm_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summarizer_account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "brainstorm_id",
+    "summarizer_account_id",
+    "artifact_id"
+  ],
+  "additionalProperties": true
+}

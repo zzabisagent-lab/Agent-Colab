@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/ARTIFACT_QUARANTINED.v1.schema.json",
+  "title": "ARTIFACT_QUARANTINED payload v1",
+  "description": "Non-sensitive payload of ARTIFACT_QUARANTINED (artifact aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "artifact_id",
+    "reason_code"
+  ],
+  "additionalProperties": true
+}

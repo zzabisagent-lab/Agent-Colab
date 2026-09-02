@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/CHANNEL_ARCHIVED.v1.schema.json",
+  "title": "CHANNEL_ARCHIVED payload v1",
+  "description": "Non-sensitive payload of CHANNEL_ARCHIVED (channel aggregate, Phase 2). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "channel_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "channel_id"
+  ],
+  "additionalProperties": true
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/DOCUMENT_ATTEMPT_FINALIZED.v1.schema.json",
+  "title": "DOCUMENT_ATTEMPT_FINALIZED payload v1",
+  "description": "Non-sensitive payload of DOCUMENT_ATTEMPT_FINALIZED (document aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "document_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "verification_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "result": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "document_id",
+    "version",
+    "verification_id",
+    "result",
+    "sha256"
+  ],
+  "additionalProperties": true,
+  "x-extension": "development plan §10.1 ATTEMPT_FINALIZED version"
+}
