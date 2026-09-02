@@ -24,6 +24,7 @@ from pydantic import AnyHttpUrl
 from server.api.dispatch import Runtime, execute_command
 from server.api.errors import ApiError
 from server.application import bus
+from server.channels.identity_display import INJECTED_KEYS
 from server.db.engine import session_scope
 from server.identity.principals import Principal, resolve_service_token
 
@@ -41,6 +42,7 @@ def register_core_tools() -> None:
         "task_create": t.CreateTask,
         "task_delegate": t.DelegateTask,
         "task_accept": t.AcceptTask,
+        "task_start": t.StartTask,
         "task_progress": t.ReportProgress,
         "implementation_submit": t.SubmitImplementation,
         "approval_request": ap.RequestApproval,
@@ -88,6 +90,24 @@ def _principal_from_token() -> Principal:
         mfa_verified=False,
         reauth_at=None,
     )
+
+
+def _audit_identity_injection(
+    runtime: Runtime, principal: Any, tool_name: str, removed: list[str], correlation: str
+) -> None:
+    from server.channels.identity_display import audit_injection
+    from server.db.engine import session_scope
+
+    with session_scope(runtime.session_factory) as session:
+        workspace = runtime.resolve_workspace(session, principal.account_uuid)
+        audit_injection(
+            session,
+            workspace_id=uuid.UUID(str(workspace)),
+            agent_label=principal.account_id,
+            subject_id=f"mcp:{tool_name}",
+            removed=removed,
+            correlation_id=correlation,
+        )
 
 
 def _make_tool(runtime: Runtime, name: str, command_type: type[bus.Command]) -> Callable[..., Any]:
@@ -165,9 +185,33 @@ def _make_tool(runtime: Runtime, name: str, command_type: type[bus.Command]) -> 
     return tool
 
 
+class AgentColabMCPServer(MCPServer):
+    """MCPServer that inspects raw tool arguments before SDK validation (P2-14).
+
+    Display identity is decided by the server: identity fields an Agent puts in its tool input
+    (``override_username``, ``display_name`` ...) are removed here and audited, then the call
+    proceeds with the remaining arguments. The SDK would otherwise drop unknown keys silently.
+    """
+
+    def __init__(self, runtime: Runtime, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        self._runtime = runtime
+
+    async def call_tool(self, name: str, arguments: dict[str, Any], context: Any = None) -> Any:
+        injected = sorted(k for k in arguments if k in INJECTED_KEYS)
+        if injected:
+            arguments = {k: v for k, v in arguments.items() if k not in INJECTED_KEYS}
+            correlation = str(arguments.get("correlation_id") or f"mcp:{name}")
+            _audit_identity_injection(
+                self._runtime, _principal_from_token(), name, injected, correlation
+            )
+        return await super().call_tool(name, arguments, context)
+
+
 def build_mcp_server(runtime: Runtime, base_url: str) -> MCPServer:
     register_core_tools()
-    server = MCPServer(
+    server = AgentColabMCPServer(
+        runtime,
         name="Agent-Colab",
         version="0.0.0",
         token_verifier=ServiceTokenVerifier(runtime),

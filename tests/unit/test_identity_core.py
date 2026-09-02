@@ -100,7 +100,7 @@ def test_wrong_expired_reused_codes_and_lockout() -> None:
     issued = svc.start_challenge(
         "mm-team-a", "mmuser-3", actor_account_uuid=ACTOR, correlation_id="c"
     )
-    for i in range(1, 6):
+    for i in range(1, 7):  # five failed confirmations, lockout from the sixth (V-P2-27)
         with pytest.raises(IdentityError) as exc:
             svc.confirm_challenge(
                 "mm-team-a",
@@ -111,7 +111,7 @@ def test_wrong_expired_reused_codes_and_lockout() -> None:
                 actor_account_uuid=ACTOR,
                 correlation_id="c",
             )
-        expected = "EXTERNAL_IDENTITY_LOCKED" if i == 5 else "EXTERNAL_IDENTITY_CHALLENGE_INVALID"
+        expected = "EXTERNAL_IDENTITY_LOCKED" if i == 6 else "EXTERNAL_IDENTITY_CHALLENGE_INVALID"
         assert exc.value.code == expected, i
     # 6th attempt, even with the right code, is locked for 15 minutes
     with pytest.raises(IdentityError) as exc:

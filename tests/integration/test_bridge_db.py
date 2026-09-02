@@ -11,6 +11,7 @@ import datetime as dt
 import json
 import uuid
 from collections.abc import Iterator
+from dataclasses import dataclass
 from typing import Any, cast
 
 import pytest
@@ -646,3 +647,84 @@ def test_duplicate_telegram_target_rejected_unless_admin_exception(
         )
         status = bridge_cmds.bridge_status(_ctx(s, ADMIN, "br-status", clock), "bridge-a1")
         assert status["bridge_id"] == "bridge-a1" and "deliveries" in status
+
+
+@dataclass
+class OutageMattermostProvider:
+    """Mattermost provider double for V-P2-08: fails before any side effect while ``down``."""
+
+    inner: RecordingChannelProvider
+    down: bool = True
+    failures: int = 0
+
+    @property
+    def delivered(self) -> dict[str, str]:  # Bridge.deliver completes mappings from this map
+        return self.inner.delivered
+
+    def deliver(self, destination: str, payload: dict[str, Any]) -> str:
+        if self.down:
+            self.failures += 1
+            raise RuntimeError("mattermost unreachable (simulated 10-minute outage)")
+        return self.inner.deliver(destination, payload)
+
+
+def test_mattermost_outage_recovery_exactly_once(engine: Engine, bridges: dict[str, str]) -> None:
+    """V-P2-08 (Mattermost side): 10-minute Mattermost outage → Telegram intake continues,
+    nothing is delivered or dead-lettered, recovery delivers each message exactly once."""
+    clock = FixedClock(T0 + dt.timedelta(hours=3))
+    bridge = Bridge(store=None)
+    tg = TelegramBridgeProvider(FakeTelegramClient())
+    mm = OutageMattermostProvider(RecordingChannelProvider(prefix="mattermost"))
+    providers: dict[str, Any] = {"telegram": tg, "mattermost": mm}
+    with Session(engine) as s, s.begin():
+        for i in range(5):
+            out = bridge.on_telegram_message(s, clock, _tg_msg(CHAT_A, 7100 + i, f"mm outage {i}"))
+            # chat A may also carry an admin-exception Bridge from V-P2-17 in a full run
+            assert any(o.bridge_id == "bridge-a1" and o.accepted for o in out), out
+        for _ in range(20):  # 10 minutes of failing drains; the core keeps accepting
+            bridge.deliver(s, providers, clock, str(WS))
+            clock.advance(dt.timedelta(seconds=30))
+        assert mm.failures >= 5 and not mm.inner.calls
+        assert (
+            s.execute(
+                text(
+                    "SELECT count(*) FROM message_mappings WHERE bridge_id = 'bridge-a1' AND "
+                    "source_platform = 'telegram' AND delivery_status = 'sent' AND "
+                    "tg_message_id BETWEEN 7100 AND 7104"
+                )
+            ).scalar_one()
+            == 0
+        )
+        assert (
+            s.execute(
+                text("SELECT count(*) FROM delivery_outbox WHERE status = 'dead'")
+            ).scalar_one()
+            == 0
+        )
+        mm.down = False  # recovery
+        for _ in range(30):
+            bridge.deliver(s, providers, clock, str(WS))
+            clock.advance(dt.timedelta(seconds=30))
+        sends = [
+            c
+            for c in mm.inner.calls
+            if c[0] == "mattermost:ext-a" and "mm outage" in c[1]["message"]
+        ]
+        assert len(sends) == 5  # exactly once each
+        rows = s.execute(
+            text(
+                "SELECT bridge_id, source_platform, destination_platform, delivery_status, "
+                "source_message_id, tg_message_id, mm_post_id FROM message_mappings "
+                "WHERE tg_message_id BETWEEN 7100 AND 7104 OR source_message_id LIKE '%710%'"
+            )
+        ).all()
+        sent_rows = [
+            r for r in rows if r[0] == "bridge-a1" and r[1] == "telegram" and r[3] == "sent"
+        ]
+        assert len(sent_rows) == 5, rows
+        assert (
+            s.execute(
+                text("SELECT count(*) FROM delivery_outbox WHERE status = 'dead'")
+            ).scalar_one()
+            == 0
+        )

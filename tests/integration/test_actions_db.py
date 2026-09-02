@@ -149,7 +149,8 @@ def _audits(engine: Engine, action: str) -> int:
     with Session(engine) as s:
         return int(
             s.execute(
-                text("SELECT count(*) FROM audit_events WHERE action = :a"), {"a": action}
+                text("SELECT count(*) FROM audit_events WHERE action = :a AND workspace_id = :w"),
+                {"a": action, "w": WS},
             ).scalar_one()
         )
 

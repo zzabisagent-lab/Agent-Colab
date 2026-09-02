@@ -361,8 +361,9 @@ def test_link_challenge_through_the_router(engine: Engine, seeded: str) -> None:
     assert router.route(creq("link start", 1)).code == "OK"
     good = next(tok for tok in FAKE.dms[-1][1].split() if tok.isdigit() and len(tok) == 8)
     bad = "00000000" if good != "00000000" else "11111111"
-    codes = [router.route(creq(f"link confirm {bad}", 2 + i)).code for i in range(5)]
-    assert codes[-1] == "EXTERNAL_IDENTITY_LOCKED"
+    codes = [router.route(creq(f"link confirm {bad}", 2 + i)).code for i in range(6)]
+    assert codes[:5] == ["EXTERNAL_IDENTITY_CHALLENGE_INVALID"] * 5
+    assert codes[5] == "EXTERNAL_IDENTITY_LOCKED"  # lockout from the sixth failure
     assert router.route(creq(f"link confirm {good}", 9)).code == "EXTERNAL_IDENTITY_LOCKED"
     CLOCK.advance(dt.timedelta(minutes=15, seconds=1))
     assert router.route(creq("link start", 10)).code == "OK"

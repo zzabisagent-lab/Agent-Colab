@@ -80,18 +80,18 @@ def test_wrong_expired_and_reused_codes_are_rejected() -> None:
     assert reused.value.code in ("EXTERNAL_IDENTITY_CHALLENGE_USED", "EXTERNAL_IDENTITY_DUPLICATE")
 
 
-def test_five_failures_lock_for_fifteen_minutes_and_the_sixth_is_blocked() -> None:
+def test_five_failures_stay_invalid_and_the_sixth_locks_for_fifteen_minutes() -> None:
     clock = FixedClock(dt.datetime(2026, 8, 1, tzinfo=dt.UTC))
     svc, system, _ = _service(clock)
     code = _start(svc, system)
     bad = "00000000" if code != "00000000" else "11111111"
     codes: list[str] = []
-    for _ in range(5):
+    for _ in range(6):
         with pytest.raises(IdentityError) as exc:
             _confirm(svc, system, bad)
         codes.append(exc.value.code)
-    assert codes[:4] == ["EXTERNAL_IDENTITY_CHALLENGE_INVALID"] * 4
-    assert codes[4] == "EXTERNAL_IDENTITY_LOCKED"
+    assert codes[:5] == ["EXTERNAL_IDENTITY_CHALLENGE_INVALID"] * 5  # five failed confirmations
+    assert codes[5] == "EXTERNAL_IDENTITY_LOCKED"  # lockout starts with the sixth failure
     with pytest.raises(IdentityError) as sixth:  # even the right code is blocked while locked
         _confirm(svc, system, code)
     assert sixth.value.code == "EXTERNAL_IDENTITY_LOCKED"

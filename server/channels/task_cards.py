@@ -227,6 +227,35 @@ def _store_long_body(
     return artifact_id
 
 
+def _agent_display_name(session: Session, actor_uuid: str) -> str | None:
+    """Display name of the acting Account when it is an Agent (None for humans/services)."""
+    try:
+        row = session.execute(
+            text("SELECT account_type, display_name FROM accounts WHERE id = :a"),
+            {"a": uuid.UUID(str(actor_uuid))},
+        ).first()
+    except ValueError:
+        return None
+    if row is None or row[0] != "agent":
+        return None
+    return str(row[1] or "agent")
+
+
+def _enrich_payload(session: Session, payload: dict[str, Any]) -> dict[str, Any]:
+    """Add human-readable labels for account references used by transition messages."""
+    ref = payload.get("assignee_account_id")
+    if ref and "assignee" not in payload:
+        try:
+            row = session.execute(
+                text("SELECT account_id, display_name FROM accounts WHERE id = :a"),
+                {"a": uuid.UUID(str(ref))},
+            ).first()
+        except ValueError:
+            row = None
+        payload["assignee"] = str(row[1] or row[0]) if row else str(ref)
+    return payload
+
+
 def render_task_event(
     session: Session,
     *,
@@ -336,7 +365,9 @@ def render_task_event(
             ):
                 keys.append(link_key)
         return keys  # the card itself is the creation log entry
-    reply = render_transition(event["type"], event.get("payload", {}), bundle)
+    reply = render_transition(
+        event["type"], _enrich_payload(session, dict(event.get("payload", {}))), bundle
+    )
     if reply is None:
         return keys
     decision = body_for_post(reply)
@@ -360,6 +391,11 @@ def render_task_event(
         }
     else:
         payload = {"message": message, "root_id": root}
+    agent_name = _agent_display_name(session, actor_uuid)
+    if agent_name is not None:
+        # P2-14: Agent utterances carry the server-known display name; the provider applies
+        # override/prefix and strips anything the Agent put in its own payload
+        payload["agent_display_name"] = agent_name
     reply_key = f"reply:{event['event_id']}"
     if enqueue_delivery(
         session,
