@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P1-10",
+  "evidence_id": "SELF-V-P1-10",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_task_projection.py",
+    "-q",
+    "-k",
+    "rebuild or normal_flow"
+  ],
+  "exit_code": 1,
+  "result": "fail",
+  "commit_sha": "fc46dd67fe54701a0c0045b63c98e73dca4f33fa",
+  "started_at": "2026-09-02T14:43:07.219170+00:00",
+  "finished_at": "2026-09-02T14:43:08.983896+00:00",
+  "output_sha256": "a80fc7154e69792b7e4a0ae1ab298c4c8e480a4a5b131f8afa732c64fc220e82"
+}

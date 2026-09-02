@@ -1,0 +1,37 @@
+.F                                                                       [100%]
+=================================== FAILURES ===================================
+____________ test_projection_rebuild_reproduces_identical_snapshot _____________
+
+engine = Engine(postgresql+psycopg://colab@127.0.0.1:54329/colab_t_0a12b89e1898)
+
+    def test_projection_rebuild_reproduces_identical_snapshot(engine: Engine) -> None:  # V-P1-10
+        with Session(engine) as s, s.begin():
+            before_rows = [
+                dict(r)
+                for r in s.execute(text("SELECT * FROM tasks_projection ORDER BY task_id")).mappings()
+            ]
+            before = snapshot_hash(s, "tasks")
+            s.execute(text("DELETE FROM tasks_projection"))
+            assert s.execute(text("SELECT count(*) FROM tasks_projection")).scalar_one() == 0
+            after = rebuild(s, "tasks")
+            after_rows = [
+                dict(r)
+                for r in s.execute(text("SELECT * FROM tasks_projection ORDER BY task_id")).mappings()
+            ]
+            checkpoint = s.execute(
+                text(
+                    "SELECT last_recorded_seq, snapshot_hash FROM projection_checkpoints WHERE projection = 'tasks'"
+                )
+            ).first()
+>       assert after == before and after_rows == before_rows and len(after_rows) >= 8
+E       AssertionError: assert ('0d96f9d6eb88...80c466bdcf0c4' == '0d96f9d6eb88...80c466bdcf0c4'
+E         
+E         Skipping 53 identical leading characters in diff, use -v to show
+E           c466bdcf0c4 and [{'task_id': ...': None, ...}] == [{'task_id': ...': None, ...}]
+E         
+E         Use -v to get more diff and 1 >= 8)
+E        +  where 1 = len([{'task_id': 'task-880ba497e18a465a', 'workspace_id': UUID('c42b5240-fa07-425f-ae3e-0ebb30f65d81'), 'root_task_id': 'task-880ba497e18a465a', 'parent_task_id': None, ...}])
+
+tests/integration/test_task_projection.py:385: AssertionError
+=========================== short test summary info ============================
+FAILED tests/integration/test_task_projection.py::test_projection_rebuild_reproduces_identical_snapshot

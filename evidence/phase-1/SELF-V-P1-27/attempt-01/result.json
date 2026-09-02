@@ -1,0 +1,19 @@
+{
+  "test_id": "V-P1-27",
+  "evidence_id": "SELF-V-P1-27",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_task_transitions.py",
+    "tests/integration/test_task_projection.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "fc46dd67fe54701a0c0045b63c98e73dca4f33fa",
+  "started_at": "2026-09-02T14:43:02.276780+00:00",
+  "finished_at": "2026-09-02T14:43:05.229049+00:00",
+  "output_sha256": "c404689801f47965737b941c74f18f04317648dd047af998fae0a5f77bfc312f"
+}
