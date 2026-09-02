@@ -87,6 +87,7 @@ class WebhookAdapter:
             raise AdapterError("ADAPTER_BAD_RESPONSE", f"endpoint config missing {exc}") from exc
         self.timeout_s = float(endpoint.get("timeout_s", DEFAULT_TIMEOUT_S))
         self.capabilities = tuple(str(c) for c in endpoint.get("capabilities", ()))
+        self.health_check = bool(endpoint.get("health_check", False))
         self._resolver = resolver or default_resolver()
         self._clock = clock or SystemClock()
         self._transport = transport
@@ -238,10 +239,33 @@ class WebhookAdapter:
         return CancelAck(target_id, now, now + dt.timedelta(seconds=60))
 
     def heartbeat(self) -> Heartbeat:
-        """Webhook Agents report heartbeats to the server (REST); the last one is returned."""
-        if self._last_heartbeat is None:
-            raise AdapterError("ADAPTER_UNREACHABLE", "no heartbeat recorded yet")
-        return self._last_heartbeat
+        """Webhook Agents report heartbeats to the server (REST) and the last one is returned;
+        with ``endpoint.health_check`` the server asks the endpoint (``op=heartbeat``) instead,
+        so that liveness and capacity can be confirmed on demand."""
+        if not self.health_check:
+            if self._last_heartbeat is None:
+                raise AdapterError("ADAPTER_UNREACHABLE", "no heartbeat recorded yet")
+            return self._last_heartbeat
+        response = self._post(
+            "heartbeat",
+            {"op": "heartbeat", "agent_id": self.agent_id},
+            correlation_id=f"heartbeat:{self.agent_id}",
+            extra={},
+        )
+        self._check_status(response, 200)
+        data = self._json(response)
+        health = str(data.get("health", "ok"))
+        if health not in ("ok", "degraded", "draining"):
+            raise AdapterError("ADAPTER_BAD_RESPONSE", f"health {health!r}")
+        beat = Heartbeat(
+            reported_at=self._clock.now(),
+            health=health,
+            capacity=int(data.get("capacity", 1)),
+            usage_since_last=usage_from(data),
+            capabilities=tuple(str(c) for c in data.get("capabilities", self.capabilities)),
+        )
+        self._last_heartbeat = beat
+        return beat
 
     def record_heartbeat(self, heartbeat: Heartbeat) -> None:
         self._last_heartbeat = heartbeat

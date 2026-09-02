@@ -31,11 +31,11 @@ def _item(
     adapter: Adapter,
     kind: str,
     *,
-    tool: str = "cap-echo",
+    tool: str = "cap_echo",
     secrets: tuple[str, ...] = (),
     n: int = 0,
 ) -> WorkItemView:
-    wid = f"wi-cs-{uuid.uuid4().hex[:12]}"
+    wid = f"wi-{uuid.uuid4().hex[:24]}"  # schema-valid id (colab.work-item.v1)
     now = harness.clock.now()
     return WorkItemView(
         work_item_id=wid,
@@ -111,7 +111,7 @@ def run_suite(harness: Harness) -> ConformanceReport:
 
     def cs04() -> dict[str, Any]:
         res = adapter.invoke(
-            "cap-echo",
+            "cap_echo",
             {"input": {"n": 4}},
             harness.clock.now() + dt.timedelta(minutes=5),
             (),
@@ -170,7 +170,7 @@ def run_suite(harness: Harness) -> ConformanceReport:
         return {"gaps_s": gaps, "capacity": beats[-1].capacity}
 
     def cs07() -> dict[str, Any]:
-        handle = f"sec-{uuid.uuid4().hex}"
+        handle = f"sh-{uuid.uuid4().hex}"  # a §9 lease handle id (never a secret value)
         item = _item(harness, adapter, "invoke", secrets=(handle,), n=7)
         receipt = adapter.deliver(item)
         if probe.secret_handles == "unsupported":  # noqa: S105 - advertisement value  # nosec B105 - advertisement value
@@ -188,7 +188,7 @@ def run_suite(harness: Harness) -> ConformanceReport:
         for n in range(total):
             corr = f"corr-cs08-{n}"
             res = adapter.invoke(
-                "cap-echo",
+                "cap_echo",
                 {"input": {"n": n}, "task_id": f"task-cs08-{n}"},
                 harness.clock.now() + dt.timedelta(minutes=5),
                 (),
@@ -211,7 +211,7 @@ def run_suite(harness: Harness) -> ConformanceReport:
     def cs10() -> dict[str, Any]:
         try:
             adapter.invoke(
-                "tool-not-advertised",
+                "tool_not_advertised",
                 {},
                 harness.clock.now() + dt.timedelta(minutes=1),
                 (),

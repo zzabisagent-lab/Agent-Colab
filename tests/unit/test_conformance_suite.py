@@ -14,7 +14,7 @@ from server.agents.conformance.harness import McpSimulationHarness, SimulatedAge
 from server.agents.conformance.report import validate_report
 from server.agents.conformance.suite import run_suite
 
-ENDPOINT = {"agent_id": "agent-sim", "capabilities": ["cap-echo"]}
+ENDPOINT = {"agent_id": "agent-sim", "capabilities": ["cap_echo"]}
 
 
 def _run(agent_factory: Callable[[VirtualClock], SimulatedAgent] | None = None, **endpoint: object):  # type: ignore[no-untyped-def]

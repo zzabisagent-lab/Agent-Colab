@@ -14,7 +14,7 @@ from server.agents.conformance.harness import SimulatedAgent, VirtualClock
 def _adapter(**endpoint: object) -> tuple[McpClientAdapter, SimulatedAgent]:
     clock = VirtualClock()
     agent = SimulatedAgent(clock)
-    ep: dict[str, object] = {"agent_id": "agent-c", "capabilities": ["cap-echo"], **endpoint}
+    ep: dict[str, object] = {"agent_id": "agent-c", "capabilities": ["cap_echo"], **endpoint}
     return McpClientAdapter(ep, agent), agent
 
 
@@ -44,7 +44,7 @@ def test_probe_identity_is_stable_and_pull_only() -> None:
     assert (
         p1.identity_hash
         == p2.identity_hash
-        == identity_hash("agent-c", "mcp", ["cap-echo"], ["pull"], "supported")
+        == identity_hash("agent-c", "mcp", ["cap_echo"], ["pull"], "supported")
     )
     assert p1.delivery_modes == (c.DeliveryMode.PULL,)
     assert isinstance(adapter, c.Adapter)
@@ -69,7 +69,7 @@ def test_unsupported_tool_and_secret_advertisement() -> None:
         ("sec-1",),
         "colab.work-result.v1",
         "wi-s1",
-        {"tool": "cap-echo"},
+        {"tool": "cap_echo"},
     )
     assert adapter.deliver(item).rejection_code == "CAPABILITY_UNSUPPORTED"
     assert not any("sec-1" in line for line in agent.log_lines)
@@ -78,7 +78,7 @@ def test_unsupported_tool_and_secret_advertisement() -> None:
 def test_invoke_echoes_correlation_and_usage_and_times_out() -> None:
     adapter, agent = _adapter()
     res = adapter.invoke(
-        "cap-echo",
+        "cap_echo",
         {"input": {"n": 1}},
         agent.now() + dt.timedelta(minutes=5),
         (),
@@ -92,7 +92,7 @@ def test_invoke_echoes_correlation_and_usage_and_times_out() -> None:
     agent.result_delay_s = 3600
     with pytest.raises(c.AdapterError) as exc:
         adapter.invoke(
-            "cap-echo",
+            "cap_echo",
             {"input": {"n": 2}},
             agent.now() + dt.timedelta(minutes=5),
             (),

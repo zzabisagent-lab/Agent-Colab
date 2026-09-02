@@ -47,6 +47,7 @@ class MattermostBotAdapter:
         *,
         sink: MessageSink | None = None,
         clock: Clock | None = None,
+        health_probe: Callable[[], None] | None = None,
     ) -> None:
         try:
             self.agent_id = str(endpoint["agent_id"])
@@ -58,6 +59,7 @@ class MattermostBotAdapter:
         self.capabilities = tuple(str(c) for c in endpoint.get("capabilities", ()))
         self.capacity = int(endpoint.get("capacity", 1))
         self._sink = sink or _noop_sink
+        self._health_probe = health_probe  # e.g. a Mattermost ``users/me`` call; raises on failure
         self._clock = clock or SystemClock()
         self._last_heartbeat: Heartbeat | None = None
         self.delivered: dict[str, str | None] = {}
@@ -129,6 +131,11 @@ class MattermostBotAdapter:
         return CancelAck(target_id, now, now + dt.timedelta(seconds=60))
 
     def heartbeat(self) -> Heartbeat:
+        if self._health_probe is not None:
+            try:
+                self._health_probe()
+            except BaseException as exc:
+                raise self.normalize_error(exc) from exc
         if self._last_heartbeat is None:
             raise AdapterError("ADAPTER_UNREACHABLE", "no heartbeat recorded yet")
         return self._last_heartbeat
@@ -141,6 +148,15 @@ class MattermostBotAdapter:
             return exc
         if isinstance(exc, TimeoutError):
             return AdapterError("ADAPTER_TIMEOUT", "Mattermost timed out", retryable=True)
+        if isinstance(exc, PermissionError):  # before OSError: PermissionError is an OSError
+            return AdapterError("ADAPTER_AUTH_FAILED", "Mattermost rejected the bot token")
+        if isinstance(exc, ConnectionError | OSError):
+            return AdapterError("ADAPTER_UNREACHABLE", "Mattermost unreachable", retryable=True)
+        if isinstance(exc, ValueError | KeyError | TypeError):
+            return AdapterError("ADAPTER_BAD_RESPONSE", type(exc).__name__)
+        text = str(exc).upper()
+        if "RATE" in text and "LIMIT" in text:
+            return AdapterError("ADAPTER_RATE_LIMITED", "Mattermost rate limited", retryable=True)
         return AdapterError("ADAPTER_INTERNAL", type(exc).__name__)
 
 

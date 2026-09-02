@@ -207,7 +207,7 @@ class SimulatedAgent:
             )
             if self.include_usage
             else Usage(usage_unavailable="ADAPTER_NO_METERING"),
-            capabilities=("cap-echo",),
+            capabilities=("cap_echo",),
         )
         self.heartbeat_log.append(hb)
         return hb

@@ -25,7 +25,7 @@ def main(argv: list[str] | None = None) -> int:
 
     endpoint = json.loads(args.endpoint)
     endpoint.setdefault("agent_id", f"agent-conformance-{args.adapter}")
-    endpoint.setdefault("capabilities", ["cap-echo"])
+    endpoint.setdefault("capabilities", ["cap_echo"])
     report = run_suite(harness_for(args.adapter, endpoint))
     doc = report.to_dict()
     validate_report(doc)

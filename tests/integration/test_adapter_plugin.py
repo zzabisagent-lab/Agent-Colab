@@ -27,7 +27,7 @@ def test_plugin_registers_and_passes_the_suite() -> None:
             "--adapter",
             "mockvendor",
             "--endpoint",
-            '{"agent_id": "agent-vendor", "capabilities": ["cap-echo"]}',
+            '{"agent_id": "agent-vendor", "capabilities": ["cap_echo"]}',
         ],
         capture_output=True,
         text=True,
