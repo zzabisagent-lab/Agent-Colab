@@ -297,7 +297,7 @@ class PostgresEventStore:
         row = (
             self._s.execute(
                 text(f"SELECT {_COLUMNS} FROM events WHERE event_id = :e"),
-                {"e": event_id},  # noqa: S608
+                {"e": event_id},
             )
             .mappings()
             .first()

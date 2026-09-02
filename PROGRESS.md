@@ -17,13 +17,13 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 | P1-07 | REST/MCP/SSE | L | P1-02, P1-03 | IMPLEMENTED | SELF-V-P1-11, SELF-V-P1-26 |
 | P1-08 | Approval Core | L | P1-02, P1-03 | IMPLEMENTED | SELF-V-P1-15/16/22/32 |
 | P1-09 | Artifact Core | M | P1-02 | IMPLEMENTED | SELF-V-P1-17 |
-| P1-10 | Document lifecycle Core | M | P1-04, P1-06, P1-09 | IN_PROGRESS (fork) | — |
+| P1-10 | Document lifecycle Core | M | P1-04, P1-06, P1-09 | IMPLEMENTED | SELF-V-P1-18/19/20 |
 | P1-11 | Task acceptance criteria | S | P1-04 | IMPLEMENTED | SELF-V-P1-28 |
 | P1-12 | Work item inbox core | M | P1-02, P1-04 | IMPLEMENTED | SELF-V-P1-29 |
 | P1-13 | Notification core | S | P1-02 | IMPLEMENTED | SELF-V-P1-31 |
 | P1-14 | Usage/Budget core | M | P1-02 | IMPLEMENTED | SELF-V-P1-30 |
 
-Phase 1 progress (size-weighted): 31 / 33.5
+Phase 1 progress (size-weighted): 33.5 / 33.5
 
 ## Phase 0 (PASSED) — branch `phase-0`, tag `phase-0-passed`
 
