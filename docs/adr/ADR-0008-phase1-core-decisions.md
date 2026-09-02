@@ -29,3 +29,8 @@
    fingerprints are rejected at the API and by DB CHECK constraints; revisions are immutable.
 10. **Document two-stage lifecycle** is implemented by the deterministic skeleton builder
     (layer 1); narrative (layer 2) is Phase 6.
+11. **SQL construction rule.** Queries are SQLAlchemy `text()` with bound parameters. The only
+    interpolated parts are constant identifiers (column lists, table and key names from module
+    constants such as `ChainSpec`/`Projector`); each such line carries a ruff `S608` justification.
+    Bandit's overlapping `B608` is disabled in `pyproject.toml` to avoid duplicate, unjustifiable
+    markers.
