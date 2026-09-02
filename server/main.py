@@ -11,6 +11,7 @@ from fastapi import FastAPI
 
 from server.api.dispatch import default_runtime
 from server.api.errors import ApiError, api_error_handler
+from server.api.v1.approvals import router as approvals_router
 from server.api.v1.events import router as events_router
 from server.api.v1.identity import router as identity_router
 from server.api.v1.tasks import router as tasks_router
@@ -51,6 +52,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(identity_router)
     app.include_router(events_router)
     app.include_router(tasks_router)
+    app.include_router(approvals_router)
     app.state.mcp = None
     if app.state.runtime is not None:
         from server.agents.mcp_server import build_mcp_server

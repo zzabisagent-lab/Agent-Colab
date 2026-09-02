@@ -34,6 +34,7 @@ TOOL_MAP: dict[str, type[bus.Command]] = {}
 
 
 def register_core_tools() -> None:
+    from server.application import approvals as ap
     from server.application import tasks as t
 
     for name, command_type in {
@@ -42,6 +43,7 @@ def register_core_tools() -> None:
         "task_accept": t.AcceptTask,
         "task_progress": t.ReportProgress,
         "implementation_submit": t.SubmitImplementation,
+        "approval_request": ap.RequestApproval,
     }.items():
         TOOL_MAP.setdefault(name, command_type)
 

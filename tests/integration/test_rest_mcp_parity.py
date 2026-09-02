@@ -77,7 +77,7 @@ def engine(database_url: str) -> Iterator[Engine]:
         repo = PostgresPolicyRepository()
         repo.create_role(s, WS, "par-worker", "Parity worker")
         repo.commit_role_version(
-            s, "par-worker", ["task.*", "artifact.*", "work.poll"], [], {}, HUMAN
+            s, "par-worker", ["task.*", "artifact.*", "approval.*", "work.poll"], [], {}, HUMAN
         )
         now = dt.datetime(2026, 1, 1, tzinfo=dt.UTC)
         for acc in (HUMAN, AGENT):
@@ -240,9 +240,45 @@ async def test_rest_and_mcp_share_handlers_errors_and_idempotency(server: str) -
         assert rden.status_code == 404 and mden["error"]["status"] == 404  # normalized forbidden
         assert rden.json()["code"] == mden["error"]["code"] == "EXPLICIT_DENY"
 
-    # zero bypass side effects: every Event came through the bus with a task idempotency scope
+    # the same approval request through both transports (V-P1-26: create/delegate/approval)
+    async with httpx.AsyncClient(base_url=server) as rest, mcp_session(server, TOKEN_H) as mcp:
+        req = {
+            "subject_type": "task",
+            "subject_id": rest_created["resource_id"],
+            "action": "external_send",
+        }
+        ra = await rest.post("/api/v1/approvals", json=req, headers=_h(TOKEN_H, "par-apr-1"))
+        assert ra.status_code == 201, ra.text
+        ma = await call(
+            mcp,
+            "approval_request",
+            **{**req, "subject_id": m1["resource_id"]},
+            idempotency_key="par-apr-mcp-1",
+        )
+        assert "error" not in ma, ma
+        assert set(ra.json()) == set(ma) - {"schema_id"}
+        got = await rest.get(
+            f"/api/v1/approvals/{ra.json()['resource_id']}", headers=_h(TOKEN_H, "x")
+        )
+        assert got.status_code == 200 and got.json()["status"] == "PENDING"
+        # not-yet-active subject handlers answer identically on both paths
+        rs = await rest.post(
+            "/api/v1/approvals",
+            json={**req, "subject_type": "schedule", "subject_id": "sch-1"},
+            headers=_h(TOKEN_H, "par-apr-2"),
+        )
+        ms = await call(
+            mcp,
+            "approval_request",
+            **{**req, "subject_type": "schedule", "subject_id": "sch-1"},
+            idempotency_key="par-apr-mcp-2",
+        )
+        assert rs.json()["code"] == ms["error"]["code"] == "SUBJECT_TYPE_NOT_ACTIVE"
+        assert rs.status_code == ms["error"]["status"]
+
+    # zero bypass side effects: every Event came through the bus with a known idempotency scope
     with Session(ENGINE["engine"]) as s:
         rows = s.execute(
             text("SELECT idempotency_scope FROM events WHERE workspace_id = :w"), {"w": WS}
         ).all()
-    assert rows and all(r[0].startswith("task:") for r in rows)
+    assert rows and all(r[0].startswith(("task:", "approval:")) for r in rows)
