@@ -1,0 +1,5 @@
+
+--- stderr ---
+[90m2:09PM[0m [32mINF[0m [1m16 commits scanned.[0m
+[90m2:09PM[0m [32mINF[0m [1mscanned ~2190027 bytes (2.19 MB) in 681ms[0m
+[90m2:09PM[0m [32mINF[0m [1mno leaks found[0m

@@ -56,3 +56,10 @@ overlap is a common English word that the baseline documents use in an unrelated
 - **Fixture false positives** (`generic-api-key`): `token_hash` SHA-256 values in
   `tests/fixtures/setup/store-documents.yaml` and generated `idempotency_key` values in
   `tests/fixtures/events/valid/` are allow-listed by line pattern; they are hashes/keys of fake data.
+
+## Note: `.env` in directory scans
+
+`gitleaks dir` walks git-ignored files, so it reports the local `.env` (the deployment-secrets
+file that is never tracked; `git check-ignore .env` confirms). The path is allow-listed in
+`.gitleaks.toml` for the directory scan only; `gitleaks git` (history) remains the authoritative
+check and never sees the file. `tests/unit/test_threat_model.py` asserts `.env` is ignored.

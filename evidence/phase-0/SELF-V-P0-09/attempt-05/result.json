@@ -1,0 +1,18 @@
+{
+  "test_id": "V-P0-09",
+  "evidence_id": "SELF-V-P0-09",
+  "attempt": 5,
+  "command": [
+    "gitleaks",
+    "git",
+    "--no-banner",
+    "--redact",
+    "."
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "bf1582459ba34c1a40f414531ed22f764ddb9e57",
+  "started_at": "2026-09-02T14:09:48.783542+00:00",
+  "finished_at": "2026-09-02T14:09:49.856618+00:00",
+  "output_sha256": "00915b56bada0284cb9ab9e51a2139e77e3840ae7646dc5a2fc252b2dac82e22"
+}

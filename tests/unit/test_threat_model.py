@@ -43,3 +43,12 @@ def test_no_table_fails() -> None:
     assert lint("# nothing here\n", KNOWN) == [
         "no checklist table with header | Boundary | Included | Controls | Tests |"
     ]
+
+
+def test_env_file_is_git_ignored() -> None:
+    import subprocess
+
+    proc = subprocess.run(
+        ["git", "check-ignore", "-q", ".env"], cwd=ROOT, check=False, capture_output=True
+    )
+    assert proc.returncode == 0, ".env must be git-ignored"
