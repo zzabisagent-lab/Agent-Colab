@@ -1,0 +1,16 @@
+# Inputs for the Phase 1 Evidence Manifest (validation plan §6.1); the manifest itself is generated
+# by tools/run_verification.py at verification time for the exact target commit.
+known_gaps:
+  - "Verifier assignment (§7D.2) is Phase 3 (P3-13): Phase 1 VerificationRuns are created with explicit verifier identities; independence, snapshots, revisions and the completion gate are complete."
+  - "Notification providers (Mattermost DM/mention, SMTP) are stubbed (P1-13 by design); the rules engine, dedupe, digest, reminders and outbox drain are exercised with a stub provider."
+  - "MCP resource subscriptions are unsupported by the pinned SDK protocol pairing (Phase 0 decision); work_poll long-poll is the delivery path; the Phase 1 MCP surface covers task_create/delegate/accept/progress, implementation_submit, approval_request (remaining §7.4 tools arrive with P3-10/P6)."
+  - "Envelope encryption uses an instance master key from configuration (AGENT_COLAB_MASTER_KEY_B64); the Secret provider interface and key custody arrive in Phase 4 (P4-05)."
+  - "Projection rebuilds tolerate raw Event streams that bypassed the command handlers by skipping and reporting them (only possible from outside the API); the integrity job reports such streams."
+reproduction:
+  - "git clone git@github.com:zzabisagent-lab/Agent-Colab.git && git checkout <target commit>"
+  - "export PATH=$HOME/.local/bin:$PATH; export AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test (any empty PostgreSQL 16 maintenance DB; the test session creates and drops its own database and runs migrations 0001-0002)"
+  - "make bootstrap && make lint && make test && make check-docs && make build"
+  - "uv run pytest tests/integration -q   # every V-P1 Test has a SELF evidence attempt under evidence/phase-1/SELF-V-P1-NN/ listing the exact pytest command"
+  - "DB-level immutability: uv run pytest tests/integration/test_immutability.py -q (V-P1-05, V-P1-25); Event store: tests/integration/test_event_store.py (V-P1-01/02/03/04/06/21 + crypto-shredding)"
+  - "REST/MCP parity: uv run pytest tests/integration/test_rest_mcp_parity.py -q (starts the real app on a loopback port; MCP at /mcp with Bearer service tokens)"
+  - "Projection rebuild CLI: AGENT_COLAB_DATABASE_URL=<url> uv run python -m server.projections.runner rebuild tasks"
