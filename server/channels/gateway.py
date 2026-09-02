@@ -140,4 +140,17 @@ def providers_from_env() -> dict[str, ChannelProvider]:
 
 
 def build_gateway(runtime: Runtime) -> ChannelGateway:
-    return ChannelGateway(runtime=runtime, clock=runtime.clock, providers=providers_from_env())
+    from server.channels.telegram.commands import TelegramCommandGateway
+
+    commands = TelegramCommandGateway(runtime, runtime.clock)
+
+    def telegram_commands(session: Session, msg: InboundMessage) -> bool:
+        # P2-08: a handled command replies through the outbox and is never relayed as chat
+        return commands.handle(session, msg).handled
+
+    return ChannelGateway(
+        runtime=runtime,
+        clock=runtime.clock,
+        providers=providers_from_env(),
+        inbound_hooks=[telegram_commands],
+    )

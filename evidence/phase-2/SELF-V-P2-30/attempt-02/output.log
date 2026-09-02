@@ -1,0 +1,5 @@
+
+
+--- stderr ---
+ERROR: file or directory not found: tests/unit/test_document_templates.py
+

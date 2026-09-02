@@ -3,52 +3,158 @@
   "$id": "https://agent-colab.dev/schemas/api/bridge/telegram-bridge.v1.schema.json",
   "title": "Telegram Bridge configuration v1 (spec §10.2)",
   "type": "object",
-  "required": ["channel_id", "provider_instance_id", "telegram_chat_id", "direction"],
+  "required": [
+    "channel_id",
+    "provider_instance_id",
+    "telegram_chat_id",
+    "direction"
+  ],
   "properties": {
-    "bridge_id": {"type": "string", "pattern": "^bridge-[A-Za-z0-9._-]{2,64}$"},
-    "channel_id": {"type": "string", "minLength": 1},
-    "provider_instance_id": {"type": "string", "pattern": "^tg:[0-9]+$"},
-    "telegram_chat_id": {"type": "string", "pattern": "^-?[0-9]{1,20}$"},
-    "telegram_thread_id": {"type": ["integer", "null"], "minimum": 2},
-    "thread_mode": {"type": "string", "enum": ["topic_per_root", "general", "fixed_topic"]},
-    "direction": {"type": "string", "enum": ["mattermost_to_telegram", "telegram_to_mattermost", "bidirectional"]},
+    "bridge_id": {
+      "type": "string",
+      "pattern": "^bridge-[A-Za-z0-9._-]{2,64}$"
+    },
+    "channel_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_instance_id": {
+      "type": "string",
+      "pattern": "^tg:[0-9]+$"
+    },
+    "telegram_chat_id": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,20}$"
+    },
+    "telegram_thread_id": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 2
+    },
+    "thread_mode": {
+      "type": "string",
+      "enum": [
+        "topic_per_root",
+        "general",
+        "fixed_topic"
+      ]
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "mattermost_to_telegram",
+        "telegram_to_mattermost",
+        "bidirectional"
+      ]
+    },
     "content_policy": {
       "type": "object",
       "properties": {
-        "text": {"type": "boolean"},
-        "attachment": {"type": "boolean"},
-        "system_event": {"type": "boolean"},
-        "approval_notice": {"type": "boolean"},
-        "mention": {"type": "boolean"}
+        "text": {
+          "type": "boolean"
+        },
+        "attachment": {
+          "type": "boolean"
+        },
+        "system_event": {
+          "type": "boolean"
+        },
+        "approval_notice": {
+          "type": "boolean"
+        },
+        "mention": {
+          "type": "boolean"
+        },
+        "telegram_commands": {
+          "description": "P2-08: verbs executable from Telegram by linked Accounts (allowed_verbs); link.* never",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "allowed_verbs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        }
       },
       "additionalProperties": false
     },
     "redaction_policy": {
       "type": "object",
       "properties": {
-        "secret_patterns": {"type": "boolean"},
-        "private_messages": {"type": "boolean"},
-        "restricted_artifacts": {"type": "boolean"}
+        "secret_patterns": {
+          "type": "boolean"
+        },
+        "private_messages": {
+          "type": "boolean"
+        },
+        "restricted_artifacts": {
+          "type": "boolean"
+        }
       },
       "additionalProperties": false
     },
     "identity_display": {
       "type": "object",
-      "properties": {"show_sender": {"type": "boolean"}, "show_source": {"type": "boolean"}},
+      "properties": {
+        "show_sender": {
+          "type": "boolean"
+        },
+        "show_source": {
+          "type": "boolean"
+        }
+      },
       "additionalProperties": false
     },
     "rate_limit": {
       "type": "object",
       "properties": {
-        "per_minute": {"type": "integer", "minimum": 1, "maximum": 20},
-        "max_attachment_bytes": {"type": "integer", "minimum": 0}
+        "per_minute": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "max_attachment_bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
       },
       "additionalProperties": false
     },
-    "allow_commands": {"type": "boolean"},
-    "admin_exception": {"type": "boolean"},
-    "admin_exception_reason": {"type": ["string", "null"], "maxLength": 500},
-    "status": {"type": "string", "enum": ["enabled", "disabled"]}
+    "allow_commands": {
+      "type": "boolean"
+    },
+    "admin_exception": {
+      "type": "boolean"
+    },
+    "admin_exception_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 500
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "enabled",
+        "disabled"
+      ]
+    }
   },
   "additionalProperties": false
 }

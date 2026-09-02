@@ -248,6 +248,14 @@ def render_task_event(
         return []
     destination = f"mattermost:{target.external_channel_id}"
     keys: list[str] = []
+    if bundle is None:
+        # P2-16: channel language override, else the instance default (development plan §7H)
+        from server.channels.router import language_for_channel
+        from server.i18n import bundle as load_bundle
+
+        bundle = load_bundle(
+            language_for_channel(session, target.provider_instance_uuid, target.external_channel_id)
+        )
     card = render_task_card(_card_input(session, row), bundle)
     card_props = attach_button_contexts(
         card.props, subject_type="task", subject_id=task_id, now=now
