@@ -138,7 +138,6 @@ async def test_sse_resume_without_gaps_or_duplicates(app) -> None:  # type: igno
         assert ids == sorted(ids) and len(set(ids)) == 12
         events = [e for _, e in first + rest]
         assert len(set(events)) == 12
-        # a Last-Event-ID beyond the end yields nothing new until events arrive (bounded by max_even\
-            ts)
+        # a Last-Event-ID beyond the end yields nothing new until events arrive (bounded by max_ev
         resp = await client.get("/api/v1/events", params={"after": last_id}, headers=HEADERS)
         assert [i["event_id"] for i in resp.json()["items"]] == events[5:]
