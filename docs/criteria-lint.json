@@ -1,0 +1,2275 @@
+{
+  "tests": {
+    "V-P0-01": {
+      "criterion": "user-facing name is Agent-Colab",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-02": {
+      "criterion": "no specific Agent product/machine hard-coded as a core role",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-03": {
+      "criterion": "succeeds by the documented procedure",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-04": {
+      "criterion": "DB/server/web health pass",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-05": {
+      "criterion": "valid accepted, invalid stable error",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-06": {
+      "criterion": "explicit deny wins, deterministic result",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-07": {
+      "criterion": "rejected at DB and API",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-08": {
+      "criterion": "Mattermost, Telegram, Setup, Secret, Admin included",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-09": {
+      "criterion": "zero real credentials",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-10": {
+      "criterion": "every mandatory REQ linked to development and verification; every mandatory P/V ID back-linked to at least one REQ",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-11": {
+      "criterion": "schema matches v8 policy",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-12": {
+      "criterion": "starts without a DB, no secret values stored, rollback never regresses the setup stage",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-13": {
+      "criterion": "every state aggregate has type/id/seq/hash/idempotency scope; no projection-only permission decision",
+      "categories": [
+        "state",
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-14": {
+      "criterion": "every Test has at least one applicable numeric/state/error-code/hash-equality/invariant criterion; zero criteria judged only by words such as \"appropriately\", \"as far as possible\", \"per policy\"",
+      "categories": [
+        "numeric",
+        "state",
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [
+        "appropriately",
+        "as far as possible",
+        "per policy"
+      ],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-15": {
+      "criterion": "only entities of an earlier or the same Phase referenced; zero forward dependencies outside explicit contract stubs",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-16": {
+      "criterion": "schema exists for every resource/verb in development plan §7A.2, invalid 100% stable error, spike result recorded as possible/not possible with fallback",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-17": {
+      "criterion": "all fixtures pass; long-poll response within 30 s and redelivery of un-acked items after reconnect proven by spike logs",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-18": {
+      "criterion": "zero out-of-vocabulary permissions in Role fixtures, zero unclassified actions, quorum defaults match §7E",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-19": {
+      "criterion": "zero contradictions between Bridge thread mapping rules and spike results",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P0-20": {
+      "criterion": "every P-ID has a size and ≥ 1 Test ID, prerequisite DAG acyclic, every V-ID back-linked to ≥ 1 P-ID, every §25A row has ≥ 1 package, every §25 row has owner and deadline",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-01": {
+      "criterion": "aggregate seq/Event/Projection/response consistent",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-02": {
+      "criterion": "1 Event, same result; different scopes processed independently",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-03": {
+      "criterion": "`IDEMPOTENCY_CONFLICT`",
+      "categories": [
+        "error_code"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-04": {
+      "criterion": "unique monotonic seq per aggregate, zero loss",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-05": {
+      "criterion": "rejected at DB trigger/permission level",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-06": {
+      "criterion": "stable error, no domain Event",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-07": {
+      "criterion": "deny + redacted audit",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-08": {
+      "criterion": "credential identity preserved",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-09": {
+      "criterion": "rejected, state unchanged",
+      "categories": [
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-10": {
+      "criterion": "identical canonical snapshot hash",
+      "categories": [
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-11": {
+      "criterion": "resume without gaps or duplicates",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-12": {
+      "criterion": "API/DB reject, audit created",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-13": {
+      "criterion": "previous result immutable, new revision linked",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-14": {
+      "criterion": "`VERIFICATION_REQUIRED`",
+      "categories": [
+        "error_code"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-15": {
+      "criterion": "task/action fixed successfully; not-yet-active schedule/run handlers return stable `SUBJECT_TYPE_NOT_ACTIVE`",
+      "categories": [
+        "state",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-16": {
+      "criterion": "only the valid count succeeds atomically, zero over-execution",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-17": {
+      "criterion": "Task link/checksum consistent, unauthorized read rejected, Run link returns `SUBJECT_TYPE_NOT_ACTIVE`",
+      "categories": [
+        "error_code",
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-18": {
+      "criterion": "`DRAFT_PRE_VERIFICATION`, no final verdict, provenance linked",
+      "categories": [
+        "state",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-19": {
+      "criterion": "the first two produce ATTEMPT_FINALIZED with Task not completed; only PASSED allows a new FINALIZED and completion",
+      "categories": [
+        "numeric",
+        "state",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-20": {
+      "criterion": "undecryptable; Event row/ciphertext/content_hash byte-for-byte unchanged",
+      "categories": [
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-21": {
+      "criterion": "normal chain matches; every tamper detected 100%",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-22": {
+      "criterion": "only the ledger-correct count succeeds; identical after rebuild",
+      "categories": [
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-23": {
+      "criterion": "exactly one active Account per link, duplicates rejected, suspension blocks commands immediately",
+      "categories": [
+        "numeric",
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-24": {
+      "criterion": "creation-time snapshot/hash immutable; independence at that time reproducible",
+      "categories": [
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-25": {
+      "criterion": "rejected at DB or detected by anchor mismatch; existing revisions unchanged",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-26": {
+      "criterion": "same application handler and Policy result, identical stable error/Event shapes; zero bypass side effects",
+      "categories": [
+        "numeric",
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-27": {
+      "criterion": "only defined transitions succeed; invalid ones give stable errors with zero Event side effects; COMPLETED/CANCELLED immutable",
+      "categories": [
+        "numeric",
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-28": {
+      "criterion": "the first two rejected with `ACCEPTANCE_CRITERIA_REQUIRED`/`EVIDENCE_REQUIRED` and zero side effects; changes only via new revision + Event",
+      "categories": [
+        "numeric",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-29": {
+      "criterion": "exactly 3 redeliveries after 60-second ack timeout then EXPIRED; results exactly once; duplicate results ignored + audited",
+      "categories": [
+        "numeric",
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-30": {
+      "criterion": "cost_units match the pricing-version computation; unknown uses the default rate + `estimated`; missing usage without a reason is rejected",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-31": {
+      "criterion": "exact recipient set per rule, zero duplicates within the dedupe window, notification loss has zero effect on Task state",
+      "categories": [
+        "numeric",
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P1-32": {
+      "criterion": "all rejected with stable codes such as `SELF_APPROVAL_FORBIDDEN`; APPROVED only when quorum is met; zero Agent approvals for HIGH and above",
+      "categories": [
+        "numeric",
+        "state",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-01": {
+      "criterion": "Event created and thread reply",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-02": {
+      "criterion": "p95 ≤ 5 s; > 3 s is a warning metric, single maximum ≤ 15 s",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-03": {
+      "criterion": "only exact pairs delivered",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-04": {
+      "criterion": "zero loss/duplicates/echo",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-05": {
+      "criterion": "zero delivery, audit/metrics correct",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-06": {
+      "criterion": "parent mapping preserved",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-07": {
+      "criterion": "blocked by hop limit/dedupe",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-08": {
+      "criterion": "core continues, exactly-once delivery after recovery",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-09": {
+      "criterion": "401/403, no domain Event",
+      "categories": [
+        "numeric",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-10": {
+      "criterion": "zero canaries in normalized messages/Events/logs/destinations excluding the raw fixture",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-11": {
+      "criterion": "only allowed delivered, rest blocked",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-12": {
+      "criterion": "rejected in UI and API",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-13": {
+      "criterion": "only A stops, B unaffected",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-14": {
+      "criterion": "source/destination/origin unique and complete",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-15": {
+      "criterion": "end-to-end p95 ≤ 5 s, zero loss/duplicates",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-16": {
+      "criterion": "zero execution (read/reply only); only when allowed per channel, executed per permission mapping",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-17": {
+      "criterion": "rejected by default; allowed and recorded only with administrator exception",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-18": {
+      "criterion": "soft delete only; mapping/Artifact/Document references intact",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-19": {
+      "criterion": "4 default templates preserved; custom/template settings apply independently per channel",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-20": {
+      "criterion": "only the active link executes with Account permissions; others produce zero Task/Event side effects",
+      "categories": [
+        "numeric",
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-21": {
+      "criterion": "second link rejected and audited, existing link unchanged",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-22": {
+      "criterion": "links apply per instance only, zero cross-Account permission use",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-23": {
+      "criterion": "the former rolls back both; the latter yields exactly one destination side effect after replay; Event/Mapping/Outbox states consistent",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-24": {
+      "criterion": "valid creates Events; invalid gives ephemeral error with zero side effects; zero free-text command interpretation; omission targets the thread's Task; unlinked users get link/help only",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-25": {
+      "criterion": "one root post edited in place; one thread reply per transition; progress coalesced at 10 s; Artifact link above 16k; sub-Task link card",
+      "categories": [
+        "numeric"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-26": {
+      "criterion": "only authorized executes, exactly once; unauthorized rejected + audited; tampered signature 401/403 with zero domain Events",
+      "categories": [
+        "numeric",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-27": {
+      "criterion": "only valid becomes active; wrong/expired/reused rejected; 15-minute lockout from the 6th; command path becomes pending_admin",
+      "categories": [
+        "numeric",
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-28": {
+      "criterion": "override or `[agent-name]` fallback exact; payload injection ignored and audited",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-29": {
+      "criterion": "expired Messages DEK-destroyed with tombstones; zero deletions in held channels; provenance shows `REDACTED_BY_RETENTION`",
+      "categories": [
+        "numeric",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-30": {
+      "criterion": "displayed in the configured language; Event types/error codes/IDs untranslated",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P2-31": {
+      "criterion": "mention/DM/approval channel reached; digest batched hourly; zero when muted; Telegram relay matches Bridge policy",
+      "categories": [
+        "numeric",
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-01": {
+      "criterion": "all with unique identity/status",
+      "categories": [
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-02": {
+      "criterion": "allow/deny and explicit-deny precedence match the latest committed RoleVersion, zero stale allows",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-03": {
+      "criterion": "only the eligible intersection is selected; ties reproduced by ascending agent_id",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-04": {
+      "criterion": "`CAPABILITY_UNSUPPORTED`, zero side effects; one reselection if an eligible fallback exists, else Task WAITING",
+      "categories": [
+        "numeric",
+        "state",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-05": {
+      "criterion": "all 3 types pass every CS-01~12",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-06": {
+      "criterion": "zero duplicate side effects",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-07": {
+      "criterion": "ack within 10 s and cleanup within 60 s; Event/Task/Adapter states consistent",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-08": {
+      "criterion": "new requests blocked immediately",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-09": {
+      "criterion": "explicit deny wins",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-10": {
+      "criterion": "access denied",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-11": {
+      "criterion": "offline within 90 s; active/online within 30 s after the returning heartbeat",
+      "categories": [
+        "numeric",
+        "state"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-12": {
+      "criterion": "works via plugin/registration only, without core changes",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-13": {
+      "criterion": "same results/audit as the API",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-14": {
+      "criterion": "automatically excluded",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-15": {
+      "criterion": "server rejection with audit; requests within limits processed normally",
+      "categories": [
+        "numeric"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-16": {
+      "criterion": "same Account-based policy applied; alias/shared-credential verifiers all excluded",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-17": {
+      "criterion": "identical state and lifecycle history hash",
+      "categories": [
+        "state",
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-18": {
+      "criterion": "root/parent/provenance preserved; parent proceeds only when the defined count for each join is met; ALL cannot complete with an unverified required sub-Task",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-19": {
+      "criterion": "all stable errors with zero Task/Event side effects; within limits succeeds",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-20": {
+      "criterion": "reassigned to an eligible Agent with history preserved where policy allows; zero duplicates of already-started side effects; Task `WAITING` if no candidate",
+      "categories": [
+        "numeric",
+        "state",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-21": {
+      "criterion": "invalid auth 401 with zero side effects; poll answered within 30 s; un-acked redelivered after reconnect with zero duplicate results",
+      "categories": [
+        "numeric",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-22": {
+      "criterion": "tampered/reused rejected; retries per backoff; 1 side effect per receipt",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-23": {
+      "criterion": "valid reply becomes work_result; malformed yields ephemeral error with zero side effects; secret-requiring Task excludes the bot from eligibility",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-24": {
+      "criterion": "best-scored eligible chosen with criteria/evidence delivered; reassigned on non-acceptance; WAITING + Administrator notification when none",
+      "categories": [
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-25": {
+      "criterion": "one reassignment with history revision; WAITING when none; zero duplicate side effects via resume_context",
+      "categories": [
+        "numeric",
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P3-26": {
+      "criterion": "cost_units computations match, estimated marked, `usage_unavailable` ratio reported",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-01": {
+      "criterion": "configured/locked within 30 minutes",
+      "categories": [
+        "numeric"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-02": {
+      "criterion": "the first three cases 403 with zero bootstrap side effects; 429 for 15 minutes from the 6th request; one redacted AuditEvent per rejection",
+      "categories": [
+        "numeric",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-03": {
+      "criterion": "404/403, configuration unchanged",
+      "categories": [
+        "numeric",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-04": {
+      "criterion": "zero partial CONFIGURED/Owner records, zero disk secrets, one successful bootstrap after re-entry",
+      "categories": [
+        "numeric",
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-05": {
+      "criterion": "rejected before apply",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-06": {
+      "criterion": "redacted old/new versions linked",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-07": {
+      "criterion": "permissions/references/audit consistent",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-08": {
+      "criterion": "no privilege escalation via UI bypass",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-09": {
+      "criterion": "critical actions protected",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-10": {
+      "criterion": "zero plaintext values, keys separated",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-11": {
+      "criterion": "all rejected",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-12": {
+      "criterion": "each rejected with zero secret bytes; exactly one redacted denial AuditEvent per request",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-13": {
+      "criterion": "new resolves rejected immediately; existing leases/handles invalidated and cleaned up within 5 s",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-14": {
+      "criterion": "zero canaries",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-15": {
+      "criterion": "rejected, Human approval required",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-16": {
+      "criterion": "accurate status/alert within 60 s of probe failure",
+      "categories": [
+        "numeric",
+        "state"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-17": {
+      "criterion": "backups cannot be decrypted with runtime tokens",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-18": {
+      "criterion": "WCAG 2.1 AA automated violations 0, critical keyboard flows 100%, zero blockers",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-19": {
+      "criterion": "only the 29-minute session reconfigures; the 30-minute expiry and ordinary sessions get 403 with configuration unchanged; state LOCKED",
+      "categories": [
+        "numeric",
+        "state",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-20": {
+      "criterion": "System Owner/Administrator cannot perform critical actions without MFA",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-21": {
+      "criterion": "re-auth, time limit, immediate announcement, automatic post-hoc verification Task; Event immutability preserved",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-22": {
+      "criterion": "dual approval and waiting period enforced; tombstones/AuditEvents preserved",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-23": {
+      "criterion": "accurate results, secret redaction preserved",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-24": {
+      "criterion": "owner-only; only the token hash exists; zero secrets; only the LOCKED marker remains after migration",
+      "categories": [
+        "numeric",
+        "state",
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-25": {
+      "criterion": "only DEK destruction and display redaction occur; Event bytes/hash unchanged",
+      "categories": [
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-26": {
+      "criterion": "reflected in the common Account assignment; UI/API parity and audit consistent",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-27": {
+      "criterion": "only loopback open by default; remote allowed only when all four conditions hold; every other combination yields zero domain side effects",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-28": {
+      "criterion": "DB→key→Owner/TOTP order; zero pre-DB secrets on disk; zero false \"owner created\" displays on failure",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-29": {
+      "criterion": "zero decryption/reactivation of destroyed DEKs after tombstone reconciliation; Event hashes preserved",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-30": {
+      "criterion": "failures blocked before CONFIGURED; successful settings identical after restart as redacted values/secret references; zero real secret re-display",
+      "categories": [
+        "numeric",
+        "state",
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-31": {
+      "criterion": "env/fd injection succeeds; revoke invalidates and cleans up within 5 s; other-host handles rejected; zero values on disk/logs",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-32": {
+      "criterion": "503 + Retry-After; zero due Run claims; outbox drain continues; enter/exit audit and announcement",
+      "categories": [
+        "numeric",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P4-33": {
+      "criterion": "rejected without re-auth; APPROVED after re-auth; quorum shortfall shown accurately, same Human twice rejected, zero Agent approvals",
+      "categories": [
+        "numeric",
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-01": {
+      "criterion": "only the normative grammar stored; invalid gives stable errors",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-02": {
+      "criterion": "matches the reference computation in UTC/local",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-03": {
+      "criterion": "correct regardless of server timezone",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-04": {
+      "criterion": "zero Runs/Tasks, `DST_GAP` reason in preview/history",
+      "categories": [
+        "numeric",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-05": {
+      "criterion": "same occurrence_key, 1 Run at the first UTC instant, matches preview",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-06": {
+      "criterion": "1 row per `(schedule_id, occurrence_key)`",
+      "categories": [
+        "numeric"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-07": {
+      "criterion": "only one runner claims/creates the Task",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-08": {
+      "criterion": "zero duplicate Tasks/side effects",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-09": {
+      "criterion": "new Run `status=SKIPPED`, `error_code=SKIPPED_CONCURRENCY`",
+      "categories": [
+        "state",
+        "error_code"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-10": {
+      "criterion": "two Runs execute/track independently",
+      "categories": [
+        "numeric"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-11": {
+      "criterion": "normal case: new Run after cleanup; unconfirmed after 60 s: new Run `status=SKIPPED`, `error_code=SKIPPED_REPLACE_CANCEL_TIMEOUT`",
+      "categories": [
+        "numeric",
+        "state",
+        "error_code"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-12": {
+      "criterion": "missed occurrences not executed",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-13": {
+      "criterion": "only the most recent occurrence, exactly once, with its original scheduled_for",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-14": {
+      "criterion": "only occurrences within the window executed oldest first up to the limit, with a warning",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-15": {
+      "criterion": "`status=SKIPPED`, `error_code=SKIPPED_POLICY`, zero Tasks",
+      "categories": [
+        "numeric",
+        "state",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-16": {
+      "criterion": "without fallback policy `status=SKIPPED`, `error_code=SKIPPED_AGENT_UNAVAILABLE`; capability query selects only eligible substitutes",
+      "categories": [
+        "state",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-17": {
+      "criterion": "short lease, revoked after end, zero leakage",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-18": {
+      "criterion": "only per-Run or validity/count-limited Schedule approvals allowed; zero execution without or after exhaustion",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-19": {
+      "criterion": "at most 3 attempts at 1/5/25 s with allowed jitter; permanent FAILED after 1 attempt",
+      "categories": [
+        "numeric",
+        "state"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-20": {
+      "criterion": "cancel ack within 10 s and cleanup within 60 s, or TIMED_OUT; defined Events and lease/secret cleanup",
+      "categories": [
+        "numeric",
+        "error_code"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-21": {
+      "criterion": "the former rejected, the latter creates a separate manual Run",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-22": {
+      "criterion": "invalid transitions rejected; existing Run version/hash unchanged; only new occurrences use the current version",
+      "categories": [
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-23": {
+      "criterion": "matches the designated Mattermost channel and Bridge policy",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-24": {
+      "criterion": "exactly one runner recovers within configured lease expiry + 2× poll interval, zero duplicate Tasks",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-25": {
+      "criterion": "due/run/lag/error values match",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-26": {
+      "criterion": "rejected by schema/policy",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-27": {
+      "criterion": "p95 ≤ 60 s; alert fires above",
+      "categories": [
+        "numeric"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-28": {
+      "criterion": "99/100 allowed; 101 rejected before the next side effect with `BUDGET_EXCEEDED` and alert",
+      "categories": [
+        "numeric",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-29": {
+      "criterion": "preview/Runs match Vixie OR semantics",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-30": {
+      "criterion": "1 consumption, 1 execution, used_count consistent",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-31": {
+      "criterion": "the former CANCELLED immediately, the latter REQUESTED→CANCELLED with defined Events and cleanup",
+      "categories": [
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-32": {
+      "criterion": "conflict error; existing state/Events/history unchanged",
+      "categories": [
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-33": {
+      "criterion": "the Run executes the original version with only current authz/secret rechecked; new Runs use the new version",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-34": {
+      "criterion": "exactly one new Run with `retry_of_run_id`; original/attempts/history unchanged",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-35": {
+      "criterion": "1 scheduled occurrence and 1 manual Run; zero duplicates on idempotent retries of each",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-36": {
+      "criterion": "FKs/handlers active; wrong workspace/target rejected; bounded consume atomicity preserved",
+      "categories": [
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P5-37": {
+      "criterion": "usage_records Run aggregation matches; daily overrun makes the new Run `SKIPPED` with `BUDGET_EXCEEDED` and an alert",
+      "categories": [
+        "state",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-01": {
+      "criterion": "rejected",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-02": {
+      "criterion": "zero execution",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-03": {
+      "criterion": "pause/guidance requested",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-04": {
+      "criterion": "bidirectional provenance",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-05": {
+      "criterion": "hash matches, ACL preserved",
+      "categories": [
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-06": {
+      "criterion": "blocked with redacted audit",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-07": {
+      "criterion": "100% of mandatory sections present",
+      "categories": [
+        "numeric"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-08": {
+      "criterion": "includes arguments/alternatives/decisions/limitations",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-09": {
+      "criterion": "includes Run status/Tasks/Artifacts/limitations",
+      "categories": [
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-10": {
+      "criterion": "zero omissions/distortions of important Events",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-11": {
+      "criterion": "every field has a value or a standard `UNAVAILABLE_<REASON>`; zero omissions",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-12": {
+      "criterion": "result/findings/residual risk consistent",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-13": {
+      "criterion": "zero canaries in canonical/published documents and logs excluding the raw fixture",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-14": {
+      "criterion": "zero broken/missing",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-15": {
+      "criterion": "version/checksum consistent",
+      "categories": [
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-16": {
+      "criterion": "canonical preserved, exactly once after recovery",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-17": {
+      "criterion": "new version, original and reason kept",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-18": {
+      "criterion": "rejected",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-19": {
+      "criterion": "`COMPLETION_PREREQUISITE_MISSING` if either is missing, state unchanged",
+      "categories": [
+        "state",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-20": {
+      "criterion": "≥ 19/20 automatic drafts per type, a stable reason code for every failure",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-21": {
+      "criterion": "contract tests pass, content matches canonical",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-22": {
+      "criterion": "zero execution, `EXPIRED` state and non-reusability confirmed",
+      "categories": [
+        "numeric",
+        "state",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-23": {
+      "criterion": "no final verdict in the draft; the finalized new version after PASSED contains results and residual risks; draft immutable",
+      "categories": [
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-24": {
+      "criterion": "ATTEMPT_FINALIZED preserved; Task completion/publish gate closed; FINALIZED only after PASSED on recheck",
+      "categories": [
+        "state",
+        "error_code",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-25": {
+      "criterion": "only valid subjects whose Phase has arrived link with ACL; wrong subjects give stable errors with zero side effects",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-26": {
+      "criterion": "order reproducible; consecutive utterance rejected; PAUSED + guidance request on overrun; resumes after the resume Event",
+      "categories": [
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-27": {
+      "criterion": "summarizer prefers a non-participant Agent; zero posting before facilitator approval; Decision→Task bidirectional provenance with mandatory criteria",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-28": {
+      "criterion": "all rejected; skeleton-only draft valid; zero overwrites of skeleton facts by narrative",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P6-29": {
+      "criterion": "LOW/MEDIUM APPROVED; HIGH shows web re-auth guidance and does not approve; self rejected + audited",
+      "categories": [
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-01": {
+      "criterion": "succeeds per runbook",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-02": {
+      "criterion": "20 consecutive successes",
+      "categories": [
+        "numeric"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-03": {
+      "criterion": "zero Event/Run loss/duplicates, 5xx < 1%, read/write p95 ≤ 300/500 ms",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-04": {
+      "criterion": "zero leaks/duplicates/stuck",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-05": {
+      "criterion": "core writes continue, related outbox preserved, DEGRADED within 60 s, exactly-once drain within 5 minutes of recovery",
+      "categories": [
+        "numeric",
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-06": {
+      "criterion": "write API 503 and readiness fail within 30 s, zero successful responses, zero Event/hash corruption after recovery",
+      "categories": [
+        "numeric",
+        "error_code",
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-07": {
+      "criterion": "within RPO 24 h/RTO 4 h; ScheduleVersion/Run/Event/Approval/ExternalIdentity hash/state equal",
+      "categories": [
+        "numeric",
+        "state",
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-08": {
+      "criterion": "identical snapshot",
+      "categories": [
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-09": {
+      "criterion": "data/settings/secret refs/Schedules preserved",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-10": {
+      "criterion": "app rollback or forward-fix completes within RTO 4 h; schema/data hashes and migration ledger consistent",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-11": {
+      "criterion": "zero high/critical",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-12": {
+      "criterion": "old credentials rejected within 60 s of confirming the new ones, zero message/Task loss or duplicates",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-13": {
+      "criterion": "100% of detection/isolation/recovery/post-verification checkpoints per runbook, zero real secrets used",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-14": {
+      "criterion": "defined alerts fire within 60 s; dashboard state/cause/correlation ID 100% consistent",
+      "categories": [
+        "numeric",
+        "state",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-15": {
+      "criterion": "immutable digest/SBOM/signature",
+      "categories": [
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-16": {
+      "criterion": "zero missing, zero secrets",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-17": {
+      "criterion": "owner/deadline/acceptor clear",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-18": {
+      "criterion": "explicit approval recorded before any deployment action; zero deployment without it",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-19": {
+      "criterion": "retention/expiry per settings without real long waits; identical to the production path after clock reset",
+      "categories": [
+        "hash_equality",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-20": {
+      "criterion": "service closed until tombstone reconciliation; zero decryption/reactivation of destroyed keys afterwards",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-21": {
+      "criterion": "each runbook has detection/isolation/recovery/post-verification procedures; every critical alert links to a runbook",
+      "categories": [
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    },
+    "V-P7-22": {
+      "criterion": "10 consecutive successes; cards/threads/notifications correct at every step",
+      "categories": [
+        "numeric",
+        "invariant"
+      ],
+      "vague_words": [],
+      "deterministic": true,
+      "vague_only": false
+    }
+  },
+  "problems": []
+}

@@ -1,0 +1,5843 @@
+{
+  "requirements": {
+    "REQ-AGENT-001": {
+      "text": "Generic Agent registration and lifecycle",
+      "packages": [
+        "P3-01"
+      ],
+      "tests": [
+        "V-P3-01",
+        "V-P3-08"
+      ]
+    },
+    "REQ-AGENT-002": {
+      "text": "Role/Capability with explicit-deny precedence",
+      "packages": [
+        "P3-02"
+      ],
+      "tests": [
+        "V-P3-02",
+        "V-P3-09"
+      ]
+    },
+    "REQ-AGENT-003": {
+      "text": "Conformance of 3 different Adapter types",
+      "packages": [
+        "P3-03",
+        "P3-04",
+        "P3-05"
+      ],
+      "tests": [
+        "V-P3-05",
+        "V-P3-12"
+      ]
+    },
+    "REQ-AGENT-004": {
+      "text": "Server-enforced Agent Limits",
+      "packages": [
+        "P3-08"
+      ],
+      "tests": [
+        "V-P3-15"
+      ]
+    },
+    "REQ-CHAN-001": {
+      "text": "Mattermost-first conversation channel",
+      "packages": [
+        "P2-01"
+      ],
+      "tests": [
+        "V-P2-01"
+      ]
+    },
+    "REQ-CHAN-002": {
+      "text": "4 channel templates + custom",
+      "packages": [
+        "P2-01",
+        "P2-02"
+      ],
+      "tests": [
+        "V-P2-01",
+        "V-P2-19"
+      ]
+    },
+    "REQ-CHAN-003": {
+      "text": "Soft delete after channel archive",
+      "packages": [
+        "P2-09"
+      ],
+      "tests": [
+        "V-P2-18"
+      ]
+    },
+    "REQ-BRDG-001": {
+      "text": "Per-channel Bridge isolation",
+      "packages": [
+        "P2-05"
+      ],
+      "tests": [
+        "V-P2-03",
+        "V-P2-13"
+      ]
+    },
+    "REQ-BRDG-002": {
+      "text": "echo/loop/dedupe blocking",
+      "packages": [
+        "P2-06"
+      ],
+      "tests": [
+        "V-P2-04",
+        "V-P2-07"
+      ]
+    },
+    "REQ-BRDG-003": {
+      "text": "Duplicate Telegram target prohibition and exception",
+      "packages": [
+        "P2-05"
+      ],
+      "tests": [
+        "V-P2-17"
+      ]
+    },
+    "REQ-BRDG-004": {
+      "text": "Telegram commands read/reply only by default",
+      "packages": [
+        "P2-08"
+      ],
+      "tests": [
+        "V-P2-16"
+      ]
+    },
+    "REQ-BRDG-005": {
+      "text": "Bridge delivery p95 ≤ 5 s",
+      "packages": [
+        "P2-03",
+        "P2-06"
+      ],
+      "tests": [
+        "V-P2-15"
+      ]
+    },
+    "REQ-BRDG-006": {
+      "text": "External identity verification and Account linking",
+      "packages": [
+        "P1-05",
+        "P2-02",
+        "P2-08"
+      ],
+      "tests": [
+        "V-P1-23",
+        "V-P2-20",
+        "V-P2-21",
+        "V-P2-22"
+      ]
+    },
+    "REQ-EVNT-001": {
+      "text": "Generic aggregate Events, append-only, idempotency, immutable bytes",
+      "packages": [
+        "P0-03",
+        "P1-01",
+        "P1-02"
+      ],
+      "tests": [
+        "V-P0-13",
+        "V-P1-01",
+        "V-P1-02",
+        "V-P1-03",
+        "V-P1-04",
+        "V-P1-05",
+        "V-P1-06",
+        "V-P1-20",
+        "V-P1-21",
+        "V-P1-22",
+        "V-P4-25"
+      ]
+    },
+    "REQ-EVNT-002": {
+      "text": "Projection rebuild equivalence",
+      "packages": [
+        "P1-04"
+      ],
+      "tests": [
+        "V-P1-10",
+        "V-P7-08"
+      ]
+    },
+    "REQ-EVNT-003": {
+      "text": "Event/Audit/Verification hash chain and tamper detection",
+      "packages": [
+        "P1-01",
+        "P1-02",
+        "P1-06"
+      ],
+      "tests": [
+        "V-P1-21",
+        "V-P1-25",
+        "V-P7-16"
+      ]
+    },
+    "REQ-VRFY-001": {
+      "text": "Effective identity separation and snapshot of implementer/verifier",
+      "packages": [
+        "P0-07",
+        "P1-06",
+        "P3-02"
+      ],
+      "tests": [
+        "V-P0-07",
+        "V-P1-12",
+        "V-P1-24",
+        "V-P3-14",
+        "V-P3-16"
+      ]
+    },
+    "REQ-VRFY-002": {
+      "text": "Immutable verification revisions",
+      "packages": [
+        "P1-06"
+      ],
+      "tests": [
+        "V-P1-13",
+        "V-P1-25"
+      ]
+    },
+    "REQ-APRV-001": {
+      "text": "Approval subject, scope, expiry, bounded use",
+      "packages": [
+        "P1-08",
+        "P6-01"
+      ],
+      "tests": [
+        "V-P1-15",
+        "V-P1-16",
+        "V-P5-30",
+        "V-P6-01",
+        "V-P6-22"
+      ]
+    },
+    "REQ-APRV-002": {
+      "text": "Zero unapproved high-risk execution",
+      "packages": [
+        "P1-08",
+        "P5-04",
+        "P6-01"
+      ],
+      "tests": [
+        "V-P5-18",
+        "V-P6-02"
+      ]
+    },
+    "REQ-SCRT-001": {
+      "text": "No secret value exposure",
+      "packages": [
+        "P4-05",
+        "P4-06",
+        "P4-07"
+      ],
+      "tests": [
+        "V-P4-10",
+        "V-P4-14"
+      ]
+    },
+    "REQ-SCRT-002": {
+      "text": "Scoped lease/TTL/revoke",
+      "packages": [
+        "P4-06"
+      ],
+      "tests": [
+        "V-P4-11",
+        "V-P4-12",
+        "V-P4-13"
+      ]
+    },
+    "REQ-SCRT-003": {
+      "text": "LLM exposure control",
+      "packages": [
+        "P4-06"
+      ],
+      "tests": [
+        "V-P4-15"
+      ]
+    },
+    "REQ-SETP-001": {
+      "text": "Wizard clean install within 30 minutes",
+      "packages": [
+        "P0-09",
+        "P4-03"
+      ],
+      "tests": [
+        "V-P0-12",
+        "V-P4-01",
+        "V-P4-24"
+      ]
+    },
+    "REQ-SETP-002": {
+      "text": "Bootstrap lock, token, pre-DB store defense",
+      "packages": [
+        "P0-05",
+        "P0-09",
+        "P4-03"
+      ],
+      "tests": [
+        "V-P0-12",
+        "V-P4-02",
+        "V-P4-03",
+        "V-P4-24"
+      ]
+    },
+    "REQ-SETP-003": {
+      "text": "Legitimate reconfiguration path",
+      "packages": [
+        "P4-03"
+      ],
+      "tests": [
+        "V-P4-19"
+      ]
+    },
+    "REQ-SETP-004": {
+      "text": "Owner/Administrator TOTP MFA mandatory, OIDC optional",
+      "packages": [
+        "P4-09"
+      ],
+      "tests": [
+        "V-P4-20"
+      ]
+    },
+    "REQ-SETP-005": {
+      "text": "Setup loopback/HTTPS-mTLS boundary, DB→key→Owner order, integration preflight",
+      "packages": [
+        "P0-06",
+        "P0-09",
+        "P4-03"
+      ],
+      "tests": [
+        "V-P0-12",
+        "V-P4-27",
+        "V-P4-28",
+        "V-P4-30"
+      ]
+    },
+    "REQ-ADMN-001": {
+      "text": "100% web completion of Account/Agent/Role management",
+      "packages": [
+        "P3-02",
+        "P3-07",
+        "P4-01"
+      ],
+      "tests": [
+        "V-P3-13",
+        "V-P3-16",
+        "V-P4-07",
+        "V-P4-26"
+      ]
+    },
+    "REQ-ADMN-002": {
+      "text": "UI/API authz parity",
+      "packages": [
+        "P4-08"
+      ],
+      "tests": [
+        "V-P4-08"
+      ]
+    },
+    "REQ-ADMN-003": {
+      "text": "Break-glass procedure",
+      "packages": [
+        "P4-10"
+      ],
+      "tests": [
+        "V-P4-21"
+      ]
+    },
+    "REQ-ADMN-004": {
+      "text": "Hard-delete workflow",
+      "packages": [
+        "P4-11"
+      ],
+      "tests": [
+        "V-P4-22"
+      ]
+    },
+    "REQ-ADMN-005": {
+      "text": "Audit search/export",
+      "packages": [
+        "P4-02"
+      ],
+      "tests": [
+        "V-P4-23"
+      ]
+    },
+    "REQ-SCHD-001": {
+      "text": "Zero duplicate Runs for the same time",
+      "packages": [
+        "P5-03"
+      ],
+      "tests": [
+        "V-P5-06",
+        "V-P5-07",
+        "V-P5-08"
+      ]
+    },
+    "REQ-SCHD-002": {
+      "text": "IANA timezone and DST handling",
+      "packages": [
+        "P5-02"
+      ],
+      "tests": [
+        "V-P5-02",
+        "V-P5-03",
+        "V-P5-04",
+        "V-P5-05"
+      ]
+    },
+    "REQ-SCHD-003": {
+      "text": "Concurrency and missed-run policies",
+      "packages": [
+        "P5-05"
+      ],
+      "tests": [
+        "V-P5-09",
+        "V-P5-10",
+        "V-P5-11",
+        "V-P5-12",
+        "V-P5-13",
+        "V-P5-14"
+      ]
+    },
+    "REQ-SCHD-004": {
+      "text": "Re-authorization on every Run",
+      "packages": [
+        "P5-04"
+      ],
+      "tests": [
+        "V-P5-15",
+        "V-P5-16",
+        "V-P5-18"
+      ]
+    },
+    "REQ-SCHD-005": {
+      "text": "Shell commands forbidden",
+      "packages": [
+        "P5-01"
+      ],
+      "tests": [
+        "V-P5-26"
+      ]
+    },
+    "REQ-SCHD-006": {
+      "text": "Start delay p95 ≤ 60 s",
+      "packages": [
+        "P5-10"
+      ],
+      "tests": [
+        "V-P5-27"
+      ]
+    },
+    "REQ-SCHD-007": {
+      "text": "Budget enforcement",
+      "packages": [
+        "P5-10"
+      ],
+      "tests": [
+        "V-P5-28"
+      ]
+    },
+    "REQ-SCHD-008": {
+      "text": "Normative cron grammar and DOM/DOW OR",
+      "packages": [
+        "P0-08",
+        "P5-02"
+      ],
+      "tests": [
+        "V-P0-11",
+        "V-P5-01",
+        "V-P5-29"
+      ]
+    },
+    "REQ-SCHD-009": {
+      "text": "Individual Run cancel state, Events, immutable terminal",
+      "packages": [
+        "P5-01",
+        "P5-06"
+      ],
+      "tests": [
+        "V-P5-20",
+        "V-P5-31",
+        "V-P5-32"
+      ]
+    },
+    "REQ-SCHD-010": {
+      "text": "Occurrence-key based DST duplicate prevention",
+      "packages": [
+        "P0-08",
+        "P5-01",
+        "P5-02",
+        "P5-03"
+      ],
+      "tests": [
+        "V-P5-05",
+        "V-P5-06",
+        "V-P5-35"
+      ]
+    },
+    "REQ-SCHD-011": {
+      "text": "Immutable ScheduleVersion and status lifecycle",
+      "packages": [
+        "P5-01",
+        "P5-03",
+        "P5-08"
+      ],
+      "tests": [
+        "V-P5-22",
+        "V-P5-33"
+      ]
+    },
+    "REQ-SCHD-012": {
+      "text": "Bounded retry, REPLACE, manual retry",
+      "packages": [
+        "P5-05",
+        "P5-06"
+      ],
+      "tests": [
+        "V-P5-11",
+        "V-P5-19",
+        "V-P5-20",
+        "V-P5-24",
+        "V-P5-34"
+      ]
+    },
+    "REQ-SCHD-013": {
+      "text": "Phase 5 Schedule/Run subject activation",
+      "packages": [
+        "P1-08",
+        "P1-09",
+        "P5-01",
+        "P5-04"
+      ],
+      "tests": [
+        "V-P1-15",
+        "V-P1-17",
+        "V-P5-30",
+        "V-P5-36"
+      ]
+    },
+    "REQ-DOCS-001": {
+      "text": "Mandatory structure, provenance, two-stage lifecycle 100%",
+      "packages": [
+        "P1-10",
+        "P6-04",
+        "P6-05"
+      ],
+      "tests": [
+        "V-P1-18",
+        "V-P1-19",
+        "V-P6-07",
+        "V-P6-08",
+        "V-P6-09",
+        "V-P6-10",
+        "V-P6-11",
+        "V-P6-12",
+        "V-P6-13",
+        "V-P6-14",
+        "V-P6-23"
+      ]
+    },
+    "REQ-DOCS-002": {
+      "text": "Document generation rate ≥ 95%",
+      "packages": [
+        "P6-04"
+      ],
+      "tests": [
+        "V-P6-20"
+      ]
+    },
+    "REQ-DOCS-003": {
+      "text": "Git-compatible publisher",
+      "packages": [
+        "P6-06"
+      ],
+      "tests": [
+        "V-P6-15"
+      ]
+    },
+    "REQ-DOCS-004": {
+      "text": "One optional connector verified",
+      "packages": [
+        "P6-06"
+      ],
+      "tests": [
+        "V-P6-21"
+      ]
+    },
+    "REQ-DOCS-005": {
+      "text": "Separation of failed/blocked attempt documents and PASS completion documents",
+      "packages": [
+        "P1-10",
+        "P6-04",
+        "P6-07"
+      ],
+      "tests": [
+        "V-P1-19",
+        "V-P6-19",
+        "V-P6-23",
+        "V-P6-24"
+      ]
+    },
+    "REQ-OPS-001": {
+      "text": "Backup/restore consistency",
+      "packages": [
+        "P7-03"
+      ],
+      "tests": [
+        "V-P7-07"
+      ]
+    },
+    "REQ-OPS-002": {
+      "text": "Retention setting applied",
+      "packages": [
+        "P7-03"
+      ],
+      "tests": [
+        "V-P7-19"
+      ]
+    },
+    "REQ-OPS-003": {
+      "text": "20 consecutive E2E, zero loss",
+      "packages": [
+        "P7-01",
+        "P7-02",
+        "P7-03",
+        "P7-04"
+      ],
+      "tests": [
+        "V-P7-02",
+        "V-P7-03",
+        "V-P7-04"
+      ]
+    },
+    "REQ-OPS-004": {
+      "text": "Zero high/critical security findings",
+      "packages": [
+        "P7-05"
+      ],
+      "tests": [
+        "V-P7-11"
+      ]
+    },
+    "REQ-OPS-005": {
+      "text": "Zero hard-delete resurrection from backups",
+      "packages": [
+        "P4-11",
+        "P7-03"
+      ],
+      "tests": [
+        "V-P4-29",
+        "V-P7-07",
+        "V-P7-20"
+      ]
+    },
+    "REQ-OPS-006": {
+      "text": "Default RPO 24 h / RTO 4 h",
+      "packages": [
+        "P7-03"
+      ],
+      "tests": [
+        "V-P7-07"
+      ]
+    },
+    "REQ-OPS-007": {
+      "text": "Defined normal and peak load targets",
+      "packages": [
+        "P5-10",
+        "P7-04"
+      ],
+      "tests": [
+        "V-P5-27",
+        "V-P7-03",
+        "V-P7-04"
+      ]
+    },
+    "REQ-BASE-001": {
+      "text": "Product name, genericity, adopted baseline",
+      "packages": [
+        "P0-02"
+      ],
+      "tests": [
+        "V-P0-01",
+        "V-P0-02"
+      ]
+    },
+    "REQ-BUILD-001": {
+      "text": "Clean build and Compose reproducibility",
+      "packages": [
+        "P0-01",
+        "P0-04"
+      ],
+      "tests": [
+        "V-P0-03",
+        "V-P0-04"
+      ]
+    },
+    "REQ-CNTR-001": {
+      "text": "Determinism of schema, policy, and Task transitions",
+      "packages": [
+        "P0-03",
+        "P1-03",
+        "P1-04"
+      ],
+      "tests": [
+        "V-P0-05",
+        "V-P0-06",
+        "V-P1-07",
+        "V-P1-09",
+        "V-P1-14",
+        "V-P1-27"
+      ]
+    },
+    "REQ-THRT-001": {
+      "text": "Full trust-boundary threat model, zero credentials",
+      "packages": [
+        "P0-06"
+      ],
+      "tests": [
+        "V-P0-08",
+        "V-P0-09"
+      ]
+    },
+    "REQ-TRAC-001": {
+      "text": "Semantic traceability, deterministic criteria, Phase DAG",
+      "packages": [
+        "P0-02"
+      ],
+      "tests": [
+        "V-P0-10",
+        "V-P0-14",
+        "V-P0-15"
+      ]
+    },
+    "REQ-IDNT-001": {
+      "text": "Credential-based actor, anti-spoofing",
+      "packages": [
+        "P1-05"
+      ],
+      "tests": [
+        "V-P1-08"
+      ]
+    },
+    "REQ-API-001": {
+      "text": "Common REST/MCP commands, schema, ACL, idempotency, SSE resume",
+      "packages": [
+        "P1-07"
+      ],
+      "tests": [
+        "V-P1-11",
+        "V-P1-26"
+      ]
+    },
+    "REQ-BRDG-007": {
+      "text": "Direction, thread, mapping, transactional outbox, outage recovery",
+      "packages": [
+        "P2-03",
+        "P2-04",
+        "P2-05",
+        "P2-06"
+      ],
+      "tests": [
+        "V-P2-02",
+        "V-P2-05",
+        "V-P2-06",
+        "V-P2-08",
+        "V-P2-14",
+        "V-P2-23"
+      ]
+    },
+    "REQ-BRDG-008": {
+      "text": "Callback, DLP, attachment, administrative permissions",
+      "packages": [
+        "P2-04",
+        "P2-06",
+        "P2-07"
+      ],
+      "tests": [
+        "V-P2-09",
+        "V-P2-10",
+        "V-P2-11",
+        "V-P2-12"
+      ]
+    },
+    "REQ-AGENT-005": {
+      "text": "Deterministic routing, delivery, cancel, membership, heartbeat lifecycle",
+      "packages": [
+        "P3-03",
+        "P3-04",
+        "P3-05",
+        "P3-06"
+      ],
+      "tests": [
+        "V-P3-03",
+        "V-P3-04",
+        "V-P3-06",
+        "V-P3-07",
+        "V-P3-10",
+        "V-P3-11",
+        "V-P3-17"
+      ]
+    },
+    "REQ-AGENT-006": {
+      "text": "Multi-Agent sub-Tasks, fan-out/join, cycle prevention, reassignment",
+      "packages": [
+        "P3-09"
+      ],
+      "tests": [
+        "V-P3-18",
+        "V-P3-19",
+        "V-P3-20"
+      ]
+    },
+    "REQ-SETT-001": {
+      "text": "Settings validation, diff, audit, rollback",
+      "packages": [
+        "P4-04"
+      ],
+      "tests": [
+        "V-P4-04",
+        "V-P4-05",
+        "V-P4-06"
+      ]
+    },
+    "REQ-ADMN-006": {
+      "text": "Web security, dashboard truth, accessibility",
+      "packages": [
+        "P4-02",
+        "P4-08"
+      ],
+      "tests": [
+        "V-P4-09",
+        "V-P4-16",
+        "V-P4-18"
+      ]
+    },
+    "REQ-OPS-008": {
+      "text": "Backup key separation, credential rotation, provider outage recovery",
+      "packages": [
+        "P7-02",
+        "P7-03",
+        "P7-05"
+      ],
+      "tests": [
+        "V-P4-17",
+        "V-P7-05",
+        "V-P7-06",
+        "V-P7-12",
+        "V-P7-13",
+        "V-P7-14"
+      ]
+    },
+    "REQ-SCHD-014": {
+      "text": "Per-Run Secret lease, Run now permission",
+      "packages": [
+        "P4-06",
+        "P5-04",
+        "P5-08"
+      ],
+      "tests": [
+        "V-P5-17",
+        "V-P5-21"
+      ]
+    },
+    "REQ-SCHD-015": {
+      "text": "Channel notification, Run history, metric truth",
+      "packages": [
+        "P5-07",
+        "P5-08",
+        "P5-09"
+      ],
+      "tests": [
+        "V-P5-23",
+        "V-P5-25"
+      ]
+    },
+    "REQ-BRST-001": {
+      "text": "Brainstorm limits, Decision, Taskify provenance",
+      "packages": [
+        "P6-02"
+      ],
+      "tests": [
+        "V-P6-03",
+        "V-P6-04"
+      ]
+    },
+    "REQ-ARTF-001": {
+      "text": "Artifact integrity, malicious input, ACL, generic subject links",
+      "packages": [
+        "P1-09",
+        "P5-01",
+        "P6-03"
+      ],
+      "tests": [
+        "V-P1-17",
+        "V-P5-36",
+        "V-P6-05",
+        "V-P6-06",
+        "V-P6-25"
+      ]
+    },
+    "REQ-DOCS-006": {
+      "text": "Publisher outage, version, permissions",
+      "packages": [
+        "P6-06",
+        "P6-07"
+      ],
+      "tests": [
+        "V-P6-16",
+        "V-P6-17",
+        "V-P6-18"
+      ]
+    },
+    "REQ-DOCS-007": {
+      "text": "Schedule recurring summary",
+      "packages": [
+        "P6-08"
+      ],
+      "tests": [
+        "V-P6-09"
+      ]
+    },
+    "REQ-RELS-001": {
+      "text": "Clean install, upgrade, forward-fix, signed release",
+      "packages": [
+        "P7-06",
+        "P7-07"
+      ],
+      "tests": [
+        "V-P7-01",
+        "V-P7-09",
+        "V-P7-10",
+        "V-P7-15"
+      ]
+    },
+    "REQ-RELS-002": {
+      "text": "Evidence, residual risk, deployment approval",
+      "packages": [
+        "P7-07"
+      ],
+      "tests": [
+        "V-P7-17",
+        "V-P7-18"
+      ]
+    },
+    "REQ-MMUX-001": {
+      "text": "`/colab` command grammar, Task thread, card rendering",
+      "packages": [
+        "P0-10",
+        "P2-10",
+        "P2-11"
+      ],
+      "tests": [
+        "V-P0-16",
+        "V-P2-24",
+        "V-P2-25"
+      ]
+    },
+    "REQ-MMUX-002": {
+      "text": "Interactive action security and Agent identity display",
+      "packages": [
+        "P2-12",
+        "P2-14"
+      ],
+      "tests": [
+        "V-P2-26",
+        "V-P2-28"
+      ]
+    },
+    "REQ-MMUX-003": {
+      "text": "Mattermost user link challenge",
+      "packages": [
+        "P2-13"
+      ],
+      "tests": [
+        "V-P2-27"
+      ]
+    },
+    "REQ-MMUX-004": {
+      "text": "Human-only path acceptance",
+      "packages": [
+        "P7-09"
+      ],
+      "tests": [
+        "V-P7-22"
+      ]
+    },
+    "REQ-AGENT-007": {
+      "text": "Work item delivery model, 3 Adapter flows, MCP transport",
+      "packages": [
+        "P0-11",
+        "P1-12",
+        "P3-10",
+        "P3-11",
+        "P3-12"
+      ],
+      "tests": [
+        "V-P0-17",
+        "V-P1-29",
+        "V-P3-21",
+        "V-P3-22",
+        "V-P3-23"
+      ]
+    },
+    "REQ-AGENT-008": {
+      "text": "Accept timeout and re-routing",
+      "packages": [
+        "P3-14"
+      ],
+      "tests": [
+        "V-P3-25"
+      ]
+    },
+    "REQ-AGENT-009": {
+      "text": "Conformance suite CS-01~12",
+      "packages": [
+        "P3-05"
+      ],
+      "tests": [
+        "V-P3-05"
+      ]
+    },
+    "REQ-COST-001": {
+      "text": "Usage reporting, cost_units, pricing, budget enforcement",
+      "packages": [
+        "P1-14",
+        "P3-08",
+        "P3-15",
+        "P5-10"
+      ],
+      "tests": [
+        "V-P1-30",
+        "V-P3-15",
+        "V-P3-26",
+        "V-P5-28",
+        "V-P5-37"
+      ]
+    },
+    "REQ-TASK-001": {
+      "text": "Mandatory acceptance criteria and evidence linking",
+      "packages": [
+        "P1-11"
+      ],
+      "tests": [
+        "V-P1-28"
+      ]
+    },
+    "REQ-VRFY-003": {
+      "text": "Automatic Verifier assignment, delivery, timeout reassignment",
+      "packages": [
+        "P3-13"
+      ],
+      "tests": [
+        "V-P3-24"
+      ]
+    },
+    "REQ-APRV-003": {
+      "text": "Approver eligibility, self-approval ban, quorum, expiry escalation, re-authentication",
+      "packages": [
+        "P1-08",
+        "P4-14",
+        "P6-01"
+      ],
+      "tests": [
+        "V-P1-32",
+        "V-P4-33",
+        "V-P6-29"
+      ]
+    },
+    "REQ-BRST-002": {
+      "text": "Brainstorm turn engine, facilitator, limits",
+      "packages": [
+        "P6-02"
+      ],
+      "tests": [
+        "V-P6-26"
+      ]
+    },
+    "REQ-BRST-003": {
+      "text": "summary/decision/taskify",
+      "packages": [
+        "P6-09"
+      ],
+      "tests": [
+        "V-P6-27"
+      ]
+    },
+    "REQ-DOCS-008": {
+      "text": "Narrative layer citations and skeleton determinism",
+      "packages": [
+        "P1-10",
+        "P6-10"
+      ],
+      "tests": [
+        "V-P6-28"
+      ]
+    },
+    "REQ-SCRT-004": {
+      "text": "Secret sidecar",
+      "packages": [
+        "P4-12"
+      ],
+      "tests": [
+        "V-P4-31"
+      ]
+    },
+    "REQ-NOTF-001": {
+      "text": "Notification rules, delivery, mute/digest",
+      "packages": [
+        "P1-13",
+        "P2-17"
+      ],
+      "tests": [
+        "V-P1-31",
+        "V-P2-31"
+      ]
+    },
+    "REQ-POLC-001": {
+      "text": "Permission and risk catalog",
+      "packages": [
+        "P0-12",
+        "P1-03"
+      ],
+      "tests": [
+        "V-P0-18"
+      ]
+    },
+    "REQ-MSG-001": {
+      "text": "Message ingestion, retention, legal hold",
+      "packages": [
+        "P2-15"
+      ],
+      "tests": [
+        "V-P2-29"
+      ]
+    },
+    "REQ-I18N-001": {
+      "text": "Language settings and display",
+      "packages": [
+        "P2-16"
+      ],
+      "tests": [
+        "V-P2-30"
+      ]
+    },
+    "REQ-OPS-009": {
+      "text": "Maintenance mode",
+      "packages": [
+        "P4-13"
+      ],
+      "tests": [
+        "V-P4-32"
+      ]
+    },
+    "REQ-OPS-010": {
+      "text": "Runbook completeness",
+      "packages": [
+        "P7-08"
+      ],
+      "tests": [
+        "V-P7-21"
+      ]
+    },
+    "REQ-BRDG-009": {
+      "text": "Telegram API constraint spike reflected",
+      "packages": [
+        "P0-13",
+        "P2-04"
+      ],
+      "tests": [
+        "V-P0-19"
+      ]
+    },
+    "REQ-PLAN-001": {
+      "text": "Package sizing, prerequisite DAG, risk mapping, dependency owners, package↔Test mapping",
+      "packages": [
+        "P0-14"
+      ],
+      "tests": [
+        "V-P0-20"
+      ]
+    },
+    "REQ-QGAT-000": {
+      "text": "Phase 0 full work and verification gate",
+      "packages": [
+        "P0-01",
+        "P0-02",
+        "P0-03",
+        "P0-04",
+        "P0-05",
+        "P0-06",
+        "P0-07",
+        "P0-08",
+        "P0-09",
+        "P0-10",
+        "P0-11",
+        "P0-12",
+        "P0-13",
+        "P0-14"
+      ],
+      "tests": [
+        "V-P0-01",
+        "V-P0-02",
+        "V-P0-03",
+        "V-P0-04",
+        "V-P0-05",
+        "V-P0-06",
+        "V-P0-07",
+        "V-P0-08",
+        "V-P0-09",
+        "V-P0-10",
+        "V-P0-11",
+        "V-P0-12",
+        "V-P0-13",
+        "V-P0-14",
+        "V-P0-15",
+        "V-P0-16",
+        "V-P0-17",
+        "V-P0-18",
+        "V-P0-19",
+        "V-P0-20"
+      ]
+    },
+    "REQ-QGAT-001": {
+      "text": "Phase 1 full work and verification gate",
+      "packages": [
+        "P1-01",
+        "P1-02",
+        "P1-03",
+        "P1-04",
+        "P1-05",
+        "P1-06",
+        "P1-07",
+        "P1-08",
+        "P1-09",
+        "P1-10",
+        "P1-11",
+        "P1-12",
+        "P1-13",
+        "P1-14"
+      ],
+      "tests": [
+        "V-P1-01",
+        "V-P1-02",
+        "V-P1-03",
+        "V-P1-04",
+        "V-P1-05",
+        "V-P1-06",
+        "V-P1-07",
+        "V-P1-08",
+        "V-P1-09",
+        "V-P1-10",
+        "V-P1-11",
+        "V-P1-12",
+        "V-P1-13",
+        "V-P1-14",
+        "V-P1-15",
+        "V-P1-16",
+        "V-P1-17",
+        "V-P1-18",
+        "V-P1-19",
+        "V-P1-20",
+        "V-P1-21",
+        "V-P1-22",
+        "V-P1-23",
+        "V-P1-24",
+        "V-P1-25",
+        "V-P1-26",
+        "V-P1-27",
+        "V-P1-28",
+        "V-P1-29",
+        "V-P1-30",
+        "V-P1-31",
+        "V-P1-32"
+      ]
+    },
+    "REQ-QGAT-002": {
+      "text": "Phase 2 full work and verification gate",
+      "packages": [
+        "P2-01",
+        "P2-02",
+        "P2-03",
+        "P2-04",
+        "P2-05",
+        "P2-06",
+        "P2-07",
+        "P2-08",
+        "P2-09",
+        "P2-10",
+        "P2-11",
+        "P2-12",
+        "P2-13",
+        "P2-14",
+        "P2-15",
+        "P2-16",
+        "P2-17"
+      ],
+      "tests": [
+        "V-P2-01",
+        "V-P2-02",
+        "V-P2-03",
+        "V-P2-04",
+        "V-P2-05",
+        "V-P2-06",
+        "V-P2-07",
+        "V-P2-08",
+        "V-P2-09",
+        "V-P2-10",
+        "V-P2-11",
+        "V-P2-12",
+        "V-P2-13",
+        "V-P2-14",
+        "V-P2-15",
+        "V-P2-16",
+        "V-P2-17",
+        "V-P2-18",
+        "V-P2-19",
+        "V-P2-20",
+        "V-P2-21",
+        "V-P2-22",
+        "V-P2-23",
+        "V-P2-24",
+        "V-P2-25",
+        "V-P2-26",
+        "V-P2-27",
+        "V-P2-28",
+        "V-P2-29",
+        "V-P2-30",
+        "V-P2-31"
+      ]
+    },
+    "REQ-QGAT-003": {
+      "text": "Phase 3 full work and verification gate",
+      "packages": [
+        "P3-01",
+        "P3-02",
+        "P3-03",
+        "P3-04",
+        "P3-05",
+        "P3-06",
+        "P3-07",
+        "P3-08",
+        "P3-09",
+        "P3-10",
+        "P3-11",
+        "P3-12",
+        "P3-13",
+        "P3-14",
+        "P3-15"
+      ],
+      "tests": [
+        "V-P3-01",
+        "V-P3-02",
+        "V-P3-03",
+        "V-P3-04",
+        "V-P3-05",
+        "V-P3-06",
+        "V-P3-07",
+        "V-P3-08",
+        "V-P3-09",
+        "V-P3-10",
+        "V-P3-11",
+        "V-P3-12",
+        "V-P3-13",
+        "V-P3-14",
+        "V-P3-15",
+        "V-P3-16",
+        "V-P3-17",
+        "V-P3-18",
+        "V-P3-19",
+        "V-P3-20",
+        "V-P3-21",
+        "V-P3-22",
+        "V-P3-23",
+        "V-P3-24",
+        "V-P3-25",
+        "V-P3-26"
+      ]
+    },
+    "REQ-QGAT-004": {
+      "text": "Phase 4 full work and verification gate",
+      "packages": [
+        "P4-01",
+        "P4-02",
+        "P4-03",
+        "P4-04",
+        "P4-05",
+        "P4-06",
+        "P4-07",
+        "P4-08",
+        "P4-09",
+        "P4-10",
+        "P4-11",
+        "P4-12",
+        "P4-13",
+        "P4-14"
+      ],
+      "tests": [
+        "V-P4-01",
+        "V-P4-02",
+        "V-P4-03",
+        "V-P4-04",
+        "V-P4-05",
+        "V-P4-06",
+        "V-P4-07",
+        "V-P4-08",
+        "V-P4-09",
+        "V-P4-10",
+        "V-P4-11",
+        "V-P4-12",
+        "V-P4-13",
+        "V-P4-14",
+        "V-P4-15",
+        "V-P4-16",
+        "V-P4-17",
+        "V-P4-18",
+        "V-P4-19",
+        "V-P4-20",
+        "V-P4-21",
+        "V-P4-22",
+        "V-P4-23",
+        "V-P4-24",
+        "V-P4-25",
+        "V-P4-26",
+        "V-P4-27",
+        "V-P4-28",
+        "V-P4-29",
+        "V-P4-30",
+        "V-P4-31",
+        "V-P4-32",
+        "V-P4-33"
+      ]
+    },
+    "REQ-QGAT-005": {
+      "text": "Phase 5 full work and verification gate",
+      "packages": [
+        "P5-01",
+        "P5-02",
+        "P5-03",
+        "P5-04",
+        "P5-05",
+        "P5-06",
+        "P5-07",
+        "P5-08",
+        "P5-09",
+        "P5-10"
+      ],
+      "tests": [
+        "V-P5-01",
+        "V-P5-02",
+        "V-P5-03",
+        "V-P5-04",
+        "V-P5-05",
+        "V-P5-06",
+        "V-P5-07",
+        "V-P5-08",
+        "V-P5-09",
+        "V-P5-10",
+        "V-P5-11",
+        "V-P5-12",
+        "V-P5-13",
+        "V-P5-14",
+        "V-P5-15",
+        "V-P5-16",
+        "V-P5-17",
+        "V-P5-18",
+        "V-P5-19",
+        "V-P5-20",
+        "V-P5-21",
+        "V-P5-22",
+        "V-P5-23",
+        "V-P5-24",
+        "V-P5-25",
+        "V-P5-26",
+        "V-P5-27",
+        "V-P5-28",
+        "V-P5-29",
+        "V-P5-30",
+        "V-P5-31",
+        "V-P5-32",
+        "V-P5-33",
+        "V-P5-34",
+        "V-P5-35",
+        "V-P5-36",
+        "V-P5-37"
+      ]
+    },
+    "REQ-QGAT-006": {
+      "text": "Phase 6 full work and verification gate",
+      "packages": [
+        "P6-01",
+        "P6-02",
+        "P6-03",
+        "P6-04",
+        "P6-05",
+        "P6-06",
+        "P6-07",
+        "P6-08",
+        "P6-09",
+        "P6-10"
+      ],
+      "tests": [
+        "V-P6-01",
+        "V-P6-02",
+        "V-P6-03",
+        "V-P6-04",
+        "V-P6-05",
+        "V-P6-06",
+        "V-P6-07",
+        "V-P6-08",
+        "V-P6-09",
+        "V-P6-10",
+        "V-P6-11",
+        "V-P6-12",
+        "V-P6-13",
+        "V-P6-14",
+        "V-P6-15",
+        "V-P6-16",
+        "V-P6-17",
+        "V-P6-18",
+        "V-P6-19",
+        "V-P6-20",
+        "V-P6-21",
+        "V-P6-22",
+        "V-P6-23",
+        "V-P6-24",
+        "V-P6-25",
+        "V-P6-26",
+        "V-P6-27",
+        "V-P6-28",
+        "V-P6-29"
+      ]
+    },
+    "REQ-QGAT-007": {
+      "text": "Phase 7 full work and verification gate",
+      "packages": [
+        "P7-01",
+        "P7-02",
+        "P7-03",
+        "P7-04",
+        "P7-05",
+        "P7-06",
+        "P7-07",
+        "P7-08",
+        "P7-09"
+      ],
+      "tests": [
+        "V-P7-01",
+        "V-P7-02",
+        "V-P7-03",
+        "V-P7-04",
+        "V-P7-05",
+        "V-P7-06",
+        "V-P7-07",
+        "V-P7-08",
+        "V-P7-09",
+        "V-P7-10",
+        "V-P7-11",
+        "V-P7-12",
+        "V-P7-13",
+        "V-P7-14",
+        "V-P7-15",
+        "V-P7-16",
+        "V-P7-17",
+        "V-P7-18",
+        "V-P7-19",
+        "V-P7-20",
+        "V-P7-21",
+        "V-P7-22"
+      ]
+    }
+  },
+  "packages": {
+    "P0-01": {
+      "phase": 0,
+      "size": "S",
+      "prereq": [],
+      "tests": [
+        "V-P0-03"
+      ],
+      "requirements": [
+        "REQ-BUILD-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P0-02": {
+      "phase": 0,
+      "size": "S",
+      "prereq": [],
+      "tests": [
+        "V-P0-01",
+        "V-P0-02",
+        "V-P0-10",
+        "V-P0-14",
+        "V-P0-15",
+        "V-P0-20"
+      ],
+      "requirements": [
+        "REQ-BASE-001",
+        "REQ-TRAC-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P0-03": {
+      "phase": 0,
+      "size": "M",
+      "prereq": [
+        "P0-01"
+      ],
+      "tests": [
+        "V-P0-05",
+        "V-P0-06",
+        "V-P0-13"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-CNTR-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P0-04": {
+      "phase": 0,
+      "size": "S",
+      "prereq": [
+        "P0-01"
+      ],
+      "tests": [
+        "V-P0-04"
+      ],
+      "requirements": [
+        "REQ-BUILD-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P0-05": {
+      "phase": 0,
+      "size": "S",
+      "prereq": [
+        "P0-03"
+      ],
+      "tests": [
+        "V-P0-12"
+      ],
+      "requirements": [
+        "REQ-SETP-002",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P0-06": {
+      "phase": 0,
+      "size": "S",
+      "prereq": [
+        "P0-02"
+      ],
+      "tests": [
+        "V-P0-08",
+        "V-P0-09"
+      ],
+      "requirements": [
+        "REQ-SETP-005",
+        "REQ-THRT-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P0-07": {
+      "phase": 0,
+      "size": "S",
+      "prereq": [
+        "P0-03"
+      ],
+      "tests": [
+        "V-P0-07"
+      ],
+      "requirements": [
+        "REQ-VRFY-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P0-08": {
+      "phase": 0,
+      "size": "M",
+      "prereq": [
+        "P0-03"
+      ],
+      "tests": [
+        "V-P0-11"
+      ],
+      "requirements": [
+        "REQ-SCHD-008",
+        "REQ-SCHD-010",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P0-09": {
+      "phase": 0,
+      "size": "M",
+      "prereq": [
+        "P0-05"
+      ],
+      "tests": [
+        "V-P0-12"
+      ],
+      "requirements": [
+        "REQ-SETP-001",
+        "REQ-SETP-002",
+        "REQ-SETP-005",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P0-10": {
+      "phase": 0,
+      "size": "M",
+      "prereq": [
+        "P0-03"
+      ],
+      "tests": [
+        "V-P0-16"
+      ],
+      "requirements": [
+        "REQ-MMUX-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P0-11": {
+      "phase": 0,
+      "size": "M",
+      "prereq": [
+        "P0-03"
+      ],
+      "tests": [
+        "V-P0-17"
+      ],
+      "requirements": [
+        "REQ-AGENT-007",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P0-12": {
+      "phase": 0,
+      "size": "S",
+      "prereq": [
+        "P0-03"
+      ],
+      "tests": [
+        "V-P0-18"
+      ],
+      "requirements": [
+        "REQ-POLC-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P0-13": {
+      "phase": 0,
+      "size": "S",
+      "prereq": [],
+      "tests": [
+        "V-P0-19"
+      ],
+      "requirements": [
+        "REQ-BRDG-009",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P0-14": {
+      "phase": 0,
+      "size": "S",
+      "prereq": [
+        "P0-02"
+      ],
+      "tests": [
+        "V-P0-20"
+      ],
+      "requirements": [
+        "REQ-PLAN-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "P1-01": {
+      "phase": 1,
+      "size": "M",
+      "prereq": [
+        "P0-03"
+      ],
+      "tests": [
+        "V-P1-05",
+        "V-P1-25"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-EVNT-003",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P1-02": {
+      "phase": 1,
+      "size": "L",
+      "prereq": [
+        "P1-01"
+      ],
+      "tests": [
+        "V-P1-01",
+        "V-P1-02",
+        "V-P1-03",
+        "V-P1-04",
+        "V-P1-06",
+        "V-P1-21"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-EVNT-003",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P1-03": {
+      "phase": 1,
+      "size": "M",
+      "prereq": [
+        "P1-01",
+        "P0-12"
+      ],
+      "tests": [
+        "V-P1-07"
+      ],
+      "requirements": [
+        "REQ-CNTR-001",
+        "REQ-POLC-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P1-04": {
+      "phase": 1,
+      "size": "M",
+      "prereq": [
+        "P1-02"
+      ],
+      "tests": [
+        "V-P1-09",
+        "V-P1-10",
+        "V-P1-27"
+      ],
+      "requirements": [
+        "REQ-EVNT-002",
+        "REQ-CNTR-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P1-05": {
+      "phase": 1,
+      "size": "M",
+      "prereq": [
+        "P1-01"
+      ],
+      "tests": [
+        "V-P1-08",
+        "V-P1-23"
+      ],
+      "requirements": [
+        "REQ-BRDG-006",
+        "REQ-IDNT-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P1-06": {
+      "phase": 1,
+      "size": "M",
+      "prereq": [
+        "P1-02",
+        "P1-05"
+      ],
+      "tests": [
+        "V-P1-12",
+        "V-P1-13",
+        "V-P1-14",
+        "V-P1-24"
+      ],
+      "requirements": [
+        "REQ-EVNT-003",
+        "REQ-VRFY-001",
+        "REQ-VRFY-002",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P1-07": {
+      "phase": 1,
+      "size": "L",
+      "prereq": [
+        "P1-02",
+        "P1-03"
+      ],
+      "tests": [
+        "V-P1-11",
+        "V-P1-26"
+      ],
+      "requirements": [
+        "REQ-API-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P1-08": {
+      "phase": 1,
+      "size": "L",
+      "prereq": [
+        "P1-02",
+        "P1-03"
+      ],
+      "tests": [
+        "V-P1-15",
+        "V-P1-16",
+        "V-P1-22",
+        "V-P1-32"
+      ],
+      "requirements": [
+        "REQ-APRV-001",
+        "REQ-APRV-002",
+        "REQ-SCHD-013",
+        "REQ-APRV-003",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P1-09": {
+      "phase": 1,
+      "size": "M",
+      "prereq": [
+        "P1-02"
+      ],
+      "tests": [
+        "V-P1-17"
+      ],
+      "requirements": [
+        "REQ-SCHD-013",
+        "REQ-ARTF-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P1-10": {
+      "phase": 1,
+      "size": "M",
+      "prereq": [
+        "P1-04",
+        "P1-06",
+        "P1-09"
+      ],
+      "tests": [
+        "V-P1-18",
+        "V-P1-19",
+        "V-P1-20"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-DOCS-005",
+        "REQ-DOCS-008",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P1-11": {
+      "phase": 1,
+      "size": "S",
+      "prereq": [
+        "P1-04"
+      ],
+      "tests": [
+        "V-P1-28"
+      ],
+      "requirements": [
+        "REQ-TASK-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P1-12": {
+      "phase": 1,
+      "size": "M",
+      "prereq": [
+        "P1-02",
+        "P1-04"
+      ],
+      "tests": [
+        "V-P1-29"
+      ],
+      "requirements": [
+        "REQ-AGENT-007",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P1-13": {
+      "phase": 1,
+      "size": "S",
+      "prereq": [
+        "P1-02"
+      ],
+      "tests": [
+        "V-P1-31"
+      ],
+      "requirements": [
+        "REQ-NOTF-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P1-14": {
+      "phase": 1,
+      "size": "M",
+      "prereq": [
+        "P1-02"
+      ],
+      "tests": [
+        "V-P1-30"
+      ],
+      "requirements": [
+        "REQ-COST-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "P2-01": {
+      "phase": 2,
+      "size": "M",
+      "prereq": [
+        "P1-07",
+        "P0-10"
+      ],
+      "tests": [
+        "V-P2-01",
+        "V-P2-19"
+      ],
+      "requirements": [
+        "REQ-CHAN-001",
+        "REQ-CHAN-002",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-02": {
+      "phase": 2,
+      "size": "M",
+      "prereq": [
+        "P2-01",
+        "P1-05"
+      ],
+      "tests": [
+        "V-P2-19",
+        "V-P2-20",
+        "V-P2-21",
+        "V-P2-22"
+      ],
+      "requirements": [
+        "REQ-CHAN-002",
+        "REQ-BRDG-006",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-03": {
+      "phase": 2,
+      "size": "M",
+      "prereq": [
+        "P2-01"
+      ],
+      "tests": [
+        "V-P2-02",
+        "V-P2-23"
+      ],
+      "requirements": [
+        "REQ-BRDG-005",
+        "REQ-BRDG-007",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-04": {
+      "phase": 2,
+      "size": "M",
+      "prereq": [
+        "P1-07",
+        "P0-13"
+      ],
+      "tests": [
+        "V-P2-09",
+        "V-P2-11"
+      ],
+      "requirements": [
+        "REQ-BRDG-007",
+        "REQ-BRDG-008",
+        "REQ-BRDG-009",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-05": {
+      "phase": 2,
+      "size": "M",
+      "prereq": [
+        "P2-03",
+        "P2-04"
+      ],
+      "tests": [
+        "V-P2-03",
+        "V-P2-05",
+        "V-P2-06",
+        "V-P2-13",
+        "V-P2-14",
+        "V-P2-17"
+      ],
+      "requirements": [
+        "REQ-BRDG-001",
+        "REQ-BRDG-003",
+        "REQ-BRDG-007",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-06": {
+      "phase": 2,
+      "size": "M",
+      "prereq": [
+        "P2-05"
+      ],
+      "tests": [
+        "V-P2-04",
+        "V-P2-07",
+        "V-P2-08",
+        "V-P2-10",
+        "V-P2-15"
+      ],
+      "requirements": [
+        "REQ-BRDG-002",
+        "REQ-BRDG-005",
+        "REQ-BRDG-007",
+        "REQ-BRDG-008",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-07": {
+      "phase": 2,
+      "size": "S",
+      "prereq": [
+        "P2-05"
+      ],
+      "tests": [
+        "V-P2-12",
+        "V-P2-13"
+      ],
+      "requirements": [
+        "REQ-BRDG-008",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-08": {
+      "phase": 2,
+      "size": "S",
+      "prereq": [
+        "P2-05",
+        "P2-10"
+      ],
+      "tests": [
+        "V-P2-16",
+        "V-P2-20"
+      ],
+      "requirements": [
+        "REQ-BRDG-004",
+        "REQ-BRDG-006",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-09": {
+      "phase": 2,
+      "size": "S",
+      "prereq": [
+        "P2-02"
+      ],
+      "tests": [
+        "V-P2-18"
+      ],
+      "requirements": [
+        "REQ-CHAN-003",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-10": {
+      "phase": 2,
+      "size": "M",
+      "prereq": [
+        "P2-01",
+        "P1-07"
+      ],
+      "tests": [
+        "V-P2-24"
+      ],
+      "requirements": [
+        "REQ-MMUX-001",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-11": {
+      "phase": 2,
+      "size": "M",
+      "prereq": [
+        "P2-03",
+        "P2-10"
+      ],
+      "tests": [
+        "V-P2-25"
+      ],
+      "requirements": [
+        "REQ-MMUX-001",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-12": {
+      "phase": 2,
+      "size": "S",
+      "prereq": [
+        "P2-11"
+      ],
+      "tests": [
+        "V-P2-26"
+      ],
+      "requirements": [
+        "REQ-MMUX-002",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-13": {
+      "phase": 2,
+      "size": "S",
+      "prereq": [
+        "P2-02",
+        "P2-10"
+      ],
+      "tests": [
+        "V-P2-27"
+      ],
+      "requirements": [
+        "REQ-MMUX-003",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-14": {
+      "phase": 2,
+      "size": "S",
+      "prereq": [
+        "P2-11"
+      ],
+      "tests": [
+        "V-P2-28"
+      ],
+      "requirements": [
+        "REQ-MMUX-002",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-15": {
+      "phase": 2,
+      "size": "M",
+      "prereq": [
+        "P2-03"
+      ],
+      "tests": [
+        "V-P2-29"
+      ],
+      "requirements": [
+        "REQ-MSG-001",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-16": {
+      "phase": 2,
+      "size": "S",
+      "prereq": [
+        "P2-10"
+      ],
+      "tests": [
+        "V-P2-30"
+      ],
+      "requirements": [
+        "REQ-I18N-001",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P2-17": {
+      "phase": 2,
+      "size": "S",
+      "prereq": [
+        "P1-13",
+        "P2-01"
+      ],
+      "tests": [
+        "V-P2-31"
+      ],
+      "requirements": [
+        "REQ-NOTF-001",
+        "REQ-QGAT-002"
+      ]
+    },
+    "P3-01": {
+      "phase": 3,
+      "size": "M",
+      "prereq": [
+        "P1-05"
+      ],
+      "tests": [
+        "V-P3-01",
+        "V-P3-08",
+        "V-P3-11",
+        "V-P3-17"
+      ],
+      "requirements": [
+        "REQ-AGENT-001",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-02": {
+      "phase": 3,
+      "size": "M",
+      "prereq": [
+        "P1-03"
+      ],
+      "tests": [
+        "V-P3-02",
+        "V-P3-09",
+        "V-P3-16"
+      ],
+      "requirements": [
+        "REQ-AGENT-002",
+        "REQ-VRFY-001",
+        "REQ-ADMN-001",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-03": {
+      "phase": 3,
+      "size": "M",
+      "prereq": [
+        "P1-12"
+      ],
+      "tests": [
+        "V-P3-05",
+        "V-P3-06",
+        "V-P3-07"
+      ],
+      "requirements": [
+        "REQ-AGENT-003",
+        "REQ-AGENT-005",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-04": {
+      "phase": 3,
+      "size": "M",
+      "prereq": [
+        "P3-03",
+        "P3-10",
+        "P3-11",
+        "P3-12"
+      ],
+      "tests": [
+        "V-P3-05",
+        "V-P3-12"
+      ],
+      "requirements": [
+        "REQ-AGENT-003",
+        "REQ-AGENT-005",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-05": {
+      "phase": 3,
+      "size": "M",
+      "prereq": [
+        "P3-03"
+      ],
+      "tests": [
+        "V-P3-05"
+      ],
+      "requirements": [
+        "REQ-AGENT-003",
+        "REQ-AGENT-005",
+        "REQ-AGENT-009",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-06": {
+      "phase": 3,
+      "size": "M",
+      "prereq": [
+        "P3-01",
+        "P3-02"
+      ],
+      "tests": [
+        "V-P3-03",
+        "V-P3-04",
+        "V-P3-10"
+      ],
+      "requirements": [
+        "REQ-AGENT-005",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-07": {
+      "phase": 3,
+      "size": "M",
+      "prereq": [
+        "P3-01"
+      ],
+      "tests": [
+        "V-P3-13"
+      ],
+      "requirements": [
+        "REQ-ADMN-001",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-08": {
+      "phase": 3,
+      "size": "M",
+      "prereq": [
+        "P1-14",
+        "P3-01"
+      ],
+      "tests": [
+        "V-P3-15"
+      ],
+      "requirements": [
+        "REQ-AGENT-004",
+        "REQ-COST-001",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-09": {
+      "phase": 3,
+      "size": "L",
+      "prereq": [
+        "P3-06"
+      ],
+      "tests": [
+        "V-P3-18",
+        "V-P3-19",
+        "V-P3-20"
+      ],
+      "requirements": [
+        "REQ-AGENT-006",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-10": {
+      "phase": 3,
+      "size": "L",
+      "prereq": [
+        "P1-07",
+        "P1-12",
+        "P0-11"
+      ],
+      "tests": [
+        "V-P3-21"
+      ],
+      "requirements": [
+        "REQ-AGENT-007",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-11": {
+      "phase": 3,
+      "size": "M",
+      "prereq": [
+        "P1-12",
+        "P0-11"
+      ],
+      "tests": [
+        "V-P3-22"
+      ],
+      "requirements": [
+        "REQ-AGENT-007",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-12": {
+      "phase": 3,
+      "size": "M",
+      "prereq": [
+        "P1-12",
+        "P2-11"
+      ],
+      "tests": [
+        "V-P3-23"
+      ],
+      "requirements": [
+        "REQ-AGENT-007",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-13": {
+      "phase": 3,
+      "size": "M",
+      "prereq": [
+        "P1-06",
+        "P3-06"
+      ],
+      "tests": [
+        "V-P3-14",
+        "V-P3-24"
+      ],
+      "requirements": [
+        "REQ-VRFY-003",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-14": {
+      "phase": 3,
+      "size": "S",
+      "prereq": [
+        "P3-06",
+        "P1-12"
+      ],
+      "tests": [
+        "V-P3-25"
+      ],
+      "requirements": [
+        "REQ-AGENT-008",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P3-15": {
+      "phase": 3,
+      "size": "S",
+      "prereq": [
+        "P1-14",
+        "P3-03"
+      ],
+      "tests": [
+        "V-P3-26"
+      ],
+      "requirements": [
+        "REQ-COST-001",
+        "REQ-QGAT-003"
+      ]
+    },
+    "P4-01": {
+      "phase": 4,
+      "size": "M",
+      "prereq": [
+        "P1-05"
+      ],
+      "tests": [
+        "V-P4-07",
+        "V-P4-26"
+      ],
+      "requirements": [
+        "REQ-ADMN-001",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P4-02": {
+      "phase": 4,
+      "size": "M",
+      "prereq": [
+        "P1-07"
+      ],
+      "tests": [
+        "V-P4-16",
+        "V-P4-23"
+      ],
+      "requirements": [
+        "REQ-ADMN-005",
+        "REQ-ADMN-006",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P4-03": {
+      "phase": 4,
+      "size": "L",
+      "prereq": [
+        "P0-09",
+        "P4-05"
+      ],
+      "tests": [
+        "V-P4-01",
+        "V-P4-02",
+        "V-P4-03",
+        "V-P4-04",
+        "V-P4-19",
+        "V-P4-24",
+        "V-P4-27",
+        "V-P4-28",
+        "V-P4-30"
+      ],
+      "requirements": [
+        "REQ-SETP-001",
+        "REQ-SETP-002",
+        "REQ-SETP-003",
+        "REQ-SETP-005",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P4-04": {
+      "phase": 4,
+      "size": "M",
+      "prereq": [
+        "P4-02"
+      ],
+      "tests": [
+        "V-P4-05",
+        "V-P4-06"
+      ],
+      "requirements": [
+        "REQ-SETT-001",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P4-05": {
+      "phase": 4,
+      "size": "M",
+      "prereq": [
+        "P1-01"
+      ],
+      "tests": [
+        "V-P4-10",
+        "V-P4-17"
+      ],
+      "requirements": [
+        "REQ-SCRT-001",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P4-06": {
+      "phase": 4,
+      "size": "M",
+      "prereq": [
+        "P4-05"
+      ],
+      "tests": [
+        "V-P4-11",
+        "V-P4-12",
+        "V-P4-15"
+      ],
+      "requirements": [
+        "REQ-SCRT-001",
+        "REQ-SCRT-002",
+        "REQ-SCRT-003",
+        "REQ-SCHD-014",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P4-07": {
+      "phase": 4,
+      "size": "M",
+      "prereq": [
+        "P4-06",
+        "P3-03"
+      ],
+      "tests": [
+        "V-P4-13",
+        "V-P4-14"
+      ],
+      "requirements": [
+        "REQ-SCRT-001",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P4-08": {
+      "phase": 4,
+      "size": "M",
+      "prereq": [
+        "P4-02"
+      ],
+      "tests": [
+        "V-P4-02",
+        "V-P4-08",
+        "V-P4-09",
+        "V-P4-18"
+      ],
+      "requirements": [
+        "REQ-ADMN-002",
+        "REQ-ADMN-006",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P4-09": {
+      "phase": 4,
+      "size": "M",
+      "prereq": [
+        "P1-05"
+      ],
+      "tests": [
+        "V-P4-20"
+      ],
+      "requirements": [
+        "REQ-SETP-004",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P4-10": {
+      "phase": 4,
+      "size": "M",
+      "prereq": [
+        "P4-09"
+      ],
+      "tests": [
+        "V-P4-21"
+      ],
+      "requirements": [
+        "REQ-ADMN-003",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P4-11": {
+      "phase": 4,
+      "size": "L",
+      "prereq": [
+        "P4-05",
+        "P1-02"
+      ],
+      "tests": [
+        "V-P4-22",
+        "V-P4-25",
+        "V-P4-29"
+      ],
+      "requirements": [
+        "REQ-ADMN-004",
+        "REQ-OPS-005",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P4-12": {
+      "phase": 4,
+      "size": "L",
+      "prereq": [
+        "P4-06",
+        "P4-07"
+      ],
+      "tests": [
+        "V-P4-31"
+      ],
+      "requirements": [
+        "REQ-SCRT-004",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P4-13": {
+      "phase": 4,
+      "size": "S",
+      "prereq": [
+        "P4-02"
+      ],
+      "tests": [
+        "V-P4-32"
+      ],
+      "requirements": [
+        "REQ-OPS-009",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P4-14": {
+      "phase": 4,
+      "size": "M",
+      "prereq": [
+        "P1-08",
+        "P4-09"
+      ],
+      "tests": [
+        "V-P4-33"
+      ],
+      "requirements": [
+        "REQ-APRV-003",
+        "REQ-QGAT-004"
+      ]
+    },
+    "P5-01": {
+      "phase": 5,
+      "size": "L",
+      "prereq": [
+        "P0-08",
+        "P1-08",
+        "P1-09"
+      ],
+      "tests": [
+        "V-P5-01",
+        "V-P5-22",
+        "V-P5-26",
+        "V-P5-31",
+        "V-P5-32",
+        "V-P5-36"
+      ],
+      "requirements": [
+        "REQ-SCHD-005",
+        "REQ-SCHD-009",
+        "REQ-SCHD-010",
+        "REQ-SCHD-011",
+        "REQ-SCHD-013",
+        "REQ-ARTF-001",
+        "REQ-QGAT-005"
+      ]
+    },
+    "P5-02": {
+      "phase": 5,
+      "size": "M",
+      "prereq": [
+        "P0-08"
+      ],
+      "tests": [
+        "V-P5-02",
+        "V-P5-03",
+        "V-P5-04",
+        "V-P5-05",
+        "V-P5-29"
+      ],
+      "requirements": [
+        "REQ-SCHD-002",
+        "REQ-SCHD-008",
+        "REQ-SCHD-010",
+        "REQ-QGAT-005"
+      ]
+    },
+    "P5-03": {
+      "phase": 5,
+      "size": "L",
+      "prereq": [
+        "P5-01",
+        "P5-02"
+      ],
+      "tests": [
+        "V-P5-06",
+        "V-P5-07",
+        "V-P5-08",
+        "V-P5-24",
+        "V-P5-33",
+        "V-P5-35"
+      ],
+      "requirements": [
+        "REQ-SCHD-001",
+        "REQ-SCHD-010",
+        "REQ-SCHD-011",
+        "REQ-QGAT-005"
+      ]
+    },
+    "P5-04": {
+      "phase": 5,
+      "size": "M",
+      "prereq": [
+        "P5-03",
+        "P1-08"
+      ],
+      "tests": [
+        "V-P5-15",
+        "V-P5-16",
+        "V-P5-17",
+        "V-P5-18",
+        "V-P5-30"
+      ],
+      "requirements": [
+        "REQ-APRV-002",
+        "REQ-SCHD-004",
+        "REQ-SCHD-013",
+        "REQ-SCHD-014",
+        "REQ-QGAT-005"
+      ]
+    },
+    "P5-05": {
+      "phase": 5,
+      "size": "M",
+      "prereq": [
+        "P5-03"
+      ],
+      "tests": [
+        "V-P5-09",
+        "V-P5-10",
+        "V-P5-11",
+        "V-P5-12",
+        "V-P5-13",
+        "V-P5-14"
+      ],
+      "requirements": [
+        "REQ-SCHD-003",
+        "REQ-SCHD-012",
+        "REQ-QGAT-005"
+      ]
+    },
+    "P5-06": {
+      "phase": 5,
+      "size": "M",
+      "prereq": [
+        "P5-03"
+      ],
+      "tests": [
+        "V-P5-11",
+        "V-P5-19",
+        "V-P5-20",
+        "V-P5-34"
+      ],
+      "requirements": [
+        "REQ-SCHD-009",
+        "REQ-SCHD-012",
+        "REQ-QGAT-005"
+      ]
+    },
+    "P5-07": {
+      "phase": 5,
+      "size": "S",
+      "prereq": [
+        "P5-03",
+        "P2-11"
+      ],
+      "tests": [
+        "V-P5-23"
+      ],
+      "requirements": [
+        "REQ-SCHD-015",
+        "REQ-QGAT-005"
+      ]
+    },
+    "P5-08": {
+      "phase": 5,
+      "size": "M",
+      "prereq": [
+        "P5-01"
+      ],
+      "tests": [
+        "V-P5-21",
+        "V-P5-22"
+      ],
+      "requirements": [
+        "REQ-SCHD-011",
+        "REQ-SCHD-014",
+        "REQ-SCHD-015",
+        "REQ-QGAT-005"
+      ]
+    },
+    "P5-09": {
+      "phase": 5,
+      "size": "S",
+      "prereq": [
+        "P5-03"
+      ],
+      "tests": [
+        "V-P5-25",
+        "V-P5-27"
+      ],
+      "requirements": [
+        "REQ-SCHD-015",
+        "REQ-QGAT-005"
+      ]
+    },
+    "P5-10": {
+      "phase": 5,
+      "size": "M",
+      "prereq": [
+        "P1-14",
+        "P5-03"
+      ],
+      "tests": [
+        "V-P5-27",
+        "V-P5-28",
+        "V-P5-37"
+      ],
+      "requirements": [
+        "REQ-SCHD-006",
+        "REQ-SCHD-007",
+        "REQ-OPS-007",
+        "REQ-COST-001",
+        "REQ-QGAT-005"
+      ]
+    },
+    "P6-01": {
+      "phase": 6,
+      "size": "M",
+      "prereq": [
+        "P1-08",
+        "P2-12",
+        "P4-14"
+      ],
+      "tests": [
+        "V-P6-01",
+        "V-P6-02",
+        "V-P6-22",
+        "V-P6-29"
+      ],
+      "requirements": [
+        "REQ-APRV-001",
+        "REQ-APRV-002",
+        "REQ-APRV-003",
+        "REQ-QGAT-006"
+      ]
+    },
+    "P6-02": {
+      "phase": 6,
+      "size": "L",
+      "prereq": [
+        "P1-12",
+        "P2-10",
+        "P2-11"
+      ],
+      "tests": [
+        "V-P6-03",
+        "V-P6-26"
+      ],
+      "requirements": [
+        "REQ-BRST-001",
+        "REQ-BRST-002",
+        "REQ-QGAT-006"
+      ]
+    },
+    "P6-03": {
+      "phase": 6,
+      "size": "M",
+      "prereq": [
+        "P1-09",
+        "P0-04"
+      ],
+      "tests": [
+        "V-P6-05",
+        "V-P6-06",
+        "V-P6-25"
+      ],
+      "requirements": [
+        "REQ-ARTF-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "P6-04": {
+      "phase": 6,
+      "size": "M",
+      "prereq": [
+        "P1-10"
+      ],
+      "tests": [
+        "V-P6-07",
+        "V-P6-08",
+        "V-P6-09",
+        "V-P6-12",
+        "V-P6-19",
+        "V-P6-20",
+        "V-P6-23",
+        "V-P6-24"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-DOCS-002",
+        "REQ-DOCS-005",
+        "REQ-QGAT-006"
+      ]
+    },
+    "P6-05": {
+      "phase": 6,
+      "size": "M",
+      "prereq": [
+        "P6-04"
+      ],
+      "tests": [
+        "V-P6-10",
+        "V-P6-13",
+        "V-P6-14"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "P6-06": {
+      "phase": 6,
+      "size": "M",
+      "prereq": [
+        "P6-04"
+      ],
+      "tests": [
+        "V-P6-15",
+        "V-P6-16",
+        "V-P6-21"
+      ],
+      "requirements": [
+        "REQ-DOCS-003",
+        "REQ-DOCS-004",
+        "REQ-DOCS-006",
+        "REQ-QGAT-006"
+      ]
+    },
+    "P6-07": {
+      "phase": 6,
+      "size": "S",
+      "prereq": [
+        "P6-06"
+      ],
+      "tests": [
+        "V-P6-17",
+        "V-P6-18"
+      ],
+      "requirements": [
+        "REQ-DOCS-005",
+        "REQ-DOCS-006",
+        "REQ-QGAT-006"
+      ]
+    },
+    "P6-08": {
+      "phase": 6,
+      "size": "S",
+      "prereq": [
+        "P6-04",
+        "P5-03"
+      ],
+      "tests": [
+        "V-P6-09"
+      ],
+      "requirements": [
+        "REQ-DOCS-007",
+        "REQ-QGAT-006"
+      ]
+    },
+    "P6-09": {
+      "phase": 6,
+      "size": "M",
+      "prereq": [
+        "P6-02",
+        "P1-11"
+      ],
+      "tests": [
+        "V-P6-04",
+        "V-P6-08",
+        "V-P6-27"
+      ],
+      "requirements": [
+        "REQ-BRST-003",
+        "REQ-QGAT-006"
+      ]
+    },
+    "P6-10": {
+      "phase": 6,
+      "size": "M",
+      "prereq": [
+        "P6-04",
+        "P1-14"
+      ],
+      "tests": [
+        "V-P6-11",
+        "V-P6-28"
+      ],
+      "requirements": [
+        "REQ-DOCS-008",
+        "REQ-QGAT-006"
+      ]
+    },
+    "P7-01": {
+      "phase": 7,
+      "size": "M",
+      "prereq": [
+        "P0-01"
+      ],
+      "tests": [
+        "V-P7-11",
+        "V-P7-15"
+      ],
+      "requirements": [
+        "REQ-OPS-003",
+        "REQ-QGAT-007"
+      ]
+    },
+    "P7-02": {
+      "phase": 7,
+      "size": "M",
+      "prereq": [
+        "P4-02"
+      ],
+      "tests": [
+        "V-P7-14"
+      ],
+      "requirements": [
+        "REQ-OPS-003",
+        "REQ-OPS-008",
+        "REQ-QGAT-007"
+      ]
+    },
+    "P7-03": {
+      "phase": 7,
+      "size": "L",
+      "prereq": [
+        "P4-11",
+        "P5-03"
+      ],
+      "tests": [
+        "V-P7-07",
+        "V-P7-08",
+        "V-P7-19",
+        "V-P7-20"
+      ],
+      "requirements": [
+        "REQ-OPS-001",
+        "REQ-OPS-002",
+        "REQ-OPS-003",
+        "REQ-OPS-005",
+        "REQ-OPS-006",
+        "REQ-OPS-008",
+        "REQ-QGAT-007"
+      ]
+    },
+    "P7-04": {
+      "phase": 7,
+      "size": "M",
+      "prereq": [
+        "P5-10"
+      ],
+      "tests": [
+        "V-P7-03",
+        "V-P7-04"
+      ],
+      "requirements": [
+        "REQ-OPS-003",
+        "REQ-OPS-007",
+        "REQ-QGAT-007"
+      ]
+    },
+    "P7-05": {
+      "phase": 7,
+      "size": "M",
+      "prereq": [
+        "P7-01"
+      ],
+      "tests": [
+        "V-P7-05",
+        "V-P7-06",
+        "V-P7-11",
+        "V-P7-12"
+      ],
+      "requirements": [
+        "REQ-OPS-004",
+        "REQ-OPS-008",
+        "REQ-QGAT-007"
+      ]
+    },
+    "P7-06": {
+      "phase": 7,
+      "size": "M",
+      "prereq": [
+        "P7-03"
+      ],
+      "tests": [
+        "V-P7-09",
+        "V-P7-10"
+      ],
+      "requirements": [
+        "REQ-RELS-001",
+        "REQ-QGAT-007"
+      ]
+    },
+    "P7-07": {
+      "phase": 7,
+      "size": "S",
+      "prereq": [
+        "P7-01"
+      ],
+      "tests": [
+        "V-P7-01",
+        "V-P7-15",
+        "V-P7-16",
+        "V-P7-17",
+        "V-P7-18"
+      ],
+      "requirements": [
+        "REQ-RELS-001",
+        "REQ-RELS-002",
+        "REQ-QGAT-007"
+      ]
+    },
+    "P7-08": {
+      "phase": 7,
+      "size": "M",
+      "prereq": [
+        "P7-02"
+      ],
+      "tests": [
+        "V-P7-13",
+        "V-P7-21"
+      ],
+      "requirements": [
+        "REQ-OPS-010",
+        "REQ-QGAT-007"
+      ]
+    },
+    "P7-09": {
+      "phase": 7,
+      "size": "M",
+      "prereq": [
+        "P2-11",
+        "P6-01",
+        "P6-04"
+      ],
+      "tests": [
+        "V-P7-02",
+        "V-P7-22"
+      ],
+      "requirements": [
+        "REQ-MMUX-004",
+        "REQ-QGAT-007"
+      ]
+    }
+  },
+  "tests": {
+    "V-P0-01": {
+      "phase": 0,
+      "subject": "product name consistency",
+      "packages": [
+        "P0-02"
+      ],
+      "requirements": [
+        "REQ-BASE-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-02": {
+      "phase": 0,
+      "subject": "fixed Agent roles removed",
+      "packages": [
+        "P0-02"
+      ],
+      "requirements": [
+        "REQ-BASE-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-03": {
+      "phase": 0,
+      "subject": "clean bootstrap",
+      "packages": [
+        "P0-01"
+      ],
+      "requirements": [
+        "REQ-BUILD-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-04": {
+      "phase": 0,
+      "subject": "Compose health",
+      "packages": [
+        "P0-04"
+      ],
+      "requirements": [
+        "REQ-BUILD-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-05": {
+      "phase": 0,
+      "subject": "schema fixtures",
+      "packages": [
+        "P0-03"
+      ],
+      "requirements": [
+        "REQ-CNTR-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-06": {
+      "phase": 0,
+      "subject": "policy fixtures",
+      "packages": [
+        "P0-03"
+      ],
+      "requirements": [
+        "REQ-CNTR-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-07": {
+      "phase": 0,
+      "subject": "verification independence",
+      "packages": [
+        "P0-07"
+      ],
+      "requirements": [
+        "REQ-VRFY-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-08": {
+      "phase": 0,
+      "subject": "threat boundary",
+      "packages": [
+        "P0-06"
+      ],
+      "requirements": [
+        "REQ-THRT-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-09": {
+      "phase": 0,
+      "subject": "secret scan",
+      "packages": [
+        "P0-06"
+      ],
+      "requirements": [
+        "REQ-THRT-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-10": {
+      "phase": 0,
+      "subject": "requirement trace",
+      "packages": [
+        "P0-02"
+      ],
+      "requirements": [
+        "REQ-TRAC-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-11": {
+      "phase": 0,
+      "subject": "Schedule contract",
+      "packages": [
+        "P0-08"
+      ],
+      "requirements": [
+        "REQ-SCHD-008",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-12": {
+      "phase": 0,
+      "subject": "pre-DB bootstrap contract",
+      "packages": [
+        "P0-05",
+        "P0-09"
+      ],
+      "requirements": [
+        "REQ-SETP-001",
+        "REQ-SETP-002",
+        "REQ-SETP-005",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-13": {
+      "phase": 0,
+      "subject": "aggregate/Event contract",
+      "packages": [
+        "P0-03"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-14": {
+      "phase": 0,
+      "subject": "deterministic criteria",
+      "packages": [
+        "P0-02"
+      ],
+      "requirements": [
+        "REQ-TRAC-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-15": {
+      "phase": 0,
+      "subject": "Phase dependency DAG",
+      "packages": [
+        "P0-02"
+      ],
+      "requirements": [
+        "REQ-TRAC-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-16": {
+      "phase": 0,
+      "subject": "Mattermost interaction contract",
+      "packages": [
+        "P0-10"
+      ],
+      "requirements": [
+        "REQ-MMUX-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-17": {
+      "phase": 0,
+      "subject": "work-item/usage contract",
+      "packages": [
+        "P0-11"
+      ],
+      "requirements": [
+        "REQ-AGENT-007",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-18": {
+      "phase": 0,
+      "subject": "permission/risk catalog",
+      "packages": [
+        "P0-12"
+      ],
+      "requirements": [
+        "REQ-POLC-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-19": {
+      "phase": 0,
+      "subject": "Telegram API spike",
+      "packages": [
+        "P0-13"
+      ],
+      "requirements": [
+        "REQ-BRDG-009",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P0-20": {
+      "phase": 0,
+      "subject": "plan operating baseline",
+      "packages": [
+        "P0-02",
+        "P0-14"
+      ],
+      "requirements": [
+        "REQ-PLAN-001",
+        "REQ-QGAT-000"
+      ]
+    },
+    "V-P1-01": {
+      "phase": 1,
+      "subject": "aggregate Event append",
+      "packages": [
+        "P1-02"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-02": {
+      "phase": 1,
+      "subject": "scoped idempotent retry",
+      "packages": [
+        "P1-02"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-03": {
+      "phase": 1,
+      "subject": "key conflict",
+      "packages": [
+        "P1-02"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-04": {
+      "phase": 1,
+      "subject": "aggregate sequence concurrency",
+      "packages": [
+        "P1-02"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-05": {
+      "phase": 1,
+      "subject": "Event immutability",
+      "packages": [
+        "P1-01"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-06": {
+      "phase": 1,
+      "subject": "causality",
+      "packages": [
+        "P1-02"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-07": {
+      "phase": 1,
+      "subject": "policy deny",
+      "packages": [
+        "P1-03"
+      ],
+      "requirements": [
+        "REQ-CNTR-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-08": {
+      "phase": 1,
+      "subject": "actor spoof",
+      "packages": [
+        "P1-05"
+      ],
+      "requirements": [
+        "REQ-IDNT-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-09": {
+      "phase": 1,
+      "subject": "state transition",
+      "packages": [
+        "P1-04"
+      ],
+      "requirements": [
+        "REQ-CNTR-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-10": {
+      "phase": 1,
+      "subject": "projection rebuild",
+      "packages": [
+        "P1-04"
+      ],
+      "requirements": [
+        "REQ-EVNT-002",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-11": {
+      "phase": 1,
+      "subject": "SSE resume",
+      "packages": [
+        "P1-07"
+      ],
+      "requirements": [
+        "REQ-API-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-12": {
+      "phase": 1,
+      "subject": "self-verification",
+      "packages": [
+        "P1-06"
+      ],
+      "requirements": [
+        "REQ-VRFY-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-13": {
+      "phase": 1,
+      "subject": "verifier revision",
+      "packages": [
+        "P1-06"
+      ],
+      "requirements": [
+        "REQ-VRFY-002",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-14": {
+      "phase": 1,
+      "subject": "complete gate",
+      "packages": [
+        "P1-06"
+      ],
+      "requirements": [
+        "REQ-CNTR-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-15": {
+      "phase": 1,
+      "subject": "Approval subject Phase 1",
+      "packages": [
+        "P1-08"
+      ],
+      "requirements": [
+        "REQ-APRV-001",
+        "REQ-SCHD-013",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-16": {
+      "phase": 1,
+      "subject": "Approval bounded consume",
+      "packages": [
+        "P1-08"
+      ],
+      "requirements": [
+        "REQ-APRV-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-17": {
+      "phase": 1,
+      "subject": "Artifact Core",
+      "packages": [
+        "P1-09"
+      ],
+      "requirements": [
+        "REQ-SCHD-013",
+        "REQ-ARTF-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-18": {
+      "phase": 1,
+      "subject": "pre-verification draft",
+      "packages": [
+        "P1-10"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-19": {
+      "phase": 1,
+      "subject": "document finalization",
+      "packages": [
+        "P1-10"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-DOCS-005",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-20": {
+      "phase": 1,
+      "subject": "Event crypto-shredding",
+      "packages": [
+        "P1-10"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-21": {
+      "phase": 1,
+      "subject": "hash chain/tamper",
+      "packages": [
+        "P1-02"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-EVNT-003",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-22": {
+      "phase": 1,
+      "subject": "projection authority forbidden",
+      "packages": [
+        "P1-08"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-23": {
+      "phase": 1,
+      "subject": "external identity core",
+      "packages": [
+        "P1-05"
+      ],
+      "requirements": [
+        "REQ-BRDG-006",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-24": {
+      "phase": 1,
+      "subject": "verifier identity snapshot",
+      "packages": [
+        "P1-06"
+      ],
+      "requirements": [
+        "REQ-VRFY-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-25": {
+      "phase": 1,
+      "subject": "audit/verification immutability",
+      "packages": [
+        "P1-01"
+      ],
+      "requirements": [
+        "REQ-EVNT-003",
+        "REQ-VRFY-002",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-26": {
+      "phase": 1,
+      "subject": "REST/MCP contract parity",
+      "packages": [
+        "P1-07"
+      ],
+      "requirements": [
+        "REQ-API-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-27": {
+      "phase": 1,
+      "subject": "Task transition table",
+      "packages": [
+        "P1-04"
+      ],
+      "requirements": [
+        "REQ-CNTR-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-28": {
+      "phase": 1,
+      "subject": "acceptance criteria",
+      "packages": [
+        "P1-11"
+      ],
+      "requirements": [
+        "REQ-TASK-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-29": {
+      "phase": 1,
+      "subject": "work item inbox",
+      "packages": [
+        "P1-12"
+      ],
+      "requirements": [
+        "REQ-AGENT-007",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-30": {
+      "phase": 1,
+      "subject": "usage/pricing",
+      "packages": [
+        "P1-14"
+      ],
+      "requirements": [
+        "REQ-COST-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-31": {
+      "phase": 1,
+      "subject": "notification rules core",
+      "packages": [
+        "P1-13"
+      ],
+      "requirements": [
+        "REQ-NOTF-001",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P1-32": {
+      "phase": 1,
+      "subject": "approver eligibility",
+      "packages": [
+        "P1-08"
+      ],
+      "requirements": [
+        "REQ-APRV-003",
+        "REQ-QGAT-001"
+      ]
+    },
+    "V-P2-01": {
+      "phase": 2,
+      "subject": "Mattermost first input",
+      "packages": [
+        "P2-01"
+      ],
+      "requirements": [
+        "REQ-CHAN-001",
+        "REQ-CHAN-002",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-02": {
+      "phase": 2,
+      "subject": "Renderer latency",
+      "packages": [
+        "P2-03"
+      ],
+      "requirements": [
+        "REQ-BRDG-007",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-03": {
+      "phase": 2,
+      "subject": "per-channel Bridge",
+      "packages": [
+        "P2-05"
+      ],
+      "requirements": [
+        "REQ-BRDG-001",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-04": {
+      "phase": 2,
+      "subject": "bidirectional",
+      "packages": [
+        "P2-06"
+      ],
+      "requirements": [
+        "REQ-BRDG-002",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-05": {
+      "phase": 2,
+      "subject": "direction policy",
+      "packages": [
+        "P2-05"
+      ],
+      "requirements": [
+        "REQ-BRDG-007",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-06": {
+      "phase": 2,
+      "subject": "thread mapping",
+      "packages": [
+        "P2-05"
+      ],
+      "requirements": [
+        "REQ-BRDG-007",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-07": {
+      "phase": 2,
+      "subject": "loop prevention",
+      "packages": [
+        "P2-06"
+      ],
+      "requirements": [
+        "REQ-BRDG-002",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-08": {
+      "phase": 2,
+      "subject": "outage recovery",
+      "packages": [
+        "P2-06"
+      ],
+      "requirements": [
+        "REQ-BRDG-007",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-09": {
+      "phase": 2,
+      "subject": "callback spoof/replay",
+      "packages": [
+        "P2-04"
+      ],
+      "requirements": [
+        "REQ-BRDG-008",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-10": {
+      "phase": 2,
+      "subject": "secret redaction",
+      "packages": [
+        "P2-06"
+      ],
+      "requirements": [
+        "REQ-BRDG-008",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-11": {
+      "phase": 2,
+      "subject": "attachment policy",
+      "packages": [
+        "P2-04"
+      ],
+      "requirements": [
+        "REQ-BRDG-008",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-12": {
+      "phase": 2,
+      "subject": "admin isolation",
+      "packages": [
+        "P2-07"
+      ],
+      "requirements": [
+        "REQ-BRDG-008",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-13": {
+      "phase": 2,
+      "subject": "disable behavior",
+      "packages": [
+        "P2-05",
+        "P2-07"
+      ],
+      "requirements": [
+        "REQ-BRDG-001",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-14": {
+      "phase": 2,
+      "subject": "mapping integrity",
+      "packages": [
+        "P2-05"
+      ],
+      "requirements": [
+        "REQ-BRDG-007",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-15": {
+      "phase": 2,
+      "subject": "Bridge delivery latency",
+      "packages": [
+        "P2-06"
+      ],
+      "requirements": [
+        "REQ-BRDG-005",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-16": {
+      "phase": 2,
+      "subject": "Telegram command policy",
+      "packages": [
+        "P2-08"
+      ],
+      "requirements": [
+        "REQ-BRDG-004",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-17": {
+      "phase": 2,
+      "subject": "duplicate Telegram target",
+      "packages": [
+        "P2-05"
+      ],
+      "requirements": [
+        "REQ-BRDG-003",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-18": {
+      "phase": 2,
+      "subject": "channel soft delete",
+      "packages": [
+        "P2-09"
+      ],
+      "requirements": [
+        "REQ-CHAN-003",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-19": {
+      "phase": 2,
+      "subject": "custom channel/template",
+      "packages": [
+        "P2-01",
+        "P2-02"
+      ],
+      "requirements": [
+        "REQ-CHAN-002",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-20": {
+      "phase": 2,
+      "subject": "external identity command",
+      "packages": [
+        "P2-02",
+        "P2-08"
+      ],
+      "requirements": [
+        "REQ-BRDG-006",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-21": {
+      "phase": 2,
+      "subject": "external identity collision",
+      "packages": [
+        "P2-02"
+      ],
+      "requirements": [
+        "REQ-BRDG-006",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-22": {
+      "phase": 2,
+      "subject": "provider-instance isolation",
+      "packages": [
+        "P2-02"
+      ],
+      "requirements": [
+        "REQ-BRDG-006",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-23": {
+      "phase": 2,
+      "subject": "transactional outbox",
+      "packages": [
+        "P2-03"
+      ],
+      "requirements": [
+        "REQ-BRDG-007",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-24": {
+      "phase": 2,
+      "subject": "command grammar",
+      "packages": [
+        "P2-10"
+      ],
+      "requirements": [
+        "REQ-MMUX-001",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-25": {
+      "phase": 2,
+      "subject": "Task card/thread",
+      "packages": [
+        "P2-11"
+      ],
+      "requirements": [
+        "REQ-MMUX-001",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-26": {
+      "phase": 2,
+      "subject": "interactive action",
+      "packages": [
+        "P2-12"
+      ],
+      "requirements": [
+        "REQ-MMUX-002",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-27": {
+      "phase": 2,
+      "subject": "link challenge",
+      "packages": [
+        "P2-13"
+      ],
+      "requirements": [
+        "REQ-MMUX-003",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-28": {
+      "phase": 2,
+      "subject": "Agent identity display",
+      "packages": [
+        "P2-14"
+      ],
+      "requirements": [
+        "REQ-MMUX-002",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-29": {
+      "phase": 2,
+      "subject": "message retention",
+      "packages": [
+        "P2-15"
+      ],
+      "requirements": [
+        "REQ-MSG-001",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-30": {
+      "phase": 2,
+      "subject": "i18n",
+      "packages": [
+        "P2-16"
+      ],
+      "requirements": [
+        "REQ-I18N-001",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P2-31": {
+      "phase": 2,
+      "subject": "notification delivery",
+      "packages": [
+        "P2-17"
+      ],
+      "requirements": [
+        "REQ-NOTF-001",
+        "REQ-QGAT-002"
+      ]
+    },
+    "V-P3-01": {
+      "phase": 3,
+      "subject": "Agent register",
+      "packages": [
+        "P3-01"
+      ],
+      "requirements": [
+        "REQ-AGENT-001",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-02": {
+      "phase": 3,
+      "subject": "role create/change",
+      "packages": [
+        "P3-02"
+      ],
+      "requirements": [
+        "REQ-AGENT-002",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-03": {
+      "phase": 3,
+      "subject": "capability routing",
+      "packages": [
+        "P3-06"
+      ],
+      "requirements": [
+        "REQ-AGENT-005",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-04": {
+      "phase": 3,
+      "subject": "unsupported",
+      "packages": [
+        "P3-06"
+      ],
+      "requirements": [
+        "REQ-AGENT-005",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-05": {
+      "phase": 3,
+      "subject": "adapter conformance",
+      "packages": [
+        "P3-03",
+        "P3-04",
+        "P3-05"
+      ],
+      "requirements": [
+        "REQ-AGENT-003",
+        "REQ-AGENT-009",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-06": {
+      "phase": 3,
+      "subject": "idempotent delivery",
+      "packages": [
+        "P3-03"
+      ],
+      "requirements": [
+        "REQ-AGENT-005",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-07": {
+      "phase": 3,
+      "subject": "cancel",
+      "packages": [
+        "P3-03"
+      ],
+      "requirements": [
+        "REQ-AGENT-005",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-08": {
+      "phase": 3,
+      "subject": "suspend/revoke",
+      "packages": [
+        "P3-01"
+      ],
+      "requirements": [
+        "REQ-AGENT-001",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-09": {
+      "phase": 3,
+      "subject": "role conflict",
+      "packages": [
+        "P3-02"
+      ],
+      "requirements": [
+        "REQ-AGENT-002",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-10": {
+      "phase": 3,
+      "subject": "channel membership",
+      "packages": [
+        "P3-06"
+      ],
+      "requirements": [
+        "REQ-AGENT-005",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-11": {
+      "phase": 3,
+      "subject": "heartbeat/offline",
+      "packages": [
+        "P3-01"
+      ],
+      "requirements": [
+        "REQ-AGENT-005",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-12": {
+      "phase": 3,
+      "subject": "product neutrality",
+      "packages": [
+        "P3-04"
+      ],
+      "requirements": [
+        "REQ-AGENT-003",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-13": {
+      "phase": 3,
+      "subject": "Web management",
+      "packages": [
+        "P3-07"
+      ],
+      "requirements": [
+        "REQ-ADMN-001",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-14": {
+      "phase": 3,
+      "subject": "verifier selection",
+      "packages": [
+        "P3-13"
+      ],
+      "requirements": [
+        "REQ-VRFY-001",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-15": {
+      "phase": 3,
+      "subject": "limits enforcement",
+      "packages": [
+        "P3-08"
+      ],
+      "requirements": [
+        "REQ-AGENT-004",
+        "REQ-COST-001",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-16": {
+      "phase": 3,
+      "subject": "principal role/alias independence",
+      "packages": [
+        "P3-02"
+      ],
+      "requirements": [
+        "REQ-VRFY-001",
+        "REQ-ADMN-001",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-17": {
+      "phase": 3,
+      "subject": "lifecycle Event rebuild",
+      "packages": [
+        "P3-01"
+      ],
+      "requirements": [
+        "REQ-AGENT-005",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-18": {
+      "phase": 3,
+      "subject": "multi-Agent fan-out/join",
+      "packages": [
+        "P3-09"
+      ],
+      "requirements": [
+        "REQ-AGENT-006",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-19": {
+      "phase": 3,
+      "subject": "delegation graph limits",
+      "packages": [
+        "P3-09"
+      ],
+      "requirements": [
+        "REQ-AGENT-006",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-20": {
+      "phase": 3,
+      "subject": "in-flight reassignment",
+      "packages": [
+        "P3-09"
+      ],
+      "requirements": [
+        "REQ-AGENT-006",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-21": {
+      "phase": 3,
+      "subject": "MCP transport",
+      "packages": [
+        "P3-10"
+      ],
+      "requirements": [
+        "REQ-AGENT-007",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-22": {
+      "phase": 3,
+      "subject": "webhook push",
+      "packages": [
+        "P3-11"
+      ],
+      "requirements": [
+        "REQ-AGENT-007",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-23": {
+      "phase": 3,
+      "subject": "Mattermost bot adapter",
+      "packages": [
+        "P3-12"
+      ],
+      "requirements": [
+        "REQ-AGENT-007",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-24": {
+      "phase": 3,
+      "subject": "verifier assignment",
+      "packages": [
+        "P3-13"
+      ],
+      "requirements": [
+        "REQ-VRFY-003",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-25": {
+      "phase": 3,
+      "subject": "accept timeout re-routing",
+      "packages": [
+        "P3-14"
+      ],
+      "requirements": [
+        "REQ-AGENT-008",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P3-26": {
+      "phase": 3,
+      "subject": "usage reporting conformance",
+      "packages": [
+        "P3-15"
+      ],
+      "requirements": [
+        "REQ-COST-001",
+        "REQ-QGAT-003"
+      ]
+    },
+    "V-P4-01": {
+      "phase": 4,
+      "subject": "clean Web setup",
+      "packages": [
+        "P4-03"
+      ],
+      "requirements": [
+        "REQ-SETP-001",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-02": {
+      "phase": 4,
+      "subject": "setup token",
+      "packages": [
+        "P4-03",
+        "P4-08"
+      ],
+      "requirements": [
+        "REQ-SETP-002",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-03": {
+      "phase": 4,
+      "subject": "setup lock",
+      "packages": [
+        "P4-03"
+      ],
+      "requirements": [
+        "REQ-SETP-002",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-04": {
+      "phase": 4,
+      "subject": "preflight rollback",
+      "packages": [
+        "P4-03"
+      ],
+      "requirements": [
+        "REQ-SETT-001",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-05": {
+      "phase": 4,
+      "subject": "settings validation",
+      "packages": [
+        "P4-04"
+      ],
+      "requirements": [
+        "REQ-SETT-001",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-06": {
+      "phase": 4,
+      "subject": "setting diff/audit",
+      "packages": [
+        "P4-04"
+      ],
+      "requirements": [
+        "REQ-SETT-001",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-07": {
+      "phase": 4,
+      "subject": "account lifecycle",
+      "packages": [
+        "P4-01"
+      ],
+      "requirements": [
+        "REQ-ADMN-001",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-08": {
+      "phase": 4,
+      "subject": "UI/API authz parity",
+      "packages": [
+        "P4-08"
+      ],
+      "requirements": [
+        "REQ-ADMN-002",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-09": {
+      "phase": 4,
+      "subject": "admin web security",
+      "packages": [
+        "P4-08"
+      ],
+      "requirements": [
+        "REQ-ADMN-006",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-10": {
+      "phase": 4,
+      "subject": "secret at rest",
+      "packages": [
+        "P4-05"
+      ],
+      "requirements": [
+        "REQ-SCRT-001",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-11": {
+      "phase": 4,
+      "subject": "scoped lease",
+      "packages": [
+        "P4-06"
+      ],
+      "requirements": [
+        "REQ-SCRT-002",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-12": {
+      "phase": 4,
+      "subject": "TTL/single-use",
+      "packages": [
+        "P4-06"
+      ],
+      "requirements": [
+        "REQ-SCRT-002",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-13": {
+      "phase": 4,
+      "subject": "revoke",
+      "packages": [
+        "P4-07"
+      ],
+      "requirements": [
+        "REQ-SCRT-002",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-14": {
+      "phase": 4,
+      "subject": "secret canary DLP",
+      "packages": [
+        "P4-07"
+      ],
+      "requirements": [
+        "REQ-SCRT-001",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-15": {
+      "phase": 4,
+      "subject": "LLM exposure",
+      "packages": [
+        "P4-06"
+      ],
+      "requirements": [
+        "REQ-SCRT-003",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-16": {
+      "phase": 4,
+      "subject": "dashboard truth",
+      "packages": [
+        "P4-02"
+      ],
+      "requirements": [
+        "REQ-ADMN-006",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-17": {
+      "phase": 4,
+      "subject": "backup key separation",
+      "packages": [
+        "P4-05"
+      ],
+      "requirements": [
+        "REQ-OPS-008",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-18": {
+      "phase": 4,
+      "subject": "accessibility",
+      "packages": [
+        "P4-08"
+      ],
+      "requirements": [
+        "REQ-ADMN-006",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-19": {
+      "phase": 4,
+      "subject": "setup reconfiguration path",
+      "packages": [
+        "P4-03"
+      ],
+      "requirements": [
+        "REQ-SETP-003",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-20": {
+      "phase": 4,
+      "subject": "MFA enforcement",
+      "packages": [
+        "P4-09"
+      ],
+      "requirements": [
+        "REQ-SETP-004",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-21": {
+      "phase": 4,
+      "subject": "break-glass",
+      "packages": [
+        "P4-10"
+      ],
+      "requirements": [
+        "REQ-ADMN-003",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-22": {
+      "phase": 4,
+      "subject": "hard delete workflow",
+      "packages": [
+        "P4-11"
+      ],
+      "requirements": [
+        "REQ-ADMN-004",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-23": {
+      "phase": 4,
+      "subject": "audit search/export",
+      "packages": [
+        "P4-02"
+      ],
+      "requirements": [
+        "REQ-ADMN-005",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-24": {
+      "phase": 4,
+      "subject": "bootstrap local store",
+      "packages": [
+        "P4-03"
+      ],
+      "requirements": [
+        "REQ-SETP-001",
+        "REQ-SETP-002",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-25": {
+      "phase": 4,
+      "subject": "hard delete Event immutability",
+      "packages": [
+        "P4-11"
+      ],
+      "requirements": [
+        "REQ-EVNT-001",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-26": {
+      "phase": 4,
+      "subject": "principal Role CRUD",
+      "packages": [
+        "P4-01"
+      ],
+      "requirements": [
+        "REQ-ADMN-001",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-27": {
+      "phase": 4,
+      "subject": "Setup network boundary",
+      "packages": [
+        "P4-03"
+      ],
+      "requirements": [
+        "REQ-SETP-005",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-28": {
+      "phase": 4,
+      "subject": "Setup persistence order",
+      "packages": [
+        "P4-03"
+      ],
+      "requirements": [
+        "REQ-SETP-005",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-29": {
+      "phase": 4,
+      "subject": "hard-delete restore resurrection",
+      "packages": [
+        "P4-11"
+      ],
+      "requirements": [
+        "REQ-OPS-005",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-30": {
+      "phase": 4,
+      "subject": "integration preflight persistence",
+      "packages": [
+        "P4-03"
+      ],
+      "requirements": [
+        "REQ-SETP-005",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-31": {
+      "phase": 4,
+      "subject": "secret sidecar",
+      "packages": [
+        "P4-12"
+      ],
+      "requirements": [
+        "REQ-SCRT-004",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-32": {
+      "phase": 4,
+      "subject": "maintenance mode",
+      "packages": [
+        "P4-13"
+      ],
+      "requirements": [
+        "REQ-OPS-009",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P4-33": {
+      "phase": 4,
+      "subject": "Web Approvals queue",
+      "packages": [
+        "P4-14"
+      ],
+      "requirements": [
+        "REQ-APRV-003",
+        "REQ-QGAT-004"
+      ]
+    },
+    "V-P5-01": {
+      "phase": 5,
+      "subject": "cron validation",
+      "packages": [
+        "P5-01"
+      ],
+      "requirements": [
+        "REQ-SCHD-008",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-02": {
+      "phase": 5,
+      "subject": "next-run preview",
+      "packages": [
+        "P5-02"
+      ],
+      "requirements": [
+        "REQ-SCHD-002",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-03": {
+      "phase": 5,
+      "subject": "timezone",
+      "packages": [
+        "P5-02"
+      ],
+      "requirements": [
+        "REQ-SCHD-002",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-04": {
+      "phase": 5,
+      "subject": "DST spring forward",
+      "packages": [
+        "P5-02"
+      ],
+      "requirements": [
+        "REQ-SCHD-002",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-05": {
+      "phase": 5,
+      "subject": "DST fall back",
+      "packages": [
+        "P5-02"
+      ],
+      "requirements": [
+        "REQ-SCHD-002",
+        "REQ-SCHD-010",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-06": {
+      "phase": 5,
+      "subject": "unique Run",
+      "packages": [
+        "P5-03"
+      ],
+      "requirements": [
+        "REQ-SCHD-001",
+        "REQ-SCHD-010",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-07": {
+      "phase": 5,
+      "subject": "dual runner",
+      "packages": [
+        "P5-03"
+      ],
+      "requirements": [
+        "REQ-SCHD-001",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-08": {
+      "phase": 5,
+      "subject": "idempotent Task",
+      "packages": [
+        "P5-03"
+      ],
+      "requirements": [
+        "REQ-SCHD-001",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-09": {
+      "phase": 5,
+      "subject": "FORBID concurrency",
+      "packages": [
+        "P5-05"
+      ],
+      "requirements": [
+        "REQ-SCHD-003",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-10": {
+      "phase": 5,
+      "subject": "ALLOW concurrency",
+      "packages": [
+        "P5-05"
+      ],
+      "requirements": [
+        "REQ-SCHD-003",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-11": {
+      "phase": 5,
+      "subject": "REPLACE concurrency",
+      "packages": [
+        "P5-05",
+        "P5-06"
+      ],
+      "requirements": [
+        "REQ-SCHD-003",
+        "REQ-SCHD-012",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-12": {
+      "phase": 5,
+      "subject": "missed SKIP",
+      "packages": [
+        "P5-05"
+      ],
+      "requirements": [
+        "REQ-SCHD-003",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-13": {
+      "phase": 5,
+      "subject": "missed RUN_ONCE",
+      "packages": [
+        "P5-05"
+      ],
+      "requirements": [
+        "REQ-SCHD-003",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-14": {
+      "phase": 5,
+      "subject": "limited backfill",
+      "packages": [
+        "P5-05"
+      ],
+      "requirements": [
+        "REQ-SCHD-003",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-15": {
+      "phase": 5,
+      "subject": "permission recheck",
+      "packages": [
+        "P5-04"
+      ],
+      "requirements": [
+        "REQ-SCHD-004",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-16": {
+      "phase": 5,
+      "subject": "suspended Agent",
+      "packages": [
+        "P5-04"
+      ],
+      "requirements": [
+        "REQ-SCHD-004",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-17": {
+      "phase": 5,
+      "subject": "Secret lease",
+      "packages": [
+        "P5-04"
+      ],
+      "requirements": [
+        "REQ-SCHD-014",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-18": {
+      "phase": 5,
+      "subject": "Approval",
+      "packages": [
+        "P5-04"
+      ],
+      "requirements": [
+        "REQ-APRV-002",
+        "REQ-SCHD-004",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-19": {
+      "phase": 5,
+      "subject": "retry/backoff",
+      "packages": [
+        "P5-06"
+      ],
+      "requirements": [
+        "REQ-SCHD-012",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-20": {
+      "phase": 5,
+      "subject": "timeout/cancel",
+      "packages": [
+        "P5-06"
+      ],
+      "requirements": [
+        "REQ-SCHD-009",
+        "REQ-SCHD-012",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-21": {
+      "phase": 5,
+      "subject": "Run now authz",
+      "packages": [
+        "P5-08"
+      ],
+      "requirements": [
+        "REQ-SCHD-014",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-22": {
+      "phase": 5,
+      "subject": "lifecycle/update",
+      "packages": [
+        "P5-01",
+        "P5-08"
+      ],
+      "requirements": [
+        "REQ-SCHD-011",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-23": {
+      "phase": 5,
+      "subject": "channel notice",
+      "packages": [
+        "P5-07"
+      ],
+      "requirements": [
+        "REQ-SCHD-015",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-24": {
+      "phase": 5,
+      "subject": "restart recovery",
+      "packages": [
+        "P5-03"
+      ],
+      "requirements": [
+        "REQ-SCHD-012",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-25": {
+      "phase": 5,
+      "subject": "metrics/history",
+      "packages": [
+        "P5-09"
+      ],
+      "requirements": [
+        "REQ-SCHD-015",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-26": {
+      "phase": 5,
+      "subject": "shell rejection",
+      "packages": [
+        "P5-01"
+      ],
+      "requirements": [
+        "REQ-SCHD-005",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-27": {
+      "phase": 5,
+      "subject": "start delay p95",
+      "packages": [
+        "P5-09",
+        "P5-10"
+      ],
+      "requirements": [
+        "REQ-SCHD-006",
+        "REQ-OPS-007",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-28": {
+      "phase": 5,
+      "subject": "budget enforcement",
+      "packages": [
+        "P5-10"
+      ],
+      "requirements": [
+        "REQ-SCHD-007",
+        "REQ-COST-001",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-29": {
+      "phase": 5,
+      "subject": "DOM/DOW OR",
+      "packages": [
+        "P5-02"
+      ],
+      "requirements": [
+        "REQ-SCHD-008",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-30": {
+      "phase": 5,
+      "subject": "Schedule Approval race",
+      "packages": [
+        "P5-04"
+      ],
+      "requirements": [
+        "REQ-APRV-001",
+        "REQ-SCHD-013",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-31": {
+      "phase": 5,
+      "subject": "pending/running Run cancel",
+      "packages": [
+        "P5-01"
+      ],
+      "requirements": [
+        "REQ-SCHD-009",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-32": {
+      "phase": 5,
+      "subject": "terminal Run cancel",
+      "packages": [
+        "P5-01"
+      ],
+      "requirements": [
+        "REQ-SCHD-009",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-33": {
+      "phase": 5,
+      "subject": "version snapshot pin",
+      "packages": [
+        "P5-03"
+      ],
+      "requirements": [
+        "REQ-SCHD-011",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-34": {
+      "phase": 5,
+      "subject": "manual retry",
+      "packages": [
+        "P5-06"
+      ],
+      "requirements": [
+        "REQ-SCHD-012",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-35": {
+      "phase": 5,
+      "subject": "manual Run isolation",
+      "packages": [
+        "P5-03"
+      ],
+      "requirements": [
+        "REQ-SCHD-010",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-36": {
+      "phase": 5,
+      "subject": "Schedule subject activation",
+      "packages": [
+        "P5-01"
+      ],
+      "requirements": [
+        "REQ-SCHD-013",
+        "REQ-ARTF-001",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P5-37": {
+      "phase": 5,
+      "subject": "Run budget settlement",
+      "packages": [
+        "P5-10"
+      ],
+      "requirements": [
+        "REQ-COST-001",
+        "REQ-QGAT-005"
+      ]
+    },
+    "V-P6-01": {
+      "phase": 6,
+      "subject": "Approval scope",
+      "packages": [
+        "P6-01"
+      ],
+      "requirements": [
+        "REQ-APRV-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-02": {
+      "phase": 6,
+      "subject": "high-risk gate",
+      "packages": [
+        "P6-01"
+      ],
+      "requirements": [
+        "REQ-APRV-002",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-03": {
+      "phase": 6,
+      "subject": "Brainstorm limits",
+      "packages": [
+        "P6-02"
+      ],
+      "requirements": [
+        "REQ-BRST-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-04": {
+      "phase": 6,
+      "subject": "Decision/Taskify",
+      "packages": [
+        "P6-09"
+      ],
+      "requirements": [
+        "REQ-BRST-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-05": {
+      "phase": 6,
+      "subject": "Artifact integrity",
+      "packages": [
+        "P6-03"
+      ],
+      "requirements": [
+        "REQ-ARTF-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-06": {
+      "phase": 6,
+      "subject": "malicious Artifact",
+      "packages": [
+        "P6-03"
+      ],
+      "requirements": [
+        "REQ-ARTF-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-07": {
+      "phase": 6,
+      "subject": "Task document",
+      "packages": [
+        "P6-04"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-08": {
+      "phase": 6,
+      "subject": "Brainstorm document",
+      "packages": [
+        "P6-04",
+        "P6-09"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-09": {
+      "phase": 6,
+      "subject": "Schedule document",
+      "packages": [
+        "P6-04",
+        "P6-08"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-DOCS-007",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-10": {
+      "phase": 6,
+      "subject": "process accuracy",
+      "packages": [
+        "P6-05"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-11": {
+      "phase": 6,
+      "subject": "resources",
+      "packages": [
+        "P6-10"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-12": {
+      "phase": 6,
+      "subject": "verification section",
+      "packages": [
+        "P6-04"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-13": {
+      "phase": 6,
+      "subject": "redaction",
+      "packages": [
+        "P6-05"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-14": {
+      "phase": 6,
+      "subject": "provenance",
+      "packages": [
+        "P6-05"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-15": {
+      "phase": 6,
+      "subject": "Git publisher",
+      "packages": [
+        "P6-06"
+      ],
+      "requirements": [
+        "REQ-DOCS-003",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-16": {
+      "phase": 6,
+      "subject": "publisher outage",
+      "packages": [
+        "P6-06"
+      ],
+      "requirements": [
+        "REQ-DOCS-006",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-17": {
+      "phase": 6,
+      "subject": "manual correction",
+      "packages": [
+        "P6-07"
+      ],
+      "requirements": [
+        "REQ-DOCS-006",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-18": {
+      "phase": 6,
+      "subject": "publish authority",
+      "packages": [
+        "P6-07"
+      ],
+      "requirements": [
+        "REQ-DOCS-006",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-19": {
+      "phase": 6,
+      "subject": "closure gate",
+      "packages": [
+        "P6-04"
+      ],
+      "requirements": [
+        "REQ-DOCS-005",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-20": {
+      "phase": 6,
+      "subject": "document generation rate",
+      "packages": [
+        "P6-04"
+      ],
+      "requirements": [
+        "REQ-DOCS-002",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-21": {
+      "phase": 6,
+      "subject": "optional connector",
+      "packages": [
+        "P6-06"
+      ],
+      "requirements": [
+        "REQ-DOCS-004",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-22": {
+      "phase": 6,
+      "subject": "Approval expiry",
+      "packages": [
+        "P6-01"
+      ],
+      "requirements": [
+        "REQ-APRV-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-23": {
+      "phase": 6,
+      "subject": "document two-stage lifecycle",
+      "packages": [
+        "P6-04"
+      ],
+      "requirements": [
+        "REQ-DOCS-001",
+        "REQ-DOCS-005",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-24": {
+      "phase": 6,
+      "subject": "failed/blocked attempt document",
+      "packages": [
+        "P6-04"
+      ],
+      "requirements": [
+        "REQ-DOCS-005",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-25": {
+      "phase": 6,
+      "subject": "generic ArtifactLink",
+      "packages": [
+        "P6-03"
+      ],
+      "requirements": [
+        "REQ-ARTF-001",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-26": {
+      "phase": 6,
+      "subject": "Brainstorm turn engine",
+      "packages": [
+        "P6-02"
+      ],
+      "requirements": [
+        "REQ-BRST-002",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-27": {
+      "phase": 6,
+      "subject": "summary/decision/taskify",
+      "packages": [
+        "P6-09"
+      ],
+      "requirements": [
+        "REQ-BRST-003",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-28": {
+      "phase": 6,
+      "subject": "narrative citation linter",
+      "packages": [
+        "P6-10"
+      ],
+      "requirements": [
+        "REQ-DOCS-008",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P6-29": {
+      "phase": 6,
+      "subject": "Mattermost approval buttons",
+      "packages": [
+        "P6-01"
+      ],
+      "requirements": [
+        "REQ-APRV-003",
+        "REQ-QGAT-006"
+      ]
+    },
+    "V-P7-01": {
+      "phase": 7,
+      "subject": "clean production-like install",
+      "packages": [
+        "P7-07"
+      ],
+      "requirements": [
+        "REQ-RELS-001",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-02": {
+      "phase": 7,
+      "subject": "full E2E",
+      "packages": [
+        "P7-09"
+      ],
+      "requirements": [
+        "REQ-OPS-003",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-03": {
+      "phase": 7,
+      "subject": "load",
+      "packages": [
+        "P7-04"
+      ],
+      "requirements": [
+        "REQ-OPS-003",
+        "REQ-OPS-007",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-04": {
+      "phase": 7,
+      "subject": "24 h soak",
+      "packages": [
+        "P7-04"
+      ],
+      "requirements": [
+        "REQ-OPS-003",
+        "REQ-OPS-007",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-05": {
+      "phase": 7,
+      "subject": "dependency outage",
+      "packages": [
+        "P7-05"
+      ],
+      "requirements": [
+        "REQ-OPS-008",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-06": {
+      "phase": 7,
+      "subject": "DB outage",
+      "packages": [
+        "P7-05"
+      ],
+      "requirements": [
+        "REQ-OPS-008",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-07": {
+      "phase": 7,
+      "subject": "backup restore",
+      "packages": [
+        "P7-03"
+      ],
+      "requirements": [
+        "REQ-OPS-001",
+        "REQ-OPS-005",
+        "REQ-OPS-006",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-08": {
+      "phase": 7,
+      "subject": "projection rebuild",
+      "packages": [
+        "P7-03"
+      ],
+      "requirements": [
+        "REQ-EVNT-002",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-09": {
+      "phase": 7,
+      "subject": "upgrade",
+      "packages": [
+        "P7-06"
+      ],
+      "requirements": [
+        "REQ-RELS-001",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-10": {
+      "phase": 7,
+      "subject": "rollback/forward fix",
+      "packages": [
+        "P7-06"
+      ],
+      "requirements": [
+        "REQ-RELS-001",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-11": {
+      "phase": 7,
+      "subject": "security scan",
+      "packages": [
+        "P7-01",
+        "P7-05"
+      ],
+      "requirements": [
+        "REQ-OPS-004",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-12": {
+      "phase": 7,
+      "subject": "credential rotation",
+      "packages": [
+        "P7-05"
+      ],
+      "requirements": [
+        "REQ-OPS-008",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-13": {
+      "phase": 7,
+      "subject": "incident tabletop",
+      "packages": [
+        "P7-08"
+      ],
+      "requirements": [
+        "REQ-OPS-008",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-14": {
+      "phase": 7,
+      "subject": "observability",
+      "packages": [
+        "P7-02"
+      ],
+      "requirements": [
+        "REQ-OPS-008",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-15": {
+      "phase": 7,
+      "subject": "SBOM/image",
+      "packages": [
+        "P7-01",
+        "P7-07"
+      ],
+      "requirements": [
+        "REQ-RELS-001",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-16": {
+      "phase": 7,
+      "subject": "evidence archive",
+      "packages": [
+        "P7-07"
+      ],
+      "requirements": [
+        "REQ-EVNT-003",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-17": {
+      "phase": 7,
+      "subject": "residual risk",
+      "packages": [
+        "P7-07"
+      ],
+      "requirements": [
+        "REQ-RELS-002",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-18": {
+      "phase": 7,
+      "subject": "deployment approval",
+      "packages": [
+        "P7-07"
+      ],
+      "requirements": [
+        "REQ-RELS-002",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-19": {
+      "phase": 7,
+      "subject": "backup retention",
+      "packages": [
+        "P7-03"
+      ],
+      "requirements": [
+        "REQ-OPS-002",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-20": {
+      "phase": 7,
+      "subject": "deletion resurrection",
+      "packages": [
+        "P7-03"
+      ],
+      "requirements": [
+        "REQ-OPS-005",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-21": {
+      "phase": 7,
+      "subject": "runbook completeness",
+      "packages": [
+        "P7-08"
+      ],
+      "requirements": [
+        "REQ-OPS-010",
+        "REQ-QGAT-007"
+      ]
+    },
+    "V-P7-22": {
+      "phase": 7,
+      "subject": "Human-path acceptance",
+      "packages": [
+        "P7-09"
+      ],
+      "requirements": [
+        "REQ-MMUX-004",
+        "REQ-QGAT-007"
+      ]
+    }
+  },
+  "problems": []
+}

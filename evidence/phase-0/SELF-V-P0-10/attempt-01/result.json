@@ -1,0 +1,19 @@
+{
+  "test_id": "V-P0-10",
+  "evidence_id": "SELF-V-P0-10",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "python",
+    "-m",
+    "tools.trace_matrix",
+    "--check"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "b9bcc436dac735a7673bc3c1cbaadec8e68f7862",
+  "started_at": "2026-09-02T12:54:45.352217+00:00",
+  "finished_at": "2026-09-02T12:54:45.450888+00:00",
+  "output_sha256": "68fd1f7127bdd57f5c8eac662d0bcfe1844f5d619c54b2a49a5b0ad9404f6068"
+}

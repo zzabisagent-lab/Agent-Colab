@@ -1,0 +1,83 @@
+# Entity introduction phases and explicit contract stubs for the Phase dependency DAG lint
+# (validation plan V-P0-15, development plan §12.1). Phase 0 defines contracts only (schemas,
+# fixtures, spikes), so Phase 0 packages/tests may reference any entity as a contract.
+#
+# introducing_phase: first phase in which the entity is IMPLEMENTED (not merely contracted).
+entities:
+  Event: 1
+  Task: 1
+  Approval: 1
+  Artifact: 1
+  ArtifactLink: 1
+  Document: 1
+  VerificationRun: 1
+  Verifier: 1
+  WorkItem: 1
+  "work item": 1
+  Notification: 1
+  usage_records: 1
+  cost_units: 1
+  ExternalIdentityLink: 1
+  Policy: 1
+  Role: 1
+  Account: 1
+  Projection: 1
+  SSE: 1
+  MCP: 1
+  Mattermost: 2
+  Telegram: 2
+  Bridge: 2
+  Channel: 2
+  "Command Router": 2
+  card: 2
+  Renderer: 2
+  outbox: 1  # delivery outbox table is reused by the Phase 1 notification core (P1-13)
+  Agent Registry: 3
+  Adapter: 3
+  Capability: 3
+  heartbeat: 3
+  "sub-Task": 1  # task_edges/SUBTASK_CREATED belong to the Phase 1 Task core (§6.8: Task activates in Phase 1); limits/join arrive in P3-09
+  join: 3
+  "Setup Wizard": 4
+  "Secret Broker": 4
+  Secret: 4
+  sidecar: 4
+  "break-glass": 4
+  "hard delete": 4
+  "maintenance mode": 4
+  MFA: 4
+  Schedule: 5
+  ScheduleRun: 5
+  ScheduleVersion: 5
+  "Run now": 5
+  cron: 5
+  Brainstorm: 6
+  Decision: 6
+  Publisher: 6
+  taskify: 6
+  backup: 4  # backup status/key separation appear in P4-02/P4-05; full backup/restore job is P7-03
+  restore: 4  # restore tombstone reconciliation is part of P4-11 hard delete
+  SBOM: 7
+  runbook: 7
+
+# Explicit contract stubs: forward references the documents themselves declare as stubs or
+# not-yet-active handlers. Each entry quotes the baseline wording that makes the stub explicit.
+stubs:
+  - id: P1-08
+    entities: [Schedule, ScheduleRun]
+    reason: "Phase 1 task/action subjects ... schedule/run subject handlers activated in Phase 5 (development plan §6.7)"
+  - id: P1-09
+    entities: [ScheduleRun, Brainstorm, Decision, "Run"]
+    reason: "Run/Brainstorm/Decision handlers activated in their phases (P1-09 completion criteria)"
+  - id: P1-13
+    entities: [Mattermost, Telegram]
+    reason: "providers stubbed (P1-13 completion criteria)"
+  - id: V-P1-15
+    entities: [Schedule, ScheduleRun]
+    reason: "not-yet-active schedule/run handlers return stable SUBJECT_TYPE_NOT_ACTIVE"
+  - id: V-P1-17
+    entities: [ScheduleRun]
+    reason: "premature Run link returns SUBJECT_TYPE_NOT_ACTIVE"
+  - id: V-P1-31
+    entities: [Notification]
+    reason: "Phase 1 notification core with providers stubbed"
