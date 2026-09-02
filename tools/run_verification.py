@@ -70,8 +70,14 @@ def _worktree_modifications(worktree: Path, phase: int) -> list[str]:
     return [line[3:] for line in out.splitlines() if line[3:] and not line[3:].startswith(allowed)]
 
 
+SECRET_ENV_PREFIXES = ("TELEGRAM_", "ADMIN_", "BOT_", "MATTERMOST_")
+
+
 def _load_secret_env(paths: list[str]) -> dict[str, str]:
-    """Parse KEY=VALUE files; skip comments/blank lines and keys with spaces."""
+    """Parse KEY=VALUE files; only test-environment keys (allow-listed prefixes) are exported.
+
+    Deployment credentials in ``.env`` (server login) are never handed to the verifier.
+    """
     out: dict[str, str] = {}
     for raw in paths:
         path = Path(raw).expanduser()
@@ -83,7 +89,7 @@ def _load_secret_env(paths: list[str]) -> dict[str, str]:
                 continue
             key, value = line.split("=", 1)
             key = key.strip()
-            if " " in key or not key:
+            if " " in key or not key or not key.startswith(SECRET_ENV_PREFIXES):
                 continue
             out[key] = value.strip().strip('"').strip("'")
     return out
