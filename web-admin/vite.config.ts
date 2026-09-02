@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 
 // Development proxy: the console talks to the Agent-Colab server on :8080 with cookies.
 export default defineConfig({
+  base: '/admin/',
   plugins: [react()],
   server: {
     proxy: {

@@ -26,7 +26,7 @@ function Shell({ children }: { children: React.ReactNode }) {
 export function App() {
   return (
     <SessionProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/admin">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/channels" element={<Shell><ChannelsPage /></Shell>} />

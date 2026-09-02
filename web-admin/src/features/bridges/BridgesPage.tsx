@@ -4,11 +4,15 @@ import { ApiError, get, post } from '../../api/client'
 
 export interface Bridge {
   bridge_id: string
+  channel_id: string
+  provider_instance_id: string
   telegram_chat_id: string
-  telegram_thread_id?: string | null
+  telegram_thread_id?: number | null
+  thread_mode: string
   direction: string
   status: string
-  delivery?: Record<string, number>
+  admin_exception: boolean
+  allow_commands: boolean
 }
 
 export function BridgesPage() {
@@ -17,6 +21,7 @@ export function BridgesPage() {
   const [items, setItems] = useState<Bridge[]>([])
   const [error, setError] = useState<string | null>(null)
   const [notice, setNotice] = useState<string | null>(null)
+  const [instance, setInstance] = useState('')
   const [chat, setChat] = useState('')
   const [thread, setThread] = useState('')
   const [direction, setDirection] = useState('bidirectional')
@@ -30,7 +35,15 @@ export function BridgesPage() {
   }
   function create(e: FormEvent) {
     e.preventDefault()
-    void run(() => post(base, { telegram_chat_id: chat, telegram_thread_id: thread || null, direction }), 'BRIDGE_CREATED')
+    void run(
+      () => post(base, {
+        provider_instance_id: instance,
+        telegram_chat_id: chat,
+        telegram_thread_id: thread ? Number(thread) : null,
+        direction,
+      }),
+      'BRIDGE_CREATED',
+    )
   }
   return (
     <main className="page">
@@ -40,10 +53,12 @@ export function BridgesPage() {
       {notice && <p role="status">{notice}</p>}
       <form onSubmit={create} aria-labelledby="create-bridge">
         <h2 id="create-bridge">Add Bridge</h2>
+        <label htmlFor="instance">Telegram provider instance id</label>
+        <input id="instance" value={instance} onChange={(e) => setInstance(e.target.value)} required />
         <label htmlFor="chat">Telegram chat id</label>
         <input id="chat" value={chat} onChange={(e) => setChat(e.target.value)} required />
         <label htmlFor="thread">Topic (thread) id, optional</label>
-        <input id="thread" value={thread} onChange={(e) => setThread(e.target.value)} />
+        <input id="thread" inputMode="numeric" value={thread} onChange={(e) => setThread(e.target.value)} />
         <label htmlFor="direction">Direction</label>
         <select id="direction" value={direction} onChange={(e) => setDirection(e.target.value)}>
           <option value="bidirectional">bidirectional</option>
