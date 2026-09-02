@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P2-30",
+  "evidence_id": "SELF-V-P2-30",
+  "attempt": 3,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_i18n_channels.py",
+    "tests/unit/test_i18n.py",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "3d4c38fb14a5cd4ef62941f66b367940a7840a03",
+  "started_at": "2026-09-02T16:26:07.611088+00:00",
+  "finished_at": "2026-09-02T16:26:09.795249+00:00",
+  "output_sha256": "83a1593c5b5783693fe3006d1f6597bcb4f3a5968f23b59481ee09a0477f910a"
+}

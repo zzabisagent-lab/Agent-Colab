@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/channel/channel-template.v1.schema.json",
+  "title": "Channel template definition v1 (spec §8.1)",
+  "type": "object",
+  "required": ["default_roles", "task_domain", "risk_policy", "limits", "documentation_template", "documentation_policy", "retention_days", "telegram_commands", "secret_scope", "artifact_policy"],
+  "properties": {
+    "default_roles": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9_-]*$"}},
+    "task_domain": {"type": "string", "minLength": 1, "maxLength": 64},
+    "risk_policy": {
+      "type": "object",
+      "required": ["default_risk", "max_risk"],
+      "properties": {
+        "default_risk": {"enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]},
+        "max_risk": {"enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]},
+        "requires_human_approval": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "limits": {
+      "type": "object",
+      "properties": {
+        "agent_turns": {"type": "integer", "minimum": 0},
+        "turns_per_agent": {"type": "integer", "minimum": 0},
+        "max_consecutive": {"type": "integer", "minimum": 0},
+        "total_turns": {"type": "integer", "minimum": 0},
+        "delegation_depth": {"type": "integer", "minimum": 0, "maximum": 16},
+        "max_fan_out": {"type": "integer", "minimum": 0},
+        "concurrent_subtasks": {"type": "integer", "minimum": 0},
+        "rate_per_minute": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "documentation_template": {"type": "string", "minLength": 1},
+    "documentation_policy": {"enum": ["threads", "full_channel"]},
+    "retention_days": {"type": "integer", "minimum": 1, "maximum": 3650},
+    "telegram_commands": {"enum": ["read_reply_only", "allow_read_verbs", "allow_write_verbs"]},
+    "secret_scope": {"enum": ["none", "task", "ops"]},
+    "artifact_policy": {
+      "type": "object",
+      "required": ["max_bytes"],
+      "properties": {
+        "max_bytes": {"type": "integer", "minimum": 1},
+        "quarantine_on_scan_failure": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

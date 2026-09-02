@@ -1,0 +1,31 @@
+.....F                                                                   [100%]
+=================================== FAILURES ===================================
+_______________ test_agent_identity_display_and_injection_audit ________________
+
+engine = Engine(postgresql+psycopg://colab@127.0.0.1:54329/colab_t_80403ab23b28)
+
+    def test_agent_identity_display_and_injection_audit(engine: Engine) -> None:
+        factory = make_session_factory(engine)
+        with Session(engine) as s:
+            prefix_inst = load_instance(s, PI_ID)
+            assert prefix_inst is not None
+        client = FakeMattermostClient()
+        provider = MattermostChannelProvider(client, prefix_inst, factory)
+        post_id = provider.deliver(
+            f"mattermost:{EXT}",
+            {
+                "message": "result ready",
+                "agent_display_name": "Research Agent",
+                "dedupe_key": "id-1",
+                "props": {"override_username": "system-admin"},
+            },
+        )
+        assert client.posts[post_id].message == "[Research Agent] result ready"
+        assert "override_username" not in client.posts[post_id].props
+>       assert _audits(engine, "agent.identity_injection_ignored") == 1
+E       AssertionError: assert 3 == 1
+E        +  where 3 = _audits(Engine(postgresql+psycopg://colab@127.0.0.1:54329/colab_t_80403ab23b28), 'agent.identity_injection_ignored')
+
+tests/integration/test_actions_db.py:292: AssertionError
+=========================== short test summary info ============================
+FAILED tests/integration/test_actions_db.py::test_agent_identity_display_and_injection_audit

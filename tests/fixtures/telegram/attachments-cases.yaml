@@ -1,0 +1,18 @@
+# V-P2-11 attachment policy matrix: only allowed attachments are delivered; the rest are blocked.
+cases:
+  - {name: pdf allowed, kind: document, file_name: report.pdf, mime_type: application/pdf, file_size: 12345, expect_allowed: true}
+  - {name: png allowed, kind: photo, file_name: null, mime_type: image/png, file_size: 4000, expect_allowed: true}
+  - {name: text allowed, kind: document, file_name: notes.txt, mime_type: text/plain, file_size: 10, expect_allowed: true}
+  - {name: docx allowed, kind: document, file_name: spec.docx, mime_type: application/vnd.openxmlformats-officedocument.wordprocessingml.document, file_size: 90000, expect_allowed: true}
+  - {name: oversize pdf, kind: document, file_name: big.pdf, mime_type: application/pdf, file_size: 20971521, expect_allowed: false, expect_code: ATTACHMENT_TOO_LARGE}
+  - {name: executable mime, kind: document, file_name: tool.exe, mime_type: application/x-msdownload, file_size: 1000, expect_allowed: false, expect_code: ATTACHMENT_MIME_DENIED}
+  - {name: shell script, kind: document, file_name: run.sh, mime_type: text/x-shellscript, file_size: 100, expect_allowed: false, expect_code: ATTACHMENT_MIME_DENIED}
+  - {name: zip archive, kind: document, file_name: bundle.zip, mime_type: application/zip, file_size: 1000, expect_allowed: false, expect_code: ATTACHMENT_MIME_DENIED}
+  - {name: unknown mime, kind: document, file_name: blob.bin, mime_type: application/octet-stream, file_size: 100, expect_allowed: false, expect_code: ATTACHMENT_MIME_DENIED}
+  - {name: missing mime, kind: document, file_name: mystery, mime_type: null, file_size: 100, expect_allowed: false, expect_code: ATTACHMENT_MIME_DENIED}
+  - {name: traversal name, kind: document, file_name: "../../etc/passwd", mime_type: text/plain, file_size: 100, expect_allowed: false, expect_code: ATTACHMENT_PATH_INVALID}
+  - {name: absolute path name, kind: document, file_name: "/etc/shadow", mime_type: text/plain, file_size: 100, expect_allowed: false, expect_code: ATTACHMENT_PATH_INVALID}
+  - {name: control char name, kind: document, file_name: "re\u0007port.txt", mime_type: text/plain, file_size: 100, expect_allowed: false, expect_code: ATTACHMENT_PATH_INVALID}
+  - {name: denied extension with allowed mime, kind: document, file_name: payload.exe, mime_type: text/plain, file_size: 100, expect_allowed: false, expect_code: ATTACHMENT_MIME_DENIED}
+  - {name: scan required flags pending, kind: document, file_name: doc.pdf, mime_type: application/pdf, file_size: 100, policy: {require_scan: true}, expect_allowed: true, expect_code: ATTACHMENT_SCAN_PENDING}
+  - {name: custom smaller limit, kind: document, file_name: doc.pdf, mime_type: application/pdf, file_size: 2000, policy: {max_bytes: 1024}, expect_allowed: false, expect_code: ATTACHMENT_TOO_LARGE}

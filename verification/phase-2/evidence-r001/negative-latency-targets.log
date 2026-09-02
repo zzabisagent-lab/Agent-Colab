@@ -1,0 +1,22 @@
+started_at: 2026-09-02T16:38:54Z
+cwd: /home/master/.local/verify/phase-2-r001
+commit: 8680e799277790b11fa9fc858f53e678888cfb46
+command: uv run pytest tests/unit/test_telegram_intake.py tests/unit/test_telegram_command_policy.py tests/unit/test_message_ingestion.py tests/integration/test_channel_outbox.py tests/integration/test_bridge_db.py -q -s
+environment: Linux 6.8.0-138-generic x86_64; python 3.12.3; node v22.23.2; postgres 16.15
+--- output ---
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+.........................................................................INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Phase 0 verification harness: workspaces, accounts, credentials, agents, verification_runs.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 0002, Phase 1 core schema: append-only Event/Audit/Verification authority, projections, roles.
+INFO  [alembic.runtime.migration] Running upgrade 0002 -> 0003, Phase 2 channels: provider instance display/config, channel templates, thread bindings,
+command token hashes, provider nonces.
+INFO  [alembic.runtime.migration] Running upgrade 0003 -> 0004, Phase 2 (P2-04): Telegram update receipts for webhook replay protection.
+INFO  [alembic.runtime.migration] Running upgrade 0004 -> 0005, Phase 2 renderer delivery records (channel_posts).
+INFO  [alembic.runtime.migration] Running upgrade 0005 -> 0006, Phase 2 message ingestion and retention (conversations, messages, policies, tombstones).
+INFO  [alembic.runtime.migration] Running upgrade 0006 -> 0007, Phase 2 (P2-05/P2-06): Telegram Bridges, message mappings, dead letters.
+........V-P2-15 latency_ms: p95=1000 max=1000 n=100
+..
+--- result ---
+exit_code: 0
+completed_at: 2026-09-02T16:39:02Z

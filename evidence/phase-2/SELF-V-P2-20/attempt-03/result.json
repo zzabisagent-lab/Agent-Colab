@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P2-20",
+  "evidence_id": "SELF-V-P2-20",
+  "attempt": 3,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_telegram_commands_db.py",
+    "-q",
+    "-s",
+    "-k",
+    "opened_verb or non_commands"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "ab95efc4055368f2a3e981ed261f0a77575fcd3e",
+  "started_at": "2026-09-02T16:22:02.861402+00:00",
+  "finished_at": "2026-09-02T16:22:05.424771+00:00",
+  "output_sha256": "489f4472a452efbe41e158668293d7478801bc5c4136dde585dc9d990e5a9b9f"
+}

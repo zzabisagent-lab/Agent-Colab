@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P2-07",
+  "evidence_id": "SELF-V-P2-07",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_bridge_db.py",
+    "tests/unit/test_bridge_rules.py",
+    "-q",
+    "-s",
+    "-k",
+    "hundred_messages or loop_cases or origin_marker"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "d59ff36317f7d269a0981892b3705ef2627047a1",
+  "started_at": "2026-09-02T16:05:51.563288+00:00",
+  "finished_at": "2026-09-02T16:05:56.703508+00:00",
+  "output_sha256": "c18f8b2e8222e2cdb444989a33ba12af4d48a1f959330be6f322f91397a17e72"
+}

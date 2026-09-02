@@ -1,0 +1,89 @@
+....F                                                                    [100%]
+=================================== FAILURES ===================================
+____________________ test_link_challenge_through_the_router ____________________
+
+engine = Engine(postgresql+psycopg://colab@127.0.0.1:54329/colab_t_e4ea3b946dc4)
+
+    def test_link_challenge_through_the_router(engine: Engine) -> None:  # V-P2-27
+        rt = _rt(engine)
+        assert set(LINK_HANDLERS) >= {"start", "confirm"}
+        pi = _mm_instance(rt)
+        router = Router(rt, CLOCK)
+    
+        def req(text_in: str, n: int) -> SlashRequest:
+            return SlashRequest(
+                pi,
+                "team-ext",
+                "mm-ext-a",
+                "mm-u-alice",
+                "alice",
+                "/colab",
+                text_in,
+                trigger_id=f"trig-{n}",
+            )
+    
+        # unlinked user: only link/help are allowed
+        denied = router.route(req('task create "x" --criteria "c"', 1))
+        assert denied.response_type == "ephemeral" and denied.code == "COMMAND_UNLINKED_RESTRICTED"
+        started = router.route(req("link start", 2))
+        assert started.code == "OK" and started.response_type == "ephemeral"
+        assert FAKE.dms and FAKE.dms[-1][0] == "mm-u-alice"  # the code went by DM, not to the channel
+        code = next(tok for tok in FAKE.dms[-1][1].split() if tok.isdigit() and len(tok) == 8)
+        assert not any(
+            code in p.message for p in FAKE.posts.values() if not p.channel_id.startswith("dm-")
+        )
+        wrong = router.route(
+            req("link confirm 00000000" if code != "00000000" else "link confirm 11111111", 3)
+        )
+        assert wrong.code == "EXTERNAL_IDENTITY_CHALLENGE_INVALID"
+        confirmed = router.route(req(f"link confirm {code}", 4))
+        assert confirmed.code == "OK" and "pending" in confirmed.text.lower()
+        reused = router.route(req(f"link confirm {code}", 5))
+        assert reused.code in ("EXTERNAL_IDENTITY_CHALLENGE_USED", "EXTERNAL_IDENTITY_DUPLICATE")
+        with Session(engine) as s:
+            status = s.execute(
+                text(
+                    "SELECT status, verification_method FROM external_identity_links WHERE "
+                    "external_user_id = 'mm-u-alice'"
+                )
+            ).one()
+            link_id = s.execute(
+                text(
+                    "SELECT link_id FROM external_identity_links WHERE external_user_id = 'mm-u-alice'"
+                )
+            ).scalar_one()
+        assert tuple(status) == ("pending_admin", "admin_approval")
+        still = router.route(req('task create "x" --criteria "c"', 6))
+        assert still.code == "COMMAND_UNLINKED_RESTRICTED"  # pending_admin executes nothing
+        # administrator approval activates the link; the command now executes with Account permissions
+        with Session(engine) as s, s.begin():
+            ext.admin_transition(
+                s,
+                PostgresEventStore(s, clock=CLOCK),
+                CLOCK,
+                kind="approve",
+                link_id=str(link_id),
+                admin_account_uuid=ADMIN,
+                correlation_id="approve",
+            )
+        ok = router.route(req('task create "Linked task" --criteria "c"', 7))
+>       assert ok.code == "OK" and ok.resource_id and ok.resource_id.startswith("task-")
+E       AssertionError: assert ('CHANNEL_NOT_IMPORTED' == 'OK'
+E         
+E         - OK
+E         + CHANNEL_NOT_IMPORTED)
+
+tests/integration/test_external_identity_commands.py:330: AssertionError
+---------------------------- Captured stderr setup -----------------------------
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Phase 0 verification harness: workspaces, accounts, credentials, agents, verification_runs.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 0002, Phase 1 core schema: append-only Event/Audit/Verification authority, projections, roles.
+INFO  [alembic.runtime.migration] Running upgrade 0002 -> 0003, Phase 2 channels: provider instance display/config, channel templates, thread bindings,
+command token hashes, provider nonces.
+INFO  [alembic.runtime.migration] Running upgrade 0003 -> 0004, Phase 2 (P2-04): Telegram update receipts for webhook replay protection.
+INFO  [alembic.runtime.migration] Running upgrade 0004 -> 0005, Phase 2 renderer delivery records (channel_posts).
+INFO  [alembic.runtime.migration] Running upgrade 0005 -> 0006, Phase 2 message ingestion and retention (conversations, messages, policies, tombstones).
+INFO  [alembic.runtime.migration] Running upgrade 0006 -> 0007, Phase 2 (P2-05/P2-06): Telegram Bridges, message mappings, dead letters.
+=========================== short test summary info ============================
+FAILED tests/integration/test_external_identity_commands.py::test_link_challenge_through_the_router

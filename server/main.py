@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import argparse
+import os
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI
@@ -12,12 +14,22 @@ from fastapi import FastAPI
 from server.api.dispatch import default_runtime
 from server.api.errors import ApiError, api_error_handler
 from server.api.v1.approvals import router as approvals_router
+from server.api.v1.auth import router as auth_router
+from server.api.v1.bridges import router as bridges_router
+from server.api.v1.channel_members import router as channel_members_router
+from server.api.v1.channels import router as channels_router
 from server.api.v1.events import router as events_router
 from server.api.v1.identity import router as identity_router
+from server.api.v1.identity_admin import router as identity_admin_router
+from server.api.v1.notifications import router as notifications_router
+from server.api.v1.providers_mattermost import router as providers_mattermost_router
+from server.api.v1.providers_mattermost_actions import router as mattermost_actions_router
+from server.api.v1.providers_telegram import router as providers_telegram_router
 from server.api.v1.tasks import router as tasks_router
 from server.api.v1.verification import router as verification_router
 from server.config import PRODUCT_NAME, Settings, get_settings
 from server.db.engine import make_engine, make_session_factory
+from server.identity import mattermost_link
 from server.observability.health import router as health_router
 
 API_VERSION = "v1"
@@ -27,11 +39,18 @@ API_VERSION = "v1"
 async def _lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Run the MCP session manager for the mounted Streamable HTTP app."""
     mcp = getattr(app.state, "mcp", None)
-    if mcp is None:
-        yield
-        return
-    async with mcp.session_manager.run():
-        yield
+    gateway = getattr(app.state, "gateway", None)
+    if gateway is not None and os.environ.get("AGENT_COLAB_GATEWAY_DRAIN", "1") == "1":
+        gateway.start()
+    try:
+        if mcp is None:
+            yield
+        else:
+            async with mcp.session_manager.run():
+                yield
+    finally:
+        if gateway is not None:
+            await gateway.stop()
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -53,6 +72,63 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(events_router)
     app.include_router(tasks_router)
     app.include_router(approvals_router)
+    app.include_router(providers_telegram_router)
+    app.include_router(providers_mattermost_router)
+    app.include_router(channels_router)
+    app.include_router(auth_router)
+    app.include_router(bridges_router)
+    app.include_router(mattermost_actions_router)
+    app.include_router(notifications_router)
+    app.include_router(channel_members_router)
+    app.include_router(identity_admin_router)
+    mattermost_link.register()  # P2-13: `link start|confirm` slash handlers
+    app.state.telegram_webhook_secret = None  # env AGENT_COLAB_TELEGRAM_WEBHOOK_SECRET by default
+    app.state.gateway = None
+    app.state.telegram_inbound_handler = None
+    app.state.notification_provider = None
+    if app.state.runtime is not None:
+        from server.channels.gateway import build_gateway
+        from server.notifications.providers import (
+            CompositeProvider,
+            MattermostNotificationProvider,
+            NoopProvider,
+            SmtpNotificationProvider,
+            TelegramRelayGate,
+        )
+
+        gateway = build_gateway(app.state.runtime)
+        app.state.gateway = gateway
+        app.state.telegram_inbound_handler = gateway.on_telegram_message
+        app.state.notification_provider = CompositeProvider(
+            {
+                "mattermost": MattermostNotificationProvider(
+                    app.state.session_factory,
+                    relay_gate=TelegramRelayGate(),
+                    clock=app.state.runtime.clock,
+                ),
+                "smtp": SmtpNotificationProvider(
+                    os.environ.get("AGENT_COLAB_SMTP_HOST"),
+                    int(os.environ.get("AGENT_COLAB_SMTP_PORT", "587")),
+                    os.environ.get("AGENT_COLAB_SMTP_SENDER", "agent-colab@localhost"),
+                ),
+                "work_item": NoopProvider(),
+            }
+        )
+    dist = Path(__file__).resolve().parents[1] / "web-admin" / "dist"
+    if dist.exists():  # built console (production images copy it here); dev uses Vite's proxy
+        from fastapi.responses import FileResponse
+        from fastapi.staticfiles import StaticFiles
+
+        index = dist / "index.html"
+
+        @app.get("/admin/{path:path}", include_in_schema=False)
+        async def admin_spa_fallback(path: str) -> FileResponse:
+            candidate = dist / path
+            if path and candidate.is_file():
+                return FileResponse(str(candidate))
+            return FileResponse(str(index))
+
+        app.mount("/admin", StaticFiles(directory=str(dist), html=True), name="admin")
     app.state.mcp = None
     if app.state.runtime is not None:
         from server.agents.mcp_server import build_mcp_server

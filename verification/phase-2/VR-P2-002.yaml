@@ -1,0 +1,145 @@
+verification_id: VR-P2-002
+criteria_version: v8.0
+implementer_agent_id: agent-claude-code
+verifier_agent_id: agent-codex
+implementer_account_id: account-implementer-claude
+verifier_account_id: account-verifier-codex
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+verifier_credential_fingerprint: sha256:ecbd74ce21cb00f0e36136b78a0fe57c8241013e4125100e2871351c90b530b9
+identity_graph_version: identity-v8-001
+effective_policy_hash: sha256:1ea0e18ddab4cd44770830dc362978d621f6c2b5f6af30277506d6fcf1624c6b
+target_commit: 88adc56791b08285330a50bb9c4b8dad897d6b3f
+environment_fingerprint: sha256:67d0958ee901fedeae0e0d1fb7a3b2b1def16b4e2283cd6e79048d66f3deccf9
+started_at: '2026-09-02T16:58:01Z'
+completed_at: '2026-09-02T17:03:43Z'
+tests:
+  - id: V-P2-01
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/mattermost-live.log
+    note: Real local Mattermost slash command created the Task Event and bot thread post.
+  - id: V-P2-02
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: 100 Events met p95 and maximum renderer limits with 100 unique deliveries.
+  - id: V-P2-03
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: Two channel/chat pairs delivered only to their exact configured destinations.
+  - id: V-P2-04
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: 100 messages in each direction produced zero loss, duplicates, or echoes.
+  - id: V-P2-05
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: Reverse one-way delivery was denied with zero outbox rows and correct audit/metric.
+  - id: V-P2-06
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: Root, reply, and Telegram topic mappings preserved their parent relationships.
+  - id: V-P2-07
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: Re-injected, altered-marker, copied-prefix, and duplicate-source paths were blocked.
+  - id: V-P2-08
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: Virtual 10-minute outages of both providers preserved intake and recovered exactly once.
+  - id: V-P2-09
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: Missing/wrong signature, body hash, stale timestamp, unknown instance, and replay paths created no domain Event.
+  - id: V-P2-10
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: Canary was absent from normalized DB fields, Events, audit metadata, and both destinations.
+  - id: V-P2-11
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: Allowed files stored; oversize, MIME, traversal, absolute-path, extension, and scan failures were blocked.
+  - id: V-P2-12
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/admin-ui.log
+    note: Playwright UI and API paths rejected unauthorized Bridge changes and preserved a denial audit.
+  - id: V-P2-13
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: Disabling A stopped only A while B continued.
+  - id: V-P2-14
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: Mapping query verified unique source/destination keys, complete origin markers, and sent destination IDs.
+  - id: V-P2-15
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: 100 deliveries at 10 messages/s had p95 1000 ms, maximum 1000 ms, zero loss, and zero duplicates.
+  - id: V-P2-16
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: Default Telegram policy executed nothing; allowed verbs required active identity and Account permissions.
+  - id: V-P2-17
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: Duplicate target was rejected by default and allowed only with an audited administrator exception.
+  - id: V-P2-18
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/commands-cards-identity-retention-notifications.log
+    note: Archived channel soft deletion retained mapping, Artifact, Document, Task, and binding references.
+  - id: V-P2-19
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/channels-templates-i18n.log
+    note: Four protected defaults survived custom template/channel CRUD and per-channel settings remained independent.
+  - id: V-P2-20
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/commands-cards-identity-retention-notifications.log
+    note: Only verified-active external identity executed; unlinked and suspended identities had zero Task/Event side effects.
+  - id: V-P2-21
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/commands-cards-identity-retention-notifications.log
+    note: Second same-provider/user link was rejected and audited without changing the active link.
+  - id: V-P2-22
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/commands-cards-identity-retention-notifications.log
+    note: Same external ID on separate provider instances did not cross Account permissions.
+  - id: V-P2-23
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/bridge-provider-outbox.log
+    note: Pre-outbox failure rolled back Event/outbox; post-send replay retained one side effect and consistent state.
+  - id: V-P2-24
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/commands-cards-identity-retention-notifications.log
+    note: Full grammar fixtures covered valid, invalid, help, free text, thread omission, and unlinked-user paths.
+  - id: V-P2-25
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/commands-cards-identity-retention-notifications.log
+    note: One root was edited in place; transitions, 10-second progress coalescing, long Artifact body, and sub-Task link passed.
+  - id: V-P2-26
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/commands-cards-identity-retention-notifications.log
+    note: Authorized click executed once; unauthorized, tampered, expired, and duplicate callbacks met criteria.
+  - id: V-P2-27
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/commands-cards-identity-retention-notifications.log
+    note: Valid, wrong, expired, reused, sixth-failure lockout, web, and pending_admin command paths passed with fixed clocks.
+  - id: V-P2-28
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/commands-cards-identity-retention-notifications.log
+    note: MCP-originated utterances used exact override/fallback identity; payload injection was ignored and audited.
+  - id: V-P2-29
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/commands-cards-identity-retention-notifications.log
+    note: Virtual-clock retention destroyed DEKs and created tombstones while legal-hold messages remained intact.
+  - id: V-P2-30
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/channels-templates-i18n.log
+    note: Korean instance and English channel rendered localized cards/errors/headings while identifiers remained canonical.
+  - id: V-P2-31
+    result: PASS
+    evidence_ref: verification/phase-2/evidence-r002/commands-cards-identity-retention-notifications.log
+    note: Mention, DM, approval channel, hourly digest, mute, and Bridge-gated Telegram routes passed.
+findings: []
+result: PASSED
+residual_risks:
+  - Live Telegram send/edit/delete and relay tests were not run because their test helpers read the prohibited repository .env directly; exported-credential read-only preflight confirmed the bot and two distinct forum chats, while deterministic fake-provider tests covered delivery behavior and exact counts.
+  - V-P2-15 measures ingress-to-provider-side-effect latency in-process with a virtual clock; external Telegram network latency was not included.
+  - SMTP notification behavior used the repository fake transport because live SMTP is optional and not configured.

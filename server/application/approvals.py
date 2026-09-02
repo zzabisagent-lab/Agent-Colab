@@ -10,9 +10,8 @@ from typing import Any
 from server.application import bus
 from server.application.bus import Command, CommandContext, CommandError, CommandResult, handles
 from server.approvals import service
-from server.approvals.eligibility import independent_audit_sink
 from server.approvals.model import ApprovalError, Subject
-from server.policy.authorization import Authorizer
+from server.policy.authorization import Authorizer, independent_audit_sink
 from server.policy.catalog import PolicyCatalog, default_catalog
 
 

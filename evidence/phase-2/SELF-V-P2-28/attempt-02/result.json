@@ -1,0 +1,24 @@
+{
+  "test_id": "V-P2-28",
+  "evidence_id": "SELF-V-P2-28",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_agent_identity_mcp.py",
+    "tests/unit/test_identity_display.py",
+    "tests/integration/test_actions_db.py",
+    "-q",
+    "-k",
+    "identity or mcp_agent",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 1,
+  "result": "fail",
+  "commit_sha": "8680e799277790b11fa9fc858f53e678888cfb46",
+  "started_at": "2026-09-02T16:54:06.905411+00:00",
+  "finished_at": "2026-09-02T16:54:11.935797+00:00",
+  "output_sha256": "ac48fd4bfd49222168b454d449d1ac91cdb6fab65cd0040491895842d5af0a3e"
+}

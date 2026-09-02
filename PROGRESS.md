@@ -2,7 +2,55 @@
 
 Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENTS.md`, ADRs in `docs/adr/`.
 
-## Current phase: 2 (Mattermost/Telegram) — branch `phase-2`
+## Current phase: 3 (Generic Agents and Role Management) — branch `phase-3`
+
+### Phase 3 package status
+
+| ID | Work | Size | Prereq | Status | SELF evidence |
+|---|---|---|---|---|---|
+| P3-01 | Agent Registry | M | P1-05 | NOT_STARTED | — |
+| P3-02 | Role/Capability | M | P1-03 | NOT_STARTED | — |
+| P3-03 | Adapter SDK/contract | M | P1-12 | NOT_STARTED | — |
+| P3-04 | default Adapters (MCP, REST/Webhook, Mattermost bot) | M | P3-03, P3-10, P3-11, P3-12 | NOT_STARTED | — |
+| P3-05 | conformance suite CS-01~12 | M | P3-03 | NOT_STARTED | — |
+| P3-06 | routing | M | P3-01, P3-02 | NOT_STARTED | — |
+| P3-07 | Agent Admin UI | M | P3-01 | NOT_STARTED | — |
+| P3-08 | Limits enforcement | M | P1-14, P3-01 | NOT_STARTED | — |
+| P3-09 | multi-Agent orchestration | L | P3-06 | NOT_STARTED | — |
+| P3-10 | MCP server transport | M | P1-07, P1-12, P0-11 | NOT_STARTED | — |
+| P3-11 | Webhook push delivery | M | P1-12, P0-11 | NOT_STARTED | — |
+| P3-12 | Mattermost bot adapter delivery | M | P1-12, P2-11 | NOT_STARTED | — |
+| P3-13 | Verifier assignment engine | M | P1-06, P3-06 | NOT_STARTED | — |
+| P3-14 | accept timeout/re-routing | S | P3-06, P1-12 | NOT_STARTED | — |
+| P3-15 | usage reporting conformance | S | P1-14, P3-03 | NOT_STARTED | — |
+
+Phase 3 progress (size-weighted): 0 / 32
+
+## Phase 2 (PASSED) — branch `phase-2`, tag `phase-2-passed`
+
+### Phase 2 package status
+
+| ID | Work | Size | Prereq | Status | SELF evidence |
+|---|---|---|---|---|---|
+| P2-01 | Mattermost provider | M | P1-07, P0-10 | IMPLEMENTED | SELF-V-P2-01, SELF-V-P2-19 |
+| P2-02 | Channel/external identity config | M | P2-01, P1-05 | IMPLEMENTED | SELF-V-P2-19, SELF-V-P2-21, SELF-V-P2-22 |
+| P2-03 | Renderer/outbox | M | P2-01 | IMPLEMENTED | SELF-V-P2-02, SELF-V-P2-23 |
+| P2-04 | Telegram provider | M | P1-07, P0-13 | IMPLEMENTED | SELF-V-P2-09, SELF-V-P2-11 |
+| P2-05 | per-channel Bridge | M | P2-03, P2-04 | IMPLEMENTED | SELF-V-P2-03/05/06/13/14/17 |
+| P2-06 | dedupe/loop/retry | M | P2-05 | IMPLEMENTED | SELF-V-P2-04/07/08/10/15 |
+| P2-07 | Bridge Admin UI | S | P2-05 | IMPLEMENTED | SELF-V-P2-12 |
+| P2-08 | Telegram command policy | S | P2-05, P2-10 | IMPLEMENTED | SELF-V-P2-16, SELF-V-P2-20 |
+| P2-09 | Channel lifecycle | S | P2-02 | IMPLEMENTED | SELF-V-P2-18 |
+| P2-10 | Command Router | M | P2-01, P1-07 | IMPLEMENTED | SELF-V-P2-24 |
+| P2-11 | Task card/thread Renderer | M | P2-03, P2-10 | IMPLEMENTED | SELF-V-P2-25 |
+| P2-12 | Interactive actions | S | P2-11 | IMPLEMENTED | SELF-V-P2-26 |
+| P2-13 | Mattermost link challenge | S | P2-02, P2-10 | IMPLEMENTED | SELF-V-P2-27 |
+| P2-14 | Agent identity display | S | P2-11 | IMPLEMENTED | SELF-V-P2-28 |
+| P2-15 | Message ingestion/retention | M | P2-03 | IMPLEMENTED | SELF-V-P2-29 |
+| P2-16 | i18n | S | P2-10 | IMPLEMENTED | SELF-V-P2-30 |
+| P2-17 | Notification providers | S | P1-13, P2-01 | IMPLEMENTED | SELF-V-P2-31 |
+
+Phase 2 progress (size-weighted): 33 / 33 — Codex VR-P2-002 PASSED (32/32) after revision 1 FAILED on F-P2-001/002/003 (fixed in revision 2)
 
 ## Phase 1 (PASSED) — branch `phase-1`, tag `phase-1-passed`
 
@@ -66,11 +114,12 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 20.5 / 20.5
 
 ### Next step
 
-Phase 1 on branch `phase-1` (P1-01 first; then P1-02/03/05 in parallel).
+Phase 3 on branch `phase-3` (P3-01/P3-02/P3-03/P3-10/P3-11 first, in parallel where disjoint; P3-04 after the transports).
 
 ## Phase history
 
 | Phase | Result | Report | Tag |
 |---|---|---|---|
+| 2 | PASSED (revision 2; revision 1 FAILED F-P2-001/002/003) | verification/phase-2/VR-P2-002.yaml | phase-2-passed |
 | 0 | PASSED | verification/phase-0/VR-P0-003.yaml | phase-0-passed |
 | 1 | PASSED | verification/phase-1/VR-P1-001.yaml | phase-1-passed |

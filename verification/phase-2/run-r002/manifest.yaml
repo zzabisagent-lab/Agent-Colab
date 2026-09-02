@@ -1,0 +1,519 @@
+implementation_id: P2-IMPLEMENT-001
+phase: 2
+implementer_agent_id: agent-claude-code
+implementer_account_id: account-implementer-claude
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+identity_graph_version: identity-v8-001
+commit_sha: 88adc56791b08285330a50bb9c4b8dad897d6b3f
+image_digests: []
+requirements:
+- REQ-BRDG-001
+- REQ-BRDG-002
+- REQ-BRDG-003
+- REQ-BRDG-004
+- REQ-BRDG-005
+- REQ-BRDG-006
+- REQ-BRDG-007
+- REQ-BRDG-008
+- REQ-BRDG-009
+- REQ-CHAN-001
+- REQ-CHAN-002
+- REQ-CHAN-003
+- REQ-I18N-001
+- REQ-MMUX-001
+- REQ-MMUX-002
+- REQ-MMUX-003
+- REQ-MSG-001
+- REQ-NOTF-001
+- REQ-QGAT-002
+changed_files:
+- .gitleaks.toml
+- PROGRESS.md
+- docs/adr/ADR-0009-phase2-channel-decisions.md
+- docs/architecture/bridge.md
+- docs/architecture/channel-config.md
+- docs/architecture/channels.md
+- docs/architecture/interactive-actions.md
+- docs/architecture/mattermost-provider.md
+- docs/architecture/messages-retention.md
+- docs/architecture/notification-providers.md
+- docs/architecture/telegram-commands.md
+- docs/architecture/telegram-provider.md
+- docs/protocol/mattermost-contract.md
+- evidence/phase-2/SELF-V-P2-01/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-01/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-01/attempt-02/output.log
+- evidence/phase-2/SELF-V-P2-01/attempt-02/result.json
+- evidence/phase-2/SELF-V-P2-02/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-02/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-03/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-03/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-04/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-04/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-05/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-05/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-06/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-06/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-07/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-07/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-08/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-08/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-08/attempt-02/output.log
+- evidence/phase-2/SELF-V-P2-08/attempt-02/result.json
+- evidence/phase-2/SELF-V-P2-09/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-09/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-10/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-10/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-11/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-11/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-12/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-12/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-12/attempt-02/output.log
+- evidence/phase-2/SELF-V-P2-12/attempt-02/result.json
+- evidence/phase-2/SELF-V-P2-13/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-13/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-14/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-14/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-15/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-15/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-16/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-16/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-17/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-17/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-18/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-18/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-19/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-19/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-19/attempt-02/output.log
+- evidence/phase-2/SELF-V-P2-19/attempt-02/result.json
+- evidence/phase-2/SELF-V-P2-19/attempt-03/output.log
+- evidence/phase-2/SELF-V-P2-19/attempt-03/result.json
+- evidence/phase-2/SELF-V-P2-20/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-20/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-20/attempt-02/output.log
+- evidence/phase-2/SELF-V-P2-20/attempt-02/result.json
+- evidence/phase-2/SELF-V-P2-20/attempt-03/output.log
+- evidence/phase-2/SELF-V-P2-20/attempt-03/result.json
+- evidence/phase-2/SELF-V-P2-21/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-21/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-21/attempt-02/output.log
+- evidence/phase-2/SELF-V-P2-21/attempt-02/result.json
+- evidence/phase-2/SELF-V-P2-22/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-22/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-22/attempt-02/output.log
+- evidence/phase-2/SELF-V-P2-22/attempt-02/result.json
+- evidence/phase-2/SELF-V-P2-23/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-23/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-24/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-24/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-24/attempt-02/output.log
+- evidence/phase-2/SELF-V-P2-24/attempt-02/result.json
+- evidence/phase-2/SELF-V-P2-25/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-25/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-26/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-26/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-27/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-27/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-27/attempt-02/output.log
+- evidence/phase-2/SELF-V-P2-27/attempt-02/result.json
+- evidence/phase-2/SELF-V-P2-27/attempt-03/output.log
+- evidence/phase-2/SELF-V-P2-27/attempt-03/result.json
+- evidence/phase-2/SELF-V-P2-28/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-28/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-28/attempt-02/output.log
+- evidence/phase-2/SELF-V-P2-28/attempt-02/result.json
+- evidence/phase-2/SELF-V-P2-28/attempt-03/output.log
+- evidence/phase-2/SELF-V-P2-28/attempt-03/result.json
+- evidence/phase-2/SELF-V-P2-29/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-29/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-30/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-30/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-30/attempt-02/output.log
+- evidence/phase-2/SELF-V-P2-30/attempt-02/result.json
+- evidence/phase-2/SELF-V-P2-30/attempt-03/output.log
+- evidence/phase-2/SELF-V-P2-30/attempt-03/result.json
+- evidence/phase-2/SELF-V-P2-31/attempt-01/output.log
+- evidence/phase-2/SELF-V-P2-31/attempt-01/result.json
+- evidence/phase-2/SELF-V-P2-31/attempt-02/output.log
+- evidence/phase-2/SELF-V-P2-31/attempt-02/result.json
+- evidence/phase-2/manifest-inputs.yaml
+- i18n/en/messages.json
+- i18n/ko/messages.json
+- migrations/sql/0003_phase2_channels.sql
+- migrations/sql/0004_phase2_telegram.sql
+- migrations/sql/0005_phase2_renderer.sql
+- migrations/sql/0006_phase2_messages.sql
+- migrations/sql/0007_phase2_bridges.sql
+- migrations/versions/0003_phase2_channels.py
+- migrations/versions/0004_phase2_telegram.py
+- migrations/versions/0005_phase2_renderer.py
+- migrations/versions/0006_phase2_messages.py
+- migrations/versions/0007_phase2_bridges.py
+- policy/channel-templates.yaml
+- pyproject.toml
+- schemas/api/bridge/telegram-bridge.v1.schema.json
+- schemas/api/channel/channel-config.v1.schema.json
+- schemas/api/channel/channel-template.v1.schema.json
+- schemas/api/commands/link.confirm.v1.schema.json
+- schemas/api/message/message.v1.schema.json
+- schemas/api/message/retention-policy.v1.schema.json
+- schemas/api/telegram/attachment-policy.v1.schema.json
+- schemas/api/telegram/webhook-update.v1.schema.json
+- schemas/documents/evidence-manifest.v1.schema.json
+- server/agents/mcp_server.py
+- server/api/dispatch.py
+- server/api/v1/auth.py
+- server/api/v1/bridges.py
+- server/api/v1/channel_members.py
+- server/api/v1/channels.py
+- server/api/v1/identity_admin.py
+- server/api/v1/notifications.py
+- server/api/v1/providers_mattermost.py
+- server/api/v1/providers_mattermost_actions.py
+- server/api/v1/providers_telegram.py
+- server/application/approvals.py
+- server/application/authz.py
+- server/application/bridges.py
+- server/application/channel_members.py
+- server/application/channels.py
+- server/application/messages.py
+- server/application/notification_prefs.py
+- server/approvals/eligibility.py
+- server/channels/actions.py
+- server/channels/bridge_admin.py
+- server/channels/commands.py
+- server/channels/gateway.py
+- server/channels/identity_display.py
+- server/channels/ingestion.py
+- server/channels/lifecycle.py
+- server/channels/mattermost/__init__.py
+- server/channels/mattermost/client.py
+- server/channels/mattermost/delivery.py
+- server/channels/mattermost/provider.py
+- server/channels/mattermost/websocket.py
+- server/channels/members.py
+- server/channels/outbox.py
+- server/channels/policy.py
+- server/channels/renderer.py
+- server/channels/retention.py
+- server/channels/router.py
+- server/channels/task_cards.py
+- server/channels/telegram/__init__.py
+- server/channels/telegram/attachments.py
+- server/channels/telegram/bridge.py
+- server/channels/telegram/client.py
+- server/channels/telegram/commands.py
+- server/channels/telegram/intake.py
+- server/channels/telegram/provider.py
+- server/channels/telegram/redaction.py
+- server/channels/templates.py
+- server/documents/templates.py
+- server/i18n.py
+- server/identity/external_commands.py
+- server/identity/external_links.py
+- server/identity/mattermost_link.py
+- server/main.py
+- server/notifications/providers.py
+- server/notifications/routing.py
+- server/policy/authorization.py
+- tests/e2e/test_admin_bridges_ui.py
+- tests/fixtures/bridge/rules.yaml
+- tests/fixtures/mattermost/actions-cases.yaml
+- tests/fixtures/mattermost/router-cases.yaml
+- tests/fixtures/messages/redaction-cases.yaml
+- tests/fixtures/telegram/attachments-cases.yaml
+- tests/fixtures/telegram/commands-cases.yaml
+- tests/fixtures/telegram/updates-samples.json
+- tests/integration/test_actions_db.py
+- tests/integration/test_agent_identity_mcp.py
+- tests/integration/test_auth_sessions.py
+- tests/integration/test_bridge_db.py
+- tests/integration/test_bridge_live.py
+- tests/integration/test_channel_config_db.py
+- tests/integration/test_channel_outbox.py
+- tests/integration/test_channels_db.py
+- tests/integration/test_external_identity_commands.py
+- tests/integration/test_i18n_channels.py
+- tests/integration/test_mattermost_provider.py
+- tests/integration/test_message_retention.py
+- tests/integration/test_notification_delivery.py
+- tests/integration/test_notifications_db.py
+- tests/integration/test_task_cards.py
+- tests/integration/test_telegram_commands_db.py
+- tests/integration/test_telegram_provider.py
+- tests/unit/test_bridge_rules.py
+- tests/unit/test_command_router.py
+- tests/unit/test_gateway.py
+- tests/unit/test_i18n.py
+- tests/unit/test_identity_core.py
+- tests/unit/test_identity_display.py
+- tests/unit/test_interactive_actions.py
+- tests/unit/test_link_challenge.py
+- tests/unit/test_mattermost_client.py
+- tests/unit/test_message_ingestion.py
+- tests/unit/test_notification_providers.py
+- tests/unit/test_renderer.py
+- tests/unit/test_telegram_client.py
+- tests/unit/test_telegram_command_policy.py
+- tests/unit/test_telegram_intake.py
+- tools/run_verification.py
+- web-admin/package.json
+- web-admin/playwright.config.ts
+- web-admin/pnpm-lock.yaml
+- web-admin/src/App.css
+- web-admin/src/App.tsx
+- web-admin/src/api/client.ts
+- web-admin/src/app/App.tsx
+- web-admin/src/assets/react.svg
+- web-admin/src/features/auth/LoginPage.tsx
+- web-admin/src/features/auth/session.tsx
+- web-admin/src/features/bridges/BridgesPage.tsx
+- web-admin/src/features/channels/ChannelsPage.tsx
+- web-admin/src/index.css
+- web-admin/src/main.tsx
+- web-admin/tests/bridges.spec.ts
+- web-admin/tests/smoke.spec.ts
+- web-admin/vite.config.ts
+migrations:
+- migrations/versions/0003_phase2_channels.py
+- migrations/versions/0004_phase2_telegram.py
+- migrations/versions/0005_phase2_renderer.py
+- migrations/versions/0006_phase2_messages.py
+- migrations/versions/0007_phase2_bridges.py
+tests_run:
+- id: SELF-V-P2-01
+  command: uv run pytest tests/integration/test_mattermost_provider.py -q -rs
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-01/attempt-02
+- id: SELF-V-P2-02
+  command: uv run pytest tests/integration/test_channel_outbox.py -q -k latency
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-02/attempt-01
+- id: SELF-V-P2-03
+  command: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py
+    -q -s -k per_channel_isolation
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-03/attempt-01
+- id: SELF-V-P2-04
+  command: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py
+    -q -s -k hundred_messages
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-04/attempt-01
+- id: SELF-V-P2-05
+  command: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py
+    -q -s -k per_channel_isolation
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-05/attempt-01
+- id: SELF-V-P2-06
+  command: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py
+    -q -s -k per_channel_isolation or round_trips
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-06/attempt-01
+- id: SELF-V-P2-07
+  command: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py
+    -q -s -k hundred_messages or loop_cases or origin_marker
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-07/attempt-01
+- id: SELF-V-P2-08
+  command: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py
+    -q -s -k outage_recovery or providers_are_idempotent or mattermost_outage -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-08/attempt-02
+- id: SELF-V-P2-09
+  command: uv run pytest tests/integration/test_telegram_provider.py tests/unit/test_telegram_intake.py
+    -q -k webhook or spoof or normalize
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-09/attempt-01
+- id: SELF-V-P2-10
+  command: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py
+    -q -s -k canary or redaction
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-10/attempt-01
+- id: SELF-V-P2-11
+  command: uv run pytest tests/unit/test_telegram_intake.py -q -k attachment or fetch_to_artifact
+    or policy
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-11/attempt-01
+- id: SELF-V-P2-12
+  command: uv run pytest tests/e2e/test_admin_bridges_ui.py tests/integration/test_bridge_db.py
+    -q --tb=short -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-12/attempt-02
+- id: SELF-V-P2-13
+  command: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py
+    -q -s -k per_channel_isolation
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-13/attempt-01
+- id: SELF-V-P2-14
+  command: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py
+    -q -s -k per_channel_isolation
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-14/attempt-01
+- id: SELF-V-P2-15
+  command: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py
+    -q -s -k latency
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-15/attempt-01
+- id: SELF-V-P2-16
+  command: uv run pytest tests/unit/test_telegram_command_policy.py tests/integration/test_telegram_commands_db.py
+    -q -s
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-16/attempt-01
+- id: SELF-V-P2-17
+  command: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py
+    -q -s -k duplicate_telegram_target or config_validation
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-17/attempt-01
+- id: SELF-V-P2-18
+  command: env AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test
+    uv run pytest tests/integration/test_channel_config_db.py::test_soft_delete_after_archive_keeps_references
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-18/attempt-01
+- id: SELF-V-P2-19
+  command: env AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test
+    uv run pytest tests/integration/test_channel_config_db.py::test_membership_and_settings_are_independent_per_channel
+    tests/integration/test_channel_config_db.py::test_member_rest_routes -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-19/attempt-03
+- id: SELF-V-P2-20
+  command: uv run pytest tests/integration/test_telegram_commands_db.py -q -s -k opened_verb
+    or non_commands
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-20/attempt-03
+- id: SELF-V-P2-21
+  command: env AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test
+    uv run pytest tests/integration/test_external_identity_commands.py::test_second_link_for_the_same_provider_user_is_rejected_and_audited
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-21/attempt-02
+- id: SELF-V-P2-22
+  command: env AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test
+    uv run pytest tests/integration/test_external_identity_commands.py::test_links_are_per_provider_instance
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-22/attempt-02
+- id: SELF-V-P2-23
+  command: uv run pytest tests/integration/test_channel_outbox.py -q -k rolls_back
+    or exactly_one or edited_in_place
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-23/attempt-01
+- id: SELF-V-P2-24
+  command: uv run pytest tests/unit/test_command_router.py tests/unit/test_mattermost_client.py
+    -q -rs
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-24/attempt-02
+- id: SELF-V-P2-25
+  command: uv run pytest tests/integration/test_task_cards.py -q
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-25/attempt-01
+- id: SELF-V-P2-26
+  command: uv run pytest tests/unit/test_interactive_actions.py tests/integration/test_actions_db.py
+    -q -k not identity
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-26/attempt-01
+- id: SELF-V-P2-27
+  command: uv run pytest tests/unit/test_link_challenge.py tests/integration/test_external_identity_commands.py
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-27/attempt-03
+- id: SELF-V-P2-28
+  command: uv run pytest tests/integration/test_agent_identity_mcp.py tests/unit/test_identity_display.py
+    tests/integration/test_actions_db.py -q -k identity or mcp_agent -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-28/attempt-03
+- id: SELF-V-P2-29
+  command: uv run pytest tests/unit/test_message_ingestion.py tests/integration/test_message_retention.py
+    -q
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-29/attempt-01
+- id: SELF-V-P2-30
+  command: uv run pytest tests/integration/test_i18n_channels.py tests/unit/test_i18n.py
+    -q --tb=short -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-30/attempt-03
+- id: SELF-V-P2-31
+  command: uv run pytest tests/unit/test_notification_providers.py tests/integration/test_notification_delivery.py
+    -q
+  result: pass
+  evidence_ref: evidence/phase-2/SELF-V-P2-31/attempt-02
+known_gaps:
+- 'V-P2-15 (Bridge delivery latency) is measured in-process: 100 deliveries at 10
+  msg/s against a recording provider with a virtual clock and a drain every second
+  (p95 asserted ≤ 5 s, zero loss/duplicates). The live Telegram relay path is exercised
+  separately by tests/integration/test_bridge_live.py (real Bot API, forum topics;
+  skipped without TELEGRAM_* keys); Mattermost provider calls run against the local
+  Team Edition (scripts/dev/mattermost-local.sh).'
+- SMTP notification provider is verified with a fake in-process transport (routing,
+  gating, DM duplicate guard); no live SMTP host is configured in this environment.
+- Executing Task commands from Telegram requires an administrator to set content_policy.telegram_commands
+  (allowed_verbs) on the Bridge; the default policy is read/reply only (V-P2-16).
+  link.* verbs never execute from Telegram.
+- The web console is the minimal administrative surface for this phase (login with
+  a human service token, channel list, Bridge create/enable/disable/test); the Playwright
+  e2e test uses the user-space Chromium wrapper on hosts without root (PLAYWRIGHT_CHROMIUM_EXECUTABLE).
+- Channel deletion is a soft delete (status `deleted` + `channel.delete` audit); the
+  baseline defines no deletion Event, so CHANNEL_ARCHIVED stays the last aggregate
+  Event (V-P2-18).
+- 'Policy denials on the API path are audited in an independent transaction (found
+  and fixed during P2-07: a denial raised out of the command transaction previously
+  rolled the audit row back).'
+rollback: git checkout fd107e7a73450cf019c55087455996332b261280 (merge-base with main);
+  drop test databases
+evidence_refs:
+- evidence/phase-2/SELF-V-P2-01/attempt-02
+- evidence/phase-2/SELF-V-P2-02/attempt-01
+- evidence/phase-2/SELF-V-P2-03/attempt-01
+- evidence/phase-2/SELF-V-P2-04/attempt-01
+- evidence/phase-2/SELF-V-P2-05/attempt-01
+- evidence/phase-2/SELF-V-P2-06/attempt-01
+- evidence/phase-2/SELF-V-P2-07/attempt-01
+- evidence/phase-2/SELF-V-P2-08/attempt-02
+- evidence/phase-2/SELF-V-P2-09/attempt-01
+- evidence/phase-2/SELF-V-P2-10/attempt-01
+- evidence/phase-2/SELF-V-P2-11/attempt-01
+- evidence/phase-2/SELF-V-P2-12/attempt-02
+- evidence/phase-2/SELF-V-P2-13/attempt-01
+- evidence/phase-2/SELF-V-P2-14/attempt-01
+- evidence/phase-2/SELF-V-P2-15/attempt-01
+- evidence/phase-2/SELF-V-P2-16/attempt-01
+- evidence/phase-2/SELF-V-P2-17/attempt-01
+- evidence/phase-2/SELF-V-P2-18/attempt-01
+- evidence/phase-2/SELF-V-P2-19/attempt-03
+- evidence/phase-2/SELF-V-P2-20/attempt-03
+- evidence/phase-2/SELF-V-P2-21/attempt-02
+- evidence/phase-2/SELF-V-P2-22/attempt-02
+- evidence/phase-2/SELF-V-P2-23/attempt-01
+- evidence/phase-2/SELF-V-P2-24/attempt-02
+- evidence/phase-2/SELF-V-P2-25/attempt-01
+- evidence/phase-2/SELF-V-P2-26/attempt-01
+- evidence/phase-2/SELF-V-P2-27/attempt-03
+- evidence/phase-2/SELF-V-P2-28/attempt-03
+- evidence/phase-2/SELF-V-P2-29/attempt-01
+- evidence/phase-2/SELF-V-P2-30/attempt-03
+- evidence/phase-2/SELF-V-P2-31/attempt-02
+reproduction:
+- git clone git@github.com:zzabisagent-lab/Agent-Colab.git && git checkout <target
+  commit>
+- export PATH=$HOME/.local/bin:$PATH; export AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test
+  (any empty PostgreSQL 16 maintenance DB; the test session creates and drops its
+  own database and runs migrations 0001-0007)
+- 'make bootstrap && make lint && make test && make check-docs && make build   # make
+  build includes the web console (pnpm)'
+- Every V-P2 Test has a SELF evidence attempt under evidence/phase-2/SELF-V-P2-NN/attempt-NN/result.json
+  listing the exact command; the latest attempt of each ID is PASS
+- 'Bridge rules and relay: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py
+  -q -s   (V-P2-03..08/10/13/14/15/17); live Telegram: uv run pytest tests/integration/test_bridge_live.py
+  -q (needs TELEGRAM_BOT_TOKEN, TELEGRAM_TEST_CHAT_A/B)'
+- 'Mattermost provider (local TE): scripts/dev/mattermost-local.sh start; uv run pytest
+  tests/integration/test_mattermost_provider.py -q -rs   (V-P2-01, V-P2-19)'
+- 'Bridge Admin UI (V-P2-12): cd web-admin && pnpm install && pnpm run build; PLAYWRIGHT_CHROMIUM_EXECUTABLE=<chromium>
+  uv run pytest tests/e2e/test_admin_bridges_ui.py -q'
+- 'Command grammar / cards / actions / i18n: uv run pytest tests/unit/test_command_router.py
+  tests/integration/test_task_cards.py tests/integration/test_actions_db.py tests/integration/test_i18n_channels.py
+  -q'
+- 'External identity, link challenge, channel config/lifecycle: uv run pytest tests/integration/test_external_identity_commands.py
+  tests/unit/test_link_challenge.py tests/integration/test_channel_config_db.py -q'
+- 'Messages/retention and notifications: uv run pytest tests/integration/test_message_retention.py
+  tests/integration/test_notification_delivery.py tests/unit/test_notification_providers.py
+  -q'

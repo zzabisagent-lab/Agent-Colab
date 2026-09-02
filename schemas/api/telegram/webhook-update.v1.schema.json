@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/telegram/webhook-update.v1.schema.json",
+  "title": "Telegram Bot API update (subset accepted by the intake)",
+  "type": "object",
+  "required": ["update_id"],
+  "properties": {
+    "update_id": {"type": "integer", "minimum": 0},
+    "message": {"$ref": "#/$defs/message"},
+    "edited_message": {"$ref": "#/$defs/message"},
+    "my_chat_member": {"type": "object"},
+    "chat_member": {"type": "object"},
+    "callback_query": {"type": "object"}
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "message": {
+      "type": "object",
+      "required": ["message_id", "chat", "date"],
+      "properties": {
+        "message_id": {"type": "integer", "minimum": 1},
+        "message_thread_id": {"type": "integer", "minimum": 1},
+        "is_topic_message": {"type": "boolean"},
+        "date": {"type": "integer", "minimum": 0},
+        "edit_date": {"type": "integer", "minimum": 0},
+        "chat": {"type": "object", "required": ["id"], "properties": {"id": {"type": "integer"}, "type": {"type": "string"}, "is_forum": {"type": "boolean"}}},
+        "from": {"type": "object", "properties": {"id": {"type": "integer"}, "is_bot": {"type": "boolean"}, "first_name": {"type": "string"}, "last_name": {"type": "string"}, "username": {"type": "string"}}},
+        "text": {"type": "string", "maxLength": 4096},
+        "caption": {"type": "string", "maxLength": 1024},
+        "reply_to_message": {"type": "object", "required": ["message_id"], "properties": {"message_id": {"type": "integer"}}},
+        "forum_topic_created": {"type": "object", "required": ["name"], "properties": {"name": {"type": "string"}}},
+        "document": {"$ref": "#/$defs/file"},
+        "video": {"$ref": "#/$defs/file"},
+        "audio": {"$ref": "#/$defs/file"},
+        "voice": {"$ref": "#/$defs/file"},
+        "animation": {"$ref": "#/$defs/file"},
+        "sticker": {"$ref": "#/$defs/file"},
+        "photo": {"type": "array", "items": {"$ref": "#/$defs/file"}}
+      },
+      "additionalProperties": true
+    },
+    "file": {
+      "type": "object",
+      "required": ["file_id"],
+      "properties": {
+        "file_id": {"type": "string", "minLength": 1},
+        "file_unique_id": {"type": "string"},
+        "file_name": {"type": "string"},
+        "mime_type": {"type": "string"},
+        "file_size": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": true
+    }
+  }
+}

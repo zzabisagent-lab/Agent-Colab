@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P2-12",
+  "evidence_id": "SELF-V-P2-12",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/e2e/test_admin_bridges_ui.py",
+    "tests/integration/test_bridge_db.py",
+    "-q",
+    "--tb=short",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "ab95efc4055368f2a3e981ed261f0a77575fcd3e",
+  "started_at": "2026-09-02T16:21:18.744162+00:00",
+  "finished_at": "2026-09-02T16:21:31.683653+00:00",
+  "output_sha256": "06955fb47f16312e5d13266c774a2aa4648c46e423cbe6564a92e25b68e39131"
+}

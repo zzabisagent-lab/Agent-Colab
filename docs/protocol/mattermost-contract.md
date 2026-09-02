@@ -48,7 +48,7 @@ case-insensitive; arguments are case-preserving.
 | schedule | list | any `schedule.*` | — | — |
 | schedule | run-now, cancel-run | `schedule.run` | `<schedule_id>` / `<run_id>` | — |
 | schedule | pause, resume | `schedule.manage` | `<schedule_id>` | — |
-| link | start, confirm | self (unlinked allowed) | confirm: `<6-digit code>` | — |
+| link | start, confirm | self (unlinked allowed) | confirm: `<6–8 digit code>` | — |
 | notify | mute, unmute, digest | self | — | — |
 | help | — | everyone (unlinked allowed) | `[resource]` | — |
 

@@ -17,12 +17,13 @@ from server.policy.authorization import (
     AuthorizationDenied,
     AuthorizationRequest,
     Authorizer,
+    independent_audit_sink,
 )
 
 
 class BusAuthorizer:
     def __init__(self, authorizer: Authorizer | None = None) -> None:
-        self._authorizer = authorizer or Authorizer()
+        self._authorizer = authorizer or Authorizer(audit_sink=independent_audit_sink)
 
     @property
     def authorizer(self) -> Authorizer:

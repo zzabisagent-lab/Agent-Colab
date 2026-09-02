@@ -1,0 +1,61 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_____________________ test_links_are_per_provider_instance _____________________
+
+engine = Engine(postgresql+psycopg://colab@127.0.0.1:54329/colab_t_0d7dbd754da4)
+
+    def test_links_are_per_provider_instance(engine: Engine) -> None:  # V-P2-22
+        rt = _rt(engine)
+        other_pi = "tg:5678"
+        with Session(engine) as s, s.begin():
+            s.execute(
+                text(
+                    "INSERT INTO provider_instances (id, provider_instance_id, workspace_id, provider, "
+                    "team_or_bot_ref) VALUES (:i, :p, :w, 'telegram', 'bot-5678')"
+                ),
+                {"i": uuid.uuid4(), "p": other_pi, "w": WS},
+            )
+        # the same external user id is linked to a different Account on the other instance
+        _link(engine, other_pi, "tg-active", OTHER_ACC, "active")
+        with Session(engine) as s:
+>           first = ext.resolve_external_principal(s, TG_PI, "tg-active", clock=CLOCK)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/integration/test_external_identity_commands.py:241: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+server/identity/external_commands.py:35: in resolve_external_principal
+    return service.resolve_command_principal(provider_instance_id, external_user_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = ExternalLinkService(repo=<server.identity.repository.SqlIdentityRepository object at 0x7e8634388980>, store=<server.ev...alchemy.orm.session.Session object at 0x7e8636bec3b0>, clock=<server.domain.clock.FixedClock object at 0x7e8635a5e1b0>)
+provider_instance_id = 'tg:1234', external_user_id = 'tg-active'
+
+    def resolve_command_principal(
+        self, provider_instance_id: str, external_user_id: str
+    ) -> Principal:
+        """Principal for an ACTIVE link; any other state is a stable error with no side effects."""
+        inst = self.repo.provider_instance(provider_instance_id)
+        if inst is None or inst.status != "active":
+            raise IdentityError("EXTERNAL_IDENTITY_NOT_ACTIVE", "unknown provider instance")
+        link = self.repo.get_link(inst.id, external_user_id)
+        if link is None or link.status != ACTIVE:
+>           raise IdentityError(
+                "EXTERNAL_IDENTITY_NOT_ACTIVE", "no active link" if link is None else link.status
+            )
+E           server.identity.principals.IdentityError: EXTERNAL_IDENTITY_NOT_ACTIVE: no active link
+
+server/identity/external_links.py:390: IdentityError
+---------------------------- Captured stderr setup -----------------------------
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Phase 0 verification harness: workspaces, accounts, credentials, agents, verification_runs.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 0002, Phase 1 core schema: append-only Event/Audit/Verification authority, projections, roles.
+INFO  [alembic.runtime.migration] Running upgrade 0002 -> 0003, Phase 2 channels: provider instance display/config, channel templates, thread bindings,
+command token hashes, provider nonces.
+INFO  [alembic.runtime.migration] Running upgrade 0003 -> 0004, Phase 2 (P2-04): Telegram update receipts for webhook replay protection.
+INFO  [alembic.runtime.migration] Running upgrade 0004 -> 0005, Phase 2 renderer delivery records (channel_posts).
+INFO  [alembic.runtime.migration] Running upgrade 0005 -> 0006, Phase 2 message ingestion and retention (conversations, messages, policies, tombstones).
+INFO  [alembic.runtime.migration] Running upgrade 0006 -> 0007, Phase 2 (P2-05/P2-06): Telegram Bridges, message mappings, dead letters.
+=========================== short test summary info ============================
+FAILED tests/integration/test_external_identity_commands.py::test_links_are_per_provider_instance

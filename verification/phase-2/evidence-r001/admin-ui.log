@@ -1,0 +1,11 @@
+started_at: 2026-09-02T16:37:43Z
+cwd: /home/master/.local/verify/phase-2-r001
+commit: 8680e799277790b11fa9fc858f53e678888cfb46
+command: uv run pytest tests/e2e/test_admin_bridges_ui.py -q -rs
+environment: Linux 6.8.0-138-generic x86_64; python 3.12.3; node v22.23.2; postgres 16.15
+--- output ---
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+..                                                                       [100%]
+--- result ---
+exit_code: 0
+completed_at: 2026-09-02T16:37:51Z

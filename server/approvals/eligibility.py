@@ -19,10 +19,8 @@ from sqlalchemy.orm import Session
 from server.approvals.model import Grant
 from server.observability.audit import append_audit
 from server.policy.authorization import (
-    AuditRecord,
     AuthorizationRequest,
     Authorizer,
-    _db_audit_sink,
 )
 from server.policy.catalog import RISK_ORDER, PolicyCatalog
 from server.policy.repository import PrincipalInfo
@@ -37,13 +35,6 @@ def audit_independently(session: Session, **kwargs: Any) -> str | None:
     bind = session.get_bind()
     with Session(bind) as own, own.begin():
         return append_audit(own, **kwargs)
-
-
-def independent_audit_sink(session: Session, record: AuditRecord) -> str | None:
-    """Audit sink for the Authorizer used on decision paths (same content as the default sink)."""
-    bind = session.get_bind()
-    with Session(bind) as own, own.begin():
-        return _db_audit_sink(own, record)
 
 
 @dataclass(frozen=True)

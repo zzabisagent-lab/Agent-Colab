@@ -1,0 +1,11 @@
+started_at: 2026-09-02T16:37:09Z
+cwd: /home/master/.local/verify/phase-2-r001
+commit: 8680e799277790b11fa9fc858f53e678888cfb46
+command: scripts/dev/mattermost-local.sh start
+environment: Linux 6.8.0-138-generic x86_64; python 3.12.3; node v22.23.2; postgres 16.15
+--- output ---
+configured /home/master/.local/opt/mattermost/config/config.json
+mattermost up at http://127.0.0.1:8065
+--- result ---
+exit_code: 0
+completed_at: 2026-09-02T16:37:10Z

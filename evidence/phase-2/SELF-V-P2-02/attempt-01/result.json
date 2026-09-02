@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P2-02",
+  "evidence_id": "SELF-V-P2-02",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_channel_outbox.py",
+    "-q",
+    "-k",
+    "latency"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "d77e6b7a4a2302e0328c4999f6fb9ae3d10e058b",
+  "started_at": "2026-09-02T15:49:43.829157+00:00",
+  "finished_at": "2026-09-02T15:49:46.454016+00:00",
+  "output_sha256": "423b1d0e014eb1eab96f4420f7b344c2615be505dd574b756ac884826ca74f2d"
+}

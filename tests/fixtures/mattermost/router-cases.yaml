@@ -1,0 +1,131 @@
+# Command Router cases (V-P2-24). Executed in order against a seeded workspace; ${task} is the
+# id created by the first case, ${apr} the approval id, ${root} the root post bound to ${task}.
+# expect.events = number of Events the case must append (0 for every rejection).
+cases:
+  - name: free text is never a command
+    user: linked
+    text: "please create a task for me"
+    expect: {type: ephemeral, code: COMMAND_PREFIX_MISSING, events: 0}
+  - name: unknown resource
+    user: linked
+    text: "/colab widget make"
+    expect: {type: ephemeral, code: COMMAND_RESOURCE_UNKNOWN, events: 0}
+  - name: unknown verb
+    user: linked
+    text: "/colab task explode"
+    expect: {type: ephemeral, code: COMMAND_VERB_UNKNOWN, events: 0}
+  - name: missing required args
+    user: linked
+    text: "/colab task create"
+    expect: {type: ephemeral, code: COMMAND_ARGS_INVALID, events: 0}
+  - name: create without criteria is rejected by the grammar
+    user: linked
+    text: '/colab task create "No criteria"'
+    expect: {type: ephemeral, code: COMMAND_ARGS_INVALID, events: 0}
+  - name: unlinked user cannot create
+    user: unlinked
+    text: '/colab task create "Nope" --criteria "x"'
+    expect: {type: ephemeral, code: COMMAND_UNLINKED_RESTRICTED, events: 0}
+  - name: unlinked user gets help
+    user: unlinked
+    text: "/colab help"
+    expect: {type: ephemeral, code: OK, events: 0, contains: "task create"}
+  - name: unlinked user gets link guidance
+    user: unlinked
+    text: "/colab link start"
+    expect: {type: ephemeral, code: LINK_PENDING, events: 0}
+  - name: help for a resource
+    user: linked
+    text: "/colab help approve"
+    expect: {type: ephemeral, code: OK, events: 0, contains: "approve request"}
+  - name: create a task with criteria (public reply, thread bound)
+    user: linked
+    text: '/colab task create "Router task" --criteria "report attached" --domain research'
+    capture: task
+    expect: {type: in_channel, code: OK, events: 1, contains: "created"}
+  - name: same post again replays without a new Event
+    user: linked
+    text: '/colab task create "Router task" --criteria "report attached" --domain research'
+    same_post: true
+    expect: {type: in_channel, code: OK, events: 0}
+  - name: target required outside a thread
+    user: linked
+    text: "/colab task accept"
+    expect: {type: ephemeral, code: COMMAND_TARGET_REQUIRED, events: 0}
+  - name: delegate by mention
+    user: linked
+    text: "/colab task delegate ${task} --to @agentuser"
+    expect: {type: in_channel, code: OK, events: 1}
+  - name: accept inside the thread (task id omitted)
+    user: agent
+    text: "/colab task accept"
+    in_thread: true
+    expect: {type: in_channel, code: OK, events: 1}
+  - name: progress inside the thread starts and reports
+    user: agent
+    text: '/colab task progress "half done"'
+    in_thread: true
+    expect: {type: in_channel, code: OK, events: 2}
+  - name: policy denial is ephemeral with zero Events
+    user: linked
+    text: '/colab task progress ${task} "not mine"'
+    expect: {type: ephemeral, code: DEFAULT_DENY, events: 0}
+  - name: request approval
+    user: linked
+    text: "/colab approve request ${task} --action external_send"
+    capture: apr
+    expect: {type: in_channel, code: OK, events: 1}
+  - name: self approval rejected
+    user: linked
+    text: "/colab approve grant ${apr}"
+    expect: {type: ephemeral, code: SELF_APPROVAL_FORBIDDEN, events: 0}
+  - name: approver grants via button path is refused for HIGH (web re-auth)
+    user: approver
+    text: "/colab approve grant ${apr}"
+    expect: {type: ephemeral, code: REAUTH_REQUIRED, events: 0}
+  - name: submit with evidence inside the thread
+    user: agent
+    text: '/colab task submit --evidence "art-1"'
+    in_thread: true
+    expect: {type: in_channel, code: OK, events: 2}
+  - name: verify assign to the verifier
+    user: linked
+    text: "/colab verify assign ${task} --to @verifieruser"
+    expect: {type: in_channel, code: OK, events: 1}
+  - name: implementer cannot pass its own verification
+    user: agent
+    text: '/colab verify pass ${task} --evidence "art-1"'
+    expect: {type: ephemeral, code: SELF_VERIFICATION_FORBIDDEN, events: 0}
+  - name: verifier passes
+    user: verifier
+    text: '/colab verify pass ${task} --evidence "art-1"'
+    expect: {type: in_channel, code: OK, events: 3}
+  - name: complete inside the thread
+    user: linked
+    text: "/colab task complete"
+    in_thread: true
+    expect: {type: in_channel, code: OK, events: 1}
+  - name: task show
+    user: linked
+    text: "/colab task show ${task}"
+    expect: {type: ephemeral, code: OK, events: 0, contains: "COMPLETED"}
+  - name: task list
+    user: linked
+    text: "/colab task list"
+    expect: {type: ephemeral, code: OK, events: 0, contains: "${task}"}
+  - name: doc show
+    user: linked
+    text: "/colab doc show ${task}"
+    expect: {type: ephemeral, code: OK, events: 0, contains: "FINALIZED"}
+  - name: schedule commands are a later phase
+    user: linked
+    text: "/colab schedule list"
+    expect: {type: ephemeral, code: COMMAND_NOT_AVAILABLE, events: 0}
+  - name: notify mute
+    user: linked
+    text: "/colab notify mute"
+    expect: {type: ephemeral, code: OK, events: 0}
+  - name: cancel a terminal task is rejected with zero Events
+    user: linked
+    text: "/colab task cancel ${task}"
+    expect: {type: ephemeral, code: TASK_TERMINAL, events: 0}

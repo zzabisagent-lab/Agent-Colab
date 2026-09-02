@@ -195,7 +195,7 @@ class ExternalLinkService:
         if not hmac.compare_digest(ch.code_hash, _code_hash(code)):
             failures = ch.failures + 1
             locked = None
-            if failures >= defaults.LINK_CHALLENGE_MAX_FAILURES:
+            if failures > defaults.LINK_CHALLENGE_MAX_FAILURES:  # 15-minute lockout from the 6th
                 locked = now + dt.timedelta(minutes=defaults.LINK_CHALLENGE_LOCKOUT_MIN)
             self.repo.update_challenge(replace(ch, failures=failures, locked_until=locked))
             code_err = (

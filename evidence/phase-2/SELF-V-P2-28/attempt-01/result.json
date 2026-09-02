@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P2-28",
+  "evidence_id": "SELF-V-P2-28",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_identity_display.py",
+    "tests/integration/test_actions_db.py",
+    "-q",
+    "-k",
+    "identity"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "d59ff36317f7d269a0981892b3705ef2627047a1",
+  "started_at": "2026-09-02T16:06:59.177826+00:00",
+  "finished_at": "2026-09-02T16:07:01.491927+00:00",
+  "output_sha256": "4d2df7a96ce4a667da3ccf295f2d16c728a65ed0e861a3baa919f7bb469b02b5"
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/telegram/attachment-policy.v1.schema.json",
+  "title": "Bridge attachment policy",
+  "type": "object",
+  "properties": {
+    "max_bytes": {"type": "integer", "minimum": 1, "maximum": 2147483648, "default": 20971520},
+    "allowed_mime_prefixes": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+    "denied_mime_prefixes": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "require_scan": {"type": "boolean", "default": false}
+  },
+  "additionalProperties": false
+}

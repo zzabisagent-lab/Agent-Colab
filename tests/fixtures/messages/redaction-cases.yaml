@@ -1,0 +1,73 @@
+# RedactionScanner cases (V-P2-10 canary form and common secret shapes). `expect_kinds` lists the
+# finding kinds in order; `must_not_contain` lists fragments that may never survive redaction.
+cases:
+  - name: canary
+    body: "token is CANARY-NOT-A-SECRET-0042 ok"
+    expect_kinds: [canary]
+    must_not_contain: ["CANARY-NOT-A-SECRET-0042"]
+  - name: two canaries
+    body: "CANARY-NOT-A-SECRET-1 and CANARY-NOT-A-SECRET-2"
+    expect_kinds: [canary, canary]
+    must_not_contain: ["CANARY-NOT-A-SECRET-1", "CANARY-NOT-A-SECRET-2"]
+  - name: bearer token
+    body: "Authorization: Bearer abcDEF123456789xyzABCDEF0123456789"
+    expect_kinds: [bearer_token]
+    must_not_contain: ["abcDEF123456789xyzABCDEF0123456789"]
+  - name: aws access key
+    body: "key AKIAIOSFODNN7EXAMPLE in config"
+    expect_kinds: [aws_access_key]
+    must_not_contain: ["AKIAIOSFODNN7EXAMPLE"]
+  - name: telegram bot token
+    body: "bot 123456789:AAHfakeFAKEfakeFAKEfakeFAKEfakeFAKE01 configured"
+    expect_kinds: [telegram_bot_token]
+    must_not_contain: ["AAHfakeFAKEfakeFAKEfakeFAKEfakeFAKE01"]
+  - name: dsn with password
+    body: "postgresql://colab:hunter2pass@db.internal:5432/colab"
+    expect_kinds: [dsn_password]
+    must_not_contain: ["hunter2pass"]
+    must_contain: ["postgresql://colab:<redacted:dsn_password>@db.internal:5432/colab"]
+  - name: pem block
+    body: "-----BEGIN RSA PRIVATE KEY-----\nMIIEfakekeybody\n-----END RSA PRIVATE KEY-----"
+    expect_kinds: [private_key]
+    must_not_contain: ["MIIEfakekeybody"]
+  - name: password assignment
+    body: "password=Sup3rS3cret! done"
+    expect_kinds: [credential_assignment]
+    must_not_contain: ["Sup3rS3cret!"]
+    must_contain: ["password=<redacted:credential_assignment>"]
+  - name: api key colon
+    body: "api_key: sk-livefakekey0123456789"
+    expect_kinds: [credential_assignment]
+    must_not_contain: ["sk-livefakekey0123456789"]
+  - name: quoted secret
+    body: "secret = \"quoted value here\""
+    expect_kinds: [credential_assignment]
+    must_not_contain: ["quoted value here"]
+  - name: github token
+    body: "ghp_abcdefghijklmnopqrstuvwxyz0123456789"
+    expect_kinds: [github_token]
+    must_not_contain: ["ghp_abcdefghijklmnopqrstuvwxyz0123456789"]
+  - name: slack token
+    body: "xoxb-1234567890-abcdefghij"
+    expect_kinds: [slack_token]
+    must_not_contain: ["xoxb-1234567890-abcdefghij"]
+  - name: high entropy blob
+    body: "blob 9fA3kL0pQz7RtY2wXe5VbN8mC1sD4gH6jK0lZ3xQ ok"
+    expect_kinds: [high_entropy]
+    must_not_contain: ["9fA3kL0pQz7RtY2wXe5VbN8mC1sD4gH6jK0lZ3xQ"]
+  - name: plain prose untouched
+    body: "Let's review the report tomorrow at 10:00 in work-a."
+    expect_kinds: []
+    must_contain: ["Let's review the report tomorrow at 10:00 in work-a."]
+  - name: ids and hashes untouched
+    body: "task-0001 evt-1234 sha256 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    expect_kinds: []
+    must_contain: ["task-0001", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+  - name: url without credentials untouched
+    body: "see https://example.org/docs/page for details"
+    expect_kinds: []
+    must_contain: ["https://example.org/docs/page"]
+  - name: mixed
+    body: "CANARY-NOT-A-SECRET-7 and postgres://u:pw123@h/db and text"
+    expect_kinds: [canary, dsn_password]
+    must_not_contain: ["CANARY-NOT-A-SECRET-7", "pw123"]

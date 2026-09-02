@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P2-27",
+  "evidence_id": "SELF-V-P2-27",
+  "attempt": 3,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_link_challenge.py",
+    "tests/integration/test_external_identity_commands.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "8680e799277790b11fa9fc858f53e678888cfb46",
+  "started_at": "2026-09-02T16:54:12.044335+00:00",
+  "finished_at": "2026-09-02T16:54:14.746898+00:00",
+  "output_sha256": "06955fb47f16312e5d13266c774a2aa4648c46e423cbe6564a92e25b68e39131"
+}

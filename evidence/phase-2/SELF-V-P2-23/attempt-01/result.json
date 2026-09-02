@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P2-23",
+  "evidence_id": "SELF-V-P2-23",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_channel_outbox.py",
+    "-q",
+    "-k",
+    "rolls_back or exactly_one or edited_in_place"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "d77e6b7a4a2302e0328c4999f6fb9ae3d10e058b",
+  "started_at": "2026-09-02T15:49:42.134083+00:00",
+  "finished_at": "2026-09-02T15:49:43.722483+00:00",
+  "output_sha256": "cf426ab35f3b06fccef8290fde5325d90af130a79da1d1752031518df77c4236"
+}
