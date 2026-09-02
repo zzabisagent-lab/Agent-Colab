@@ -9,24 +9,24 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 | ID | Work | Size | Prereq | Status | SELF evidence |
 |---|---|---|---|---|---|
 | P2-01 | Mattermost provider | M | P1-07, P0-10 | IMPLEMENTED | SELF-V-P2-01, SELF-V-P2-19 |
-| P2-02 | Channel/external identity config | M | P2-01, P1-05 | IN_PROGRESS (fork) | — |
+| P2-02 | Channel/external identity config | M | P2-01, P1-05 | IMPLEMENTED | SELF-V-P2-19, SELF-V-P2-21, SELF-V-P2-22 |
 | P2-03 | Renderer/outbox | M | P2-01 | IMPLEMENTED | SELF-V-P2-02, SELF-V-P2-23 |
 | P2-04 | Telegram provider | M | P1-07, P0-13 | IMPLEMENTED | SELF-V-P2-09, SELF-V-P2-11 |
-| P2-05 | per-channel Bridge | M | P2-03, P2-04 | IN_PROGRESS (fork) | — |
-| P2-06 | dedupe/loop/retry | M | P2-05 | IN_PROGRESS (fork) | — |
-| P2-07 | Bridge Admin UI | S | P2-05 | NOT_STARTED | — |
-| P2-08 | Telegram command policy | S | P2-05, P2-10 | NOT_STARTED | — |
-| P2-09 | Channel lifecycle | S | P2-02 | IN_PROGRESS (fork) | — |
+| P2-05 | per-channel Bridge | M | P2-03, P2-04 | IMPLEMENTED | SELF-V-P2-03/05/06/13/14/17 |
+| P2-06 | dedupe/loop/retry | M | P2-05 | IMPLEMENTED | SELF-V-P2-04/07/08/10/15 |
+| P2-07 | Bridge Admin UI | S | P2-05 | IMPLEMENTED | SELF-V-P2-12 |
+| P2-08 | Telegram command policy | S | P2-05, P2-10 | IMPLEMENTED | SELF-V-P2-16, SELF-V-P2-20 |
+| P2-09 | Channel lifecycle | S | P2-02 | IMPLEMENTED | SELF-V-P2-18 |
 | P2-10 | Command Router | M | P2-01, P1-07 | IMPLEMENTED | SELF-V-P2-24 |
 | P2-11 | Task card/thread Renderer | M | P2-03, P2-10 | IMPLEMENTED | SELF-V-P2-25 |
-| P2-12 | Interactive actions | S | P2-11 | IN_PROGRESS (fork) | — |
-| P2-13 | Mattermost link challenge | S | P2-02, P2-10 | IN_PROGRESS (fork) | — |
-| P2-14 | Agent identity display | S | P2-11 | IN_PROGRESS (fork) | — |
+| P2-12 | Interactive actions | S | P2-11 | IMPLEMENTED | SELF-V-P2-26 |
+| P2-13 | Mattermost link challenge | S | P2-02, P2-10 | IMPLEMENTED | SELF-V-P2-27 |
+| P2-14 | Agent identity display | S | P2-11 | IMPLEMENTED | SELF-V-P2-28 |
 | P2-15 | Message ingestion/retention | M | P2-03 | IMPLEMENTED | SELF-V-P2-29 |
-| P2-16 | i18n | S | P2-10 | IN_PROGRESS | bundles + document headings done; router/card wiring pending |
-| P2-17 | Notification providers | S | P1-13, P2-01 | IN_PROGRESS (fork) | — |
+| P2-16 | i18n | S | P2-10 | IMPLEMENTED | SELF-V-P2-30 |
+| P2-17 | Notification providers | S | P1-13, P2-01 | IMPLEMENTED | SELF-V-P2-31 |
 
-Phase 2 progress (size-weighted): 15 / 33
+Phase 2 progress (size-weighted): 33 / 33 — all packages implemented; full suite + lint + check-docs green; Codex verification pending (see Next step)
 
 ## Phase 1 (PASSED) — branch `phase-1`, tag `phase-1-passed`
 
@@ -90,7 +90,7 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 20.5 / 20.5
 
 ### Next step
 
-Phase 1 on branch `phase-1` (P1-01 first; then P1-02/03/05 in parallel).
+Phase 2: run Codex verification revision 1 on branch `phase-2` (`tools/run_verification.py --phase 2 --revision 1 --commit <sha> --no-sandbox --secret-env .env --secret-env ~/.local/opt/mattermost/.spike-credentials`); on PASSED merge to `main`, tag `phase-2-passed`, start Phase 3 (P3-01 first).
 
 ## Phase history
 

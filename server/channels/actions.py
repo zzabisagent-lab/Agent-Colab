@@ -38,13 +38,13 @@ from server.identity.external_links import sql_service
 from server.identity.principals import IdentityError, Principal
 from server.observability.audit import append_audit
 
-ACTION_SECRET_ENV = "AGENT_COLAB_MATTERMOST_ACTION_SECRET"  # noqa: S105 - env var name
+ACTION_SECRET_ENV = "AGENT_COLAB_MATTERMOST_ACTION_SECRET"  # noqa: S105 - env var name  # nosec B105 - environment variable name, not a secret
 BUTTON_LABELS: dict[str, str] = {
     "accept": "Accept",
     "submit": "Submit",
     "approve": "Approve",
     "reject": "Reject",
-    "verify_pass": "Verify: pass",
+    "verify_pass": "Verify: pass",  # nosec B105 - button label
     "verify_fail": "Verify: fail",
     "cancel": "Cancel",
 }

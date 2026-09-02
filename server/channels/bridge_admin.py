@@ -184,7 +184,7 @@ def create_bridge(
                     "mode": config.get("thread_mode", "topic_per_root"),
                     "dir": config["direction"],
                     "cp": json.dumps({**defaults_cp, **config.get("content_policy", {})}),
-                    "rp": json.dumps(config.get("redaction_policy", {"secret_patterns": True})),
+                    "rp": json.dumps(config.get("redaction_policy", {"secret_patterns": True})),  # nosec B105 - boolean secret_configured flag, not a value
                     "idd": json.dumps(config.get("identity_display", {"show_sender": True})),
                     "rl": json.dumps(config.get("rate_limit", {"per_minute": 20})),
                     "cmd": bool(config.get("allow_commands", False)),

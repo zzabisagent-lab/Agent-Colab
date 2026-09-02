@@ -20,7 +20,7 @@ router = APIRouter(prefix="/api/v1/providers/mattermost", tags=["providers"])
 
 
 @router.post("/commands")
-def slash_command(
+def slash_command(  # nosec B107 - empty default, value comes from the environment
     request: Request,
     token: Annotated[str, Form()] = "",
     team_id: Annotated[str, Form()] = "",

@@ -100,6 +100,19 @@ FAKE = FakeMattermostClient(
 )
 
 
+@pytest.fixture(autouse=True, scope="module")
+def _no_link_handlers() -> Iterator[None]:
+    """The grammar cases assume no P2-13 link handler is mounted (LINK_PENDING guidance);
+    create_app() in other modules registers them globally, so isolate the registry here."""
+    from server.channels.router import LINK_HANDLERS
+
+    saved = dict(LINK_HANDLERS)
+    LINK_HANDLERS.clear()
+    yield
+    LINK_HANDLERS.clear()
+    LINK_HANDLERS.update(saved)
+
+
 @pytest.fixture(scope="module")
 def runtime(database_url: str) -> Iterator[Runtime]:
     engine = make_engine(database_url)

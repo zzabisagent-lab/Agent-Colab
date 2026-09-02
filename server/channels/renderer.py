@@ -155,7 +155,7 @@ BUTTON_PERMISSION = {
     "submit": "task.submit",
     "approve": "approval.decide",
     "reject": "approval.decide",
-    "verify_pass": "verification.submit",
+    "verify_pass": "verification.submit",  # nosec B105 - permission name
     "verify_fail": "verification.submit",
     "cancel": "task.cancel",
 }

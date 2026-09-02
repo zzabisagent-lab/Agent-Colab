@@ -385,9 +385,10 @@ def test_verifier_assigned_and_task_waiting_recipients(engine: Engine) -> None:
         renotify = s.execute(
             text(
                 "SELECT next_attempt_at, destination FROM delivery_outbox WHERE kind = "
-                "'notification_reminder' AND payload->>'reminder' = 're_notify' ORDER BY "
-                "destination"
-            )
+                "'notification_reminder' AND payload->>'reminder' = 're_notify' "
+                "AND workspace_id = :ws ORDER BY destination"
+            ),
+            {"ws": WS},
         ).all()
         assert {r[0] for r in renotify} == {dt.datetime(2026, 3, 1, 10, 10, tzinfo=dt.UTC)}
         assert {r[1].split(":")[0] for r in renotify} == {"work_item", "mattermost"}

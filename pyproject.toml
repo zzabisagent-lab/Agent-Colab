@@ -55,6 +55,8 @@ line-length = 100
 target-version = "py312"
 src = ["server", "sidecar", "tests", "tools"]
 
+# Verifier-produced evidence (verification/) is stored unmodified and is not project code
+extend-exclude = ["verification"]
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "S", "N", "RUF"]
 ignore = ["S101", "RUF012"]

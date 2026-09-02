@@ -35,7 +35,7 @@ from server.db.engine import session_scope
 from server.domain.defaults import CALLBACK_TIMESTAMP_TOLERANCE_S
 
 router = APIRouter(prefix="/api/v1/providers/telegram", tags=["providers"])
-SECRET_ENV = "AGENT_COLAB_TELEGRAM_WEBHOOK_SECRET"  # noqa: S105 - the variable name, not a value
+SECRET_ENV = "AGENT_COLAB_TELEGRAM_WEBHOOK_SECRET"  # noqa: S105 - the variable name, not a value  # nosec B105 - environment variable name, not a secret
 HANDLER_STATE_KEY = "telegram_inbound_handler"
 
 

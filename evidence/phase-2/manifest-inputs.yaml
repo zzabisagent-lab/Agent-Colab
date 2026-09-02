@@ -1,0 +1,20 @@
+# Inputs for the Phase 2 Evidence Manifest (validation plan §6.1); the manifest itself is generated
+# by tools/run_verification.py at verification time for the exact target commit.
+known_gaps:
+  - "V-P2-15 (Bridge delivery latency) is measured in-process: 100 deliveries at 10 msg/s against a recording provider with a virtual clock and a drain every second (p95 asserted ≤ 5 s, zero loss/duplicates). The live Telegram relay path is exercised separately by tests/integration/test_bridge_live.py (real Bot API, forum topics; skipped without TELEGRAM_* keys); Mattermost provider calls run against the local Team Edition (scripts/dev/mattermost-local.sh)."
+  - "SMTP notification provider is verified with a fake in-process transport (routing, gating, DM duplicate guard); no live SMTP host is configured in this environment."
+  - "Executing Task commands from Telegram requires an administrator to set content_policy.telegram_commands (allowed_verbs) on the Bridge; the default policy is read/reply only (V-P2-16). link.* verbs never execute from Telegram."
+  - "The web console is the minimal administrative surface for this phase (login with a human service token, channel list, Bridge create/enable/disable/test); the Playwright e2e test uses the user-space Chromium wrapper on hosts without root (PLAYWRIGHT_CHROMIUM_EXECUTABLE)."
+  - "Channel deletion is a soft delete (status `deleted` + `channel.delete` audit); the baseline defines no deletion Event, so CHANNEL_ARCHIVED stays the last aggregate Event (V-P2-18)."
+  - "Policy denials on the API path are audited in an independent transaction (found and fixed during P2-07: a denial raised out of the command transaction previously rolled the audit row back)."
+reproduction:
+  - "git clone git@github.com:zzabisagent-lab/Agent-Colab.git && git checkout <target commit>"
+  - "export PATH=$HOME/.local/bin:$PATH; export AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test (any empty PostgreSQL 16 maintenance DB; the test session creates and drops its own database and runs migrations 0001-0007)"
+  - "make bootstrap && make lint && make test && make check-docs && make build   # make build includes the web console (pnpm)"
+  - "Every V-P2 Test has a SELF evidence attempt under evidence/phase-2/SELF-V-P2-NN/attempt-NN/result.json listing the exact command; the latest attempt of each ID is PASS"
+  - "Bridge rules and relay: uv run pytest tests/integration/test_bridge_db.py tests/unit/test_bridge_rules.py -q -s   (V-P2-03..08/10/13/14/15/17); live Telegram: uv run pytest tests/integration/test_bridge_live.py -q (needs TELEGRAM_BOT_TOKEN, TELEGRAM_TEST_CHAT_A/B)"
+  - "Mattermost provider (local TE): scripts/dev/mattermost-local.sh start; uv run pytest tests/integration/test_mattermost_provider.py -q -rs   (V-P2-01, V-P2-19)"
+  - "Bridge Admin UI (V-P2-12): cd web-admin && pnpm install && pnpm run build; PLAYWRIGHT_CHROMIUM_EXECUTABLE=<chromium> uv run pytest tests/e2e/test_admin_bridges_ui.py -q"
+  - "Command grammar / cards / actions / i18n: uv run pytest tests/unit/test_command_router.py tests/integration/test_task_cards.py tests/integration/test_actions_db.py tests/integration/test_i18n_channels.py -q"
+  - "External identity, link challenge, channel config/lifecycle: uv run pytest tests/integration/test_external_identity_commands.py tests/unit/test_link_challenge.py tests/integration/test_channel_config_db.py -q"
+  - "Messages/retention and notifications: uv run pytest tests/integration/test_message_retention.py tests/integration/test_notification_delivery.py tests/unit/test_notification_providers.py -q"
