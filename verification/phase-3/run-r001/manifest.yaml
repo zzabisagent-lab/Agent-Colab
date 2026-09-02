@@ -1,0 +1,392 @@
+implementation_id: P3-IMPLEMENT-001
+phase: 3
+implementer_agent_id: agent-claude-code
+implementer_account_id: account-implementer-claude
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+identity_graph_version: identity-v8-001
+commit_sha: 887de42eb5d3c84581273a669fad9fa1b3400f0a
+image_digests: []
+requirements:
+- REQ-ADMN-001
+- REQ-AGENT-001
+- REQ-AGENT-002
+- REQ-AGENT-003
+- REQ-AGENT-004
+- REQ-AGENT-005
+- REQ-AGENT-006
+- REQ-AGENT-007
+- REQ-AGENT-008
+- REQ-AGENT-009
+- REQ-COST-001
+- REQ-QGAT-003
+- REQ-VRFY-001
+- REQ-VRFY-003
+changed_files:
+- PROGRESS.md
+- docs/adr/ADR-0010-phase3-agent-decisions.md
+- docs/architecture/adapter-contract.md
+- docs/architecture/agent-registry.md
+- docs/architecture/phase3-agents.md
+- docs/architecture/routing-and-orchestration.md
+- docs/protocol/mattermost-bot-adapter.md
+- docs/protocol/mcp-transport.md
+- docs/protocol/webhook-delivery.md
+- evidence/phase-3/SELF-V-P3-01/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-01/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-02/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-02/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-03/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-03/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-04/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-04/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-05/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-05/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-05/attempt-02/output.log
+- evidence/phase-3/SELF-V-P3-05/attempt-02/result.json
+- evidence/phase-3/SELF-V-P3-06/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-06/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-06/attempt-02/output.log
+- evidence/phase-3/SELF-V-P3-06/attempt-02/result.json
+- evidence/phase-3/SELF-V-P3-06/attempt-03/output.log
+- evidence/phase-3/SELF-V-P3-06/attempt-03/result.json
+- evidence/phase-3/SELF-V-P3-07/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-07/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-07/attempt-02/output.log
+- evidence/phase-3/SELF-V-P3-07/attempt-02/result.json
+- evidence/phase-3/SELF-V-P3-08/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-08/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-09/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-09/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-10/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-10/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-11/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-11/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-12/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-12/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-13/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-13/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-14/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-14/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-15/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-15/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-16/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-16/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-17/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-17/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-18/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-18/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-19/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-19/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-20/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-20/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-21/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-21/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-22/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-22/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-23/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-23/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-24/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-24/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-25/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-25/attempt-01/result.json
+- evidence/phase-3/SELF-V-P3-26/attempt-01/output.log
+- evidence/phase-3/SELF-V-P3-26/attempt-01/result.json
+- evidence/phase-3/manifest-inputs.yaml
+- migrations/sql/0008_phase3_agents.sql
+- migrations/sql/0009_phase3_delivery.sql
+- migrations/sql/0010_phase3_orchestration.sql
+- migrations/sql/0011_phase3_registry_extras.sql
+- migrations/versions/0008_phase3_agents.py
+- migrations/versions/0009_phase3_delivery.py
+- migrations/versions/0010_phase3_orchestration.py
+- migrations/versions/0011_phase3_registry_extras.py
+- policy/notification-rules.yaml
+- schemas/documents/adapter-conformance-report.v1.schema.json
+- schemas/events/catalog.v1.yaml
+- schemas/events/registry.v1.json
+- schemas/events/types/VERIFIER_ASSIGNMENT_EXHAUSTED.v1.schema.json
+- server/agents/adapters/__init__.py
+- server/agents/adapters/contract.py
+- server/agents/adapters/mattermost_bot.py
+- server/agents/adapters/mcp_client.py
+- server/agents/adapters/secret_support.py
+- server/agents/adapters/webhook.py
+- server/agents/conformance/__init__.py
+- server/agents/conformance/__main__.py
+- server/agents/conformance/harness.py
+- server/agents/conformance/harness_push.py
+- server/agents/conformance/report.py
+- server/agents/conformance/suite.py
+- server/agents/limits.py
+- server/agents/maintenance.py
+- server/agents/mcp_server.py
+- server/agents/push_common.py
+- server/agents/registry.py
+- server/agents/rerouting.py
+- server/agents/routing.py
+- server/agents/signing_keys.py
+- server/agents/transport_mcp.py
+- server/agents/webhook_delivery.py
+- server/api/v1/agents.py
+- server/api/v1/roles.py
+- server/api/v1/work.py
+- server/application/agents.py
+- server/application/orchestration.py
+- server/application/roles.py
+- server/application/tasks.py
+- server/application/verification.py
+- server/application/work.py
+- server/channels/gateway.py
+- server/channels/work_messages.py
+- server/domain/task.py
+- server/main.py
+- server/tasks/__init__.py
+- server/tasks/graph.py
+- server/usage/conformance.py
+- server/verification/assignment.py
+- server/work/inbox.py
+- server/work/notify.py
+- tests/e2e/test_admin_agents_ui.py
+- tests/fixtures/adapters/__init__.py
+- tests/fixtures/adapters/mock_plugin.py
+- tests/fixtures/tasks/transitions.yaml
+- tests/integration/phase3_seed.py
+- tests/integration/test_adapter_plugin.py
+- tests/integration/test_agent_limits.py
+- tests/integration/test_agents_db.py
+- tests/integration/test_bot_adapter_db.py
+- tests/integration/test_bridge_live.py
+- tests/integration/test_maintenance_db.py
+- tests/integration/test_mcp_transport.py
+- tests/integration/test_orchestration_db.py
+- tests/integration/test_rerouting_db.py
+- tests/integration/test_roles_api.py
+- tests/integration/test_routing_db.py
+- tests/integration/test_usage_conformance.py
+- tests/integration/test_verifier_assignment_db.py
+- tests/integration/test_webhook_delivery.py
+- tests/unit/test_adapter_contract.py
+- tests/unit/test_agent_registry.py
+- tests/unit/test_conformance_push_harnesses.py
+- tests/unit/test_conformance_suite.py
+- tests/unit/test_mattermost_bot_adapter.py
+- tests/unit/test_mcp_poll_guard.py
+- tests/unit/test_routing.py
+- tests/unit/test_webhook_adapter.py
+- tools/gen_event_schemas.py
+- web-admin/src/api/client.ts
+- web-admin/src/app/App.tsx
+- web-admin/src/features/agents/AgentsPage.tsx
+- web-admin/src/features/roles/RolesPage.tsx
+- web-admin/tests/agents.spec.ts
+migrations:
+- migrations/versions/0008_phase3_agents.py
+- migrations/versions/0009_phase3_delivery.py
+- migrations/versions/0010_phase3_orchestration.py
+- migrations/versions/0011_phase3_registry_extras.py
+tests_run:
+- id: SELF-V-P3-01
+  command: uv run pytest tests/integration/test_agents_db.py tests/unit/test_agent_registry.py
+    -k register_three or validation or rest_registration -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-01/attempt-01
+- id: SELF-V-P3-02
+  command: uv run pytest tests/integration/test_roles_api.py -k first_authorization_follows_latest_version
+    or rest_surface -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-02/attempt-01
+- id: SELF-V-P3-03
+  command: uv run pytest tests/unit/test_routing.py tests/integration/test_routing_db.py
+    -k eligible or ordering or no_candidate or tie -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-03/attempt-01
+- id: SELF-V-P3-04
+  command: uv run pytest tests/integration/test_rerouting_db.py -k rejection_codes
+    or unsupported_without_fallback -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-04/attempt-01
+- id: SELF-V-P3-05
+  command: uv run pytest tests/unit/test_conformance_suite.py tests/unit/test_conformance_push_harnesses.py
+    tests/integration/test_adapter_plugin.py tests/unit/test_adapter_contract.py -q
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-05/attempt-02
+- id: SELF-V-P3-06
+  command: uv run pytest tests/unit/test_conformance_suite.py tests/integration/test_work_inbox_db.py
+    tests/integration/test_mcp_transport.py -q -p no:cacheprovider -k conformant or
+    redeliver or reconnect or duplicate
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-06/attempt-03
+- id: SELF-V-P3-07
+  command: uv run pytest tests/unit/test_conformance_suite.py tests/unit/test_adapter_contract.py
+    tests/integration/test_work_inbox_db.py -q -p no:cacheprovider -k conformant or
+    cancel or contract or normalize or unsupported
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-07/attempt-02
+- id: SELF-V-P3-08
+  command: uv run pytest tests/integration/test_agents_db.py -k register_three or
+    connection_test or heartbeat_offline or suspend_and_revoke -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-08/attempt-01
+- id: SELF-V-P3-09
+  command: uv run pytest tests/integration/test_roles_api.py -k explicit_deny_wins
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-09/attempt-01
+- id: SELF-V-P3-10
+  command: uv run pytest tests/integration/test_routing_db.py -k non_member -q -p
+    no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-10/attempt-01
+- id: SELF-V-P3-11
+  command: uv run pytest tests/integration/test_agents_db.py tests/unit/test_agent_registry.py
+    -k register_three or connection_test or heartbeat_offline or offline_timing -q
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-11/attempt-01
+- id: SELF-V-P3-12
+  command: uv run pytest tests/integration/test_adapter_plugin.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-12/attempt-01
+- id: SELF-V-P3-13
+  command: uv run pytest tests/e2e/test_admin_agents_ui.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-13/attempt-01
+- id: SELF-V-P3-14
+  command: uv run pytest tests/integration/test_verifier_assignment_db.py -k eligibility_excludes
+    or no_eligible -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-14/attempt-01
+- id: SELF-V-P3-15
+  command: uv run pytest tests/integration/test_agent_limits.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-15/attempt-01
+- id: SELF-V-P3-16
+  command: uv run pytest tests/integration/test_roles_api.py -k every_principal_type
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-16/attempt-01
+- id: SELF-V-P3-17
+  command: uv run pytest tests/integration/test_agents_db.py tests/unit/test_agent_registry.py
+    -k register_three or connection_test or heartbeat_offline or suspend_and_revoke
+    or lifecycle_rebuild or fold_lifecycle -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-17/attempt-01
+- id: SELF-V-P3-18
+  command: uv run pytest tests/unit/test_routing.py tests/integration/test_orchestration_db.py
+    -k fan_out_join or join_all or assignment_work_items -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-18/attempt-01
+- id: SELF-V-P3-19
+  command: uv run pytest tests/unit/test_routing.py tests/integration/test_orchestration_db.py
+    -k graph_limits or concurrency_limit or graph_rules -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-19/attempt-01
+- id: SELF-V-P3-20
+  command: uv run pytest tests/integration/test_rerouting_db.py -k offline_before_and_during
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-20/attempt-01
+- id: SELF-V-P3-21
+  command: uv run pytest tests/integration/test_mcp_transport.py tests/unit/test_mcp_poll_guard.py
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-21/attempt-01
+- id: SELF-V-P3-22
+  command: uv run pytest tests/unit/test_webhook_adapter.py tests/integration/test_webhook_delivery.py
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-22/attempt-01
+- id: SELF-V-P3-23
+  command: uv run pytest tests/unit/test_mattermost_bot_adapter.py tests/integration/test_bot_adapter_db.py
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-23/attempt-01
+- id: SELF-V-P3-24
+  command: uv run pytest tests/integration/test_verifier_assignment_db.py -k best_scored
+    or silent_candidate -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-24/attempt-01
+- id: SELF-V-P3-25
+  command: uv run pytest tests/integration/test_rerouting_db.py -k accept_timeout
+    or rejection_codes -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-25/attempt-01
+- id: SELF-V-P3-26
+  command: uv run pytest tests/integration/test_usage_conformance.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-3/SELF-V-P3-26/attempt-01
+known_gaps:
+- Adapter conformance (V-P3-05) runs the three built-in types (mcp, webhook, mattermost_bot)
+  and the plugin type against in-process simulation harnesses (server/agents/conformance/harness*.py)
+  with a virtual clock; no external Agent product is contacted. The webhook harness
+  verifies the server's HMAC signatures like a real endpoint; the bot harness feeds
+  the adapter's message sink.
+- 'mTLS for the MCP transport is terminated at a reverse proxy (Phase 5 deployment):
+  the server verifies the proxy-asserted client-certificate fingerprint header only
+  when AGENT_COLAB_MTLS_HEADER and AGENT_COLAB_MTLS_PROXY_SECRET are configured; a
+  forged header without the proxy secret is rejected (tested).'
+- Webhook signing keys are resolved through the SigningKeyResolver seam (env-backed
+  EnvSigningKeyResolver keyed by credential_ref) until the Phase 4 Secret Broker;
+  only credential references are stored.
+- MCP tools brainstorm_contribute and the management tools (agent_register, principal_role_assign,
+  channel_configure, bridge_configure, secret_grant_create) are Phase 4 / admin-capability
+  work; the corresponding REST endpoints exist for agents, roles, channels and bridges.
+- Periodic sweeps (work-item timeouts → re-routing, verifier offer timeouts, offline
+  detection) run from the API process gateway loop (AGENT_COLAB_MAINTENANCE_INTERVAL_S,
+  default 30 s); a separate worker is a deployment option.
+- Channel deletion and Agent lifecycle history rebuilds re-fold Event streams into
+  authority-table columns rather than the generic projection runner (foreign keys
+  on agents).
+rollback: git checkout 01fd11531535c940880537e793e24252290b815e (merge-base with main);
+  drop test databases
+evidence_refs:
+- evidence/phase-3/SELF-V-P3-01/attempt-01
+- evidence/phase-3/SELF-V-P3-02/attempt-01
+- evidence/phase-3/SELF-V-P3-03/attempt-01
+- evidence/phase-3/SELF-V-P3-04/attempt-01
+- evidence/phase-3/SELF-V-P3-05/attempt-02
+- evidence/phase-3/SELF-V-P3-06/attempt-03
+- evidence/phase-3/SELF-V-P3-07/attempt-02
+- evidence/phase-3/SELF-V-P3-08/attempt-01
+- evidence/phase-3/SELF-V-P3-09/attempt-01
+- evidence/phase-3/SELF-V-P3-10/attempt-01
+- evidence/phase-3/SELF-V-P3-11/attempt-01
+- evidence/phase-3/SELF-V-P3-12/attempt-01
+- evidence/phase-3/SELF-V-P3-13/attempt-01
+- evidence/phase-3/SELF-V-P3-14/attempt-01
+- evidence/phase-3/SELF-V-P3-15/attempt-01
+- evidence/phase-3/SELF-V-P3-16/attempt-01
+- evidence/phase-3/SELF-V-P3-17/attempt-01
+- evidence/phase-3/SELF-V-P3-18/attempt-01
+- evidence/phase-3/SELF-V-P3-19/attempt-01
+- evidence/phase-3/SELF-V-P3-20/attempt-01
+- evidence/phase-3/SELF-V-P3-21/attempt-01
+- evidence/phase-3/SELF-V-P3-22/attempt-01
+- evidence/phase-3/SELF-V-P3-23/attempt-01
+- evidence/phase-3/SELF-V-P3-24/attempt-01
+- evidence/phase-3/SELF-V-P3-25/attempt-01
+- evidence/phase-3/SELF-V-P3-26/attempt-01
+reproduction:
+- git clone git@github.com:zzabisagent-lab/Agent-Colab.git && git checkout <target
+  commit>
+- export PATH=$HOME/.local/bin:$PATH; export AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test
+  (any empty PostgreSQL 16 maintenance DB; the test session creates and drops its
+  own database and runs migrations 0001-0011)
+- make bootstrap && make lint && make test && make check-docs && make build
+- Every V-P3 Test has a SELF evidence attempt under evidence/phase-3/SELF-V-P3-NN/attempt-NN/result.json
+  listing the exact command; the latest attempt of each ID is PASS
+- 'Adapter conformance (all three types + plugin): uv run pytest tests/unit/test_conformance_suite.py
+  tests/unit/test_conformance_push_harnesses.py tests/integration/test_adapter_plugin.py
+  -q; CLI: uv run python -m server.agents.conformance --adapter webhook --endpoint
+  ''{}'''
+- 'Registry/roles/limits: uv run pytest tests/integration/test_agents_db.py tests/integration/test_roles_api.py
+  tests/integration/test_agent_limits.py tests/unit/test_agent_registry.py -q'
+- 'MCP transport (real server on a loopback port): uv run pytest tests/integration/test_mcp_transport.py
+  -q; webhook/bot delivery: tests/integration/test_webhook_delivery.py tests/integration/test_bot_adapter_db.py'
+- 'Routing/orchestration/re-routing/verifier assignment: uv run pytest tests/unit/test_routing.py
+  tests/integration/test_routing_db.py tests/integration/test_orchestration_db.py
+  tests/integration/test_rerouting_db.py tests/integration/test_verifier_assignment_db.py
+  -q'
+- 'Agent Admin UI (V-P3-13): cd web-admin && pnpm install && pnpm run build; PLAYWRIGHT_CHROMIUM_EXECUTABLE=<chromium>
+  uv run pytest tests/e2e/test_admin_agents_ui.py -q'

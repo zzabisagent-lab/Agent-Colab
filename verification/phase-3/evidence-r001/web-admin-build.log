@@ -1,0 +1,38 @@
+✓ Lockfile passes supply-chain policies (verified 2h ago)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +34
+++++++++++++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/master/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 34, reused 34, downloaded 0, added 34, done
+
+dependencies:
++ react 19.2.8
++ react-dom 19.2.8
++ react-router-dom 7.18.3
+
+devDependencies:
++ @playwright/test 1.62.1
++ @types/node 24.13.3
++ @types/react 19.2.18
++ @types/react-dom 19.2.5
++ @vitejs/plugin-react 6.1.1
++ oxlint 1.80.0
++ typescript 6.0.3
++ vite 8.2.2
+
+Done in 992ms using pnpm v11.25.0
+$ tsc -b && vite build
+vite v8.2.2 building client environment for production...
+transforming...
+✓ 31 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.48 kB │ gzip:  0.30 kB
+dist/assets/index-BxacJ5Or.css    0.81 kB │ gzip:  0.44 kB
+dist/assets/index-CnN7jK33.js   246.38 kB │ gzip: 77.44 kB
+
+✓ built in 305ms
+exit_code=0

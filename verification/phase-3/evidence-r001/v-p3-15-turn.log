@@ -1,0 +1,15 @@
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/master/.local/verify/phase-3-r001/.venv/bin/python
+hypothesis profile 'default'
+rootdir: /home/master/.local/verify/phase-3-r001
+configfile: pyproject.toml
+plugins: asyncio-1.4.0, cov-7.1.0, anyio-4.14.2, hypothesis-6.167.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+verification/phase-3/evidence-r001/test_v_p3_15_turn_limit.py::test_turn_limit_rejects_and_audits_without_event_side_effect PASSED [100%]
+
+- generated xml file: /home/master/.local/verify/phase-3-r001/verification/phase-3/evidence-r001/v-p3-15-turn.xml -
+============================== 1 passed in 1.74s ===============================
+exit_code=0
