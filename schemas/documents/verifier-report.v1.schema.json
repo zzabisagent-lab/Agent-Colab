@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/documents/verifier-report.v1.schema.json",
+  "title": "Verifier Report (validation plan §6.2)",
+  "type": "object",
+  "required": [
+    "verification_id", "criteria_version", "implementer_agent_id", "verifier_agent_id",
+    "implementer_account_id", "verifier_account_id", "implementer_credential_fingerprint",
+    "verifier_credential_fingerprint", "identity_graph_version", "effective_policy_hash",
+    "target_commit", "environment_fingerprint", "started_at", "completed_at", "tests", "findings",
+    "result", "residual_risks"
+  ],
+  "properties": {
+    "verification_id": {"type": "string", "pattern": "^VR-P[0-7]-[0-9]{3}$"},
+    "criteria_version": {"type": "string"},
+    "implementer_agent_id": {"type": "string"},
+    "verifier_agent_id": {"type": "string"},
+    "implementer_account_id": {"type": "string"},
+    "verifier_account_id": {"type": "string"},
+    "implementer_credential_fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "verifier_credential_fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "identity_graph_version": {"type": "string"},
+    "effective_policy_hash": {"type": "string"},
+    "target_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "environment_fingerprint": {"type": "string"},
+    "started_at": {"type": "string"},
+    "completed_at": {"type": "string"},
+    "tests": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "result", "evidence_ref"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^V-P[0-7]-[0-9]{2}$"},
+          "result": {"type": "string", "enum": ["PASS", "FAIL", "NOT_RUN", "NOT_APPLICABLE"]},
+          "evidence_ref": {"type": "string"},
+          "note": {"type": "string"}
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "affected", "summary", "reproduction", "expected", "actual", "evidence_ref", "impact", "fix_condition"],
+        "properties": {
+          "id": {"type": "string"},
+          "severity": {"type": "string", "enum": ["Critical", "High", "Medium", "Low"]},
+          "affected": {"type": "array", "items": {"type": "string"}},
+          "summary": {"type": "string"},
+          "reproduction": {"type": "array", "items": {"type": "string"}},
+          "expected": {"type": "string"},
+          "actual": {"type": "string"},
+          "evidence_ref": {"type": "string"},
+          "impact": {"type": "string"},
+          "fix_condition": {"type": "string"},
+          "owner": {"type": "string"},
+          "deadline": {"type": "string"}
+        }
+      }
+    },
+    "result": {"type": "string", "enum": ["PASSED", "FAILED", "BLOCKED", "BLOCKED_INDEPENDENCE"]},
+    "residual_risks": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}

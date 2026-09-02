@@ -51,7 +51,6 @@ def _alias_graph(session: Session, workspace_uuid: uuid.UUID) -> dict[str, str]:
 
 
 def _account_uuid(session: Session, workspace_uuid: uuid.UUID, account_id: str) -> uuid.UUID:
-    from sqlalchemy import column, table
 
     accounts = table("accounts", column("id"), column("account_id"), column("workspace_id"))
     row = session.execute(
