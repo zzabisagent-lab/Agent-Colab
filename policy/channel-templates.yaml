@@ -1,0 +1,61 @@
+# Default channel templates (spec §8.1: work, brainstorm, approval, ops; custom channels use none).
+# Administrators may add, modify, and delete user templates; these four are protected and are
+# applied per channel at import/configure time. Limits use development plan §21.1 defaults.
+version: 1
+templates:
+  work:
+    name: Work channel
+    channel_type: work
+    definition:
+      default_roles: [human_member, agent_worker]
+      task_domain: general
+      risk_policy: {default_risk: LOW, max_risk: HIGH, requires_human_approval: [external_send, destructive]}
+      limits: {agent_turns: 40, delegation_depth: 3, max_fan_out: 5, concurrent_subtasks: 5, rate_per_minute: 60}
+      documentation_template: task-closing-v1
+      documentation_policy: threads
+      retention_days: 365
+      telegram_commands: read_reply_only
+      secret_scope: task
+      artifact_policy: {max_bytes: 104857600, quarantine_on_scan_failure: true}
+  brainstorm:
+    name: Brainstorm channel
+    channel_type: brainstorm
+    definition:
+      default_roles: [human_member, agent_worker]
+      task_domain: general
+      risk_policy: {default_risk: LOW, max_risk: MEDIUM, requires_human_approval: [external_send, destructive]}
+      limits: {agent_turns: 40, turns_per_agent: 5, max_consecutive: 1, total_turns: 40, delegation_depth: 1, rate_per_minute: 60}
+      documentation_template: brainstorm-closing-v1
+      documentation_policy: threads
+      retention_days: 365
+      telegram_commands: read_reply_only
+      secret_scope: none
+      artifact_policy: {max_bytes: 26214400, quarantine_on_scan_failure: true}
+  approval:
+    name: Approval channel
+    channel_type: approval
+    definition:
+      default_roles: [human_member]
+      task_domain: approvals
+      risk_policy: {default_risk: HIGH, max_risk: CRITICAL, requires_human_approval: [external_send, destructive, secret_exposure, production_change]}
+      limits: {agent_turns: 0, delegation_depth: 0, max_fan_out: 0, concurrent_subtasks: 0, rate_per_minute: 30}
+      documentation_template: approval-record-v1
+      documentation_policy: threads
+      retention_days: 730
+      telegram_commands: read_reply_only
+      secret_scope: none
+      artifact_policy: {max_bytes: 10485760, quarantine_on_scan_failure: true}
+  ops:
+    name: Operations channel
+    channel_type: ops
+    definition:
+      default_roles: [operator, administrator]
+      task_domain: operations
+      risk_policy: {default_risk: MEDIUM, max_risk: CRITICAL, requires_human_approval: [destructive, production_change, secret_exposure]}
+      limits: {agent_turns: 20, delegation_depth: 2, max_fan_out: 3, concurrent_subtasks: 3, rate_per_minute: 120}
+      documentation_template: ops-period-v1
+      documentation_policy: full_channel
+      retention_days: 730
+      telegram_commands: read_reply_only
+      secret_scope: ops
+      artifact_policy: {max_bytes: 104857600, quarantine_on_scan_failure: true}
