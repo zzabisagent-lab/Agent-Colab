@@ -409,7 +409,8 @@ def main(argv: list[str] | None = None) -> int:
         for p in drift + stale:
             print(f"FIXTURE DRIFT: {p.relative_to(ROOT)}")
         print(
-            f"gen_event_fixtures: {len(expected)} fixtures, {len(drift)} drifted, {len(stale)} stale"
+            f"gen_event_fixtures: {len(expected)} fixtures, {len(drift)} drifted, "
+            f"{len(stale)} stale"
         )
         return 1 if (drift or stale) else 0
     for p, c in expected.items():

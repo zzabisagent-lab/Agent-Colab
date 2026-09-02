@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/policy/capabilities.v1.schema.json",
+  "title": "Agent-Colab capability catalog v1",
+  "type": "object",
+  "properties": {
+    "version": {"const": 1},
+    "capabilities": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {"pattern": "^cap-[a-z-]+$"},
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "tool": {"type": "string", "pattern": "^[a-z_]+$"},
+          "domain": {"type": "string", "pattern": "^[a-z_]+$"},
+          "resource": {"type": "string", "pattern": "^[a-z_]+$"},
+          "side_effect": {"type": "boolean"},
+          "permission": {"type": "string", "pattern": "^[a-z]+\\.[a-z_]+$"},
+          "schema": {"type": "string", "pattern": "^schemas/adapters/tools/[a-z_]+\\.v[0-9]+\\.schema\\.json$"},
+          "limits": {"type": "object", "additionalProperties": {"type": ["integer", "boolean"]}},
+          "hidden": {"type": "boolean"}
+        },
+        "required": ["tool", "domain", "resource", "side_effect", "permission", "schema", "limits"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["version", "capabilities"],
+  "additionalProperties": false
+}

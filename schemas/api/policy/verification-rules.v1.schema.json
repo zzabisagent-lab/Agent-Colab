@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/policy/verification-rules.v1.schema.json",
+  "title": "Agent-Colab verification rules v1",
+  "type": "object",
+  "properties": {
+    "version": {"const": 1},
+    "independence": {
+      "type": "object",
+      "properties": {
+        "must_differ": {"type": "array", "minItems": 4, "items": {"enum": ["account_id", "agent_id", "credential_fingerprint", "alias_graph_principal"]}},
+        "verifier_not_commit_author": {"const": true},
+        "verifier_not_implementation_assignee": {"const": true},
+        "verifier_requires_permission": {"const": "verification.submit"},
+        "target_commit_pinned": {"const": true},
+        "criteria_version_pinned": {"const": true},
+        "snapshot_at_creation": {"type": "array", "minItems": 8, "items": {"type": "string"}},
+        "no_different_agent_available": {"const": "BLOCKED_INDEPENDENCE"}
+      },
+      "required": ["must_differ", "verifier_not_commit_author", "verifier_not_implementation_assignee", "verifier_requires_permission", "target_commit_pinned", "criteria_version_pinned", "snapshot_at_creation", "no_different_agent_available"],
+      "additionalProperties": false
+    },
+    "specialist_verifiers": {
+      "type": "object",
+      "properties": {
+        "phase-4": {"type": "array", "items": {"enum": ["security", "operations", "release"]}, "contains": {"const": "security"}},
+        "phase-7": {"type": "array", "items": {"enum": ["security", "operations", "release"]}, "contains": {"const": "release"}},
+        "task_domains": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}}}
+      },
+      "required": ["phase-4", "phase-7"],
+      "additionalProperties": false
+    },
+    "verdicts": {
+      "type": "object",
+      "properties": {
+        "results": {"const": ["PASSED", "FAILED", "BLOCKED", "CANCELLED"]},
+        "corrections": {"const": "revision_only"},
+        "passed_requires": {"type": "object"},
+        "blocked_is_success": {"const": false}
+      },
+      "required": ["results", "corrections", "passed_requires", "blocked_is_success"],
+      "additionalProperties": false
+    },
+    "assignment": {
+      "type": "object",
+      "properties": {
+        "eligible": {"type": "array", "items": {"type": "string"}},
+        "human_required_from_risk": {"const": "HIGH"},
+        "human_required_by_channel_policy": {"const": true},
+        "score": {"type": "object", "properties": {"domain_match": {"const": 2}, "inverse_recent_load": {"const": 1}, "human_preference_when_required": {"const": 1}}, "required": ["domain_match", "inverse_recent_load", "human_preference_when_required"]},
+        "tie_break": {"const": "ascending_account_id"},
+        "accept_timeout_minutes": {"const": 10},
+        "on_timeout": {"type": "string"},
+        "self_verification_error": {"const": "SELF_VERIFICATION_FORBIDDEN"}
+      },
+      "required": ["eligible", "human_required_from_risk", "human_required_by_channel_policy", "score", "tie_break", "accept_timeout_minutes", "on_timeout", "self_verification_error"],
+      "additionalProperties": false
+    },
+    "task_closure": {
+      "type": "object",
+      "properties": {
+        "requires": {"const": ["latest_verification_PASSED", "document_FINALIZED"]},
+        "error_code": {"const": "COMPLETION_PREREQUISITE_MISSING"}
+      },
+      "required": ["requires", "error_code"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["version", "independence", "specialist_verifiers", "verdicts", "assignment", "task_closure"],
+  "additionalProperties": false
+}

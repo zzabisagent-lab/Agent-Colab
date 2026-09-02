@@ -1,0 +1,100 @@
+# Default Roles (spec §4.1, §4.3, §15; development plan §6.9, §7E). Every permission must be in
+# policy/permissions.yaml or a `<group>.*` wildcard over it. Constraints: max_risk caps the
+# action risk the holder may approve/execute; side_effects deny blocks side-effecting actions;
+# requires_human_approval lists permissions that need a Human Approval even when allowed.
+version: 1
+roles:
+  role-system-owner:
+    display_name: System Owner
+    principal_types: [human]
+    permissions: ["task.*", "approval.*", "verification.*", "artifact.*", "document.*",
+                  "secret.*", "schedule.*", "agent.*", "channel.*", "bridge.*", "brainstorm.*",
+                  "events.*", "ops.*", "admin.*", "notification.self", "identity.link"]
+    deny: []
+    constraints: {max_risk: CRITICAL, side_effects: allow, requires_human_approval: []}
+    notes: "break-glass is exclusive to this role; even break-glass cannot read secret plaintext or alter Events"
+  role-administrator:
+    display_name: Administrator
+    principal_types: [human]
+    permissions: [admin.settings, admin.accounts, admin.audit, admin.hard_delete, agent.manage,
+                  channel.manage, bridge.manage, schedule.manage, schedule.run, schedule.read,
+                  secret.register, secret.grant, task.read, task.list, task.cancel, task.reassign,
+                  approval.read, approval.decide, approval.revoke, verification.read,
+                  verification.assign, artifact.read, document.read, document.review,
+                  events.read, ops.read, ops.manage, notification.self, identity.link]
+    deny: [admin.break_glass, secret.lease]
+    constraints: {max_risk: CRITICAL, side_effects: allow, requires_human_approval: []}
+  role-operator:
+    display_name: Operator
+    principal_types: [human]
+    permissions: [ops.read, ops.manage, admin.audit, task.read, task.list, schedule.read,
+                  schedule.run, approval.read, verification.read, artifact.read, document.read,
+                  events.read, notification.self, identity.link]
+    deny: [admin.settings, admin.accounts, admin.break_glass, admin.hard_delete, secret.lease]
+    constraints: {max_risk: HIGH, side_effects: allow, requires_human_approval: []}
+  role-human-member:
+    display_name: Human Member
+    principal_types: [human]
+    permissions: [task.create, task.read, task.list, task.delegate, task.accept, task.progress,
+                  task.submit, task.complete, task.cancel, task.reassign, approval.request,
+                  approval.read, approval.decide, verification.submit, verification.read,
+                  artifact.write, artifact.read, document.draft, document.read, document.review,
+                  brainstorm.open, brainstorm.contribute, brainstorm.facilitate,
+                  brainstorm.summarize, brainstorm.read, schedule.read, events.read,
+                  notification.self, identity.link]
+    deny: []
+    constraints: {max_risk: HIGH, side_effects: allow, requires_human_approval: []}
+  role-agent-worker:
+    display_name: Agent Worker
+    principal_types: [agent]
+    permissions: [task.read, task.list, task.accept, task.progress, task.submit, task.delegate,
+                  approval.request, artifact.write, artifact.read, document.read,
+                  brainstorm.contribute, brainstorm.read, secret.lease, work.poll, usage.report,
+                  agent.self, events.read]
+    deny: [approval.decide, verification.submit, task.complete, "admin.*", "secret.grant",
+           "schedule.manage", "agent.manage", "channel.manage", "bridge.manage"]
+    constraints:
+      max_risk: MEDIUM
+      side_effects: allow
+      requires_human_approval: [document.publish]
+    notes: "HIGH+ actions (external_send, destructive, production_change) always need a Human Approval per risk-rules; Agents never approve"
+  role-agent-verifier:
+    display_name: Agent Verifier
+    principal_types: [agent]
+    permissions: [task.read, task.list, approval.read, verification.submit, verification.read,
+                  artifact.read, document.read, brainstorm.read, work.poll, usage.report,
+                  agent.self, events.read]
+    deny: [task.create, task.delegate, task.accept, task.progress, task.submit, task.complete,
+           task.cancel, task.reassign, artifact.write, "document.draft", "document.finalize",
+           "document.publish", "secret.*", "schedule.*", "admin.*"]
+    constraints: {max_risk: HIGH, side_effects: deny, requires_human_approval: []}
+    notes: "no product write permission; verdicts only (validation plan §19)"
+  role-auditor:
+    display_name: Auditor / Verifier (read-only)
+    principal_types: [human, agent, service]
+    permissions: [task.read, task.list, approval.read, verification.read, verification.submit,
+                  artifact.read, document.read, brainstorm.read, schedule.read, events.read,
+                  admin.audit, ops.read]
+    deny: [task.create, task.delegate, task.accept, task.progress, task.submit, task.complete,
+           task.cancel, task.reassign, artifact.write, "document.draft", "document.finalize",
+           "document.publish", "secret.*", "schedule.manage", "schedule.run", "admin.settings",
+           "admin.accounts", "admin.break_glass", "admin.hard_delete", "agent.manage",
+           "channel.manage", "bridge.manage", "ops.manage", "events.append"]
+    constraints: {max_risk: HIGH, side_effects: deny, requires_human_approval: []}
+  role-scheduler-service:
+    display_name: Scheduler service
+    principal_types: [service]
+    permissions: [schedule.run, schedule.read, task.read, events.append, events.read]
+    deny: [task.create, task.delegate, task.accept, task.progress, task.submit, task.complete,
+           task.cancel, task.reassign, "approval.*", "secret.*", "admin.*"]
+    constraints: {max_risk: LOW, side_effects: deny, requires_human_approval: []}
+    notes: "spec §15 rule 15: never inherits Task action permissions; a Run executes with the intersection of this role and the designated execution principal"
+  role-documentation-agent:
+    display_name: Documentation Agent
+    principal_types: [agent]
+    permissions: [document.read, document.draft, document.narrate, brainstorm.summarize,
+                  brainstorm.read, task.read, artifact.read, verification.read, work.poll,
+                  usage.report, agent.self, events.read]
+    deny: [task.submit, task.complete, "document.finalize", "document.publish", "secret.*",
+           "admin.*"]
+    constraints: {max_risk: LOW, side_effects: deny, requires_human_approval: []}

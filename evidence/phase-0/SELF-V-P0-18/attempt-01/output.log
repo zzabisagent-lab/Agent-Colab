@@ -1,0 +1,1 @@
+policy_lint: permissions=53, minimum_permissions=33, action_classes=7, actions=162, baseline_tools=29, baseline_commands=45, unclassified=0, default_roles=9, fixture_roles=6, capabilities=32, problems=0

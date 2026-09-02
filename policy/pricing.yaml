@@ -1,0 +1,32 @@
+# Agent-Colab pricing table (development plan §7C). Integer cost_units; 1 credit = 1,000,000.
+# Placeholder rates chosen by the implementer for Phase 0/1; the System Owner may revise them in
+# Admin Settings (ADR-0003 residual item RI-001). Every edit creates a new `version` and an audit
+# record; usage_records pin the version used for each computation.
+version: pricing-v1
+cost_units_per_credit: 1000000
+default:              # unknown models -> source=estimated
+  input_per_1k_tokens: 3000
+  output_per_1k_tokens: 15000
+  per_tool_call: 500
+  per_wall_second: 10
+models:
+  generic-small:
+    input_per_1k_tokens: 150
+    output_per_1k_tokens: 600
+    per_tool_call: 100
+    per_wall_second: 5
+  generic-medium:
+    input_per_1k_tokens: 3000
+    output_per_1k_tokens: 15000
+    per_tool_call: 500
+    per_wall_second: 10
+  generic-large:
+    input_per_1k_tokens: 15000
+    output_per_1k_tokens: 75000
+    per_tool_call: 1000
+    per_wall_second: 20
+  tool-only:
+    input_per_1k_tokens: 0
+    output_per_1k_tokens: 0
+    per_tool_call: 250
+    per_wall_second: 2

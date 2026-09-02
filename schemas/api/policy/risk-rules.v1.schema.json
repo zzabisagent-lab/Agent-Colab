@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/policy/risk-rules.v1.schema.json",
+  "title": "Agent-Colab risk rules v1",
+  "$defs": {
+    "risk": {"enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]},
+    "approval": {"enum": ["none", "channel_policy", "human_1", "human_2"]}
+  },
+  "type": "object",
+  "properties": {
+    "version": {"const": 1},
+    "risk_levels": {"const": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]},
+    "unclassified_default": {"const": "HIGH"},
+    "side_effect_conflict": {"const": "higher_risk_wins"},
+    "action_classes": {
+      "type": "object",
+      "propertyNames": {"pattern": "^[a-z_]+$"},
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "risk": {"$ref": "#/$defs/risk"},
+          "approval": {"$ref": "#/$defs/approval"},
+          "examples": {"type": "array", "items": {"type": "string"}}
+        },
+        "required": ["risk", "approval"],
+        "additionalProperties": false
+      },
+      "required": ["read_query", "internal_write", "delegation_routing", "external_send", "destructive", "secret_exposure", "production_change"]
+    },
+    "approval_defaults": {
+      "type": "object",
+      "properties": {
+        "quorum": {
+          "type": "object",
+          "properties": {
+            "LOW": {"type": "integer", "minimum": 0}, "MEDIUM": {"type": "integer", "minimum": 0},
+            "HIGH": {"type": "integer", "minimum": 0}, "CRITICAL": {"type": "integer", "minimum": 0}
+          },
+          "required": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+          "additionalProperties": false
+        },
+        "human_only_from": {"$ref": "#/$defs/risk"},
+        "human_only_when_requires_human_approval": {"const": true},
+        "critical_requires_distinct_humans": {"const": true},
+        "decision_path": {"type": "object", "additionalProperties": {"enum": ["mattermost_button", "web_console_mfa_reauth"]}},
+        "expiry_hours": {"type": "integer", "minimum": 1},
+        "reminder_ratio": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+        "escalation_role": {"type": "string", "pattern": "^role-[a-z-]+$"},
+        "self_approval": {"const": "forbidden"}
+      },
+      "required": ["quorum", "human_only_from", "human_only_when_requires_human_approval", "critical_requires_distinct_humans", "decision_path", "expiry_hours", "reminder_ratio", "escalation_role", "self_approval"],
+      "additionalProperties": false
+    },
+    "actions": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {"pattern": "^(tool:[a-z_]+|command:[a-z]+(\\.[a-z-]+)?|api:[a-z_]+)$"},
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "class": {"type": "string", "pattern": "^[a-z_]+$"},
+          "permission": {"type": "string", "pattern": "^[a-z]+\\.[a-z_]+$"}
+        },
+        "required": ["class", "permission"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["version", "risk_levels", "unclassified_default", "side_effect_conflict", "action_classes", "approval_defaults", "actions"],
+  "additionalProperties": false
+}

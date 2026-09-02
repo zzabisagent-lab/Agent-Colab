@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/policy/permissions.v1.schema.json",
+  "title": "Agent-Colab permission vocabulary v1",
+  "type": "object",
+  "properties": {
+    "version": {"const": 1},
+    "permissions": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {"pattern": "^[a-z]+\\.[a-z_]+$"},
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "description": {"type": "string", "minLength": 1},
+          "phase": {"type": "integer", "minimum": 1, "maximum": 7},
+          "minimum": {"type": "boolean"}
+        },
+        "required": ["description", "phase", "minimum"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["version", "permissions"],
+  "additionalProperties": false
+}

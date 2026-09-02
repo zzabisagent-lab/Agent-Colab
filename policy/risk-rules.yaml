@@ -1,0 +1,196 @@
+# Action class → risk level → default Approval (development plan §6.9, §7E; spec §8.4).
+# Unclassified actions are treated as HIGH at runtime, but `tools/policy_lint.py` requires that
+# every known action (MCP tools §7.4, /colab commands §7A.2, API write actions §7.2) is classified.
+# When a Capability's side_effect conflicts with the action class, the higher risk applies.
+version: 1
+risk_levels: [LOW, MEDIUM, HIGH, CRITICAL]
+unclassified_default: HIGH
+side_effect_conflict: higher_risk_wins
+action_classes:
+  read_query:        {risk: LOW,      approval: none,           examples: [task_get, document_get]}
+  internal_write:    {risk: LOW,      approval: none,           examples: [task_progress, artifact_register]}
+  delegation_routing: {risk: MEDIUM,  approval: channel_policy, examples: [task_delegate, reassign, subtask]}
+  external_send:     {risk: HIGH,     approval: human_1,        examples: [external API call, mail, delivery outside the Bridge]}
+  destructive:       {risk: HIGH,     approval: human_1,        examples: [delete, overwrite, revoke, hard-delete request]}
+  secret_exposure:   {risk: CRITICAL, approval: human_2,        examples: [llm_exposure, secret grant scope expansion]}
+  production_change: {risk: HIGH,     approval: human_1,        examples: [settings apply, policy rollback, schedule enable]}
+approval_defaults:
+  quorum: {LOW: 0, MEDIUM: 1, HIGH: 1, CRITICAL: 2}
+  human_only_from: HIGH             # HIGH and above are approved by Humans only
+  human_only_when_requires_human_approval: true
+  critical_requires_distinct_humans: true
+  decision_path: {LOW: mattermost_button, MEDIUM: mattermost_button, HIGH: web_console_mfa_reauth, CRITICAL: web_console_mfa_reauth}
+  expiry_hours: 24
+  reminder_ratio: 0.5
+  escalation_role: role-administrator
+  self_approval: forbidden          # SELF_APPROVAL_FORBIDDEN, audited
+# Full action list. Keys: `tool:<mcp tool>` (§7.4), `command:<resource>.<verb>` (§7A.2),
+# `api:<write action>` (§7.2). `permission` is the vocabulary entry the Policy Engine checks.
+actions:
+  # --- MCP core tools (§7.4)
+  tool:task_create:                 {class: internal_write,     permission: task.create}
+  tool:task_get:                    {class: read_query,         permission: task.read}
+  tool:task_delegate:               {class: delegation_routing, permission: task.delegate}
+  tool:task_accept:                 {class: internal_write,     permission: task.accept}
+  tool:task_progress:               {class: internal_write,     permission: task.progress}
+  tool:implementation_submit:       {class: internal_write,     permission: task.submit}
+  tool:approval_request:            {class: internal_write,     permission: approval.request}
+  tool:artifact_register:           {class: internal_write,     permission: artifact.write}
+  tool:verification_submit:         {class: internal_write,     permission: verification.submit}
+  tool:verification_evidence_submit: {class: internal_write,    permission: verification.submit}
+  tool:document_get:                {class: read_query,         permission: document.read}
+  tool:work_poll:                   {class: read_query,         permission: work.poll}
+  tool:work_ack:                    {class: internal_write,     permission: work.poll}
+  tool:work_result:                 {class: internal_write,     permission: work.poll}
+  tool:brainstorm_contribute:       {class: internal_write,     permission: brainstorm.contribute}
+  tool:usage_report:                {class: internal_write,     permission: usage.report}
+  # --- MCP management tools (hidden by default, §7.4)
+  tool:agent_register:              {class: production_change,  permission: agent.manage}
+  tool:principal_role_assign:       {class: production_change,  permission: admin.accounts}
+  tool:channel_configure:           {class: production_change,  permission: channel.manage}
+  tool:bridge_configure:            {class: production_change,  permission: bridge.manage}
+  tool:secret_grant_create:         {class: production_change,  permission: secret.grant}
+  # --- MCP schedule tools (§7.4)
+  tool:schedule_create:             {class: internal_write,     permission: schedule.manage}
+  tool:schedule_preview:            {class: read_query,         permission: schedule.read}
+  tool:schedule_get:                {class: read_query,         permission: schedule.read}
+  tool:schedule_pause:              {class: production_change,  permission: schedule.manage}
+  tool:schedule_resume:             {class: production_change,  permission: schedule.manage}
+  tool:schedule_disable:            {class: production_change,  permission: schedule.manage}
+  tool:schedule_run_now:            {class: delegation_routing, permission: schedule.run}
+  tool:schedule_run_cancel:         {class: delegation_routing, permission: schedule.run}
+  # --- /colab commands (§7A.2)
+  command:task.create:              {class: internal_write,     permission: task.create}
+  command:task.delegate:            {class: delegation_routing, permission: task.delegate}
+  command:task.accept:              {class: internal_write,     permission: task.accept}
+  command:task.reject:              {class: internal_write,     permission: task.accept}
+  command:task.progress:            {class: internal_write,     permission: task.progress}
+  command:task.submit:              {class: internal_write,     permission: task.submit}
+  command:task.complete:            {class: internal_write,     permission: task.complete}
+  command:task.cancel:              {class: delegation_routing, permission: task.cancel}
+  command:task.reassign:            {class: delegation_routing, permission: task.reassign}
+  command:task.show:                {class: read_query,         permission: task.read}
+  command:task.list:                {class: read_query,         permission: task.list}
+  command:approve.request:          {class: internal_write,     permission: approval.request}
+  command:approve.grant:            {class: internal_write,     permission: approval.decide}
+  command:approve.reject:           {class: internal_write,     permission: approval.decide}
+  command:approve.show:             {class: read_query,         permission: approval.read}
+  command:approve.list:             {class: read_query,         permission: approval.read}
+  command:verify.assign:            {class: internal_write,     permission: verification.assign}
+  command:verify.pass:              {class: internal_write,     permission: verification.submit}
+  command:verify.fail:              {class: internal_write,     permission: verification.submit}
+  command:verify.block:             {class: internal_write,     permission: verification.submit}
+  command:verify.show:              {class: read_query,         permission: verification.read}
+  command:brainstorm.start:         {class: internal_write,     permission: brainstorm.open}
+  command:brainstorm.contribute:    {class: internal_write,     permission: brainstorm.contribute}
+  command:brainstorm.summarize:     {class: internal_write,     permission: brainstorm.summarize}
+  command:brainstorm.decide:        {class: internal_write,     permission: brainstorm.facilitate}
+  command:brainstorm.taskify:       {class: internal_write,     permission: brainstorm.facilitate}
+  command:brainstorm.pause:         {class: internal_write,     permission: brainstorm.facilitate}
+  command:brainstorm.resume:        {class: internal_write,     permission: brainstorm.facilitate}
+  command:brainstorm.close:         {class: internal_write,     permission: brainstorm.facilitate}
+  command:brainstorm.show:          {class: read_query,         permission: brainstorm.read}
+  command:doc.show:                 {class: read_query,         permission: document.read}
+  command:doc.review:               {class: internal_write,     permission: document.review}
+  command:doc.publish:              {class: external_send,      permission: document.publish}
+  command:schedule.show:            {class: read_query,         permission: schedule.read}
+  command:schedule.list:            {class: read_query,         permission: schedule.read}
+  command:schedule.run-now:         {class: delegation_routing, permission: schedule.run}
+  command:schedule.pause:           {class: production_change,  permission: schedule.manage}
+  command:schedule.resume:          {class: production_change,  permission: schedule.manage}
+  command:schedule.cancel-run:      {class: delegation_routing, permission: schedule.run}
+  command:link.start:               {class: internal_write,     permission: identity.link}
+  command:link.confirm:             {class: internal_write,     permission: identity.link}
+  command:notify.mute:              {class: internal_write,     permission: notification.self}
+  command:notify.unmute:            {class: internal_write,     permission: notification.self}
+  command:notify.digest:            {class: internal_write,     permission: notification.self}
+  command:help:                     {class: read_query,         permission: identity.link}
+  # --- REST/Admin write actions (§7.2)
+  api:setup_bootstrap:              {class: production_change,  permission: admin.settings}
+  api:setup_reconfigure:            {class: production_change,  permission: admin.settings}
+  api:settings_apply:               {class: production_change,  permission: admin.settings}
+  api:policy_apply:                 {class: production_change,  permission: admin.settings}
+  api:policy_rollback:              {class: production_change,  permission: admin.settings}
+  api:account_create:               {class: production_change,  permission: admin.accounts}
+  api:account_suspend:              {class: destructive,        permission: admin.accounts}
+  api:account_delete_request:       {class: destructive,        permission: admin.accounts}
+  api:role_create:                  {class: production_change,  permission: admin.accounts}
+  api:role_update:                  {class: production_change,  permission: admin.accounts}
+  api:role_assign:                  {class: production_change,  permission: admin.accounts}
+  api:role_revoke:                  {class: destructive,        permission: admin.accounts}
+  api:credential_rotate:            {class: production_change,  permission: admin.accounts}
+  api:credential_revoke:            {class: destructive,        permission: admin.accounts}
+  api:agent_register:               {class: production_change,  permission: agent.manage}
+  api:agent_update:                 {class: production_change,  permission: agent.manage}
+  api:agent_activate:               {class: production_change,  permission: agent.manage}
+  api:agent_suspend:                {class: destructive,        permission: agent.manage}
+  api:agent_revoke:                 {class: destructive,        permission: agent.manage}
+  api:agent_test:                   {class: read_query,         permission: agent.manage}
+  api:agent_heartbeat:              {class: internal_write,     permission: agent.self}
+  api:external_link_approve:        {class: production_change,  permission: admin.accounts}
+  api:external_link_suspend:        {class: destructive,        permission: admin.accounts}
+  api:external_link_revoke:         {class: destructive,        permission: admin.accounts}
+  api:channel_configure:            {class: production_change,  permission: channel.manage}
+  api:channel_archive:              {class: destructive,        permission: channel.manage}
+  api:channel_delete:               {class: destructive,        permission: channel.manage}
+  api:bridge_configure:             {class: production_change,  permission: bridge.manage}
+  api:bridge_enable:                {class: production_change,  permission: bridge.manage}
+  api:bridge_disable:               {class: production_change,  permission: bridge.manage}
+  api:bridge_test:                  {class: internal_write,     permission: bridge.manage}
+  api:bridge_duplicate_target_exception: {class: production_change, permission: bridge.manage}
+  api:task_create:                  {class: internal_write,     permission: task.create}
+  api:subtask_create:               {class: delegation_routing, permission: task.delegate}
+  api:task_delegate:                {class: delegation_routing, permission: task.delegate}
+  api:task_reassign:                {class: delegation_routing, permission: task.reassign}
+  api:task_progress:                {class: internal_write,     permission: task.progress}
+  api:task_submit:                  {class: internal_write,     permission: task.submit}
+  api:task_complete:                {class: internal_write,     permission: task.complete}
+  api:task_cancel:                  {class: delegation_routing, permission: task.cancel}
+  api:events_append:                {class: internal_write,     permission: events.append}
+  api:approval_request:             {class: internal_write,     permission: approval.request}
+  api:approval_decide:              {class: internal_write,     permission: approval.decide}
+  api:approval_cancel:              {class: internal_write,     permission: approval.revoke}
+  api:approval_revoke:              {class: destructive,        permission: approval.revoke}
+  api:artifact_register:            {class: internal_write,     permission: artifact.write}
+  api:artifact_verify:              {class: internal_write,     permission: artifact.write}
+  api:artifact_archive:             {class: destructive,        permission: artifact.write}
+  api:brainstorm_start:             {class: internal_write,     permission: brainstorm.open}
+  api:brainstorm_close:             {class: internal_write,     permission: brainstorm.facilitate}
+  api:secret_register:              {class: production_change,  permission: secret.register}
+  api:secret_grant:                 {class: production_change,  permission: secret.grant}
+  api:secret_grant_scope_expand:    {class: secret_exposure,    permission: secret.grant}
+  api:secret_lease:                 {class: internal_write,     permission: secret.lease}
+  api:secret_revoke:                {class: destructive,        permission: secret.grant}
+  api:secret_rotate:                {class: production_change,  permission: secret.register}
+  api:llm_exposure:                 {class: secret_exposure,    permission: secret.lease}
+  api:document_draft:               {class: internal_write,     permission: document.draft}
+  api:document_attempt_finalize:    {class: internal_write,     permission: document.finalize}
+  api:document_finalize:            {class: internal_write,     permission: document.finalize}
+  api:document_review:              {class: internal_write,     permission: document.review}
+  api:document_publish:             {class: external_send,      permission: document.publish}
+  api:verification_assign:          {class: internal_write,     permission: verification.assign}
+  api:verification_submit:          {class: internal_write,     permission: verification.submit}
+  api:verification_recheck:         {class: internal_write,     permission: verification.assign}
+  api:schedule_create:              {class: internal_write,     permission: schedule.manage}
+  api:schedule_update:              {class: production_change,  permission: schedule.manage}
+  api:schedule_enable:              {class: production_change,  permission: schedule.manage}
+  api:schedule_pause:               {class: production_change,  permission: schedule.manage}
+  api:schedule_resume:              {class: production_change,  permission: schedule.manage}
+  api:schedule_disable:             {class: production_change,  permission: schedule.manage}
+  api:schedule_run_now:             {class: delegation_routing, permission: schedule.run}
+  api:schedule_run_cancel:          {class: delegation_routing, permission: schedule.run}
+  api:schedule_run_retry:           {class: delegation_routing, permission: schedule.run}
+  api:external_api_call:            {class: external_send,      permission: task.progress}
+  api:mail_send:                    {class: external_send,      permission: task.progress}
+  api:backup_run:                   {class: internal_write,     permission: ops.manage}
+  api:restore_rehearsal:            {class: production_change,  permission: ops.manage}
+  api:maintenance_enter:            {class: production_change,  permission: ops.manage}
+  api:maintenance_exit:             {class: production_change,  permission: ops.manage}
+  api:projection_rebuild:           {class: production_change,  permission: ops.manage}
+  api:audit_export:                 {class: read_query,         permission: admin.audit}
+  api:break_glass_start:            {class: production_change,  permission: admin.break_glass}
+  api:hard_delete_request:          {class: destructive,        permission: admin.hard_delete}
+  api:hard_delete_approve:          {class: destructive,        permission: admin.hard_delete}
+  api:hard_delete_execute:          {class: destructive,        permission: admin.hard_delete}
+  api:notification_rule_update:     {class: production_change,  permission: admin.settings}
+  api:message_retention_change:     {class: production_change,  permission: channel.manage}

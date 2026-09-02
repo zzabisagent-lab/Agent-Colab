@@ -1,0 +1,59 @@
+# Agent-Colab permission vocabulary (development plan §6.9). A Role may only hold permissions
+# listed here (or `<group>.*` wildcards over a listed group); schema validation plus
+# `python -m tools.policy_lint` reject anything else. Precedence: explicit deny > scope > allow.
+# `minimum: true` marks the §6.9 minimum set; `phase` is the phase that first enforces it.
+version: 1
+permissions:
+  task.create:            {description: "create a root Task with acceptance criteria", phase: 1, minimum: true}
+  task.read:              {description: "read a Task, its graph, criteria and progress", phase: 1, minimum: true}
+  task.list:              {description: "list Tasks in a channel/workspace scope", phase: 1, minimum: false}
+  task.delegate:          {description: "delegate/create sub-Tasks within own Task scope", phase: 1, minimum: true}
+  task.accept:            {description: "accept or reject an assigned work item", phase: 1, minimum: true}
+  task.progress:          {description: "report progress on an accepted Task", phase: 1, minimum: true}
+  task.submit:            {description: "submit implementation with per-criterion evidence", phase: 1, minimum: true}
+  task.complete:          {description: "complete a VERIFIED Task with a FINALIZED Document", phase: 1, minimum: true}
+  task.cancel:            {description: "cancel a Task before or during execution", phase: 1, minimum: true}
+  task.reassign:          {description: "reassign a Task to another eligible assignee", phase: 1, minimum: false}
+  approval.request:       {description: "request an Approval for a subject/action", phase: 1, minimum: true}
+  approval.read:          {description: "read/list Approvals and consumption history", phase: 1, minimum: false}
+  approval.decide:        {description: "grant or reject an Approval (eligibility per §7E)", phase: 1, minimum: true}
+  approval.revoke:        {description: "revoke or cancel a pending/approved Approval", phase: 1, minimum: true}
+  verification.assign:    {description: "assign a Verifier to a VerificationRun", phase: 1, minimum: true}
+  verification.submit:    {description: "submit evidence and a PASSED/FAILED/BLOCKED verdict", phase: 1, minimum: true}
+  verification.read:      {description: "read VerificationRuns, evidence and findings", phase: 1, minimum: false}
+  artifact.write:         {description: "register/upload Artifacts and link them to subjects", phase: 1, minimum: true}
+  artifact.read:          {description: "read Artifact metadata and content within ACL", phase: 1, minimum: true}
+  document.draft:         {description: "generate/refresh a DRAFT_PRE_VERIFICATION document", phase: 1, minimum: true}
+  document.finalize:      {description: "finalize a document after a PASSED verification", phase: 1, minimum: true}
+  document.publish:       {description: "publish a FINALIZED document through a Publisher", phase: 6, minimum: true}
+  document.read:          {description: "read documents and versions", phase: 1, minimum: false}
+  document.review:        {description: "record a factual/redaction review of a document", phase: 6, minimum: false}
+  document.narrate:       {description: "write the optional narrative layer (§10.4 layer 2)", phase: 6, minimum: false}
+  secret.register:        {description: "register secret metadata in the Secret Store", phase: 4, minimum: false}
+  secret.grant:           {description: "create/revoke Secret Grants for Agents", phase: 4, minimum: true}
+  secret.lease:           {description: "obtain a short-lived lease for a granted secret", phase: 4, minimum: true}
+  schedule.manage:        {description: "create/update/enable/pause/resume/disable Schedules", phase: 5, minimum: true}
+  schedule.run:           {description: "Run now, cancel or retry individual Runs", phase: 5, minimum: true}
+  schedule.read:          {description: "read Schedules, previews and Run history", phase: 5, minimum: false}
+  agent.manage:           {description: "register/update/activate/suspend/revoke Agents", phase: 3, minimum: true}
+  agent.self:             {description: "an Agent's own probe/heartbeat/usage reporting", phase: 3, minimum: false}
+  channel.manage:         {description: "configure channels, members, templates, retention", phase: 2, minimum: true}
+  bridge.manage:          {description: "create/test/enable/disable Telegram Bridges", phase: 2, minimum: true}
+  brainstorm.open:        {description: "start a Brainstorm session", phase: 6, minimum: true}
+  brainstorm.contribute:  {description: "contribute IDEA/CHALLENGE/QUESTION/GUIDANCE", phase: 6, minimum: true}
+  brainstorm.facilitate:  {description: "pause/resume/decide/taskify/close as facilitator", phase: 6, minimum: true}
+  brainstorm.summarize:   {description: "produce the SUMMARY draft", phase: 6, minimum: true}
+  brainstorm.read:        {description: "read Brainstorm sessions and transcripts", phase: 6, minimum: false}
+  work.poll:              {description: "poll/ack/return results on the own work inbox", phase: 1, minimum: false}
+  usage.report:           {description: "report usage (§7C) for own work items", phase: 1, minimum: false}
+  notification.self:      {description: "mute/unmute/digest own notifications", phase: 1, minimum: false}
+  identity.link:          {description: "start/confirm the external identity link challenge", phase: 1, minimum: false}
+  events.read:            {description: "query Events and subscribe to SSE within scope", phase: 1, minimum: false}
+  events.append:          {description: "low-level Event append (designated services only)", phase: 1, minimum: false}
+  ops.read:               {description: "read health, metrics, jobs, backup status", phase: 4, minimum: false}
+  ops.manage:             {description: "backup/restore rehearsal/maintenance mode/projection rebuild", phase: 4, minimum: false}
+  admin.settings:         {description: "view/change settings and policy versions", phase: 4, minimum: true}
+  admin.accounts:         {description: "create/invite/modify/suspend Accounts and assign Roles", phase: 4, minimum: true}
+  admin.audit:            {description: "search/export audit records", phase: 4, minimum: false}
+  admin.break_glass:      {description: "activate the System Owner break-glass procedure", phase: 4, minimum: true}
+  admin.hard_delete:      {description: "request/approve/execute the hard-delete workflow", phase: 4, minimum: true}
