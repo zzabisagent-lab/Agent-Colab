@@ -27,7 +27,7 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 19.5 / 20.5 (P0-13 blocked)
 
 ### Latest verification result
 
-None yet.
+VR-P0-001 requested (Codex, revision 1) on the commit containing evidence/phase-0/manifest.yaml. Known NOT_RUN: V-P0-04 (no container runtime), V-P0-19 (no Telegram bot).
 
 ### Open findings / blockers
 
