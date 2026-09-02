@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/approval/approval-decision.v1.schema.json",
+  "title": "DecideApproval command v1",
+  "type": "object",
+  "required": ["approval_id", "decision"],
+  "properties": {
+    "approval_id": {"type": "string", "pattern": "^apr-[0-9a-f]{16}$"},
+    "decision": {"type": "string", "enum": ["APPROVE", "REJECT"]},
+    "reason_code": {"type": "string", "default": "REJECTED_BY_APPROVER"}
+  },
+  "additionalProperties": false,
+  "x-errors": ["SELF_APPROVAL_FORBIDDEN", "APPROVER_NOT_ELIGIBLE", "APPROVER_ROLE_RISK_TOO_LOW", "APPROVER_NOT_CHANNEL_MEMBER", "HUMAN_APPROVER_REQUIRED", "APPROVER_DUPLICATE", "REAUTH_REQUIRED", "APPROVAL_NOT_PENDING", "APPROVAL_NOT_USABLE"]
+}

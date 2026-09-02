@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P1-32",
+  "evidence_id": "SELF-V-P1-32",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_approval_core.py",
+    "tests/unit/test_approval_rules.py",
+    "-q",
+    "-k",
+    "eligibility or quorum or transition"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "f1f9594e197c1715bac467789c71e27b6118915d",
+  "started_at": "2026-09-02T14:49:55.305082+00:00",
+  "finished_at": "2026-09-02T14:49:57.484451+00:00",
+  "output_sha256": "32faef56d0289369b1ac111e68ee0bb7b2ed1bcf92d3f33b75313bd0556c3e6f"
+}
