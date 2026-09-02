@@ -1,0 +1,37 @@
+# secrets and local-only configuration (never committed)
+.env
+.env.*
+!.env.example
+.claude/
+.mcp.json
+
+# loose working copies of the baseline documents (canonical copies live in docs/baseline/)
+/agent-colab-*.md
+/claude-code-build-prompt*.md
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+htmlcov/
+.coverage
+coverage.xml
+
+# node
+node_modules/
+web-admin/dist/
+web-admin/test-results/
+web-admin/playwright-report/
+
+# runtime / evidence scratch (evidence is committed only under evidence/ and verification/)
+.local/
+var/
+*.log
+!evidence/**/*.log
+!verification/**/*.log
