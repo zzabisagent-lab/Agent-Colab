@@ -1,8 +1,19 @@
 import { type FormEvent, useCallback, useEffect, useState } from 'react'
 import { ApiError, get, post } from '../../api/client'
 
-interface RoleView { role_id: string; display_name: string; version: number; permissions: string[]; deny: string[] }
-interface Effective { account_id: string; allow: string[]; deny: string[]; roles: string[] }
+interface RoleVersion { version: number; permissions: string[]; deny: string[] }
+interface RoleView { role_id: string; display_name: string; current_version: number; status: string; versions?: RoleVersion[] }
+interface EffectiveRole { role_id: string; version: number; permissions: string[]; deny: string[] }
+interface Effective {
+  account_id: string
+  roles: EffectiveRole[]
+  effective_permissions?: string[]
+  effective_deny?: string[]
+  allow?: string[]
+  deny?: string[]
+}
+const latest = (r: RoleView): RoleVersion | undefined =>
+  (r.versions ?? []).find((v) => v.version === r.current_version) ?? (r.versions ?? []).at(-1)
 const base = '/api/v1/roles'
 
 export function RolesPage() {
@@ -78,7 +89,7 @@ export function RolesPage() {
         <h2 id="assign-role">Assign a Role</h2>
         <label htmlFor="assign-account">Account id</label>
         <input id="assign-account" value={assignAccount} onChange={(e) => setAssignAccount(e.target.value)} required />
-        <label htmlFor="assign-role-id">Role id</label>
+        <label htmlFor="assign-role-id">Role id to assign</label>
         <input id="assign-role-id" value={assignRole} onChange={(e) => setAssignRole(e.target.value)} required />
         <button type="submit">Assign</button>
         <button type="button" onClick={() => void showEffective(assignAccount)}>Preview effective permissions</button>
@@ -86,9 +97,9 @@ export function RolesPage() {
       {preview && (
         <section aria-label="Effective permissions">
           <h2>Effective permissions of <code>{preview.account_id}</code></h2>
-          <p>Roles: {preview.roles.join(', ') || '—'}</p>
-          <p>Allow: {preview.allow.join(', ') || '—'}</p>
-          <p>Deny: {preview.deny.join(', ') || '—'}</p>
+          <p>Roles: {(preview.roles ?? []).map((r) => `${r.role_id}@${r.version}`).join(', ') || '—'}</p>
+          <p>Allow: {(preview.effective_permissions ?? preview.allow ?? (preview.roles ?? []).flatMap((r) => r.permissions)).join(', ') || '—'}</p>
+          <p>Deny: {(preview.effective_deny ?? preview.deny ?? (preview.roles ?? []).flatMap((r) => r.deny)).join(', ') || '—'}</p>
         </section>
       )}
       <table>
@@ -97,8 +108,8 @@ export function RolesPage() {
         <tbody>
           {roles.map((r) => (
             <tr key={r.role_id}>
-              <td><code>{r.role_id}</code></td><td>{r.display_name}</td><td>{r.version}</td>
-              <td>{r.permissions.join(', ')}</td><td>{r.deny.join(', ') || '—'}</td>
+              <td><code>{r.role_id}</code></td><td>{r.display_name}</td><td>{r.current_version}</td>
+              <td>{(latest(r)?.permissions ?? []).join(', ')}</td><td>{(latest(r)?.deny ?? []).join(', ') || '—'}</td>
             </tr>
           ))}
         </tbody>

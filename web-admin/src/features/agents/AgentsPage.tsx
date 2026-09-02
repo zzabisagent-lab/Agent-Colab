@@ -119,10 +119,10 @@ export function AgentsPage() {
               <td>{a.status}</td><td>{a.online ? 'online' : 'offline'}</td>
               <td>{a.limits?.concurrent_tasks ?? '—'} tasks · {a.limits?.requests_per_minute ?? '—'}/min</td>
               <td>
-                <button onClick={() => void run(() => post(`${base}/${a.agent_id}/test-connection`), 'AGENT_CONNECTION_OK')}>Test connection</button>
-                <button onClick={() => void run(() => post(`${base}/${a.agent_id}/activate`), 'AGENT_ACTIVATED')}>Activate</button>
-                <button onClick={() => void run(() => post(`${base}/${a.agent_id}/suspend`), 'AGENT_SUSPENDED')}>Suspend</button>
-                <button onClick={() => void run(() => post(`${base}/${a.agent_id}/revoke`), 'AGENT_REVOKED')}>Revoke</button>
+                <button onClick={() => void run(() => post(`${base}/${a.agent_id}/test-connection`, {}), 'AGENT_CONNECTION_OK')}>Test connection</button>
+                <button onClick={() => void run(() => post(`${base}/${a.agent_id}/activate`, {}), 'AGENT_ACTIVATED')}>Activate</button>
+                <button onClick={() => void run(() => post(`${base}/${a.agent_id}/suspend`, {}), 'AGENT_SUSPENDED')}>Suspend</button>
+                <button onClick={() => void run(() => post(`${base}/${a.agent_id}/revoke`, {}), 'AGENT_REVOKED')}>Revoke</button>
                 <button onClick={() => editLimits(a)}>Edit limits</button>
               </td>
             </tr>

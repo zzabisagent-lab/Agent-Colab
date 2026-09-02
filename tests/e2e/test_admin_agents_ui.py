@@ -35,6 +35,7 @@ ADMIN, MEMBER = uuid.uuid4(), uuid.uuid4()
 TOK_ADMIN, TOK_MEMBER = "svc-ui-agents-admin-0001", "svc-ui-agents-member-0001"
 ADMIN_PERMS = [
     "agent.manage",
+    "admin.accounts",
     "role.manage",
     "admin.settings",
     "task.read",
@@ -156,6 +157,7 @@ def test_agent_admin_console_paths(server: str, engine: Engine) -> None:
     for action in ("suspend", "revoke"):
         r = httpx.post(
             f"{server}/api/v1/agents/agent-api-1/{action}",
+            json={},
             headers={**h, "Idempotency-Key": f"ui-api-{action}"},
         )
         assert r.status_code == 200, r.text
