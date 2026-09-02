@@ -1,0 +1,45 @@
+Independent review notes for VR-P0-002
+
+Target commit: 9f7f1270db54b9bae3ed375a1861fc16652fb92b
+
+V-P0-09 classification:
+- gitleaks reported three candidates. Manual contextual review classified all three as fixture
+  false positives: one deterministic idempotency key and two documented test hash values.
+- Independent inspection of evidence/phase-0/spikes/mattermost/slash-command-delivery.json found
+  that live-issued callback material remains in the committed artifact. The values are not copied
+  here. The artifact's own documentation says every token value was replaced by <redacted>, which
+  is inconsistent with the raw artifact.
+
+V-P0-16 review:
+- Mattermost 11.10.1 was started locally, returned system ping status OK, and was stopped.
+- The committed spike artifacts and contract were inspected. One artifact bearing a .json suffix
+  uses Python-literal syntax rather than JSON; the other relevant artifacts parsed and supported
+  the contract conclusions. The secret-safe evidence defect is judged under V-P0-09.
+
+V-P0-17 review:
+- A fresh MCP server/client run proved unacknowledged redelivery across a new session with delivery
+  counts 1 then 2, and idempotent result intake.
+- The empty-inbox long poll returned after 30.083 seconds. The mandatory criterion says the
+  response must be within 30 seconds, so this is a criteria violation even though the client test
+  allows 0.5 seconds of overhead.
+
+Package spot-recheck coverage:
+- P0-01: V-P0-03 clean clone.
+- P0-02: V-P0-01/02/10/14/15/20 linters.
+- P0-03: V-P0-05/06/13 fixtures.
+- P0-04: static Compose tests passed; runtime V-P0-04 NOT_RUN (Docker absent).
+- P0-05 and P0-09: V-P0-12 fixtures.
+- P0-06: V-P0-08 lint and V-P0-09 scan/manual review.
+- P0-07: V-P0-07 DB/API negative suite.
+- P0-08: V-P0-11 fixtures.
+- P0-10: V-P0-16 contract fixtures and local Mattermost health rerun.
+- P0-11: V-P0-17 fixtures and fresh MCP spike.
+- P0-12: V-P0-18 lint/fixtures.
+- P0-14: V-P0-20 lint.
+- P0-13 is BLOCKED, not IMPLEMENTED, so section 7.4 does not require an implemented-package spot
+  recheck; V-P0-19 is nevertheless mandatory and is NOT_RUN because Telegram inputs are absent.
+
+Implementer manifest review:
+- evidence/phase-0/manifest.yaml identifies commit
+  217491bbd1121eec42a370ed19c22d02a1fef54e, not the target commit. It is treated only as a stale
+  self-report and was not used to award any PASS.
