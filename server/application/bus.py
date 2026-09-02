@@ -47,7 +47,7 @@ class AuthorizerLike(Protocol):
     def require(
         self,
         session: Session,
-        principal_account_uuid: str,
+        principal_account_id: str,
         permission: str,
         *,
         action: str | None = None,
