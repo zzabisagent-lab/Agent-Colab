@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P3-09",
+  "evidence_id": "SELF-V-P3-09",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_roles_api.py",
+    "-k",
+    "explicit_deny_wins",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "e19cf67893424d0e9ca974fb75ab33564ecd7c6e",
+  "started_at": "2026-09-02T17:30:51.106955+00:00",
+  "finished_at": "2026-09-02T17:30:53.933658+00:00",
+  "output_sha256": "423b1d0e014eb1eab96f4420f7b344c2615be505dd574b756ac884826ca74f2d"
+}

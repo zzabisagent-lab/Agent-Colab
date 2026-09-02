@@ -164,12 +164,12 @@ def register_adapter_type(name: str, factory: AdapterFactory, *, replace: bool =
 
 
 def adapter_types() -> tuple[str, ...]:
-    _load_plugins()
+    load_plugins()
     return tuple(sorted(_TYPES))
 
 
 def adapter_for(adapter_type: str, endpoint: Mapping[str, Any]) -> Adapter:
-    _load_plugins()
+    load_plugins()
     try:
         factory = _TYPES[adapter_type]
     except KeyError as exc:
@@ -180,7 +180,7 @@ def adapter_for(adapter_type: str, endpoint: Mapping[str, Any]) -> Adapter:
 _PLUGINS_LOADED = False
 
 
-def _load_plugins() -> None:
+def load_plugins() -> None:
     """Load ``module:attribute`` plugin registrars from AGENT_COLAB_ADAPTER_PLUGINS once."""
     global _PLUGINS_LOADED
     if _PLUGINS_LOADED:

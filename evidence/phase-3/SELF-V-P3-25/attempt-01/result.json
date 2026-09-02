@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P3-25",
+  "evidence_id": "SELF-V-P3-25",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_rerouting_db.py",
+    "-k",
+    "accept_timeout or rejection_codes",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "2f3ef56ebe62459325643d82ad33a3e130728ddc",
+  "started_at": "2026-09-02T17:45:37.005678+00:00",
+  "finished_at": "2026-09-02T17:45:39.540085+00:00",
+  "output_sha256": "4d2df7a96ce4a667da3ccf295f2d16c728a65ed0e861a3baa919f7bb469b02b5"
+}

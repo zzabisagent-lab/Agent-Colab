@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P3-23",
+  "evidence_id": "SELF-V-P3-23",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_mattermost_bot_adapter.py",
+    "tests/integration/test_bot_adapter_db.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "e19cf67893424d0e9ca974fb75ab33564ecd7c6e",
+  "started_at": "2026-09-02T17:26:31.190947+00:00",
+  "finished_at": "2026-09-02T17:26:33.646040+00:00",
+  "output_sha256": "4d2df7a96ce4a667da3ccf295f2d16c728a65ed0e861a3baa919f7bb469b02b5"
+}

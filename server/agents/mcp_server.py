@@ -36,7 +36,10 @@ TOOL_MAP: dict[str, type[bus.Command]] = {}
 
 def register_core_tools() -> None:
     from server.application import approvals as ap
+    from server.application import artifacts as ar
     from server.application import tasks as t
+    from server.application import usage as us
+    from server.application import verification as vf
 
     for name, command_type in {
         "task_create": t.CreateTask,
@@ -46,6 +49,11 @@ def register_core_tools() -> None:
         "task_progress": t.ReportProgress,
         "implementation_submit": t.SubmitImplementation,
         "approval_request": ap.RequestApproval,
+        # §7.4 (P3-10): the remaining core tools that map onto existing commands
+        "usage_report": us.ReportUsage,
+        "artifact_register": ar.RegisterArtifact,
+        "verification_submit": vf.SubmitVerdict,
+        "verification_evidence_submit": vf.SubmitEvidence,
     }.items():
         TOOL_MAP.setdefault(name, command_type)
 
@@ -59,8 +67,14 @@ class ServiceTokenVerifier(TokenVerifier):
         self._runtime = runtime
 
     async def verify_token(self, token: str) -> AccessToken | None:
+        from server.agents.transport_mcp import resolve_mtls_principal
+
         with session_scope(self._runtime.session_factory) as session:
-            principal = resolve_service_token(session, token)
+            principal = (
+                resolve_mtls_principal(session, token)
+                if token.startswith("mtls:")
+                else resolve_service_token(session, token)
+            )
         if principal is None:
             return None
         return AccessToken(
@@ -221,4 +235,9 @@ def build_mcp_server(runtime: Runtime, base_url: str) -> MCPServer:
     )
     for name, command_type in TOOL_MAP.items():
         server.tool(name=name)(_make_tool(runtime, name, command_type))
+    from server.agents.transport_mcp import register_work_transport
+
+    server.inbox_subscriptions = register_work_transport(  # type: ignore[attr-defined]
+        server, runtime, _principal_from_token
+    )
     return server

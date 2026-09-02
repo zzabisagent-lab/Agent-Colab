@@ -13,6 +13,7 @@ from fastapi import FastAPI
 
 from server.api.dispatch import default_runtime
 from server.api.errors import ApiError, api_error_handler
+from server.api.v1.agents import router as agents_router
 from server.api.v1.approvals import router as approvals_router
 from server.api.v1.auth import router as auth_router
 from server.api.v1.bridges import router as bridges_router
@@ -25,8 +26,10 @@ from server.api.v1.notifications import router as notifications_router
 from server.api.v1.providers_mattermost import router as providers_mattermost_router
 from server.api.v1.providers_mattermost_actions import router as mattermost_actions_router
 from server.api.v1.providers_telegram import router as providers_telegram_router
+from server.api.v1.roles import router as roles_router
 from server.api.v1.tasks import router as tasks_router
 from server.api.v1.verification import router as verification_router
+from server.api.v1.work import router as work_router
 from server.config import PRODUCT_NAME, Settings, get_settings
 from server.db.engine import make_engine, make_session_factory
 from server.identity import mattermost_link
@@ -81,6 +84,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(notifications_router)
     app.include_router(channel_members_router)
     app.include_router(identity_admin_router)
+    app.include_router(work_router)  # P3-11: work item REST + signed webhook callbacks
+    app.include_router(agents_router)
+    app.include_router(roles_router)
     mattermost_link.register()  # P2-13: `link start|confirm` slash handlers
     app.state.telegram_webhook_secret = None  # env AGENT_COLAB_TELEGRAM_WEBHOOK_SECRET by default
     app.state.gateway = None
@@ -136,7 +142,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         mcp = build_mcp_server(app.state.runtime, settings.base_url)
         app.state.mcp = mcp
         # mounted last at the root so that the exact path /mcp is served without a redirect
-        app.mount("/", mcp.streamable_http_app(streamable_http_path="/mcp"), name="mcp")
+        from server.agents.transport_mcp import MtlsProxyMiddleware
+
+        app.mount(
+            "/",
+            MtlsProxyMiddleware(mcp.streamable_http_app(streamable_http_path="/mcp")),
+            name="mcp",
+        )
     return app
 
 

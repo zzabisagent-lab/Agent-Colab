@@ -1,0 +1,24 @@
+{
+  "test_id": "V-P3-07",
+  "evidence_id": "SELF-V-P3-07",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_conformance_suite.py",
+    "tests/unit/test_adapter_contract.py",
+    "tests/integration/test_work_inbox_db.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-k",
+    "conformant or cancel or contract or normalize or unsupported"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "2f3ef56ebe62459325643d82ad33a3e130728ddc",
+  "started_at": "2026-09-02T17:50:13.041017+00:00",
+  "finished_at": "2026-09-02T17:50:14.926200+00:00",
+  "output_sha256": "06955fb47f16312e5d13266c774a2aa4648c46e423cbe6564a92e25b68e39131"
+}

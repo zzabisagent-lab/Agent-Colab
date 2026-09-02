@@ -1,0 +1,23 @@
+{
+  "test_id": "V-P3-19",
+  "evidence_id": "SELF-V-P3-19",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_routing.py",
+    "tests/integration/test_orchestration_db.py",
+    "-k",
+    "graph_limits or concurrency_limit or graph_rules",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "2f3ef56ebe62459325643d82ad33a3e130728ddc",
+  "started_at": "2026-09-02T17:45:42.054625+00:00",
+  "finished_at": "2026-09-02T17:45:44.024484+00:00",
+  "output_sha256": "585ba42829657b9e2d56f8614be6c3365a8405474eed008559511ab50f2ffcfb"
+}

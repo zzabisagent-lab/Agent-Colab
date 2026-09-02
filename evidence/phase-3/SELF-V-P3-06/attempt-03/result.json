@@ -1,0 +1,24 @@
+{
+  "test_id": "V-P3-06",
+  "evidence_id": "SELF-V-P3-06",
+  "attempt": 3,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_conformance_suite.py",
+    "tests/integration/test_work_inbox_db.py",
+    "tests/integration/test_mcp_transport.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-k",
+    "conformant or redeliver or reconnect or duplicate"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "2f3ef56ebe62459325643d82ad33a3e130728ddc",
+  "started_at": "2026-09-02T17:50:07.927034+00:00",
+  "finished_at": "2026-09-02T17:50:12.935149+00:00",
+  "output_sha256": "c4b808d34f4db00b333696dec1f3a43a2887d8bfe0cb7af07a3cb98ff43a7830"
+}

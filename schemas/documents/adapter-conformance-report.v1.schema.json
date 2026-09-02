@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/documents/adapter-conformance-report.v1.schema.json",
+  "title": "Adapter Conformance Suite report (validation plan §11.1 CS-01..CS-12)",
+  "type": "object",
+  "required": ["schema_id", "adapter_type", "agent_id", "generated_at", "result", "checks"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_id": {"const": "colab.adapter-conformance-report.v1"},
+    "adapter_type": {"type": "string", "minLength": 1},
+    "agent_id": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string"},
+    "harness": {"type": "string"},
+    "result": {"type": "string", "enum": ["PASS", "FAIL"]},
+    "checks": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "result"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^CS-(0[1-9]|1[0-2])$"},
+          "title": {"type": "string"},
+          "result": {"type": "string", "enum": ["PASS", "FAIL"]},
+          "detail": {"type": "string"},
+          "evidence": {"type": "object"}
+        }
+      }
+    }
+  }
+}

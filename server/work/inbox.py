@@ -34,7 +34,7 @@ from server.domain.clock import Clock, isoformat_utc
 from server.events.canonical import canonical_json
 from server.events.store import AppendRequest, AppendResult, EventStore, EventStoreError
 from server.observability.audit import append_audit
-from server.work import receipts
+from server.work import notify, receipts
 from server.work.schemas import AdapterSchemaError, validate
 from server.work.state import (
     REJECTION_CODES,
@@ -284,6 +284,7 @@ def enqueue(
             "brainstorm_id": brainstorm_id,
         },
     )
+    notify.inbox_changed(agent_id)
     return item
 
 
@@ -512,6 +513,7 @@ def requeue_for_redelivery(session: Session, work_item_id: str, *, clock: Clock)
     item = load(session, work_item_id, for_update=True)
     transition(item.status, "redeliver")  # only valid from DELIVERED
     _set(session, work_item_id, clock.now(), status=WorkItemState.QUEUED.value)
+    notify.inbox_changed(item.agent_id)
     return load(session, work_item_id)
 
 

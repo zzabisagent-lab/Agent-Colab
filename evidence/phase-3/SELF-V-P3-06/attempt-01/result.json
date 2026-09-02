@@ -1,0 +1,23 @@
+{
+  "test_id": "V-P3-06",
+  "evidence_id": "SELF-V-P3-06",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_webhook_delivery.py",
+    "tests/integration/test_bot_adapter_db.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-k",
+    "one_side_effect or reply_intake"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "e19cf67893424d0e9ca974fb75ab33564ecd7c6e",
+  "started_at": "2026-09-02T17:26:33.752593+00:00",
+  "finished_at": "2026-09-02T17:26:36.825263+00:00",
+  "output_sha256": "99db33d5c94c6f7da021687c7391181685cc33299c5435b1c861e2db3be3ec87"
+}

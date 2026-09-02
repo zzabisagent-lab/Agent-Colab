@@ -23,6 +23,13 @@ allowed:
   - {from: IMPLEMENTED, event: TASK_CANCEL_REQUESTED, to: CANCEL_REQUESTED}
   - {from: VERIFYING, event: TASK_CANCEL_REQUESTED, to: CANCEL_REQUESTED}
   - {from: CANCEL_REQUESTED, event: TASK_CANCELLED, to: CANCELLED}
+  # Phase 3 (P3-14, development plan §7D.3): assignee loss → one reassignment or WAITING
+  - {from: DELEGATED, event: TASK_WAITING, to: WAITING}
+  - {from: ACCEPTED, event: TASK_WAITING, to: WAITING}
+  - {from: IMPLEMENTED, event: TASK_WAITING, to: WAITING}
+  - {from: ACCEPTED, event: TASK_REASSIGNED, to: DELEGATED}
+  - {from: RUNNING, event: TASK_REASSIGNED, to: DELEGATED}
+  - {from: WAITING, event: TASK_REASSIGNED, to: DELEGATED}
 events:
   - TASK_DELEGATED
   - TASK_REASSIGNED

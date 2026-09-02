@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P3-21",
+  "evidence_id": "SELF-V-P3-21",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_mcp_transport.py",
+    "tests/unit/test_mcp_poll_guard.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "2f3ef56ebe62459325643d82ad33a3e130728ddc",
+  "started_at": "2026-09-02T17:48:55.630627+00:00",
+  "finished_at": "2026-09-02T17:49:36.100970+00:00",
+  "output_sha256": "2a5922d9b8ee51ed1575747daedd5907290f1e4db2b016fd6f0a4afdbc789685"
+}

@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P3-10",
+  "evidence_id": "SELF-V-P3-10",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_routing_db.py",
+    "-k",
+    "non_member",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "2f3ef56ebe62459325643d82ad33a3e130728ddc",
+  "started_at": "2026-09-02T17:45:32.378612+00:00",
+  "finished_at": "2026-09-02T17:45:34.184870+00:00",
+  "output_sha256": "423b1d0e014eb1eab96f4420f7b344c2615be505dd574b756ac884826ca74f2d"
+}

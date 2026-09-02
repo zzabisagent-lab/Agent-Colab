@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P3-15",
+  "evidence_id": "SELF-V-P3-15",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_agent_limits.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "e19cf67893424d0e9ca974fb75ab33564ecd7c6e",
+  "started_at": "2026-09-02T17:30:57.363196+00:00",
+  "finished_at": "2026-09-02T17:31:00.055063+00:00",
+  "output_sha256": "cf426ab35f3b06fccef8290fde5325d90af130a79da1d1752031518df77c4236"
+}
