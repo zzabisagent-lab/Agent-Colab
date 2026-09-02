@@ -1,0 +1,38 @@
+# Agent-Colab secret scanning configuration (P0-06 / V-P0-09).
+# Extends the gitleaks default rule set; only the documented DLP canary pattern and the
+# baseline documents' example YAML are allow-listed. Real credentials are never allow-listed.
+title = "Agent-Colab gitleaks config"
+
+[extend]
+useDefault = true
+
+# Exceptions documented in docs/security/secret-scan.md: test canaries, baseline example snippets,
+# fixture hashes/keys of fake data, and the two pre-remediation commits of Finding F-P0-002-02
+# (revoked local test-instance callback material; later commits carry redacted copies only).
+[allowlist]
+description = "Documented test canaries, baseline snippets, fixture hashes, and revoked spike material"
+regexTarget = "line"
+regexes = [
+  '''CANARY-NOT-A-SECRET-\d+''',
+  '''token_hash: "[0-9a-f]{64}"''',
+  '''"idempotency_key": "[a-z]+-\d{4}-[a-z]+-\d+"''',
+]
+paths = [
+  # local, git-ignored deployment-secrets file (never tracked: `git check-ignore .env`); the
+  # directory scan walks ignored files, the history scan is the authoritative repository check
+  '''^\.env$''',
+  '''^docs/baseline/.*\.md$''',
+  '''(^|/)\.venv/''',
+  '''(^|/)node_modules/''',
+]
+commits = [
+  "0e43f203558b3b275de600f668cf59a45b3d5f10",
+  "4c1adf6258be01e73e569c2cdf2680fffc4211eb",
+]
+
+# Provider callback material (Finding F-P0-002-02): Mattermost slash-command tokens, trigger IDs
+# and response_url hook capabilities must never be committed unredacted.
+[[rules]]
+id = "agent-colab-mattermost-callback-material"
+description = "Mattermost slash-command token / trigger_id / response_url hook id in evidence or fixtures"
+regex = '''(?i)"(token|trigger_id)"\s*:\s*"[A-Za-z0-9+/=_-]{20,}"|/hooks/commands/[A-Za-z0-9]{20,}'''

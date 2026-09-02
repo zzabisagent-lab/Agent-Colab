@@ -1,0 +1,72 @@
+schedule:
+  allowed:
+    - [DRAFT, ENABLED]
+    - [DRAFT, DISABLED]
+    - [ENABLED, PAUSED]
+    - [ENABLED, DISABLED]
+    - [PAUSED, ENABLED]
+    - [PAUSED, DISABLED]
+  rejected:  # SCHEDULE_TRANSITION_INVALID
+    - [DRAFT, PAUSED]
+    - [DRAFT, DRAFT]
+    - [ENABLED, DRAFT]
+    - [ENABLED, ENABLED]
+    - [PAUSED, DRAFT]
+    - [PAUSED, PAUSED]
+    - [DISABLED, ENABLED]
+    - [DISABLED, PAUSED]
+    - [DISABLED, DRAFT]
+run:
+  allowed:
+    - [PENDING, DUE]
+    - [DUE, CLAIMED]
+    - [CLAIMED, TASK_CREATED]
+    - [TASK_CREATED, RUNNING]
+    - [RUNNING, VERIFYING]
+    - [VERIFYING, SUCCEEDED]
+    - [RUNNING, SUCCEEDED]
+    - [RUNNING, FAILED]
+    - [VERIFYING, FAILED]
+    - [RUNNING, TIMED_OUT]
+    - [VERIFYING, TIMED_OUT]
+    - [DUE, SKIPPED]
+    - [CLAIMED, SKIPPED]
+    - [CLAIMED, DUE]
+    - [PENDING, CANCELLED]
+    - [DUE, CANCELLED]
+    - [RUNNING, CANCEL_REQUESTED]
+    - [CANCEL_REQUESTED, CANCELLED]
+  rejected:
+    - {from: PENDING, to: RUNNING, code: RUN_TRANSITION_INVALID}
+    - {from: DUE, to: TASK_CREATED, code: RUN_TRANSITION_INVALID}
+    - {from: RUNNING, to: CANCELLED, code: RUN_TRANSITION_INVALID}
+    - {from: CANCEL_REQUESTED, to: RUNNING, code: RUN_TRANSITION_INVALID}
+    - {from: SUCCEEDED, to: RUNNING, code: RUN_TERMINAL_CONFLICT}
+    - {from: FAILED, to: CANCEL_REQUESTED, code: RUN_TERMINAL_CONFLICT}
+    - {from: SKIPPED, to: DUE, code: RUN_TERMINAL_CONFLICT}
+    - {from: TIMED_OUT, to: CANCELLED, code: RUN_TERMINAL_CONFLICT}
+    - {from: CANCELLED, to: CANCELLED, code: RUN_TERMINAL_CONFLICT}
+  terminal: [SUCCEEDED, FAILED, SKIPPED, TIMED_OUT, CANCELLED]
+cancel:
+  - {from: PENDING, result: CANCELLED}
+  - {from: DUE, result: CANCELLED}
+  - {from: CLAIMED, result: CANCEL_REQUESTED}
+  - {from: TASK_CREATED, result: CANCEL_REQUESTED}
+  - {from: RUNNING, result: CANCEL_REQUESTED}
+  - {from: VERIFYING, result: CANCEL_REQUESTED}
+  - {from: CANCEL_REQUESTED, code: RUN_CANCEL_ALREADY_REQUESTED}
+  - {from: SUCCEEDED, code: RUN_TERMINAL_CONFLICT}
+  - {from: FAILED, code: RUN_TERMINAL_CONFLICT}
+  - {from: SKIPPED, code: RUN_TERMINAL_CONFLICT}
+  - {from: TIMED_OUT, code: RUN_TERMINAL_CONFLICT}
+  - {from: CANCELLED, code: RUN_TERMINAL_CONFLICT}
+run_kind:
+  - {kind: SCHEDULED, occurrence_key: "ab", retry_of_run_id: null, ok: true}
+  - {kind: SCHEDULED, occurrence_key: null, retry_of_run_id: null, code: RUN_KIND_INVARIANT}
+  - {kind: SCHEDULED, occurrence_key: "ab", retry_of_run_id: run-1, code: RUN_KIND_INVARIANT}
+  - {kind: MANUAL, occurrence_key: null, retry_of_run_id: null, ok: true}
+  - {kind: MANUAL, occurrence_key: "ab", retry_of_run_id: null, code: RUN_KIND_INVARIANT}
+  - {kind: MANUAL, occurrence_key: null, retry_of_run_id: run-1, code: RUN_KIND_INVARIANT}
+  - {kind: RETRY, occurrence_key: null, retry_of_run_id: run-1, ok: true}
+  - {kind: RETRY, occurrence_key: null, retry_of_run_id: null, code: RUN_KIND_INVARIANT}
+  - {kind: RETRY, occurrence_key: "ab", retry_of_run_id: run-1, code: RUN_KIND_INVARIANT}

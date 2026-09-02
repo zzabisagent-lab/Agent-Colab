@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/adapters/webhook-envelope.v1.schema.json",
+  "title": "Agent-Colab webhook push envelope v1",
+  "description": "REST/Webhook push (development plan §7B.2): the server POSTs the work item JSON body with headers X-Colab-Timestamp (unix seconds), X-Colab-Nonce (>=16 random bytes, hex/base64url), X-Colab-Signature = hex(HMAC-SHA256(key, timestamp + '.' + nonce + '.' + sha256hex(body))). Receivers reject timestamps outside ±300 s and nonces seen within 24 h; the signing key is a Secret Broker reference, never stored in the envelope.",
+  "type": "object",
+  "properties": {
+    "headers": {
+      "type": "object",
+      "properties": {
+        "X-Colab-Timestamp": {"type": "string", "pattern": "^[0-9]{9,11}$"},
+        "X-Colab-Nonce": {"type": "string", "pattern": "^[A-Za-z0-9_-]{22,128}$"},
+        "X-Colab-Signature": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "X-Colab-Key-Ref": {"type": "string", "pattern": "^sec-[A-Za-z0-9._-]{1,64}(@v[0-9]+)?$"},
+        "X-Colab-Correlation-Id": {"type": "string", "minLength": 1},
+        "Content-Type": {"type": "string", "const": "application/json"}
+      },
+      "required": ["X-Colab-Timestamp", "X-Colab-Nonce", "X-Colab-Signature", "X-Colab-Key-Ref", "X-Colab-Correlation-Id", "Content-Type"],
+      "additionalProperties": true
+    },
+    "body": {"$ref": "work-item.v1.schema.json"},
+    "expected_response": {"type": "object", "properties": {"status": {"type": "integer", "const": 202}, "body": {"$ref": "delivery-receipt.v1.schema.json"}}, "required": ["status", "body"], "additionalProperties": false},
+    "timestamp_window_seconds": {"type": "integer", "const": 300},
+    "nonce_retention_hours": {"type": "integer", "const": 24}
+  },
+  "required": ["headers", "body", "timestamp_window_seconds", "nonce_retention_hours"],
+  "additionalProperties": false
+}

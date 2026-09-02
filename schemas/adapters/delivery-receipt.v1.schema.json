@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/adapters/delivery-receipt.v1.schema.json",
+  "title": "Agent-Colab delivery receipt v1",
+  "description": "deliver(work_item) -> delivery_receipt(work_item_id, accepted_at | rejection_code) (development plan §7.3, §7B.4)",
+  "type": "object",
+  "properties": {
+    "schema_id": {"type": "string", "const": "colab.delivery-receipt.v1"},
+    "work_item_id": {"type": "string", "pattern": "^wi-[0-9a-f]{8,32}$"},
+    "correlation_id": {"type": "string", "minLength": 1},
+    "accepted_at": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"},
+    "rejection_code": {"type": "string", "enum": ["CAPABILITY_UNSUPPORTED", "CAPACITY", "POLICY", "OTHER"]},
+    "rejection_detail": {"type": "string", "maxLength": 1000}
+  },
+  "required": ["schema_id", "work_item_id", "correlation_id"],
+  "additionalProperties": false,
+  "oneOf": [
+    {"required": ["accepted_at"], "not": {"required": ["rejection_code"]}},
+    {"required": ["rejection_code"], "not": {"required": ["accepted_at"]}}
+  ]
+}

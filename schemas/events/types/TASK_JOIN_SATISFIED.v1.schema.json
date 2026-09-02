@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/TASK_JOIN_SATISFIED.v1.schema.json",
+  "title": "TASK_JOIN_SATISFIED payload v1",
+  "description": "Non-sensitive payload of TASK_JOIN_SATISFIED (task aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "join_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "satisfied_children": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "task_id",
+    "join_policy",
+    "satisfied_children"
+  ],
+  "additionalProperties": true
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/adapters/work-result.v1.schema.json",
+  "title": "Agent-Colab work result v1",
+  "description": "Result returned exactly once per work_item_id via MCP `work_result`, REST POST /api/v1/work/{id}/result, or a structured bot reply (development plan §7B).",
+  "type": "object",
+  "properties": {
+    "schema_id": {"type": "string", "const": "colab.work-result.v1"},
+    "work_item_id": {"type": "string", "pattern": "^wi-[0-9a-f]{8,32}$"},
+    "correlation_id": {"type": "string", "minLength": 1},
+    "task_id": {"type": ["string", "null"]},
+    "status": {"type": "string", "enum": ["SUCCEEDED", "FAILED", "REJECTED", "CANCELLED"]},
+    "error_code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$"},
+    "result": {"type": "object"},
+    "events": {"type": "array", "items": {"type": "object", "properties": {"type": {"type": "string"}, "payload": {"type": "object"}}, "required": ["type", "payload"], "additionalProperties": false}},
+    "artifacts": {"type": "array", "items": {"type": "object", "properties": {"artifact_id": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "mime": {"type": "string"}, "size": {"type": "integer", "minimum": 0}}, "required": ["sha256", "mime", "size"], "additionalProperties": false}},
+    "usage": {"$ref": "usage.v1.schema.json#/$defs/usage"},
+    "usage_unavailable": {"$ref": "usage.v1.schema.json#/$defs/usage_unavailable"},
+    "display_identity": {"description": "Ignored and audited by the server (development plan §7A.4); kept in the schema so its presence is detectable.", "type": "object"}
+  },
+  "required": ["schema_id", "work_item_id", "correlation_id", "status", "result", "events", "artifacts"],
+  "additionalProperties": false,
+  "allOf": [
+    {"oneOf": [
+      {"required": ["usage"], "not": {"required": ["usage_unavailable"]}},
+      {"required": ["usage_unavailable"], "not": {"required": ["usage"]}}
+    ]},
+    {"if": {"properties": {"status": {"enum": ["FAILED", "REJECTED"]}}}, "then": {"required": ["error_code"]}}
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/ROLE_VERSION_CREATED.v1.schema.json",
+  "title": "ROLE_VERSION_CREATED payload v1",
+  "description": "Non-sensitive payload of ROLE_VERSION_CREATED (role aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "role_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "permissions_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "role_id",
+    "role_version",
+    "permissions_hash"
+  ],
+  "additionalProperties": true,
+  "x-extension": "spec §4.2 role changes are versioned policy"
+}

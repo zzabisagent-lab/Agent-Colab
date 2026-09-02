@@ -1,0 +1,43 @@
+{
+  "version": "11.10.1.32497580648.ac7ccf7c8c9923308ba45aea29702a4ef6422d5ef50b6743d48dc6963522b6d2.false",
+  "channel_id": "kg4d6h94bpnt7cnsp3pm17xf6a",
+  "override_enabled_flag": true,
+  "post_with_override_enabled": {
+    "post_id": "jkw4h7ga6jgzi8dsio8dhmiy7c",
+    "user_id": "wrchmujfujf5xnpgeksu6kzwmh",
+    "is_bot_user": true,
+    "props": {
+      "from_bot": "true",
+      "from_webhook": "true",
+      "override_icon_url": "http://127.0.0.1:8080/static/agent.png",
+      "override_username": "Research Agent"
+    },
+    "message": "spike override-enabled: utterance by an MCP Agent"
+  },
+  "override_disabled_flag": false,
+  "post_with_override_disabled": {
+    "post_id": "dwbo37gf13dk7pxgwjhrsft1fa",
+    "user_id": "wrchmujfujf5xnpgeksu6kzwmh",
+    "is_bot_user": true,
+    "props": {
+      "from_bot": "true",
+      "from_webhook": "true",
+      "override_icon_url": "http://127.0.0.1:8080/static/agent.png",
+      "override_username": "Research Agent"
+    },
+    "message": "spike override-disabled: utterance by an MCP Agent"
+  },
+  "post_fallback_prefix": {
+    "post_id": "zy8hukpho7ybiqacjfacoqw88y",
+    "message": "[Research Agent] spike fallback: prefix form",
+    "props": {
+      "from_bot": "true"
+    }
+  },
+  "override_restored_flag": true,
+  "card_edit_in_place": {
+    "root_id": "fo4a6t5fz7rwjgzu7m15cieuue",
+    "edit_at": true,
+    "reply_root_id": true
+  }
+}

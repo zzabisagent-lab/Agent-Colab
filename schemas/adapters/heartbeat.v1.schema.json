@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/adapters/heartbeat.v1.schema.json",
+  "title": "Agent-Colab adapter heartbeat v1",
+  "description": "heartbeat() -> health/capacity/usage_since_last every 30 s (development plan §7.3, §21.1). usage_since_last carries §7C usage or a usage_unavailable reason.",
+  "type": "object",
+  "properties": {
+    "schema_id": {"type": "string", "const": "colab.heartbeat.v1"},
+    "agent_id": {"type": "string", "pattern": "^agent-[A-Za-z0-9._-]{1,64}$"},
+    "sent_at": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"},
+    "health": {"type": "string", "enum": ["ok", "degraded", "draining"]},
+    "capacity": {
+      "type": "object",
+      "properties": {
+        "concurrent_tasks_max": {"type": "integer", "minimum": 0},
+        "concurrent_tasks_in_use": {"type": "integer", "minimum": 0}
+      },
+      "required": ["concurrent_tasks_max", "concurrent_tasks_in_use"],
+      "additionalProperties": false
+    },
+    "usage_since_last": {"$ref": "usage.v1.schema.json"}
+  },
+  "required": ["schema_id", "agent_id", "sent_at", "health", "capacity", "usage_since_last"],
+  "additionalProperties": false
+}

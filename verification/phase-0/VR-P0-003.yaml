@@ -1,0 +1,101 @@
+verification_id: VR-P0-003
+criteria_version: v8.0
+implementer_agent_id: agent-claude-code
+verifier_agent_id: agent-codex
+implementer_account_id: account-implementer-claude
+verifier_account_id: account-verifier-codex
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+verifier_credential_fingerprint: sha256:ecbd74ce21cb00f0e36136b78a0fe57c8241013e4125100e2871351c90b530b9
+identity_graph_version: identity-v8-001
+effective_policy_hash: sha256:f74d1e8d61e0fcea65fa8109a18c59aefbd70d145c95c90ef29c461d88de6797
+target_commit: f11e37666a331009c32cf86a1c2fc3792d9bd54a
+environment_fingerprint: sha256:d7fe978fc4bb16eb14998119289bf7b828c578289e7675b4f684b57645d9fed2
+started_at: "2026-09-02T14:13:29Z"
+completed_at: "2026-09-02T14:19:03Z"
+tests:
+  - id: V-P0-01
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-03-pipeline.log
+    note: Name/role lint and repository metadata checks found zero inconsistent user-facing product names.
+  - id: V-P0-02
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-03-pipeline.log
+    note: Name/role lint found zero hard-coded Agent product or machine core roles.
+  - id: V-P0-03
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-03-clean-bootstrap.log
+    note: A fresh detached checkout at the target commit completed bootstrap, lint, 617 tests, documentation checks, and both builds.
+  - id: V-P0-04
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-04-compose.log
+    note: From removed volumes, PostgreSQL, server, web-admin, and ClamAV all reached healthy state; teardown removed the volumes.
+  - id: V-P0-05
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-05-06-08-11-20-contracts.log
+    note: Valid and invalid schema/Event fixtures passed, including stable negative errors.
+  - id: V-P0-06
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-05-06-08-11-20-contracts.log
+    note: Allow, deny, conflict, and deterministic replay fixtures passed; explicit deny wins.
+  - id: V-P0-07
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-07-db-api-negative.log
+    note: Seven live PostgreSQL/application/API negative tests rejected same-account, same-agent, same-credential, alias, author, and ineligible-verifier attempts.
+  - id: V-P0-08
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-03-pipeline.log
+    note: Threat-model lint found all five mandatory boundaries, including Mattermost, Telegram, Setup, Secret, and Admin.
+  - id: V-P0-09
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-09-gitleaks.log
+    note: Independent history and directory scans both exited zero with no leaks; the prior Mattermost callback material is redacted and revoked.
+  - id: V-P0-10
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-03-pipeline.log
+    note: Trace lint checked 111 requirements, 103 packages, and 230 tests with zero problems.
+  - id: V-P0-11
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-05-06-08-11-20-contracts.log
+    note: Schedule cron, timezone, occurrence, version, status, action, concurrency, missed, retry, and cancellation fixtures passed.
+  - id: V-P0-12
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-05-06-08-11-20-contracts.log
+    note: Pre-DB sealed-state, permissions, secret rejection, ordering, migration, reconciliation, and rollback non-regression fixtures passed.
+  - id: V-P0-13
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-05-06-08-11-20-contracts.log
+    note: Aggregate/Event fixtures require type, id, sequence, hash, and scoped idempotency and reject projection-only authority.
+  - id: V-P0-14
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-03-pipeline.log
+    note: Criteria lint checked all 230 tests with zero problems; no criterion is judged only by vague words.
+  - id: V-P0-15
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-03-pipeline.log
+    note: Phase-DAG lint checked 333 references and six explicit contract stubs with zero forward-dependency problems.
+  - id: V-P0-16
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-16-mattermost-recheck.log
+    note: All grammar/callback/card fixtures passed; a fresh local Mattermost health check and redacted raw artifacts verify slash registration, callbacks, card edits, threads, override behavior, and fallback.
+  - id: V-P0-17
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-17-mcp-client.log
+    note: All work-item, webhook, usage, and pricing fixtures passed; fresh MCP long-poll returned in 29.585 seconds and an unacked item redelivered after reconnect with delivery counts 1 then 2.
+  - id: V-P0-18
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-03-pipeline.log
+    note: Policy lint found 53 permissions, 162 classified actions, zero unclassified actions, and no fixture vocabulary or quorum-default violation.
+  - id: V-P0-19
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-19-telegram-recheck.log
+    note: Independent assertions over 86 redacted API call records and mapping fixtures found zero contradiction for forum topics, replies, edits, General-topic handling, or rate limits; live credential recheck was unavailable but is not needed by this evidence-review Method.
+  - id: V-P0-20
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r003/V-P0-03-pipeline.log
+    note: Plan lint checked 103 sized packages, 230 tests, 19 risk rows, 22 dependency rows, complete bidirectional links, owners/deadlines, and an acyclic prerequisite graph.
+findings: []
+result: PASSED
+residual_risks:
+  - MCP resource subscription is unsupported by the pinned protocol/SDK pairing; the documented long-poll fallback met the mandatory latency and reconnect-redelivery contract.
+  - The Telegram credential file and TELEGRAM_* variables described by the run environment were absent in this verifier process, so the check used the committed redacted 86-call API record plus fresh contract fixtures rather than issuing new read-only API calls.
+  - Mattermost authenticated mutation calls were not replayed because no secret-safe replay harness exists; the local service health, contract fixtures, redacted raw response assertions, and secret scans were independently rechecked.

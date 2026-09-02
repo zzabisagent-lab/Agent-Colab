@@ -1,0 +1,119 @@
+# Timezone/DST occurrence fixtures. Expected values computed with zoneinfo (tzdata pinned) and
+# cross-checked with croniter where the semantics agree. Differences (documented in
+# docs/protocol/schedule-contract.md): croniter shifts a DST-gap time to the next valid local
+# time (e.g. 03:00) and fires a duplicated local time twice; the v8 contract skips the gap with
+# reason DST_GAP and runs the duplicated wall-clock minute once at its first UTC instant.
+cases:
+  - name: new-york-spring-forward-gap
+    expr: "30 2 * * *"
+    timezone: America/New_York
+    after_utc: "2026-03-07T12:00:00Z"
+    count: 2
+    expect:
+      - {local: "2026-03-08T02:30", utc: null, reason: DST_GAP}
+      - {local: "2026-03-09T02:30", utc: "2026-03-09T06:30:00Z", reason: null}
+      - {local: "2026-03-10T02:30", utc: "2026-03-10T06:30:00Z", reason: null}
+  - name: new-york-fall-back-fold-runs-once
+    expr: "30 1 * * *"
+    timezone: America/New_York
+    after_utc: "2026-10-31T12:00:00Z"
+    count: 2
+    expect:
+      - {local: "2026-11-01T01:30", utc: "2026-11-01T05:30:00Z", reason: DST_FOLD}
+      - {local: "2026-11-02T01:30", utc: "2026-11-02T06:30:00Z", reason: null}
+  - name: new-york-fold-second-instant-not-rerun
+    expr: "30 1 * * *"
+    timezone: America/New_York
+    after_utc: "2026-11-01T05:45:00Z"
+    count: 1
+    expect:
+      - {local: "2026-11-02T01:30", utc: "2026-11-02T06:30:00Z", reason: null}
+  - name: berlin-spring-forward-gap
+    expr: "0 2 * * *"
+    timezone: Europe/Berlin
+    after_utc: "2026-03-28T12:00:00Z"
+    count: 2
+    expect:
+      - {local: "2026-03-29T02:00", utc: null, reason: DST_GAP}
+      - {local: "2026-03-30T02:00", utc: "2026-03-30T00:00:00Z", reason: null}
+      - {local: "2026-03-31T02:00", utc: "2026-03-31T00:00:00Z", reason: null}
+  - name: berlin-fall-back-fold
+    expr: "30 2 * * *"
+    timezone: Europe/Berlin
+    after_utc: "2026-10-24T12:00:00Z"
+    count: 2
+    expect:
+      - {local: "2026-10-25T02:30", utc: "2026-10-25T00:30:00Z", reason: DST_FOLD}
+      - {local: "2026-10-26T02:30", utc: "2026-10-26T01:30:00Z", reason: null}
+  - name: seoul-no-dst-weekdays
+    expr: "0 9 * * 1-5"
+    timezone: Asia/Seoul
+    after_utc: "2026-01-02T00:00:00Z"
+    count: 3
+    expect:
+      - {local: "2026-01-05T09:00", utc: "2026-01-05T00:00:00Z", reason: null}
+      - {local: "2026-01-06T09:00", utc: "2026-01-06T00:00:00Z", reason: null}
+      - {local: "2026-01-07T09:00", utc: "2026-01-07T00:00:00Z", reason: null}
+  - name: lord-howe-30-minute-gap
+    expr: "15 2 * * *"
+    timezone: Australia/Lord_Howe
+    after_utc: "2026-10-03T00:00:00Z"
+    count: 2
+    expect:
+      - {local: "2026-10-04T02:15", utc: null, reason: DST_GAP}
+      - {local: "2026-10-05T02:15", utc: "2026-10-04T15:15:00Z", reason: null}
+      - {local: "2026-10-06T02:15", utc: "2026-10-05T15:15:00Z", reason: null}
+  - name: lord-howe-30-minute-fold
+    expr: "45 1 * * *"
+    timezone: Australia/Lord_Howe
+    after_utc: "2026-04-04T00:00:00Z"
+    count: 2
+    expect:
+      - {local: "2026-04-05T01:45", utc: "2026-04-04T14:45:00Z", reason: DST_FOLD}
+      - {local: "2026-04-06T01:45", utc: "2026-04-05T15:15:00Z", reason: null}
+  - name: utc-dom-31-skips-short-months
+    expr: "0 0 31 * *"
+    timezone: UTC
+    after_utc: "2026-01-01T00:00:00Z"
+    count: 4
+    expect:
+      - {local: "2026-01-31T00:00", utc: "2026-01-31T00:00:00Z", reason: null}
+      - {local: "2026-03-31T00:00", utc: "2026-03-31T00:00:00Z", reason: null}
+      - {local: "2026-05-31T00:00", utc: "2026-05-31T00:00:00Z", reason: null}
+      - {local: "2026-07-31T00:00", utc: "2026-07-31T00:00:00Z", reason: null}
+  - name: utc-dom-dow-or-semantics
+    expr: "0 12 15 * 1"
+    timezone: UTC
+    after_utc: "2026-06-01T00:00:00Z"
+    count: 6
+    expect:
+      - {local: "2026-06-01T12:00", utc: "2026-06-01T12:00:00Z", reason: null}
+      - {local: "2026-06-08T12:00", utc: "2026-06-08T12:00:00Z", reason: null}
+      - {local: "2026-06-15T12:00", utc: "2026-06-15T12:00:00Z", reason: null}
+      - {local: "2026-06-22T12:00", utc: "2026-06-22T12:00:00Z", reason: null}
+      - {local: "2026-06-29T12:00", utc: "2026-06-29T12:00:00Z", reason: null}
+      - {local: "2026-07-06T12:00", utc: "2026-07-06T12:00:00Z", reason: null}
+  - name: london-steps-business-hours
+    expr: "*/15 9-17 * * 1-5"
+    timezone: Europe/London
+    after_utc: "2026-03-27T16:50:00Z"
+    count: 3
+    expect:
+      - {local: "2026-03-27T17:00", utc: "2026-03-27T17:00:00Z", reason: null}
+      - {local: "2026-03-27T17:15", utc: "2026-03-27T17:15:00Z", reason: null}
+      - {local: "2026-03-27T17:30", utc: "2026-03-27T17:30:00Z", reason: null}
+  - name: strictly-after-boundary
+    expr: "0 9 * * 1-5"
+    timezone: Asia/Seoul
+    after_utc: "2026-01-05T00:00:00Z"
+    count: 1
+    expect:
+      - {local: "2026-01-06T09:00", utc: "2026-01-06T00:00:00Z", reason: null}
+  - name: leap-day-within-horizon
+    expr: "0 0 29 2 *"
+    timezone: UTC
+    after_utc: "2026-01-01T00:00:00Z"
+    count: 1
+    expect:
+      - {local: "2028-02-29T00:00", utc: "2028-02-29T00:00:00Z", reason: null}
+invalid_timezones: ["", "EST5EDT/Bogus", "Asia/Seoul ", "Not/AZone", "UTC+9", "../etc/passwd"]

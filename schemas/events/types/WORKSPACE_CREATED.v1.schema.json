@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/WORKSPACE_CREATED.v1.schema.json",
+  "title": "WORKSPACE_CREATED payload v1",
+  "description": "Non-sensitive payload of WORKSPACE_CREATED (workspace aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "workspace_id",
+    "name"
+  ],
+  "additionalProperties": true,
+  "x-extension": "development plan §7H single Workspace created at Setup"
+}

@@ -1,0 +1,38 @@
+defaults: {concurrency: FORBID, missed_run: RUN_ONCE, retry_max_attempts: 3, backoff: [1, 5, 25], jitter: 0.2, replace_timeout_s: 60}
+concurrency:
+  - {policy: FORBID, previous_active: false, decision: START}
+  - {policy: FORBID, previous_active: true, decision: SKIP, error_code: SKIPPED_CONCURRENCY}
+  - {policy: ALLOW, previous_active: true, decision: START}
+  - {policy: ALLOW, previous_active: false, decision: START}
+  - {policy: REPLACE, previous_active: false, decision: START}
+  - {policy: REPLACE, previous_active: true, confirmed: null, decision: REPLACE_CANCEL_EXISTING}
+  - {policy: REPLACE, previous_active: true, confirmed: true, decision: START}
+  - {policy: REPLACE, previous_active: true, confirmed: false, decision: SKIP, error_code: SKIPPED_REPLACE_CANCEL_TIMEOUT}
+replace_confirmation:
+  - {requested: "2026-01-15T10:00:00Z", confirmed: "2026-01-15T10:00:59Z", ok: true}
+  - {requested: "2026-01-15T10:00:00Z", confirmed: "2026-01-15T10:01:00Z", ok: true}
+  - {requested: "2026-01-15T10:00:00Z", confirmed: "2026-01-15T10:01:01Z", ok: false}
+  - {requested: "2026-01-15T10:00:00Z", confirmed: null, ok: false}
+missed_runs:
+  now: "2026-01-15T12:00:00Z"
+  missed: ["2026-01-15T08:00:00Z", "2026-01-15T09:00:00Z", "2026-01-15T10:00:00Z", "2026-01-15T11:00:00Z"]
+  cases:
+    - {policy: SKIP, create: [], warning: false}
+    - {policy: RUN_ONCE, create: ["2026-01-15T11:00:00Z"], warning: false}
+    - {policy: BACKFILL_LIMITED, window_seconds: 14400, limit: 10, create: ["2026-01-15T08:00:00Z", "2026-01-15T09:00:00Z", "2026-01-15T10:00:00Z", "2026-01-15T11:00:00Z"], warning: false}
+    - {policy: BACKFILL_LIMITED, window_seconds: 10800, limit: 10, create: ["2026-01-15T09:00:00Z", "2026-01-15T10:00:00Z", "2026-01-15T11:00:00Z"], warning: true}
+    - {policy: BACKFILL_LIMITED, window_seconds: 14400, limit: 2, create: ["2026-01-15T08:00:00Z", "2026-01-15T09:00:00Z"], warning: true}
+    - {policy: BACKFILL_LIMITED, window_seconds: 3600, limit: 0, create: [], warning: true}
+    - {policy: BACKFILL_LIMITED, window_seconds: 0, limit: 5, create: [], warning: true}
+retry:
+  - {attempt: 1, error: TRANSIENT, decision: RETRY, next: 2, delay_min: 1, delay_max: 1.2}
+  - {attempt: 2, error: TRANSIENT, decision: RETRY, next: 3, delay_min: 5, delay_max: 6.0}
+  - {attempt: 3, error: TRANSIENT, decision: FAIL_EXHAUSTED}
+  - {attempt: 1, error: PERMANENT, decision: FAIL_PERMANENT}
+  - {attempt: 2, error: SCHEMA_INVALID, decision: FAIL_PERMANENT}
+  - {attempt: 1, error: PROVIDER_UNAVAILABLE, decision: RETRY, next: 2, delay_min: 1, delay_max: 1.2}
+retry_policy_invalid:
+  - {max_attempts: 0}
+  - {max_attempts: 4}
+  - {jitter_ratio: 0.5}
+  - {jitter_ratio: -0.1}

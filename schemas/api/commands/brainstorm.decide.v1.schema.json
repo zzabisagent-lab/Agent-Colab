@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/brainstorm.decide.v1.schema.json",
+  "title": "/colab brainstorm decide",
+  "description": "Arguments of `/colab brainstorm decide`.",
+  "x-permission": "brainstorm.facilitate",
+  "x-target": "brainstorm",
+  "x-target-field": "brainstorm_id",
+  "x-unlinked-allowed": false,
+  "x-example": "/colab brainstorm decide bs-5 \"adopt option B\" --rationale \"lower cost\" --source evt-1 --source evt-2",
+  "type": "object",
+  "properties": {
+    "brainstorm_id": {
+      "type": "string",
+      "pattern": "^bs-[A-Za-z0-9._-]{1,120}$",
+      "description": "omitted inside a Brainstorm thread"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    },
+    "source": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9._:/#@+-]{1,300}$",
+        "description": "source event ids"
+      },
+      "minItems": 1,
+      "maxItems": 50
+    },
+    "vote": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "statement",
+    "rationale",
+    "source"
+  ],
+  "additionalProperties": false
+}

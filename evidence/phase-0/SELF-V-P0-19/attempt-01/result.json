@@ -1,0 +1,18 @@
+{
+  "test_id": "V-P0-19",
+  "evidence_id": "SELF-V-P0-19",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_telegram_contract.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "c17d4d5315d2eb181e7c624a75131fbb78c58d1a",
+  "started_at": "2026-09-02T14:07:27.203175+00:00",
+  "finished_at": "2026-09-02T14:07:28.282429+00:00",
+  "output_sha256": "1b8f208de3636df279448e40805982570c4351601ce5723301928feea7d343cf"
+}

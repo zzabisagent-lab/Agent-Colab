@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/SETTING_CHANGED.v1.schema.json",
+  "title": "SETTING_CHANGED payload v1",
+  "description": "Non-sensitive payload of SETTING_CHANGED (setting aggregate, Phase 4). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "setting_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "secret": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "setting_key",
+    "version",
+    "secret"
+  ],
+  "additionalProperties": true
+}

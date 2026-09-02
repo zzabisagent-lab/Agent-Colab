@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/task.reject.v1.schema.json",
+  "title": "/colab task reject",
+  "description": "Arguments of `/colab task reject`.",
+  "x-permission": "task.accept",
+  "x-target": "task",
+  "x-target-field": "task_id",
+  "x-unlinked-allowed": false,
+  "x-example": "/colab task reject task-123 --reason CAPACITY",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^task-[A-Za-z0-9._-]{1,120}$",
+      "description": "omitted inside a Task thread"
+    },
+    "reason": {
+      "type": "string",
+      "enum": [
+        "CAPABILITY_UNSUPPORTED",
+        "CAPACITY",
+        "POLICY",
+        "OTHER"
+      ]
+    }
+  },
+  "required": [
+    "reason"
+  ],
+  "additionalProperties": false
+}

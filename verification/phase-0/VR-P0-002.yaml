@@ -1,0 +1,141 @@
+verification_id: VR-P0-002
+criteria_version: v8.0
+implementer_agent_id: agent-claude-code
+verifier_agent_id: agent-codex
+implementer_account_id: account-implementer-claude
+verifier_account_id: account-verifier-codex
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+verifier_credential_fingerprint: sha256:ecbd74ce21cb00f0e36136b78a0fe57c8241013e4125100e2871351c90b530b9
+identity_graph_version: identity-v8-001
+effective_policy_hash: sha256:f74d1e8d61e0fcea65fa8109a18c59aefbd70d145c95c90ef29c461d88de6797
+target_commit: 9f7f1270db54b9bae3ed375a1861fc16652fb92b
+environment_fingerprint: sha256:c3fa4c0aa1ecc8dc01e325f6fb3d4951061e05acd29f374f15481e2e8b7b92a4
+started_at: "2026-09-02T13:24:00Z"
+completed_at: "2026-09-02T13:32:17Z"
+tests:
+  - id: V-P0-01
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-01-02-08-10-14-15-18-20-linters.log
+    note: Name/role lint reported zero problems; manual user-facing metadata search agreed.
+  - id: V-P0-02
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-01-02-08-10-14-15-18-20-linters.log
+    note: No specific Agent product or machine is a core role; generic configurable roles remain.
+  - id: V-P0-03
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-03-clean-bootstrap.log
+    note: Fresh detached checkout completed install, lint, 585 tests, documentation checks, and builds at the pinned commit.
+  - id: V-P0-04
+    result: NOT_RUN
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-04-not-run.log
+    note: Docker is not installed on this host, so empty-volume DB/server/web runtime health could not be executed; static Compose fixtures passed only.
+  - id: V-P0-05
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-05-06-11-12-13-16-17-18-fixtures.log
+    note: Valid and invalid schema/Event fixtures passed, including stable negative error paths.
+  - id: V-P0-06
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-05-06-11-12-13-16-17-18-fixtures.log
+    note: Allow, deny, conflict, and determinism fixtures passed; explicit deny wins.
+  - id: V-P0-07
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-07-db-api-negative.log
+    note: Seven DB/application/API tests rejected same account, agent, credential, alias, commit-author, and ineligible verifier paths.
+  - id: V-P0-08
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-01-02-08-10-14-15-18-20-linters.log
+    note: Threat-model lint found all five mandatory boundaries, including Mattermost, Telegram, Setup, Secret, and Admin.
+  - id: V-P0-09
+    result: FAIL
+    evidence_ref: verification/phase-0/evidence-r002/independent-review.txt
+    note: Three gitleaks candidates were fixture false positives, but committed Mattermost spike evidence retains live-issued callback material contrary to the secret-safe evidence rule.
+  - id: V-P0-10
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-01-02-08-10-14-15-18-20-linters.log
+    note: Trace matrix checked 111 requirements, 103 packages, and 230 tests with zero problems.
+  - id: V-P0-11
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-05-06-11-12-13-16-17-18-fixtures.log
+    note: Schedule grammar, timezone, occurrence, version, lifecycle, action, concurrency, missed, retry, and cancel fixtures passed.
+  - id: V-P0-12
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-05-06-11-12-13-16-17-18-fixtures.log
+    note: Pre-DB sealed-state, permission, secret rejection, ordering, migration, and non-regression reconciliation fixtures passed.
+  - id: V-P0-13
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-05-06-11-12-13-16-17-18-fixtures.log
+    note: Aggregate/Event fixtures require type, id, sequence, hash, and idempotency scope and reject projection-only authority.
+  - id: V-P0-14
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-01-02-08-10-14-15-18-20-linters.log
+    note: Criteria lint checked 230 tests with zero problems; the one vague-word occurrence also has a deterministic criterion.
+  - id: V-P0-15
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-01-02-08-10-14-15-18-20-linters.log
+    note: Phase DAG lint checked 333 items and six explicit stubs with zero problems.
+  - id: V-P0-16
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-16-mattermost-rerun.log
+    note: Contract fixtures passed; local Mattermost returned health OK, and raw spike artifacts support slash registration, callbacks, thread edits, override behavior, and fallback.
+  - id: V-P0-17
+    result: FAIL
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-17-mcp-client.log
+    note: All contract fixtures and reconnect redelivery passed, but the reproduced empty long-poll response was 30.083 seconds, not within 30 seconds.
+  - id: V-P0-18
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-01-02-08-10-14-15-18-20-linters.log
+    note: Policy lint found zero out-of-vocabulary permissions and zero unclassified actions; quorum-default fixtures passed.
+  - id: V-P0-19
+    result: NOT_RUN
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-19-not-run.log
+    note: No Telegram bot token or test chat/topic inputs are available, so the mandatory live API spike could not be executed.
+  - id: V-P0-20
+    result: PASS
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-01-02-08-10-14-15-18-20-linters.log
+    note: Plan lint checked 103 packages, 230 tests, 19 risk rows, and 22 dependency rows with zero problems and an acyclic prerequisite graph.
+findings:
+  - id: F-P0-002-01
+    severity: Medium
+    affected: [REQ-AGENT-007, V-P0-17]
+    summary: MCP long-poll response exceeds the mandatory 30-second bound.
+    reproduction:
+      - Run SPIKE_PORT=8877 uv run python -m spikes.mcp.server.
+      - Run SPIKE_PORT=8877 uv run python -m spikes.mcp.client against the fresh server.
+      - Observe a_empty_poll elapsed_s in the client log.
+    expected: The empty long-poll response completes within 30 seconds.
+    actual: The response completed in 30.083 seconds; the client assertion permits up to 30.5 seconds and therefore did not catch the criterion violation.
+    evidence_ref: verification/phase-0/evidence-r002/V-P0-17-mcp-client.log
+    impact: Agents can observe delivery-poll latency beyond the fixed contract, and the automated spike can report success while the mandatory timing criterion is violated.
+    fix_condition: Bound the server wait below the end-to-end deadline or otherwise guarantee end-to-end response at or below 30.000 seconds, tighten the assertion to the criterion, and rerun V-P0-17 successfully.
+  - id: F-P0-002-02
+    severity: Medium
+    affected: [REQ-THRT-001, V-P0-09]
+    summary: Committed Mattermost spike evidence is not fully secret-safe.
+    reproduction:
+      - Inspect evidence/phase-0/spikes/mattermost/slash-command-delivery.json without printing its values.
+      - Identify callback-capability fields retained as issued values while the command token alone is redacted.
+      - Compare with docs/protocol/mattermost-spike.md, which states every token value was replaced by <redacted>.
+    expected: Evidence contains no real secret values or recoverable capability fragments, and all issued callback material is redacted.
+    actual: Live-issued callback material remains committed in the spike artifact; values are intentionally omitted from this report.
+    evidence_ref: evidence/phase-0/spikes/mattermost/slash-command-delivery.json
+    impact: Anyone with repository read access receives test-tenant callback capability material; even if short-lived or expired, immutable history retains values that evidence policy forbids committing.
+    fix_condition: Revoke or expire affected test credentials, purge or replace the sensitive artifact under the repository's incident procedure, commit fully redacted evidence, and rerun both history and directory secret review.
+  - id: F-P0-002-03
+    severity: Low
+    affected: [V-P0-03, V-P0-10]
+    summary: Implementer Evidence Manifest is pinned to an earlier commit than the verification target.
+    reproduction:
+      - Run git rev-parse HEAD.
+      - Compare the result with commit_sha in evidence/phase-0/manifest.yaml.
+    expected: The phase implementation manifest identifies the exact target commit being submitted for verification.
+    actual: The manifest identifies 217491bbd1121eec42a370ed19c22d02a1fef54e while the target is 9f7f1270db54b9bae3ed375a1861fc16652fb92b.
+    evidence_ref: verification/phase-0/evidence-r002/independent-review.txt
+    impact: The implementer self-test provenance does not cover the exact submitted target, so it cannot support target-pinned traceability; independent reruns were required for every PASS.
+    fix_condition: Generate a new immutable Evidence Manifest revision pinned to the exact target commit with current changed files and self-test references.
+    owner: agent-claude-code
+    deadline: before Phase 0 re-verification
+result: FAILED
+residual_risks:
+  - V-P0-04 remains unexecuted because no Docker/container runtime exists on the verification host.
+  - V-P0-19 remains unexecuted because Telegram bot and test chat/topic credentials were not provided.
+  - Mattermost interaction details were supported by committed raw artifacts and a fresh health rerun, but the full authenticated API sequence was not replayed because no secret-safe replay harness exists.

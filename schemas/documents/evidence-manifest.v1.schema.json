@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/documents/evidence-manifest.v1.schema.json",
+  "title": "Implementer Evidence Manifest (validation plan §6.1)",
+  "type": "object",
+  "required": [
+    "implementation_id", "phase", "implementer_agent_id", "implementer_account_id",
+    "implementer_credential_fingerprint", "identity_graph_version", "commit_sha", "image_digests",
+    "requirements", "changed_files", "migrations", "tests_run", "known_gaps", "rollback", "evidence_refs"
+  ],
+  "properties": {
+    "implementation_id": {"type": "string", "pattern": "^P[0-7]-IMPLEMENT-[0-9]{3}$"},
+    "phase": {"type": "integer", "minimum": 0, "maximum": 7},
+    "implementer_agent_id": {"type": "string", "minLength": 1},
+    "implementer_account_id": {"type": "string", "minLength": 1},
+    "implementer_credential_fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "identity_graph_version": {"type": "string", "minLength": 1},
+    "commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "image_digests": {"type": "array", "items": {"type": "string"}},
+    "requirements": {"type": "array", "items": {"type": "string", "pattern": "^REQ-[A-Z]+-[0-9]{3}$"}},
+    "changed_files": {"type": "array", "items": {"type": "string"}},
+    "migrations": {"type": "array", "items": {"type": "string"}},
+    "tests_run": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "command", "result"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^SELF-V-P[0-7]-[0-9]{2}$"},
+          "command": {"type": "string"},
+          "result": {"type": "string", "enum": ["pass", "fail", "not_run"]},
+          "evidence_ref": {"type": "string"},
+          "note": {"type": "string"}
+        }
+      }
+    },
+    "known_gaps": {"type": "array", "items": {"type": "string"}},
+    "rollback": {"type": "string"},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "reproduction": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

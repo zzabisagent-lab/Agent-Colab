@@ -1,0 +1,66 @@
+Script started on 2026-09-02 13:29:31+00:00 [COMMAND="uv run python -m spikes.mcp.server" TERM="tmux-256color" TTY="/dev/pts/3" COLUMNS="80" LINES="24"]
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+[2m[09/02/26 13:29:32][0m[2m [0mINFO     StreamableHTTP       ]8;id=3268603;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py\[2mstreamable_http_manager.py[0m]8;;\[2m:[0m]8;id=3268604;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py#148\[2m148[0m]8;;\
+[2m                    [0m         session manager      [2m                              [0m
+[2m                    [0m         started              [2m                              [0m
+[2m[09/02/26 13:29:38][0m[2m [0mINFO     Created new          ]8;id=3268612;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py\[2mstreamable_http_manager.py[0m]8;;\[2m:[0m]8;id=3268613;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py#300\[2m300[0m]8;;\
+[2m                    [0m         transport with       [2m                              [0m
+[2m                    [0m         session ID:          [2m                              [0m
+[2m                    [0m         a1f2c086b50e4095bd74 [2m                              [0m
+[2m                    [0m         c9339fdd1d56         [2m                              [0m
+{"t": 1788355808.3573313, "event": "poll_empty", "agent_id": "agent-spike-0001", "waited_s": 30.0}
+[2m[09/02/26 13:30:08][0m[2m [0mINFO     Terminating session:         ]8;id=3268622;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http.py\[2mstreamable_http.py[0m]8;;\[2m:[0m]8;id=3268623;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http.py#814\[2m814[0m]8;;\
+[2m                    [0m         a1f2c086b50e4095bd74c9339fdd [2m                      [0m
+[2m                    [0m         1d56                         [2m                      [0m
+[2m                   [0m[2m [0mINFO     Created new          ]8;id=3268630;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py\[2mstreamable_http_manager.py[0m]8;;\[2m:[0m]8;id=3268631;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py#300\[2m300[0m]8;;\
+[2m                    [0m         transport with       [2m                              [0m
+[2m                    [0m         session ID:          [2m                              [0m
+[2m                    [0m         ea9aeec1e6824d23962c [2m                              [0m
+[2m                    [0m         a79aa10e16a1         [2m                              [0m
+{"t": 1788355808.4564679, "event": "enqueued", "agent_id": "agent-spike-0001", "work_item_id": "wi-00000000000000ff"}
+{"t": 1788355808.4672384, "event": "poll_delivered", "agent_id": "agent-spike-0001", "items": ["wi-00000000000000ff"], "waited_s": 0.0}
+[2m                   [0m[2m [0mINFO     Terminating session:         ]8;id=3268638;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http.py\[2mstreamable_http.py[0m]8;;\[2m:[0m]8;id=3268639;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http.py#814\[2m814[0m]8;;\
+[2m                    [0m         ea9aeec1e6824d23962ca79aa10e [2m                      [0m
+[2m                    [0m         16a1                         [2m                      [0m
+[2m                   [0m[2m [0mINFO     Created new          ]8;id=3268646;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py\[2mstreamable_http_manager.py[0m]8;;\[2m:[0m]8;id=3268647;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py#300\[2m300[0m]8;;\
+[2m                    [0m         transport with       [2m                              [0m
+[2m                    [0m         session ID:          [2m                              [0m
+[2m                    [0m         69891d27c2fc4165bf6f [2m                              [0m
+[2m                    [0m         907946af3d46         [2m                              [0m
+{"t": 1788355808.4924734, "event": "poll_delivered", "agent_id": "agent-spike-0001", "items": ["wi-00000000000000ff"], "waited_s": 0.0}
+[2m                   [0m[2m [0mINFO     Terminating session:         ]8;id=3268654;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http.py\[2mstreamable_http.py[0m]8;;\[2m:[0m]8;id=3268655;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http.py#814\[2m814[0m]8;;\
+[2m                    [0m         69891d27c2fc4165bf6f907946af [2m                      [0m
+[2m                    [0m         3d46                         [2m                      [0m
+[2m                   [0m[2m [0mINFO     Created new          ]8;id=3268662;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py\[2mstreamable_http_manager.py[0m]8;;\[2m:[0m]8;id=3268663;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py#300\[2m300[0m]8;;\
+[2m                    [0m         transport with       [2m                              [0m
+[2m                    [0m         session ID:          [2m                              [0m
+[2m                    [0m         b2676a7f143f43ea8de9 [2m                              [0m
+[2m                    [0m         8f3db40411c3         [2m                              [0m
+{"t": 1788355808.521639, "event": "acked", "agent_id": "agent-spike-0001", "work_item_id": "wi-00000000000000ff"}
+{"t": 1788355808.532651, "event": "result_accepted", "work_item_id": "wi-00000000000000ff"}
+{"t": 1788355808.5382369, "event": "duplicate_result_ignored", "work_item_id": "wi-00000000000000ff"}
+{"t": 1788355810.543805, "event": "poll_empty", "agent_id": "agent-spike-0001", "waited_s": 2.001}
+[2m[09/02/26 13:30:10][0m[2m [0mINFO     Terminating session:         ]8;id=3268670;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http.py\[2mstreamable_http.py[0m]8;;\[2m:[0m]8;id=3268671;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http.py#814\[2m814[0m]8;;\
+[2m                    [0m         b2676a7f143f43ea8de98f3db404 [2m                      [0m
+[2m                    [0m         11c3                         [2m                      [0m
+[2m                   [0m[2m [0mINFO     Created new          ]8;id=3268678;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py\[2mstreamable_http_manager.py[0m]8;;\[2m:[0m]8;id=3268679;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py#300\[2m300[0m]8;;\
+[2m                    [0m         transport with       [2m                              [0m
+[2m                    [0m         session ID:          [2m                              [0m
+[2m                    [0m         ddb484f8edb344179bca [2m                              [0m
+[2m                    [0m         4b41f9e67be5         [2m                              [0m
+[2m                   [0m[2m [0mINFO     Terminating session:         ]8;id=3268686;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http.py\[2mstreamable_http.py[0m]8;;\[2m:[0m]8;id=3268687;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http.py#814\[2m814[0m]8;;\
+[2m                    [0m         ddb484f8edb344179bca4b41f9e6 [2m                      [0m
+[2m                    [0m         7be5                         [2m                      [0m
+[2m                   [0m[2m [0mINFO     Created new          ]8;id=3268694;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py\[2mstreamable_http_manager.py[0m]8;;\[2m:[0m]8;id=3268695;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py#300\[2m300[0m]8;;\
+[2m                    [0m         transport with       [2m                              [0m
+[2m                    [0m         session ID:          [2m                              [0m
+[2m                    [0m         48be32ff7a6041d79afa [2m                              [0m
+[2m                    [0m         29d0300fd80d         [2m                              [0m
+[2m                   [0m[2m [0mINFO     Terminating session:         ]8;id=3268702;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http.py\[2mstreamable_http.py[0m]8;;\[2m:[0m]8;id=3268703;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http.py#814\[2m814[0m]8;;\
+[2m                    [0m         48be32ff7a6041d79afa29d0300f [2m                      [0m
+[2m                    [0m         d80d                         [2m                      [0m
+^C[2m[09/02/26 13:30:13][0m[2m [0mINFO     StreamableHTTP       ]8;id=3268711;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py\[2mstreamable_http_manager.py[0m]8;;\[2m:[0m]8;id=3268712;file:///home/master/.local/verify/phase-0-r002/.venv/lib/python3.12/site-packages/mcp/server/streamable_http_manager.py#152\[2m152[0m]8;;\
+[2m                    [0m         session manager      [2m                              [0m
+[2m                    [0m         shutting down        [2m                              [0m
+
+Script done on 2026-09-02 13:30:13+00:00 [COMMAND_EXIT_CODE="0"]

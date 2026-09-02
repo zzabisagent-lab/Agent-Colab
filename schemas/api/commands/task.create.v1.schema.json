@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/task.create.v1.schema.json",
+  "title": "/colab task create",
+  "description": "Create a Task with acceptance criteria in the current channel",
+  "x-permission": "task.create",
+  "x-target": null,
+  "x-target-field": null,
+  "x-unlinked-allowed": false,
+  "x-example": "/colab task create \"Write the report\" --criteria \"report.md attached\" --domain research",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000,
+      "description": "quoted title"
+    },
+    "criteria": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 16000,
+        "description": "§7D.1 acceptance criteria, one or more"
+      },
+      "minItems": 1,
+      "maxItems": 50
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    },
+    "risk": {
+      "type": "string",
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "CRITICAL"
+      ]
+    },
+    "assignee": {
+      "type": "string",
+      "pattern": "^(@[A-Za-z0-9._-]{1,64}|agent-[A-Za-z0-9._-]{1,120})$"
+    },
+    "parent": {
+      "type": "string",
+      "pattern": "^task-[A-Za-z0-9._-]{1,120}$"
+    }
+  },
+  "required": [
+    "title",
+    "criteria"
+  ],
+  "additionalProperties": false
+}

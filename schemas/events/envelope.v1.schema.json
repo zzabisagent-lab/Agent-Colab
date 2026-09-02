@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/envelope.v1.schema.json",
+  "title": "Agent-Colab Event envelope v1",
+  "description": "Append-only aggregate Event (spec §9.3, development plan §6.3). Stored bytes and hashes are never modified.",
+  "type": "object",
+  "properties": {
+    "event_id": {"type": "string", "pattern": "^evt-[0-9a-f]{32}$"},
+    "schema_version": {"type": "integer", "const": 1},
+    "workspace_id": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+    "aggregate_type": {"type": "string", "minLength": 1},
+    "aggregate_id": {"type": "string", "minLength": 1, "maxLength": 200},
+    "aggregate_seq": {"type": "integer", "minimum": 1},
+    "channel_id": {"type": ["string", "null"]},
+    "task_id": {"type": ["string", "null"]},
+    "type": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]+$"},
+    "actor_account_id": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"},
+    "caused_by": {"type": ["string", "null"], "pattern": "^evt-[0-9a-f]{32}$"},
+    "correlation_id": {"type": "string", "minLength": 1, "maxLength": 200},
+    "idempotency_scope": {"type": "string", "pattern": "^[a-z_]+:[a-z_]+$", "description": "<aggregate_type>:<operation>"},
+    "idempotency_key": {"type": "string", "minLength": 1, "maxLength": 200},
+    "policy_version": {"type": "string", "minLength": 1},
+    "payload": {"type": "object"},
+    "sensitive_payload_ciphertext": {"type": ["string", "null"], "contentEncoding": "base64"},
+    "sensitive_payload_key_ref": {"type": ["string", "null"]},
+    "previous_hash": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "content_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "occurred_at": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"},
+    "recorded_at": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"}
+  },
+  "required": [
+    "event_id", "schema_version", "workspace_id", "aggregate_type", "aggregate_id", "aggregate_seq",
+    "type", "actor_account_id", "correlation_id", "idempotency_scope", "idempotency_key",
+    "policy_version", "payload", "content_hash", "occurred_at"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "description": "sensitive ciphertext and key reference are both present or both absent",
+      "if": {"properties": {"sensitive_payload_ciphertext": {"type": "string"}}, "required": ["sensitive_payload_ciphertext"]},
+      "then": {"properties": {"sensitive_payload_key_ref": {"type": "string", "minLength": 1}}, "required": ["sensitive_payload_key_ref"]},
+      "else": {"properties": {"sensitive_payload_key_ref": {"type": "null"}}}
+    },
+    {
+      "description": "the first Event of an aggregate has no previous hash",
+      "if": {"properties": {"aggregate_seq": {"const": 1}}},
+      "then": {"properties": {"previous_hash": {"type": "null"}}},
+      "else": {"properties": {"previous_hash": {"type": "string"}}, "required": ["previous_hash"]}
+    }
+  ]
+}

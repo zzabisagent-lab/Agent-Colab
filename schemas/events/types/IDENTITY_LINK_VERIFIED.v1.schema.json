@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/IDENTITY_LINK_VERIFIED.v1.schema.json",
+  "title": "IDENTITY_LINK_VERIFIED payload v1",
+  "description": "Non-sensitive payload of IDENTITY_LINK_VERIFIED (external_identity_link aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "link_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "verification_method": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "link_id",
+    "account_id",
+    "verification_method"
+  ],
+  "additionalProperties": true
+}

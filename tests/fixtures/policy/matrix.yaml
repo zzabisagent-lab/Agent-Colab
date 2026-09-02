@@ -1,0 +1,81 @@
+# Deny/allow/conflict matrix (V-P0-06). Every case is deterministic: same inputs -> same output.
+roles:
+  reviewer:
+    permissions: [task.read, artifact.read, verification.submit]
+    constraints: {domains: [research], side_effects: deny, requires_human_approval: [external_send]}
+  worker:
+    permissions: [task.*, artifact.write]
+  denier:
+    permissions: []
+    deny: [task.cancel]
+  admin_deny_all_tasks:
+    permissions: [admin.settings]
+    deny: ["task.*"]
+  inactive_admin:
+    permissions: ["*"]
+    status: suspended
+  channel_scoped:
+    permissions: [task.create]
+    constraints: {channels: [chan-a]}
+cases:
+  - name: default deny with no roles
+    roles: []
+    request: {permission: task.create}
+    expect: {decision: DENY, reason: DEFAULT_DENY}
+  - name: plain allow
+    roles: [worker]
+    request: {permission: task.create}
+    expect: {decision: ALLOW, reason: ALLOW}
+  - name: wildcard allow
+    roles: [worker]
+    request: {permission: task.progress}
+    expect: {decision: ALLOW, reason: ALLOW}
+  - name: explicit deny beats allow from another role
+    roles: [worker, denier]
+    request: {permission: task.cancel}
+    expect: {decision: DENY, reason: EXPLICIT_DENY}
+  - name: explicit deny beats allow regardless of role order
+    roles: [denier, worker]
+    request: {permission: task.cancel}
+    expect: {decision: DENY, reason: EXPLICIT_DENY}
+  - name: wildcard deny beats specific allow
+    roles: [worker, admin_deny_all_tasks]
+    request: {permission: task.create}
+    expect: {decision: DENY, reason: EXPLICIT_DENY}
+  - name: scope restriction (domain) beats allow
+    roles: [reviewer]
+    request: {permission: task.read, domain: finance}
+    expect: {decision: DENY, reason: SCOPE_DOMAIN}
+  - name: scope satisfied
+    roles: [reviewer]
+    request: {permission: task.read, domain: research}
+    expect: {decision: ALLOW, reason: ALLOW}
+  - name: side effect denied by constraint
+    roles: [reviewer]
+    request: {permission: verification.submit, domain: research, side_effect: true}
+    expect: {decision: DENY, reason: SCOPE_SIDE_EFFECT}
+  - name: another role in scope allows even if one role is out of scope
+    roles: [reviewer, worker]
+    request: {permission: task.read, domain: finance}
+    expect: {decision: ALLOW, reason: ALLOW}
+  - name: inactive role grants nothing
+    roles: [inactive_admin]
+    request: {permission: admin.settings}
+    expect: {decision: DENY, reason: DEFAULT_DENY}
+  - name: channel scope
+    roles: [channel_scoped]
+    request: {permission: task.create, channel_id: chan-b}
+    expect: {decision: DENY, reason: SCOPE_CHANNEL}
+  - name: channel scope satisfied
+    roles: [channel_scoped]
+    request: {permission: task.create, channel_id: chan-a}
+    expect: {decision: ALLOW, reason: ALLOW}
+  - name: requires human approval flag propagates
+    roles: [reviewer]
+    request: {permission: verification.submit, domain: research}
+    expect: {decision: ALLOW, reason: ALLOW, requires_human_approval: false}
+  - name: unknown permission is denied when a vocabulary is supplied
+    roles: [worker]
+    vocabulary: [task.read]
+    request: {permission: task.create}
+    expect: {decision: DENY, reason: UNKNOWN_PERMISSION}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/telegram/bridge-mapping.v1.schema.json",
+  "title": "Telegram Bridge message mapping v1 (development plan §6.5, spec §10)",
+  "description": "One row of message_mappings: the durable link between a Mattermost post and a Telegram message relayed by a Bridge. (bridge_id, source_platform, source_message_id) is unique.",
+  "type": "object",
+  "required": ["bridge_id", "source_platform", "source_message_id", "origin_platform", "origin_message_id", "hop_count", "mattermost", "telegram", "redaction_status", "delivery_status"],
+  "properties": {
+    "bridge_id": {"type": "string", "pattern": "^bridge-[A-Za-z0-9_-]+$"},
+    "source_platform": {"type": "string", "enum": ["mattermost", "telegram"]},
+    "source_message_id": {"type": "string", "minLength": 1},
+    "origin_platform": {"type": "string", "enum": ["mattermost", "telegram"], "description": "immutable origin marker: platform of the human-authored message"},
+    "origin_message_id": {"type": "string", "minLength": 1},
+    "hop_count": {"type": "integer", "minimum": 0, "maximum": 1, "description": "0 = original, 1 = relayed once; a relayed message is never relayed again"},
+    "mattermost": {
+      "type": "object",
+      "required": ["channel_id", "post_id", "root_id"],
+      "properties": {
+        "channel_id": {"type": "string"},
+        "post_id": {"type": "string"},
+        "root_id": {"type": ["string", "null"], "description": "null for a root post; the root post id for a thread reply"}
+      },
+      "additionalProperties": false
+    },
+    "telegram": {
+      "type": "object",
+      "required": ["chat_id", "message_id", "message_thread_id", "reply_to_message_id"],
+      "properties": {
+        "chat_id": {"type": "string"},
+        "message_id": {"type": "integer", "minimum": 1},
+        "message_thread_id": {"type": ["integer", "null"], "minimum": 1, "description": "forum topic thread id = id of the topic's forum_topic_created service message; null = General topic (sendMessage must omit the field; thread id 1 is rejected by the Bot API)"},
+        "reply_to_message_id": {"type": ["integer", "null"], "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "redaction_status": {"type": "string", "enum": ["clean", "redacted", "blocked"]},
+    "delivery_status": {"type": "string", "enum": ["pending", "delivered", "failed", "dead_letter"]},
+    "created_at": {"type": "string"}
+  },
+  "additionalProperties": false
+}

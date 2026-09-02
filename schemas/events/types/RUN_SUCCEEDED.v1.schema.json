@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/RUN_SUCCEEDED.v1.schema.json",
+  "title": "RUN_SUCCEEDED payload v1",
+  "description": "Non-sensitive payload of RUN_SUCCEEDED (schedule_run aggregate, Phase 5). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attempt_no": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "run_id",
+    "attempt_no"
+  ],
+  "additionalProperties": true
+}

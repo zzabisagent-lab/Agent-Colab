@@ -1,0 +1,18 @@
+{
+  "test_id": "V-P0-15",
+  "evidence_id": "SELF-V-P0-15",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "python",
+    "-m",
+    "tools.phase_dag_lint"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "b9bcc436dac735a7673bc3c1cbaadec8e68f7862",
+  "started_at": "2026-09-02T12:54:45.728016+00:00",
+  "finished_at": "2026-09-02T12:54:45.853601+00:00",
+  "output_sha256": "07a0203622adbdf46687f428a56c35771c5d027266d649d80cd908593f799ac8"
+}

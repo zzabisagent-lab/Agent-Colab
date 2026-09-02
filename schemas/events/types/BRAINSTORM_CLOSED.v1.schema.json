@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/BRAINSTORM_CLOSED.v1.schema.json",
+  "title": "BRAINSTORM_CLOSED payload v1",
+  "description": "Non-sensitive payload of BRAINSTORM_CLOSED (brainstorm aggregate, Phase 6). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "brainstorm_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "brainstorm_id"
+  ],
+  "additionalProperties": true
+}

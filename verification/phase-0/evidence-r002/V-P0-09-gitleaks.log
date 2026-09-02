@@ -1,0 +1,6 @@
+Script started on 2026-09-02 13:31:04+00:00 [COMMAND="gitleaks git --no-banner --redact . && gitleaks dir --no-banner --redact ." <not executed on terminal>]
+1:31PM INF 12 commits scanned.
+1:31PM INF scanned ~1651046 bytes (1.65 MB) in 632ms
+1:31PM WRN leaks found: 3
+
+Script done on 2026-09-02 13:31:05+00:00 [COMMAND_EXIT_CODE="1"]

@@ -1,0 +1,181 @@
+Script started on 2026-09-02 13:27:28+00:00 [COMMAND="make bootstrap && make lint && make test && make check-docs && make build" <not executed on terminal>]
+cd web-admin && pnpm install --frozen-lockfile
+[32m✓[39m Lockfile passes supply-chain policies (verified 41m ago)
+[K[0JLockfile is up to date, resolution step is skipped[0K
+[0K[K[0JProgress: resolved [96m1[39m, reused [96m0[39m, downloaded [96m0[39m, added [96m0[39m[0K
+[0K[K[0J[53APackages: [32m+27[39m[0K
+[32m+[39m[0K
+Progress: resolved [96m1[39m, reused [96m0[39m, downloaded [96m0[39m, added [96m0[39m[0K
+[0K[K[0J[53APackages are hard linked from the content-addressable store to the virtual store.[0K
+  Content-addressable store is at: /home/master/.local/share/pnpm/store/v11[0K
+  Virtual store is at:             node_modules/.pnpm[0K
+Progress: resolved [96m1[39m, reused [96m0[39m, downloaded [96m0[39m, added [96m0[39m[0K
+[0K[K[0J[53AProgress: resolved [96m27[39m, reused [96m26[39m, downloaded [96m0[39m, added [96m26[39m[0K
+[0K[K[0J[56AProgress: resolved [96m27[39m, reused [96m27[39m, downloaded [96m0[39m, added [96m27[39m, done[0K
+[0K[K[0J
+[96mdependencies:[39m
+[32m+[39m react [90m19.2.8[39m
+[32m+[39m react-dom [90m19.2.8[39m
+
+[96mdevDependencies:[39m
+[32m+[39m @types/node [90m24.13.3[39m
+[32m+[39m @types/react [90m19.2.18[39m
+[32m+[39m @types/react-dom [90m19.2.5[39m
+[32m+[39m @vitejs/plugin-react [90m6.1.1[39m
+[32m+[39m oxlint [90m1.80.0[39m
+[32m+[39m typescript [90m6.0.3[39m
+[32m+[39m vite [90m8.2.2[39m
+[K[0J
+Done in 977ms using pnpm v11.25.0
+[K[0J/home/master/.local/bin/uv sync --all-extras
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Resolved 100 packages in 1ms
+Checked 97 packages in 1ms
+/home/master/.local/bin/uv run ruff check .
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+All checks passed!
+/home/master/.local/bin/uv run ruff format --check .
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+133 files already formatted
+/home/master/.local/bin/uv run mypy
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+[1m[32mSuccess: no issues found in 75 source files[m
+/home/master/.local/bin/uv run bandit -q -c pyproject.toml -r server sidecar
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:93
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:94
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:95
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:100
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:101
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:102
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:103
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:104
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:105
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:111
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:112
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:113
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:118
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:119
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:120
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:121
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:122
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:123
+/home/master/.local/bin/uv run bandit -q -c pyproject.toml -ll -r tools
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+cd web-admin && pnpm run lint && pnpm exec tsc -b
+[2m$ oxlint[22m
+/home/master/.local/bin/uv run pytest
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+........................................................................ [ 12%]
+........................................................................ [ 24%]
+........................................................................ [ 36%]
+........................................................................ [ 49%]
+........................................................................ [ 61%]
+........................................................................ [ 73%]
+........................................................................ [ 86%]
+........................................................................ [ 98%]
+.........                                                                [100%]
+585 passed in 4.12s
+/home/master/.local/bin/uv run python -m tools.trace_matrix --check
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+trace_matrix: 111 REQ, 103 packages, 230 tests, 0 problems
+/home/master/.local/bin/uv run python -m tools.criteria_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+criteria_lint: 230 tests, 0 problems, 1 criteria contain a vague word but also a deterministic criterion
+/home/master/.local/bin/uv run python -m tools.phase_dag_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+phase_dag_lint: 333 items checked, 6 explicit stubs, 0 problems
+/home/master/.local/bin/uv run python -m tools.plan_baseline_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+plan_baseline_lint: 103 packages (weight 247), 230 tests, 19 risk rows, 22 dependency rows, 0 problems
+/home/master/.local/bin/uv run python -m tools.policy_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+policy_lint: permissions=53, minimum_permissions=33, action_classes=7, actions=162, baseline_tools=29, baseline_commands=45, unclassified=0, default_roles=9, fixture_roles=6, capabilities=32, problems=0
+/home/master/.local/bin/uv run python -m tools.name_role_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+name_role_lint: 0 problems
+/home/master/.local/bin/uv run python -m tools.threat_model_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+threat_model_lint: 5 mandatory boundaries, 0 problems
+/home/master/.local/bin/uv run python -m tools.gen_event_schemas --check
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+gen_event_schemas: 99 types, 0 drifted, 0 stale
+/home/master/.local/bin/uv run python -m tools.gen_event_fixtures --check
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+gen_event_fixtures: 25 fixtures, 0 drifted, 0 stale
+/home/master/.local/bin/uv build
+Building source distribution...
+Building wheel from source distribution...
+Successfully built dist/agent_colab-0.0.0.tar.gz
+Successfully built dist/agent_colab-0.0.0-py3-none-any.whl
+cd web-admin && pnpm run build
+[2m$ tsc -b && vite build[22m
+vite v8.2.2 building client environment for production...
+[2K✓ 20 modules transformed.
+[2Krendering chunks (1)...[2Kcomputing gzip size...
+[2Kdist/index.html                   0.46 kB │ gzip:  0.30 kB
+dist/assets/react-CHdo91hT.svg    4.12 kB │ gzip:  2.06 kB
+dist/assets/vite-BF8QNONU.svg     8.70 kB │ gzip:  1.60 kB
+dist/assets/hero-CLDdwZDr.png    13.05 kB
+dist/assets/index-D64VDMd1.css    4.10 kB │ gzip:  1.47 kB
+dist/assets/index-CP6jzYRJ.js   193.28 kB │ gzip: 60.63 kB
+
+✓ built in 229ms
+
+Script done on 2026-09-02 13:28:09+00:00 [COMMAND_EXIT_CODE="0"]

@@ -1,0 +1,45 @@
+name: ci
+
+on:
+  push:
+    branches: ["main", "phase-*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: colab
+          POSTGRES_PASSWORD: colab
+          POSTGRES_DB: colab_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U colab" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      AGENT_COLAB_TEST_DATABASE_URL: postgresql://colab:colab@localhost:5432/colab_test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install -g pnpm
+      - run: make bootstrap
+      - run: make lint
+      - run: make test
+      - run: make check-docs
+      - run: make build
+      - name: secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

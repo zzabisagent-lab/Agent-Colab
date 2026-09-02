@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/PRINCIPAL_ROLE_ASSIGNED.v1.schema.json",
+  "title": "PRINCIPAL_ROLE_ASSIGNED payload v1",
+  "description": "Non-sensitive payload of PRINCIPAL_ROLE_ASSIGNED (account aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role_version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "scope": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "account_id",
+    "role_id",
+    "role_version",
+    "scope"
+  ],
+  "additionalProperties": true
+}

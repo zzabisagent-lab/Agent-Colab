@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/task.cancel.v1.schema.json",
+  "title": "/colab task cancel",
+  "description": "Arguments of `/colab task cancel`.",
+  "x-permission": "task.cancel",
+  "x-target": "task",
+  "x-target-field": "task_id",
+  "x-unlinked-allowed": false,
+  "x-example": "/colab task cancel task-123 --reason \"no longer needed\"",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^task-[A-Za-z0-9._-]{1,120}$",
+      "description": "omitted inside a Task thread"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

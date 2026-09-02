@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/brainstorm.pause.v1.schema.json",
+  "title": "/colab brainstorm pause",
+  "description": "Arguments of `/colab brainstorm pause`.",
+  "x-permission": "brainstorm.facilitate",
+  "x-target": "brainstorm",
+  "x-target-field": "brainstorm_id",
+  "x-unlinked-allowed": false,
+  "x-example": "/colab brainstorm pause bs-5",
+  "type": "object",
+  "properties": {
+    "brainstorm_id": {
+      "type": "string",
+      "pattern": "^bs-[A-Za-z0-9._-]{1,120}$",
+      "description": "omitted inside a Brainstorm thread"
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/adapters/probe-response.v1.schema.json",
+  "title": "Agent-Colab adapter probe response v1",
+  "description": "probe() -> identity/runtime/capabilities/delivery_modes/limits (development plan §7.3). Unsupported capabilities are declared explicitly; identity must be stable across probes (CS-01).",
+  "type": "object",
+  "properties": {
+    "schema_id": {"type": "string", "const": "colab.probe-response.v1"},
+    "identity": {
+      "type": "object",
+      "properties": {
+        "agent_id": {"type": "string", "pattern": "^agent-[A-Za-z0-9._-]{1,64}$"},
+        "adapter_type": {"type": "string", "enum": ["mcp", "webhook", "mattermost_bot"]},
+        "instance_fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      },
+      "required": ["agent_id", "adapter_type", "instance_fingerprint"],
+      "additionalProperties": false
+    },
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "product": {"type": "string"},
+        "model": {"type": "string"},
+        "version": {"type": "string"},
+        "host": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "object",
+      "properties": {
+        "tools": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9_.]{1,63}$"}, "uniqueItems": true},
+        "domains": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "unsupported": {"type": "array", "items": {"type": "string", "pattern": "^[a-z][a-z0-9_.]{1,63}$"}, "uniqueItems": true},
+        "secret_handles": {"type": "string", "enum": ["supported", "unsupported"]},
+        "cancel": {"type": "string", "enum": ["supported", "unsupported"]},
+        "side_effects": {"type": "array", "items": {"type": "string"}}
+      },
+      "required": ["tools", "unsupported", "secret_handles", "cancel"],
+      "additionalProperties": false
+    },
+    "delivery_modes": {"type": "array", "items": {"type": "string", "enum": ["push", "pull"]}, "minItems": 1, "uniqueItems": true},
+    "limits": {
+      "type": "object",
+      "properties": {
+        "concurrent_tasks": {"type": "integer", "minimum": 0},
+        "requests_per_minute": {"type": "integer", "minimum": 0},
+        "brainstorm_turns": {"type": "integer", "minimum": 0},
+        "daily_cost_units": {"type": "integer", "minimum": 0},
+        "task_cost_units": {"type": "integer", "minimum": 0},
+        "task_wall_time_s": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["schema_id", "identity", "capabilities", "delivery_modes", "limits"],
+  "additionalProperties": false
+}

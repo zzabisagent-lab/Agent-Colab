@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/VERIFIER_ASSIGNED.v1.schema.json",
+  "title": "VERIFIER_ASSIGNED payload v1",
+  "description": "Non-sensitive payload of VERIFIER_ASSIGNED (verification_run aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "verification_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "verifier_account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "implementer_account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "criteria_version": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "verification_id",
+    "target_type",
+    "target_id",
+    "verifier_account_id",
+    "implementer_account_id",
+    "criteria_version"
+  ],
+  "additionalProperties": true
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/doc.show.v1.schema.json",
+  "title": "/colab doc show",
+  "description": "Arguments of `/colab doc show`.",
+  "x-permission": "document.read",
+  "x-target": "subject",
+  "x-target-field": "subject_id",
+  "x-unlinked-allowed": false,
+  "x-example": "/colab doc show task-123",
+  "type": "object",
+  "properties": {
+    "subject_id": {
+      "type": "string",
+      "pattern": "^(task|bs)-[A-Za-z0-9._-]{1,120}$"
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

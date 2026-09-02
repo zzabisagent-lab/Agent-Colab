@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/mattermost/action-callback.v1.schema.json",
+  "title": "Mattermost interactive action callback v1",
+  "description": "POST body Mattermost sends to /api/v1/providers/mattermost/actions when a card button is clicked. The `context` is authored by the Agent-Colab server when rendering the button and carries the security envelope validated by server.channels.contract.validate_callback before any command handler runs.",
+  "type": "object",
+  "properties": {
+    "user_id": {"type": "string", "minLength": 1},
+    "user_name": {"type": "string"},
+    "channel_id": {"type": "string", "minLength": 1},
+    "channel_name": {"type": "string"},
+    "team_id": {"type": "string", "minLength": 1},
+    "team_domain": {"type": "string"},
+    "post_id": {"type": "string", "minLength": 1},
+    "trigger_id": {"type": "string"},
+    "type": {"type": "string"},
+    "data_source": {"type": "string"},
+    "context": {
+      "type": "object",
+      "properties": {
+        "action": {"type": "string", "enum": ["accept", "submit", "approve", "reject", "verify_pass", "verify_fail", "cancel", "pause", "resume", "summarize", "close"]},
+        "subject_kind": {"type": "string", "enum": ["task", "brainstorm", "approval"]},
+        "subject_id": {"type": "string", "minLength": 1},
+        "provider_instance_id": {"type": "string", "minLength": 1},
+        "integration_token": {"type": "string", "minLength": 16, "description": "opaque per-provider-instance token reference; compared in constant time"},
+        "timestamp": {"type": "integer", "minimum": 0, "description": "epoch seconds when the button was rendered; ±300 s tolerance"},
+        "nonce": {"type": "string", "pattern": "^[A-Za-z0-9_-]{16,64}$", "description": "one-time; reuse is CALLBACK_NONCE_REUSED"},
+        "body_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$", "description": "SHA-256 of the raw request body"},
+        "signature": {"type": "string", "pattern": "^[0-9a-f]{64}$", "description": "HMAC-SHA256(key, timestamp|nonce|body_sha256)"}
+      },
+      "required": ["action", "subject_kind", "subject_id", "provider_instance_id", "integration_token", "timestamp", "nonce", "body_sha256", "signature"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["user_id", "channel_id", "team_id", "post_id", "context"],
+  "additionalProperties": true,
+  "x-validation-order": ["integration_token", "timestamp", "signature", "body_sha256", "nonce"],
+  "x-error-codes": {
+    "CALLBACK_SIGNATURE_INVALID": "integration token or HMAC does not match (401)",
+    "CALLBACK_TIMESTAMP_EXPIRED": "timestamp outside ±300 s (403)",
+    "CALLBACK_BODY_HASH_MISMATCH": "claimed body hash differs from the received body (403)",
+    "CALLBACK_NONCE_REUSED": "nonce already consumed (403)"
+  },
+  "x-side-effects-on-rejection": "none; one redacted AuditEvent per rejection"
+}

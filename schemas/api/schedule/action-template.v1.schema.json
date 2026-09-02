@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/schedule/action-template.v1.schema.json",
+  "title": "Schedule action template v1",
+  "description": "Only Agent-Colab actions (development plan §7.4 core tools; default task_create). Shell strings, commands, and secret values are forbidden (spec §5.6, §15, §10A.4).",
+  "type": "object",
+  "properties": {
+    "schema_id": {"type": "string", "const": "action-template.v1"},
+    "action": {
+      "type": "string",
+      "enum": [
+        "task_create", "task_get", "task_delegate", "task_accept", "task_progress",
+        "implementation_submit", "approval_request", "artifact_register", "verification_submit",
+        "verification_evidence_submit", "document_get", "work_poll", "work_ack", "work_result",
+        "brainstorm_contribute", "usage_report"
+      ],
+      "default": "task_create"
+    },
+    "input": {"type": "object"},
+    "secret_refs": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^secret://[A-Za-z0-9_./-]+(@v[0-9]+)?$"},
+      "uniqueItems": true
+    }
+  },
+  "required": ["schema_id", "action", "input"],
+  "additionalProperties": false
+}

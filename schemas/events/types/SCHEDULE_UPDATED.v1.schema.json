@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/SCHEDULE_UPDATED.v1.schema.json",
+  "title": "SCHEDULE_UPDATED payload v1",
+  "description": "Non-sensitive payload of SCHEDULE_UPDATED (schedule aggregate, Phase 5). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "schedule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schedule_version_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "snapshot_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "schedule_id",
+    "schedule_version_id",
+    "version",
+    "snapshot_hash"
+  ],
+  "additionalProperties": true
+}

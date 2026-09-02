@@ -1,0 +1,38 @@
+{
+  "execute_response": {
+    "status": 200,
+    "body": {
+      "response_type": "ephemeral",
+      "text": "spike ok",
+      "username": "",
+      "channel_id": "",
+      "icon_url": "",
+      "type": "",
+      "props": null,
+      "goto_location": "",
+      "trigger_id": "<redacted:len=26>",
+      "skip_slack_parsing": false,
+      "attachments": null,
+      "extra_responses": null
+    }
+  },
+  "received_by_listener": {
+    "content_type": "application/x-www-form-urlencoded",
+    "form": {
+      "channel_id": "kg4d6h94bpnt7cnsp3pm17xf6a",
+      "channel_name": "work-a",
+      "command": "/colab",
+      "response_url": "<redacted:len=63>",
+      "team_domain": "colab-test",
+      "team_id": "dhmmszncpjb1ir1n4qdomygnsc",
+      "text": "task create \"Spike task\" --criteria \"x\"",
+      "token": "<redacted>",
+      "trigger_id": "<redacted:len=220>",
+      "user_id": "q7z1rtth4pgw8chei1x8gwscse",
+      "user_name": "colabadmin"
+    },
+    "token_present": true,
+    "token_length": 26,
+    "authorization_header_present": true
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/pricing.v1.schema.json",
+  "title": "Agent-Colab pricing table v1 (policy/pricing.yaml)",
+  "description": "Integer cost_units rates (1 credit = 1,000,000 cost_units) per model plus a default entry for unknown models (development plan §7C). Versioned and audited; edited in Admin Settings.",
+  "$defs": {
+    "rate": {
+      "type": "object",
+      "properties": {
+        "input_per_1k_tokens": {"type": "integer", "minimum": 0},
+        "output_per_1k_tokens": {"type": "integer", "minimum": 0},
+        "per_tool_call": {"type": "integer", "minimum": 0},
+        "per_wall_second": {"type": "integer", "minimum": 0}
+      },
+      "required": ["input_per_1k_tokens", "output_per_1k_tokens", "per_tool_call", "per_wall_second"],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "version": {"type": "string", "pattern": "^pricing-v[0-9]+$"},
+    "cost_units_per_credit": {"type": "integer", "const": 1000000},
+    "default": {"$ref": "#/$defs/rate"},
+    "models": {
+      "type": "object",
+      "propertyNames": {"pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,199}$"},
+      "additionalProperties": {"$ref": "#/$defs/rate"}
+    }
+  },
+  "required": ["version", "cost_units_per_credit", "default", "models"],
+  "additionalProperties": false
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/WORK_ITEM_DELIVERED.v1.schema.json",
+  "title": "WORK_ITEM_DELIVERED payload v1",
+  "description": "Non-sensitive payload of WORK_ITEM_DELIVERED (work_item aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "work_item_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "delivery_no": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "work_item_id",
+    "delivery_no"
+  ],
+  "additionalProperties": true
+}

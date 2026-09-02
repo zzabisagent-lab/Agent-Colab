@@ -1,0 +1,41 @@
+# Sealed bootstrap store documents (schemas/api/setup/bootstrap-state.v1.schema.json).
+valid:
+  - name: uninitialized
+    document: {schema_version: 1, state: UNINITIALIZED, stage_ordinal: 0, token_hash: null, token_fingerprint: null, token_expires_at: null, token_used: false, config_pointers: {}, failure_counters: {}, last_failure: null, lock_marker: false, recovery_metadata: {}, updated_at: "2026-01-15T10:00:00.000Z"}
+  - name: preflight-with-token-hash-and-pointers
+    document: {schema_version: 1, state: PREFLIGHT_PASSED, stage_ordinal: 1, token_hash: "3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b8550", token_fingerprint: "3b0c4429", token_expires_at: "2026-01-15T10:30:00.000Z", token_used: false, config_pointers: {db_host: "127.0.0.1", db_port: 5432, db_name: colab, db_user: colab, secret_provider: local_encrypted, master_key_path: "/var/lib/agent-colab/keys/master.key", instance_name: "Agent-Colab", base_url: "https://colab.example.test", language: en, timezone: "Asia/Seoul"}, failure_counters: {"203.0.113.9|deadbeef": {failures: 2, blocked_until: null}}, last_failure: null, lock_marker: false, recovery_metadata: {}, updated_at: "2026-01-15T10:01:00.000Z"}
+  - name: bootstrap-failed-with-retry-fingerprint
+    document: {schema_version: 1, state: BOOTSTRAP_FAILED, stage_ordinal: 2, token_hash: "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", token_fingerprint: "9f86d081", token_expires_at: "2026-01-15T10:40:00.000Z", token_used: false, config_pointers: {db_host: db, db_port: 5432}, failure_counters: {}, last_failure: {failed_step: KEY_PROVIDER, error_code: KEY_PROVIDER_UNREACHABLE, retry_token_fingerprint: "9f86d081", failed_at: "2026-01-15T10:09:00.000Z"}, lock_marker: false, recovery_metadata: {}, updated_at: "2026-01-15T10:09:00.000Z"}
+  - name: locked-marker-only
+    document: {schema_version: 1, state: LOCKED, stage_ordinal: 4, token_hash: null, token_fingerprint: null, token_expires_at: null, token_used: true, config_pointers: {}, failure_counters: {}, last_failure: null, lock_marker: true, recovery_metadata: {setup_state_location: db, instance_id: "inst-0001", locked_at: "2026-01-15T10:20:00.000Z", schema_migration_head: "0001_initial"}, updated_at: "2026-01-15T10:20:00.000Z"}
+invalid:
+  - name: db-password-key
+    code: BOOTSTRAP_STORE_SECRET_REJECTED
+    document: {schema_version: 1, state: PREFLIGHT_PASSED, stage_ordinal: 1, token_used: false, lock_marker: false, config_pointers: {db_host: db}, recovery_metadata: {}, failure_counters: {db_password: {failures: 0}}, updated_at: "2026-01-15T10:00:00.000Z"}
+  - name: dsn-with-credentials-value
+    code: BOOTSTRAP_STORE_SECRET_REJECTED
+    document: {schema_version: 1, state: PREFLIGHT_PASSED, stage_ordinal: 1, token_used: false, lock_marker: false, config_pointers: {base_url: "postgresql://colab:CANARY-NOT-A-SECRET-0001@db:5432/colab"}, recovery_metadata: {}, updated_at: "2026-01-15T10:00:00.000Z"}
+  - name: private-key-value
+    code: BOOTSTRAP_STORE_SECRET_REJECTED
+    document: {schema_version: 1, state: PREFLIGHT_PASSED, stage_ordinal: 1, token_used: false, lock_marker: false, config_pointers: {master_key_path: "-----BEGIN PRIVATE KEY-----\nMIIE"}, recovery_metadata: {}, updated_at: "2026-01-15T10:00:00.000Z"}
+  - name: high-entropy-value
+    code: BOOTSTRAP_STORE_SECRET_REJECTED
+    document: {schema_version: 1, state: PREFLIGHT_PASSED, stage_ordinal: 1, token_used: false, lock_marker: false, config_pointers: {instance_name: "Zx9kQ2mP7vL4nR8sT1wY6bC3dF5gH0jK"}, recovery_metadata: {}, updated_at: "2026-01-15T10:00:00.000Z"}
+  - name: raw-token-value-field
+    code: BOOTSTRAP_STORE_SCHEMA_INVALID
+    document: {schema_version: 1, state: PREFLIGHT_PASSED, stage_ordinal: 1, token_used: false, lock_marker: false, token_value: "abc", recovery_metadata: {}, updated_at: "2026-01-15T10:00:00.000Z"}
+  - name: unknown-config-pointer
+    code: BOOTSTRAP_STORE_SCHEMA_INVALID
+    document: {schema_version: 1, state: PREFLIGHT_PASSED, stage_ordinal: 1, token_used: false, lock_marker: false, config_pointers: {db_dsn: "x"}, recovery_metadata: {}, updated_at: "2026-01-15T10:00:00.000Z"}
+  - name: stage-ordinal-mismatch
+    code: BOOTSTRAP_STORE_SCHEMA_INVALID
+    document: {schema_version: 1, state: LOCKED, stage_ordinal: 1, token_used: true, lock_marker: true, recovery_metadata: {}, updated_at: "2026-01-15T10:00:00.000Z"}
+  - name: lock-marker-without-locked
+    code: BOOTSTRAP_STORE_SCHEMA_INVALID
+    document: {schema_version: 1, state: CONFIGURED, stage_ordinal: 3, token_used: true, lock_marker: true, recovery_metadata: {}, updated_at: "2026-01-15T10:00:00.000Z"}
+  - name: bad-token-hash-format
+    code: BOOTSTRAP_STORE_SCHEMA_INVALID
+    document: {schema_version: 1, state: PREFLIGHT_PASSED, stage_ordinal: 1, token_hash: "not-a-hash", token_used: false, lock_marker: false, recovery_metadata: {}, updated_at: "2026-01-15T10:00:00.000Z"}
+  - name: unknown-state
+    code: BOOTSTRAP_STORE_SCHEMA_INVALID
+    document: {schema_version: 1, state: HALF_DONE, stage_ordinal: 1, token_used: false, lock_marker: false, recovery_metadata: {}, updated_at: "2026-01-15T10:00:00.000Z"}

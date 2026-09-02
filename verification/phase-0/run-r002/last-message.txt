@@ -1,0 +1,8 @@
+Verification completed and schema-validated.
+
+Report: [VR-P0-002.yaml](/home/master/.local/verify/phase-0-r002/verification/phase-0/VR-P0-002.yaml)  
+Evidence: [evidence-r002](/home/master/.local/verify/phase-0-r002/verification/phase-0/evidence-r002/)
+
+Summary: 16 PASS, 2 FAIL, 2 NOT_RUN. Three findings recorded: two Medium and one Low. No product code was modified.
+
+result: FAILED

@@ -1,0 +1,9 @@
+$ gitleaks git --no-banner --redact .
+2:14PM INF 20 commits scanned.
+2:14PM INF scanned ~2223033 bytes (2.22 MB) in 704ms
+2:14PM INF no leaks found
+GIT_EXIT_CODE=0
+$ gitleaks dir --no-banner --redact .
+2:14PM INF scanned ~3015971 bytes (3.02 MB) in 554ms
+2:14PM INF no leaks found
+DIR_EXIT_CODE=0

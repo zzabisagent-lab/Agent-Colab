@@ -1,0 +1,13 @@
+{"t": 1788356324.8248067, "event": "spike_start", "url": "http://127.0.0.1:8767/mcp"}
+{"t": 1788356354.451165, "event": "a_empty_poll", "elapsed_s": 29.587, "items": []}
+{"t": 1788356354.489127, "event": "b_first_poll", "elapsed_s": 0.006, "items": [{"work_item_id": "wi-00000000000000ff", "agent_id": "agent-spike-0001", "delivery_count": 1, "acked": false}]}
+{"t": 1788356354.4891763, "event": "b_disconnect_without_ack", "session_id": "2025-11-25"}
+{"t": 1788356354.5197313, "event": "b_reconnect_poll", "elapsed_s": 0.016, "items": [{"work_item_id": "wi-00000000000000ff", "agent_id": "agent-spike-0001", "delivery_count": 2, "acked": false}]}
+{"t": 1788356354.5606046, "event": "c_results", "first": {"code": "RESULT_ACCEPTED"}, "duplicate": {"code": "DUPLICATE_RESULT_IGNORED", "first": "res-1"}}
+{"t": 1788356356.0682173, "event": "c_poll_after_ack", "elapsed_s": 1.508, "items": []}
+{"t": 1788356356.086179, "event": "d_protocol_version", "version": "2025-11-25"}
+{"t": 1788356356.0862517, "event": "d_listen_unsupported", "detail": "subscriptions/listen is not available at protocol version '2025-11-25'; it requires 2026-07-28. On earlier versions use subscribe_resource() and the change notifications delivered through message_handler."}
+{"t": 1788356356.0993452, "event": "d_subscribe_outcome", "supported": false, "events": []}
+{"t": 1788356356.119029, "event": "d2_subscribe_error", "error": "MCPError", "detail": "Method not found"}
+{"t": 1788356356.1190727, "event": "d2_outcome", "supported": false, "events": [], "subscribe_accepted": false}
+{"t": 1788356356.125398, "event": "spike_summary", "empty_poll_s": 29.587, "delivery_counts": [1, 2], "listen": {"supported": false, "events": []}, "legacy_subscribe": {"supported": false, "events": [], "subscribe_accepted": false}}

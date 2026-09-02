@@ -1,0 +1,18 @@
+{
+  "test_id": "V-P0-08",
+  "evidence_id": "SELF-V-P0-08",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "python",
+    "-m",
+    "tools.threat_model_lint"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "34e1c9aff56b9a6585100a800cc44118f786585e",
+  "started_at": "2026-09-02T12:59:20.263034+00:00",
+  "finished_at": "2026-09-02T12:59:20.346735+00:00",
+  "output_sha256": "435b103ea160f4d948eb993265c41f66ab7f66d1222b0c4f0f3205d6003aa1a9"
+}

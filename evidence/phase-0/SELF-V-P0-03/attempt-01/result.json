@@ -1,0 +1,16 @@
+{
+  "test_id": "V-P0-03",
+  "evidence_id": "SELF-V-P0-03",
+  "attempt": 1,
+  "command": [
+    "bash",
+    "tools/clean_bootstrap_check.sh",
+    "HEAD"
+  ],
+  "exit_code": 2,
+  "result": "fail",
+  "commit_sha": "0e43f203558b3b275de600f668cf59a45b3d5f10",
+  "started_at": "2026-09-02T13:21:10.719898+00:00",
+  "finished_at": "2026-09-02T13:21:28.291362+00:00",
+  "output_sha256": "37e48d2f0daa383ab5d202f2a005596dddb2ab626816d1a946e1933d37d4291c"
+}

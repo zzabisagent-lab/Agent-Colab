@@ -1,0 +1,39 @@
+# Verification independence and verdict rules (development plan §6.4, §7D.2; validation plan
+# §2, §4; spec §8.5). Enforced by DB CHECKs (P0-07/P1-06) and the application.
+version: 1
+independence:
+  must_differ: [account_id, agent_id, credential_fingerprint, alias_graph_principal]
+  verifier_not_commit_author: true
+  verifier_not_implementation_assignee: true
+  verifier_requires_permission: verification.submit
+  target_commit_pinned: true
+  criteria_version_pinned: true
+  snapshot_at_creation: [implementer_account_id, implementer_agent_id, implementer_credential_fingerprint,
+                         verifier_account_id, verifier_agent_id, verifier_credential_fingerprint,
+                         identity_graph_version, effective_policy_hash]
+  no_different_agent_available: BLOCKED_INDEPENDENCE
+specialist_verifiers:
+  phase-4: [security, operations]
+  phase-7: [release, security, operations]
+  task_domains:
+    security: [security]
+    recovery: [operations]
+    production: [operations, release]
+verdicts:
+  results: [PASSED, FAILED, BLOCKED, CANCELLED]
+  corrections: revision_only          # results are never edited; a new revision is appended
+  passed_requires: {all_mandatory_tests: PASS, forbidden_open_findings: [blocker, critical, high]}
+  blocked_is_success: false
+assignment:
+  eligible: [permission:verification.submit, domain_capability, independent_of_implementer,
+             agent_online_with_capacity, human_when_required]
+  human_required_from_risk: HIGH
+  human_required_by_channel_policy: true
+  score: {domain_match: 2, inverse_recent_load: 1, human_preference_when_required: 1}
+  tie_break: ascending_account_id
+  accept_timeout_minutes: 10
+  on_timeout: next_candidate_then_WAITING_with_administrator_notification
+  self_verification_error: SELF_VERIFICATION_FORBIDDEN
+task_closure:
+  requires: [latest_verification_PASSED, document_FINALIZED]
+  error_code: COMPLETION_PREREQUISITE_MISSING

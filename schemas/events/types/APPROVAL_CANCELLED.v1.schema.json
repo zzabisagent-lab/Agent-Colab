@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/APPROVAL_CANCELLED.v1.schema.json",
+  "title": "APPROVAL_CANCELLED payload v1",
+  "description": "Non-sensitive payload of APPROVAL_CANCELLED (approval aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "approval_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "approval_id",
+    "reason_code"
+  ],
+  "additionalProperties": true
+}

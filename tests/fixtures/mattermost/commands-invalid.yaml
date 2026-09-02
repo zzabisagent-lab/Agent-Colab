@@ -1,0 +1,53 @@
+# Every invalid input yields a stable code, an example, and zero side effects (V-P0-16, V-P2-24).
+- {name: free text is never a command, text: 'please create a task for the report', code: COMMAND_PREFIX_MISSING}
+- {name: free text mentioning colab mid-sentence, text: 'ask colab task create "x"', code: COMMAND_PREFIX_MISSING}
+- {name: prefix without space boundary, text: '/colabtask create "x"', code: COMMAND_PREFIX_MISSING}
+- {name: other slash command, text: '/echo task create', code: COMMAND_PREFIX_MISSING}
+- {name: unknown resource, text: '/colab tasks create "x" --criteria c', code: COMMAND_RESOURCE_UNKNOWN}
+- {name: unknown resource 2, text: '/colab deploy now', code: COMMAND_RESOURCE_UNKNOWN}
+- {name: missing verb, text: '/colab task', code: COMMAND_VERB_UNKNOWN}
+- {name: unknown verb, text: '/colab task explode task-1', code: COMMAND_VERB_UNKNOWN}
+- {name: unknown verb on approve, text: '/colab approve approve apr-1', code: COMMAND_VERB_UNKNOWN}
+- {name: task create missing title, text: '/colab task create --criteria c', code: COMMAND_ARGS_INVALID}
+- {name: task create missing criteria, text: '/colab task create "Title only"', code: COMMAND_ARGS_INVALID}
+- {name: task create empty criteria value, text: '/colab task create "T" --criteria', code: COMMAND_ARGS_INVALID}
+- {name: task create bad risk, text: '/colab task create "T" --criteria c --risk EXTREME', code: COMMAND_ARGS_INVALID}
+- {name: task create unknown option, text: '/colab task create "T" --criteria c --priority 1', code: COMMAND_ARGS_INVALID}
+- {name: task create extra positional, text: '/colab task create "T" "extra" --criteria c', code: COMMAND_ARGS_INVALID}
+- {name: task delegate missing --to, text: '/colab task delegate task-1', code: COMMAND_ARGS_INVALID}
+- {name: task delegate bad principal, text: '/colab task delegate task-1 --to bob', code: COMMAND_ARGS_INVALID}
+- {name: task delegate bad id, text: '/colab task delegate 123 --to @a', code: COMMAND_ARGS_INVALID}
+- {name: task accept outside thread without id, text: '/colab task accept', code: COMMAND_TARGET_REQUIRED}
+- {name: task accept in brainstorm thread, text: '/colab task accept', context: {thread_subject_kind: brainstorm, thread_subject_id: bs-1}, code: COMMAND_TARGET_REQUIRED}
+- {name: task reject bad reason code, text: '/colab task reject task-1 --reason busy', code: COMMAND_ARGS_INVALID}
+- {name: task submit without evidence, text: '/colab task submit task-1', code: COMMAND_ARGS_INVALID}
+- {name: task progress without message, text: '/colab task progress task-1', code: COMMAND_ARGS_INVALID}
+- {name: task list limit too high, text: '/colab task list --limit 101', code: COMMAND_ARGS_INVALID}
+- {name: task list limit not int, text: '/colab task list --limit many', code: COMMAND_ARGS_INVALID}
+- {name: approve grant missing id, text: '/colab approve grant', code: COMMAND_ARGS_INVALID}
+- {name: approve grant wrong id type, text: '/colab approve grant task-1', code: COMMAND_ARGS_INVALID}
+- {name: verify pass without evidence, text: '/colab verify pass task-1', code: COMMAND_ARGS_INVALID}
+- {name: verify pass outside thread without id, text: '/colab verify pass --evidence art-1', code: COMMAND_TARGET_REQUIRED}
+- {name: verify block without reason, text: '/colab verify block task-1', code: COMMAND_ARGS_INVALID}
+- {name: brainstorm start without participants, text: '/colab brainstorm start "Topic"', code: COMMAND_ARGS_INVALID}
+- {name: brainstorm start bad participant, text: '/colab brainstorm start "Topic" --participants alice', code: COMMAND_ARGS_INVALID}
+- {name: brainstorm start turns zero, text: '/colab brainstorm start "Topic" --participants @a --turns-per-agent 0', code: COMMAND_ARGS_INVALID}
+- {name: brainstorm contribute bad type, text: '/colab brainstorm contribute bs-1 "x" --type RANT', code: COMMAND_ARGS_INVALID}
+- {name: brainstorm decide without rationale, text: '/colab brainstorm decide bs-1 "s" --source evt-1', code: COMMAND_ARGS_INVALID}
+- {name: brainstorm decide without source, text: '/colab brainstorm decide bs-1 "s" --rationale r', code: COMMAND_ARGS_INVALID}
+- {name: brainstorm contribute outside thread, text: '/colab brainstorm contribute "x"', code: COMMAND_TARGET_REQUIRED}
+- {name: doc show outside thread, text: '/colab doc show', code: COMMAND_TARGET_REQUIRED}
+- {name: doc show wrong id kind, text: '/colab doc show apr-1', code: COMMAND_ARGS_INVALID}
+- {name: doc review bad result, text: '/colab doc review task-1 --result maybe', code: COMMAND_ARGS_INVALID}
+- {name: schedule show missing id, text: '/colab schedule show', code: COMMAND_ARGS_INVALID}
+- {name: schedule run-now with run id, text: '/colab schedule run-now run-1', code: COMMAND_ARGS_INVALID}
+- {name: schedule cancel-run with schedule id, text: '/colab schedule cancel-run sch-1', code: COMMAND_ARGS_INVALID}
+- {name: link confirm bad code, text: '/colab link confirm abc', context: {linked: false}, code: COMMAND_ARGS_INVALID}
+- {name: link confirm missing code, text: '/colab link confirm', context: {linked: false}, code: COMMAND_ARGS_INVALID}
+- {name: notify digest bad interval, text: '/colab notify digest --interval daily', code: COMMAND_ARGS_INVALID}
+- {name: help unknown resource, text: '/colab help deploy', code: COMMAND_ARGS_INVALID}
+- {name: unlinked user task create, text: '/colab task create "T" --criteria c', context: {linked: false}, code: COMMAND_UNLINKED_RESTRICTED}
+- {name: unlinked user task show, text: '/colab task show task-1', context: {linked: false}, code: COMMAND_UNLINKED_RESTRICTED}
+- {name: unlinked user approve grant, text: '/colab approve grant apr-1', context: {linked: false}, code: COMMAND_UNLINKED_RESTRICTED}
+- {name: unlinked user notify, text: '/colab notify mute', context: {linked: false}, code: COMMAND_UNLINKED_RESTRICTED}
+- {name: unlinked user unknown verb still stable, text: '/colab task explode', context: {linked: false}, code: COMMAND_VERB_UNKNOWN}

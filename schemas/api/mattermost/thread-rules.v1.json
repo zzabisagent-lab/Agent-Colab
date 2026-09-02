@@ -1,0 +1,20 @@
+{
+  "$id": "https://agent-colab.dev/schemas/api/mattermost/thread-rules.v1.json",
+  "title": "Task/Brainstorm thread rules v1",
+  "source": "development plan §7A.3, §21.1 (Renderer); spec §8.7",
+  "rules": [
+    {"id": "TR-01", "rule": "One Task = one root post (the Task card) in the channel; Conversation.source_thread = root post id."},
+    {"id": "TR-02", "rule": "One Brainstorm = one root post (the Brainstorm card) plus thread."},
+    {"id": "TR-03", "rule": "The card is edited in place on every state transition (title, status badge, assignee, verification_status, pending approvals, latest progress, artifact/document links, sub-task join status)."},
+    {"id": "TR-04", "rule": "Every state transition leaves exactly one thread reply; replies are never edited or deleted (immutable log)."},
+    {"id": "TR-05", "rule": "Progress posts are coalesced per Task in 10-second windows (one reply per window with coalesced_count).", "value_s": 10},
+    {"id": "TR-06", "rule": "Bodies over 16,000 characters are stored as an Artifact and only linked from the card/reply.", "value_chars": 16000},
+    {"id": "TR-07", "rule": "A sub-Task posts a link card in the parent thread and has its own root post and thread."},
+    {"id": "TR-08", "rule": "Card buttons (Accept, Submit, Approve/Reject, Verify pass/fail, Cancel) are conveniences; the server re-evaluates permissions at callback time."},
+    {"id": "TR-09", "rule": "Duplicate clicks of the same button are processed once by idempotency key (provider_instance + post_id + action + nonce)."},
+    {"id": "TR-10", "rule": "A command inside a Task/Brainstorm thread targets that thread's subject when the id is omitted."},
+    {"id": "TR-11", "rule": "Successful command responses are posted publicly in the thread; errors are ephemeral with cause and correct example and create no side effects."},
+    {"id": "TR-12", "rule": "HIGH and CRITICAL approvals cannot be decided by a button; the button shows web re-authentication guidance only."},
+    {"id": "TR-13", "rule": "Agent utterances are posted by the Agent-Colab bot with override_username/override_icon_url set by the server, or the [agent-name] prefix fallback when overrides are disallowed (P0-10 spike decides)."}
+  ]
+}

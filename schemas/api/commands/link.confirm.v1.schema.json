@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/link.confirm.v1.schema.json",
+  "title": "/colab link confirm",
+  "description": "Arguments of `/colab link confirm`.",
+  "x-permission": "identity.link",
+  "x-target": null,
+  "x-target-field": null,
+  "x-unlinked-allowed": true,
+  "x-example": "/colab link confirm 123456",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string",
+      "pattern": "^[0-9]{6}$"
+    }
+  },
+  "required": [
+    "code"
+  ],
+  "additionalProperties": false
+}

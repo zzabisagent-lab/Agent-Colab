@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/DECISION_RECORDED.v1.schema.json",
+  "title": "DECISION_RECORDED payload v1",
+  "description": "Non-sensitive payload of DECISION_RECORDED (decision aggregate, Phase 6). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "brainstorm_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decided_by": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "decision_id",
+    "brainstorm_id",
+    "statement",
+    "decided_by"
+  ],
+  "additionalProperties": true
+}

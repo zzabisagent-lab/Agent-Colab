@@ -1,0 +1,18 @@
+$ SPIKE_PORT=8767 uv run python -m spikes.mcp.client
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{"t": 1788358556.0844178, "event": "spike_start", "url": "http://127.0.0.1:8767/mcp"}
+{"t": 1788358585.7866936, "event": "a_empty_poll", "elapsed_s": 29.585, "items": []}
+{"t": 1788358585.824135, "event": "b_first_poll", "elapsed_s": 0.006, "items": [{"work_item_id": "wi-00000000000000ff", "agent_id": "agent-spike-0001", "delivery_count": 1, "acked": false}]}
+{"t": 1788358585.8241668, "event": "b_disconnect_without_ack", "session_id": "2025-11-25"}
+{"t": 1788358585.8554826, "event": "b_reconnect_poll", "elapsed_s": 0.017, "items": [{"work_item_id": "wi-00000000000000ff", "agent_id": "agent-spike-0001", "delivery_count": 2, "acked": false}]}
+{"t": 1788358585.8939598, "event": "c_results", "first": {"code": "RESULT_ACCEPTED"}, "duplicate": {"code": "DUPLICATE_RESULT_IGNORED", "first": "res-1"}}
+{"t": 1788358587.4023018, "event": "c_poll_after_ack", "elapsed_s": 1.508, "items": []}
+{"t": 1788358587.4203072, "event": "d_protocol_version", "version": "2025-11-25"}
+{"t": 1788358587.420377, "event": "d_listen_unsupported", "detail": "subscriptions/listen is not available at protocol version '2025-11-25'; it requires 2026-07-28. On earlier versions use subscribe_resource() and the change notifications delivered through message_handler."}
+{"t": 1788358587.4326377, "event": "d_subscribe_outcome", "supported": false, "events": []}
+/home/master/.local/verify/phase-0-r003/spikes/mcp/client.py:151: MCPDeprecationWarning: resources/subscribe is removed as of 2026-07-28; use Client.listen() instead.
+  await s.subscribe_resource(uri)
+{"t": 1788358587.4535782, "event": "d2_subscribe_error", "error": "MCPError", "detail": "Method not found"}
+{"t": 1788358587.4536202, "event": "d2_outcome", "supported": false, "events": [], "subscribe_accepted": false}
+{"t": 1788358587.4604003, "event": "spike_summary", "empty_poll_s": 29.585, "delivery_counts": [1, 2], "listen": {"supported": false, "events": []}, "legacy_subscribe": {"supported": false, "events": [], "subscribe_accepted": false}}
+EXIT_CODE=0

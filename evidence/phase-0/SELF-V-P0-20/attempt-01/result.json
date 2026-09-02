@@ -1,0 +1,18 @@
+{
+  "test_id": "V-P0-20",
+  "evidence_id": "SELF-V-P0-20",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "python",
+    "-m",
+    "tools.plan_baseline_lint"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "b9bcc436dac735a7673bc3c1cbaadec8e68f7862",
+  "started_at": "2026-09-02T12:54:45.948627+00:00",
+  "finished_at": "2026-09-02T12:54:46.033698+00:00",
+  "output_sha256": "e807d21cb39e4b957796510932d712c8b3c3c7ef8d0b2255a38b54ca6d11a8fe"
+}

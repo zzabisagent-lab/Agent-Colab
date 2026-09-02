@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/task.delegate.v1.schema.json",
+  "title": "/colab task delegate",
+  "description": "Arguments of `/colab task delegate`.",
+  "x-permission": "task.delegate",
+  "x-target": "task",
+  "x-target-field": "task_id",
+  "x-unlinked-allowed": false,
+  "x-example": "/colab task delegate task-123 --to @research-agent",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^task-[A-Za-z0-9._-]{1,120}$",
+      "description": "omitted inside a Task thread"
+    },
+    "to": {
+      "type": "string",
+      "pattern": "^(@[A-Za-z0-9._-]{1,64}|agent-[A-Za-z0-9._-]{1,120})$"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    }
+  },
+  "required": [
+    "to"
+  ],
+  "additionalProperties": false
+}

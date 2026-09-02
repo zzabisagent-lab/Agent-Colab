@@ -1,0 +1,17 @@
+{
+  "test_id": "V-P0-04",
+  "evidence_id": "SELF-V-P0-04",
+  "attempt": 3,
+  "command": [
+    "sg",
+    "docker",
+    "-c",
+    "docker compose --env-file deploy/dev/compose.env up -d --build --wait --wait-timeout 900 && docker compose --env-file deploy/dev/compose.env ps --format 'table {{.Service}}\\t{{.Status}}\\t{{.Ports}}' && curl -sf http://127.0.0.1:8080/healthz && echo && curl -sf http://127.0.0.1:8080/readyz && echo && curl -sf http://127.0.0.1:8081/healthz && echo && docker compose --env-file deploy/dev/compose.env exec -T postgres pg_isready -U colab -d colab && docker compose --env-file deploy/dev/compose.env exec -T clamav clamdscan --ping 1 && docker compose --env-file deploy/dev/compose.env images"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "1ac07c7570ad0043fef70f05d1a5bea19d6581a0",
+  "started_at": "2026-09-02T14:00:52.032268+00:00",
+  "finished_at": "2026-09-02T14:02:24.180948+00:00",
+  "output_sha256": "a88b198a9c1d6c6377b315cde4052ebc9c1861ebf7cd92090b7bc9b948e0e609"
+}

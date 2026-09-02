@@ -1,0 +1,645 @@
+{
+  "started_at": "2026-09-02T14:01:51.308+00:00",
+  "steps": {
+    "getMe": {
+      "status": 200,
+      "ok": true,
+      "is_bot": true
+    },
+    "getChat:chat-A": {
+      "status": 200,
+      "type": "supergroup",
+      "is_forum": true
+    },
+    "getChatMember:chat-A": {
+      "status": 200,
+      "member_status": "administrator",
+      "rights": {
+        "can_be_edited": false,
+        "can_manage_chat": true,
+        "can_change_info": true,
+        "can_delete_messages": true,
+        "can_invite_users": true,
+        "can_restrict_members": true,
+        "can_pin_messages": true,
+        "can_manage_topics": true,
+        "can_promote_members": false,
+        "can_manage_video_chats": true,
+        "can_post_stories": false,
+        "can_edit_stories": false,
+        "can_delete_stories": false,
+        "can_manage_tags": true,
+        "can_send_welcome_messages": false,
+        "can_manage_voice_chats": true
+      }
+    },
+    "getChat:chat-B": {
+      "status": 200,
+      "type": "supergroup",
+      "is_forum": true
+    },
+    "getChatMember:chat-B": {
+      "status": 200,
+      "member_status": "administrator",
+      "rights": {
+        "can_be_edited": false,
+        "can_manage_chat": true,
+        "can_change_info": true,
+        "can_delete_messages": true,
+        "can_invite_users": true,
+        "can_restrict_members": true,
+        "can_pin_messages": true,
+        "can_manage_topics": true,
+        "can_promote_members": false,
+        "can_manage_video_chats": true,
+        "can_post_stories": false,
+        "can_edit_stories": false,
+        "can_delete_stories": false,
+        "can_manage_tags": true,
+        "can_send_welcome_messages": false,
+        "can_manage_voice_chats": true
+      }
+    },
+    "createForumTopic:chat-A": {
+      "status": 200,
+      "ok": true,
+      "message_thread_id": 3,
+      "error": null
+    },
+    "sendMessage:topic-A": {
+      "status": 200,
+      "message_id": 4,
+      "message_thread_id": 3,
+      "is_topic_message": true
+    },
+    "sendMessage:reply-in-topic-A": {
+      "status": 200,
+      "message_id": 5,
+      "message_thread_id": 3,
+      "reply_to_message_id": 4,
+      "reply_to_is_topic_message": true
+    },
+    "editMessageText:own-A": {
+      "status": 200,
+      "ok": true,
+      "edit_date_present": true,
+      "message_thread_id": 3
+    },
+    "editMessageText:unchanged-A": {
+      "status": 400,
+      "ok": false,
+      "description": "Bad Request: message is not modified: specified new message content and reply markup are exactly the same as a current content and reply markup of the message"
+    },
+    "sendMessage:reply-to-topic-service-message-A": {
+      "status": 200,
+      "ok": true,
+      "reply_to_message_id": 3,
+      "reply_to_forum_topic_created": {
+        "name": "agent-colab-spike-20260902T140154Z",
+        "icon_color": 7322096
+      },
+      "description": null
+    },
+    "editMessageText:not-own-A": {
+      "status": 400,
+      "ok": false,
+      "description": "Bad Request: message can't be edited"
+    },
+    "sendMessage:general-B(omitted-thread)": {
+      "status": 200,
+      "message_id": 3,
+      "message_thread_id": null,
+      "is_topic_message": null
+    },
+    "sendMessage:general-B(thread-1)": {
+      "status": 400,
+      "ok": false,
+      "message_id": null,
+      "message_thread_id": null,
+      "description": "Bad Request: message thread not found"
+    },
+    "createForumTopic:chat-B": {
+      "status": 200,
+      "ok": true,
+      "message_thread_id": 4,
+      "error": null
+    },
+    "sendMessage:topic-B": {
+      "status": 200,
+      "message_id": 5,
+      "message_thread_id": 4
+    },
+    "sendMessage:cross-topic-reply-B": {
+      "status": 200,
+      "ok": true,
+      "message_thread_id": 4,
+      "reply_to_present": true,
+      "description": null
+    },
+    "getUpdates": {
+      "status": 200,
+      "ok": true,
+      "count": 12,
+      "shapes": [
+        {
+          "update_keys": [
+            "my_chat_member",
+            "update_id"
+          ],
+          "message_thread_id": null,
+          "is_topic_message": null,
+          "has_reply_to_message": false,
+          "forum_topic_created": false,
+          "chat_label": "other"
+        },
+        {
+          "update_keys": [
+            "message",
+            "update_id"
+          ],
+          "message_thread_id": null,
+          "is_topic_message": null,
+          "has_reply_to_message": false,
+          "forum_topic_created": false,
+          "chat_label": "chat-A"
+        },
+        {
+          "update_keys": [
+            "message",
+            "update_id"
+          ],
+          "message_thread_id": null,
+          "is_topic_message": null,
+          "has_reply_to_message": false,
+          "forum_topic_created": false,
+          "chat_label": "other"
+        },
+        {
+          "update_keys": [
+            "my_chat_member",
+            "update_id"
+          ],
+          "message_thread_id": null,
+          "is_topic_message": null,
+          "has_reply_to_message": false,
+          "forum_topic_created": false,
+          "chat_label": "other"
+        },
+        {
+          "update_keys": [
+            "message",
+            "update_id"
+          ],
+          "message_thread_id": null,
+          "is_topic_message": null,
+          "has_reply_to_message": false,
+          "forum_topic_created": false,
+          "chat_label": "chat-B"
+        },
+        {
+          "update_keys": [
+            "message",
+            "update_id"
+          ],
+          "message_thread_id": null,
+          "is_topic_message": null,
+          "has_reply_to_message": false,
+          "forum_topic_created": false,
+          "chat_label": "other"
+        },
+        {
+          "update_keys": [
+            "message",
+            "update_id"
+          ],
+          "message_thread_id": null,
+          "is_topic_message": null,
+          "has_reply_to_message": false,
+          "forum_topic_created": false,
+          "chat_label": "chat-B"
+        },
+        {
+          "update_keys": [
+            "message",
+            "update_id"
+          ],
+          "message_thread_id": null,
+          "is_topic_message": null,
+          "has_reply_to_message": false,
+          "forum_topic_created": false,
+          "chat_label": "chat-A"
+        },
+        {
+          "update_keys": [
+            "message",
+            "update_id"
+          ],
+          "message_thread_id": 3,
+          "is_topic_message": true,
+          "has_reply_to_message": false,
+          "forum_topic_created": true,
+          "chat_label": "chat-A"
+        },
+        {
+          "update_keys": [
+            "message",
+            "update_id"
+          ],
+          "message_thread_id": 4,
+          "is_topic_message": true,
+          "has_reply_to_message": false,
+          "forum_topic_created": true,
+          "chat_label": "chat-B"
+        }
+      ]
+    },
+    "burst40": {
+      "total_s": 24.204,
+      "sent_ok": 16,
+      "http_429": 24,
+      "retry_after_values": [
+        31,
+        32,
+        33
+      ],
+      "results": [
+        {
+          "i": 0,
+          "status": 200,
+          "retry_after": null,
+          "t": 0.604,
+          "elapsed_s": 0.603
+        },
+        {
+          "i": 1,
+          "status": 200,
+          "retry_after": null,
+          "t": 0.978,
+          "elapsed_s": 0.976
+        },
+        {
+          "i": 2,
+          "status": 200,
+          "retry_after": null,
+          "t": 1.031,
+          "elapsed_s": 1.028
+        },
+        {
+          "i": 3,
+          "status": 200,
+          "retry_after": null,
+          "t": 6.353,
+          "elapsed_s": 6.349
+        },
+        {
+          "i": 4,
+          "status": 200,
+          "retry_after": null,
+          "t": 1.107,
+          "elapsed_s": 1.102
+        },
+        {
+          "i": 5,
+          "status": 200,
+          "retry_after": null,
+          "t": 1.131,
+          "elapsed_s": 0.527
+        },
+        {
+          "i": 6,
+          "status": 200,
+          "retry_after": null,
+          "t": 6.386,
+          "elapsed_s": 5.407
+        },
+        {
+          "i": 7,
+          "status": 200,
+          "retry_after": null,
+          "t": 6.416,
+          "elapsed_s": 5.385
+        },
+        {
+          "i": 8,
+          "status": 200,
+          "retry_after": null,
+          "t": 6.458,
+          "elapsed_s": 5.351
+        },
+        {
+          "i": 9,
+          "status": 200,
+          "retry_after": null,
+          "t": 6.511,
+          "elapsed_s": 5.38
+        },
+        {
+          "i": 10,
+          "status": 200,
+          "retry_after": null,
+          "t": 14.399,
+          "elapsed_s": 8.045
+        },
+        {
+          "i": 11,
+          "status": 200,
+          "retry_after": null,
+          "t": 14.189,
+          "elapsed_s": 7.802
+        },
+        {
+          "i": 12,
+          "status": 200,
+          "retry_after": null,
+          "t": 14.44,
+          "elapsed_s": 8.024
+        },
+        {
+          "i": 13,
+          "status": 200,
+          "retry_after": null,
+          "t": 14.492,
+          "elapsed_s": 8.034
+        },
+        {
+          "i": 14,
+          "status": 200,
+          "retry_after": null,
+          "t": 14.538,
+          "elapsed_s": 8.026
+        },
+        {
+          "i": 15,
+          "status": 200,
+          "retry_after": null,
+          "t": 21.99,
+          "elapsed_s": 7.801
+        },
+        {
+          "i": 16,
+          "status": 429,
+          "retry_after": 33,
+          "t": 22.164,
+          "elapsed_s": 7.764
+        },
+        {
+          "i": 17,
+          "status": 429,
+          "retry_after": 33,
+          "t": 22.168,
+          "elapsed_s": 7.727
+        },
+        {
+          "i": 18,
+          "status": 429,
+          "retry_after": 33,
+          "t": 22.174,
+          "elapsed_s": 7.681
+        },
+        {
+          "i": 19,
+          "status": 429,
+          "retry_after": 33,
+          "t": 22.174,
+          "elapsed_s": 7.636
+        },
+        {
+          "i": 20,
+          "status": 429,
+          "retry_after": 33,
+          "t": 22.423,
+          "elapsed_s": 0.433
+        },
+        {
+          "i": 21,
+          "status": 429,
+          "retry_after": 32,
+          "t": 22.621,
+          "elapsed_s": 0.457
+        },
+        {
+          "i": 22,
+          "status": 429,
+          "retry_after": 32,
+          "t": 22.599,
+          "elapsed_s": 0.432
+        },
+        {
+          "i": 23,
+          "status": 429,
+          "retry_after": 32,
+          "t": 22.631,
+          "elapsed_s": 0.456
+        },
+        {
+          "i": 24,
+          "status": 429,
+          "retry_after": 32,
+          "t": 22.637,
+          "elapsed_s": 0.461
+        },
+        {
+          "i": 25,
+          "status": 429,
+          "retry_after": 32,
+          "t": 22.856,
+          "elapsed_s": 0.432
+        },
+        {
+          "i": 26,
+          "status": 429,
+          "retry_after": 32,
+          "t": 23.032,
+          "elapsed_s": 0.433
+        },
+        {
+          "i": 27,
+          "status": 429,
+          "retry_after": 32,
+          "t": 23.082,
+          "elapsed_s": 0.46
+        },
+        {
+          "i": 28,
+          "status": 429,
+          "retry_after": 32,
+          "t": 23.086,
+          "elapsed_s": 0.455
+        },
+        {
+          "i": 29,
+          "status": 429,
+          "retry_after": 32,
+          "t": 23.097,
+          "elapsed_s": 0.46
+        },
+        {
+          "i": 30,
+          "status": 429,
+          "retry_after": 32,
+          "t": 23.279,
+          "elapsed_s": 0.423
+        },
+        {
+          "i": 31,
+          "status": 429,
+          "retry_after": 32,
+          "t": 23.464,
+          "elapsed_s": 0.431
+        },
+        {
+          "i": 32,
+          "status": 429,
+          "retry_after": 32,
+          "t": 23.546,
+          "elapsed_s": 0.464
+        },
+        {
+          "i": 33,
+          "status": 429,
+          "retry_after": 32,
+          "t": 23.543,
+          "elapsed_s": 0.457
+        },
+        {
+          "i": 34,
+          "status": 429,
+          "retry_after": 32,
+          "t": 23.569,
+          "elapsed_s": 0.472
+        },
+        {
+          "i": 35,
+          "status": 429,
+          "retry_after": 31,
+          "t": 23.737,
+          "elapsed_s": 0.457
+        },
+        {
+          "i": 36,
+          "status": 429,
+          "retry_after": 31,
+          "t": 23.894,
+          "elapsed_s": 0.429
+        },
+        {
+          "i": 37,
+          "status": 429,
+          "retry_after": 31,
+          "t": 24.182,
+          "elapsed_s": 0.638
+        },
+        {
+          "i": 38,
+          "status": 429,
+          "retry_after": 31,
+          "t": 24.173,
+          "elapsed_s": 0.626
+        },
+        {
+          "i": 39,
+          "status": 429,
+          "retry_after": 31,
+          "t": 24.204,
+          "elapsed_s": 0.634
+        }
+      ]
+    },
+    "send-after-retry_after": {
+      "status": 200,
+      "ok": true,
+      "waited_s": 33
+    },
+    "deleteMessage": {
+      "deleted": 23,
+      "failed": 0
+    },
+    "topics-cleanup": [
+      {
+        "chat": "chat-A",
+        "thread_id": 3,
+        "close_ok": true,
+        "delete_ok": true,
+        "delete_error": null
+      },
+      {
+        "chat": "chat-B",
+        "thread_id": 4,
+        "close_ok": true,
+        "delete_ok": true,
+        "delete_error": null
+      }
+    ]
+  },
+  "observations": {
+    "bot_can_join_groups": true,
+    "bot_can_read_all_group_messages": true,
+    "rights:chat-A": {
+      "status": "administrator",
+      "can_be_edited": false,
+      "can_manage_chat": true,
+      "can_change_info": true,
+      "can_delete_messages": true,
+      "can_invite_users": true,
+      "can_restrict_members": true,
+      "can_pin_messages": true,
+      "can_manage_topics": true,
+      "can_promote_members": false,
+      "can_manage_video_chats": true,
+      "can_post_stories": false,
+      "can_edit_stories": false,
+      "can_delete_stories": false,
+      "can_manage_tags": true,
+      "can_send_welcome_messages": false,
+      "can_manage_voice_chats": true
+    },
+    "rights:chat-B": {
+      "status": "administrator",
+      "can_be_edited": false,
+      "can_manage_chat": true,
+      "can_change_info": true,
+      "can_delete_messages": true,
+      "can_invite_users": true,
+      "can_restrict_members": true,
+      "can_pin_messages": true,
+      "can_manage_topics": true,
+      "can_promote_members": false,
+      "can_manage_video_chats": true,
+      "can_post_stories": false,
+      "can_edit_stories": false,
+      "can_delete_stories": false,
+      "can_manage_tags": true,
+      "can_send_welcome_messages": false,
+      "can_manage_voice_chats": true
+    },
+    "topic_message_fields": {
+      "message_thread_id": 3,
+      "is_topic_message": true
+    },
+    "topic_thread_id_equals_first_message_id": true,
+    "reply_in_topic_keeps_thread_id": true,
+    "reply_to_message_present": true,
+    "edit_own_message_possible": true,
+    "topic_creating_message_is_forum_topic_created": true,
+    "edit_foreign_message_rejected": true,
+    "general_topic_message_has_thread_id": false,
+    "general_topic_message_thread_id": null,
+    "general_topic_accepts_thread_id_1": false,
+    "cross_topic_reply": {
+      "ok": true,
+      "lands_in_thread": 4
+    },
+    "bot_own_messages_in_getUpdates": true,
+    "updates_available": 12,
+    "burst_40_messages": {
+      "ok": 16,
+      "http_429": 24,
+      "total_s": 24.204,
+      "throughput_msg_per_s": 0.66,
+      "max_retry_after_s": 33
+    },
+    "delete_own_messages_possible": true,
+    "delete_topic_possible": true
+  },
+  "finished_at": "2026-09-02T14:03:11.728+00:00"
+}

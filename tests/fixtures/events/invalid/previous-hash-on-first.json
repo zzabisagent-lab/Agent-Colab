@@ -1,0 +1,34 @@
+{
+  "expected_code": "SCHEMA_INVALID",
+  "event": {
+    "event_id": "evt-daab089be5388c508f4e6c67a38811f9",
+    "schema_version": 1,
+    "workspace_id": "0f1e2d3c-4b5a-4a6b-8c7d-9e8f7a6b5c4d",
+    "aggregate_type": "task",
+    "aggregate_id": "task-0001",
+    "aggregate_seq": 1,
+    "channel_id": "44444444-4444-4444-8444-444444444444",
+    "task_id": "task-0001",
+    "type": "TASK_CREATED",
+    "actor_account_id": "11111111-1111-4111-8111-111111111111",
+    "caused_by": null,
+    "correlation_id": "corr-task-0001",
+    "idempotency_scope": "task:create",
+    "idempotency_key": "task-0001-create-1",
+    "policy_version": "policy-v1",
+    "payload": {
+      "task_id": "task-0001",
+      "root_task_id": "task-0001",
+      "channel_id": "44444444-4444-4444-8444-444444444444",
+      "title": "Write the report",
+      "domain": "research",
+      "risk": "LOW"
+    },
+    "sensitive_payload_ciphertext": null,
+    "sensitive_payload_key_ref": null,
+    "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "occurred_at": "2026-01-15T10:00:01.000Z",
+    "recorded_at": "2026-01-15T10:00:01.000Z",
+    "content_hash": "544d59497e614a8cf054b2e328fcfb335aca0cf986ce74ce852060dd63ee9a77"
+  }
+}

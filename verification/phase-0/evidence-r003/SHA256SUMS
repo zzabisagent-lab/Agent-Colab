@@ -1,0 +1,13 @@
+b9a5e68623757155002fd77958e88e44a8e8a1698973b8c41db002a2750bb62d  verification/phase-0/VR-P0-003.yaml
+eaf247312f071a9972e15ee2d1ba0ef475b6bdaa89351a3c8df34f4d7c17c036  verification/phase-0/evidence-r003/V-P0-03-clean-bootstrap.log
+10df66d1081ed16ba56e092ba443cb2186be94859c81d47dbd2b85c8d3ae6e97  verification/phase-0/evidence-r003/V-P0-03-pipeline.log
+f60d50054bb43d6e5d6a8e63004fe7b0edfd834c8d9ff9037d89af359550a3a8  verification/phase-0/evidence-r003/V-P0-04-compose.log
+39f5d0814e40bdf497304c77fa74ad3defdd5e9fa985feee8549ea005cf00f4c  verification/phase-0/evidence-r003/V-P0-05-06-08-11-20-contracts.log
+789f2fe2fee4ebcce71e2f0c9ddc2b78cc16fe7559d79c341d6b1543ddc650c8  verification/phase-0/evidence-r003/V-P0-07-db-api-negative.log
+199ad24726eb71dc234c7594ff6c13f6f6e7f65a7b06fdd003ea003fff98e12c  verification/phase-0/evidence-r003/V-P0-09-gitleaks.log
+c84e368255c2f8763a6575ecf5d4801e16ec1eee01bcf46bf72eca2174ad8ce0  verification/phase-0/evidence-r003/V-P0-16-mattermost-recheck.log
+ac266b4c34b5dbf9ba85bb4fcf62a5c83e7acaeaa8f428b014f2b13842e5557c  verification/phase-0/evidence-r003/V-P0-17-mcp-client.log
+db82102f787916a0927e7dcc3127545b5f756a657beba55d24cf72c0ca7289e3  verification/phase-0/evidence-r003/V-P0-17-mcp-server.log
+cf73af8b6e9e4d71acd9346e03566c6e7d0668580f227e6aa95eec5262c72c2a  verification/phase-0/evidence-r003/V-P0-19-telegram-recheck.log
+d7fe978fc4bb16eb14998119289bf7b828c578289e7675b4f684b57645d9fed2  verification/phase-0/evidence-r003/environment.log
+f53a82535b6df31d35c329d9f3c850ce5adbd1da02458ef4e931fc1af54631ba  verification/phase-0/evidence-r003/report-validation.log

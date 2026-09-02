@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P0-09",
+  "evidence_id": "SELF-V-P0-09",
+  "attempt": 2,
+  "command": [
+    "gitleaks",
+    "dir",
+    "--no-banner",
+    "--redact",
+    "--config",
+    ".gitleaks.toml",
+    "/home/master/work/agent-colab"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "34e1c9aff56b9a6585100a800cc44118f786585e",
+  "started_at": "2026-09-02T12:59:21.371330+00:00",
+  "finished_at": "2026-09-02T12:59:22.391036+00:00",
+  "output_sha256": "7b30aca43b4e215041f8cc45624847d550d1b5c26b246f60d9ace6bde13f6fb7"
+}

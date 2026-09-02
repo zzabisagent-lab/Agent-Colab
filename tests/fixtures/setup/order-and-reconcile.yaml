@@ -1,0 +1,74 @@
+order:
+  - name: correct-order
+    steps: [[begin, DB_MIGRATION], [complete, DB_MIGRATION], [begin, KEY_PROVIDER], [complete, KEY_PROVIDER], [begin, OWNER_TOTP], [complete, OWNER_TOTP], [begin, INTEGRATIONS], [complete, INTEGRATIONS], [begin, COMMIT], [complete, COMMIT]]
+    error: null
+    owner_visible: true
+    committed: true
+  - name: owner-before-db
+    steps: [[begin, OWNER_TOTP]]
+    error: SETUP_ORDER_VIOLATION
+    owner_visible: false
+    committed: false
+  - name: key-before-db
+    steps: [[begin, KEY_PROVIDER]]
+    error: SETUP_ORDER_VIOLATION
+    owner_visible: false
+    committed: false
+  - name: owner-before-key
+    steps: [[begin, DB_MIGRATION], [complete, DB_MIGRATION], [begin, OWNER_TOTP]]
+    error: SETUP_ORDER_VIOLATION
+    owner_visible: false
+    committed: false
+  - name: commit-before-integrations
+    steps: [[begin, DB_MIGRATION], [complete, DB_MIGRATION], [begin, KEY_PROVIDER], [complete, KEY_PROVIDER], [begin, OWNER_TOTP], [complete, OWNER_TOTP], [begin, COMMIT]]
+    error: SETUP_ORDER_VIOLATION
+    owner_visible: true
+    committed: false
+  - name: key-failure-hides-owner
+    steps: [[begin, DB_MIGRATION], [complete, DB_MIGRATION], [begin, KEY_PROVIDER], [fail, KEY_PROVIDER], [begin, OWNER_TOTP]]
+    error: SETUP_ORDER_VIOLATION
+    owner_visible: false
+    committed: false
+  - name: owner-failure-keeps-db-and-key
+    steps: [[begin, DB_MIGRATION], [complete, DB_MIGRATION], [begin, KEY_PROVIDER], [complete, KEY_PROVIDER], [begin, OWNER_TOTP], [fail, OWNER_TOTP]]
+    error: null
+    owner_visible: false
+    committed: false
+    completed_after: [DB_MIGRATION, KEY_PROVIDER]
+reconcile:
+  - name: nothing-anywhere
+    local: null
+    db: null
+    expect: {state: UNINITIALIZED, action: start_uninitialized, local_state: null}
+  - name: local-only-preflight
+    local: {state: PREFLIGHT_PASSED, stage_ordinal: 1}
+    db: null
+    expect: {state: PREFLIGHT_PASSED, action: keep_local, local_state: PREFLIGHT_PASSED}
+  - name: db-configured-local-behind
+    local: {state: BOOTSTRAPPING, stage_ordinal: 2}
+    db: {state: CONFIGURED}
+    expect: {state: CONFIGURED, action: db_authoritative_lock_marker, local_state: LOCKED}
+  - name: db-locked-local-failed-never-regress
+    local: {state: BOOTSTRAP_FAILED, stage_ordinal: 2}
+    db: {state: LOCKED}
+    expect: {state: LOCKED, action: db_authoritative_lock_marker, local_state: LOCKED}
+  - name: db-locked-local-missing
+    local: null
+    db: {state: LOCKED}
+    expect: {state: LOCKED, action: db_authoritative_lock_marker, local_state: LOCKED}
+  - name: db-bootstrapping-local-failed
+    local: {state: BOOTSTRAP_FAILED, stage_ordinal: 2}
+    db: {state: BOOTSTRAPPING}
+    expect: {state: BOOTSTRAP_FAILED, action: keep_failure, local_state: BOOTSTRAP_FAILED}
+  - name: db-ahead-pre-configuration
+    local: {state: PREFLIGHT_PASSED, stage_ordinal: 1}
+    db: {state: BOOTSTRAPPING}
+    expect: {state: BOOTSTRAPPING, action: advance_to_db, local_state: BOOTSTRAPPING}
+  - name: local-locked-db-configured-same-instance
+    local: {state: LOCKED, stage_ordinal: 4, recovery_metadata: {instance_id: inst-1}}
+    db: {state: CONFIGURED, instance_id: inst-1}
+    error: RECONCILE_CONFLICT
+  - name: different-instances
+    local: {state: LOCKED, stage_ordinal: 4, recovery_metadata: {instance_id: inst-1}}
+    db: {state: LOCKED, instance_id: inst-2}
+    error: RECONCILE_CONFLICT

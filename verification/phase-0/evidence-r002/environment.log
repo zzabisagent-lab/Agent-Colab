@@ -1,0 +1,13 @@
+Script started on 2026-09-02 13:31:57+00:00 [COMMAND="uname -a; python3 --version; uv --version; node --version; pnpm --version; pg16 psql -Atqc "select version()" -d colab_verify; git rev-parse HEAD; sha256sum uv.lock web-admin/pnpm-lock.yaml docs/baseline/SHA256SUMS" <not executed on terminal>]
+Linux ai 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Python 3.12.3
+uv 0.12.9 (x86_64-unknown-linux-gnu)
+v22.23.2
+11.25.0
+PostgreSQL 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
+9f7f1270db54b9bae3ed375a1861fc16652fb92b
+63d63d386dd1a703039252506687a82f2af7be765150cb765e40929d987462ed  uv.lock
+85a6f2454ddca343d85c7a73d1bc1ed7ae7bb90588018792ffb34050b1a6f0eb  web-admin/pnpm-lock.yaml
+2b78263b35285eaa8886d818ac39cf238d0926311a76f151b51575d40c8e4af7  docs/baseline/SHA256SUMS
+
+Script done on 2026-09-02 13:31:58+00:00 [COMMAND_EXIT_CODE="0"]

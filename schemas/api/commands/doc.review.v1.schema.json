@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/doc.review.v1.schema.json",
+  "title": "/colab doc review",
+  "description": "Arguments of `/colab doc review`.",
+  "x-permission": "document.review",
+  "x-target": "subject",
+  "x-target-field": "subject_id",
+  "x-unlinked-allowed": false,
+  "x-example": "/colab doc review task-123 --result approve",
+  "type": "object",
+  "properties": {
+    "subject_id": {
+      "type": "string",
+      "pattern": "^(task|bs)-[A-Za-z0-9._-]{1,120}$"
+    },
+    "result": {
+      "type": "string",
+      "enum": [
+        "approve",
+        "reject"
+      ]
+    },
+    "comment": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    }
+  },
+  "required": [
+    "result"
+  ],
+  "additionalProperties": false
+}

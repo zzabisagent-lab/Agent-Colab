@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/schedule.cancel-run.v1.schema.json",
+  "title": "/colab schedule cancel-run",
+  "description": "Arguments of `/colab schedule cancel-run`.",
+  "x-permission": "schedule.run",
+  "x-target": null,
+  "x-target-field": null,
+  "x-unlinked-allowed": false,
+  "x-example": "/colab schedule cancel-run run-31",
+  "type": "object",
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "pattern": "^run-[A-Za-z0-9._-]{1,120}$"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    }
+  },
+  "required": [
+    "run_id"
+  ],
+  "additionalProperties": false
+}

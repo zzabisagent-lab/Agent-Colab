@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/task.submit.v1.schema.json",
+  "title": "/colab task submit",
+  "description": "Arguments of `/colab task submit`.",
+  "x-permission": "task.submit",
+  "x-target": "task",
+  "x-target-field": "task_id",
+  "x-unlinked-allowed": false,
+  "x-example": "/colab task submit task-123 --evidence art-45 --evidence art-46",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^task-[A-Za-z0-9._-]{1,120}$",
+      "description": "omitted inside a Task thread"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9._:/#@+-]{1,300}$",
+        "description": "one evidence ref per criterion"
+      },
+      "minItems": 1,
+      "maxItems": 50
+    }
+  },
+  "required": [
+    "evidence"
+  ],
+  "additionalProperties": false
+}

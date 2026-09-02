@@ -1,0 +1,17 @@
+Script started on 2026-09-02 13:34:14+00:00 [COMMAND="sha256sum verification/phase-0/evidence-r002/*" <not executed on terminal>]
+e693a3b614b87ebc310e2e969cc14b0b9a371f8ac672731a2011e40e15435c2a  verification/phase-0/evidence-r002/V-P0-01-02-08-10-14-15-18-20-linters.log
+28ceb2b2dd47b68ebeb5be8564f953c7a242ee51c1a022b21efe7b7f8b103f70  verification/phase-0/evidence-r002/V-P0-03-clean-bootstrap.log
+1f12ba9143d1ba56deba3d802416416148eedbf2b41c6c764e2a9f2972238568  verification/phase-0/evidence-r002/V-P0-03-pipeline.log
+c2f620ede48bc645df211c517e156d6cf7161aece14400f351bdf3080f697e83  verification/phase-0/evidence-r002/V-P0-04-not-run.log
+0b1dc59cdd446356531b2ab93ac2f1783b5d87bf4d8cc15535631f66aba6fb65  verification/phase-0/evidence-r002/V-P0-05-06-11-12-13-16-17-18-fixtures.log
+85a9a6429b9e963cc7f60f3bb1eaa97c58872e3ae1d7f6df1ef1dd44197cc5d1  verification/phase-0/evidence-r002/V-P0-07-db-api-negative.log
+4a05d7f8480e3b4162dbfd867ab2ff6a4c7b72d927a4eefea1c1b90e11b4d573  verification/phase-0/evidence-r002/V-P0-09-gitleaks.log
+9d5c27e174f13eec7884b55444e4652ae1ca14cc5df653d86371a66c466e6a4c  verification/phase-0/evidence-r002/V-P0-16-mattermost-rerun.log
+e576fe5b01d3e496d480faaa246e36f72382856e0e4cd595d30a82c22e303ae1  verification/phase-0/evidence-r002/V-P0-16-spike-validation.log
+660407f9f6138b4ab4113937bfd9f206517b3f5ff88299228d6e379e9268355d  verification/phase-0/evidence-r002/V-P0-17-mcp-client.log
+e9e9caee6428892b434e334f8add2231cd6e7168dac202804221e6f56b9915c3  verification/phase-0/evidence-r002/V-P0-17-mcp-server.log
+e01a2637c039cebd54916d493bc87444dbc340b5ac7c9985fb9a917bb7044f0c  verification/phase-0/evidence-r002/V-P0-19-not-run.log
+c3fa4c0aa1ecc8dc01e325f6fb3d4951061e05acd29f374f15481e2e8b7b92a4  verification/phase-0/evidence-r002/environment.log
+870ddb4f63a6297fed0575cba45d4f9fa5f01a6f2d96ac022c63393d427ee08b  verification/phase-0/evidence-r002/independent-review.txt
+
+Script done on 2026-09-02 13:34:14+00:00 [COMMAND_EXIT_CODE="0"]

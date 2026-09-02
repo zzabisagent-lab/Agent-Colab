@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/BREAK_GLASS_ENDED.v1.schema.json",
+  "title": "BREAK_GLASS_ENDED payload v1",
+  "description": "Non-sensitive payload of BREAK_GLASS_ENDED (break_glass aggregate, Phase 4). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ended_reason": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "session_id",
+    "ended_reason"
+  ],
+  "additionalProperties": true
+}

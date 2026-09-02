@@ -1,0 +1,18 @@
+# Inputs for the Phase 0 Evidence Manifest (validation plan §6.1). The manifest itself is generated
+# by tools/run_verification.py at verification time so that commit_sha is exactly the verified
+# commit (Finding F-P0-002-03); it is stored under verification/phase-0/run-r<n>/manifest.yaml.
+known_gaps:
+  - "P0-10 spike used a locally provisioned Mattermost Team Edition 11.10.1 (self-provisioned test team) instead of an externally supplied test team (ADR-0003)."
+  - "P0-11 MCP spike: resources/subscribe is not usable with the pinned mcp SDK client/server protocol pairing; long-poll only is the recorded decision for P3-10 (docs/protocol/mcp-spike.md)."
+  - "F-P0-002-02 remediation: callback material issued by the local Mattermost test instance was committed in spike artifacts before r002; the slash-command token was regenerated, the artifacts were redacted, and the incident is recorded in docs/security/secret-scan.md. The pre-remediation values remain in git history of branch phase-0 as revoked test-instance material."
+reproduction:
+  - "git clone git@github.com:zzabisagent-lab/Agent-Colab.git && git checkout <target commit>"
+  - "export PATH=$HOME/.local/bin:$PATH; export AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test (any empty PostgreSQL 16 maintenance DB; tests create/drop their own databases)"
+  - "make bootstrap && make lint && make test && make check-docs && make build"
+  - "bash tools/clean_bootstrap_check.sh HEAD  (V-P0-03: fresh clone + full pipeline)"
+  - "uv run python -m tools.trace_matrix --check; uv run python -m tools.criteria_lint; uv run python -m tools.phase_dag_lint; uv run python -m tools.plan_baseline_lint; uv run python -m tools.policy_lint; uv run python -m tools.threat_model_lint; uv run python -m tools.name_role_lint"
+  - "gitleaks git --no-banner --redact . && gitleaks dir --no-banner --redact .  (V-P0-09)"
+  - "uv run pytest tests/integration/test_verification_harness.py -q  (V-P0-07, needs the DB URL)"
+  - "MCP spike (V-P0-17): SPIKE_PORT=8767 uv run python -m spikes.mcp.server & then uv run python -m spikes.mcp.client; logs in evidence/phase-0/spikes/mcp/"
+  - "Mattermost spike (V-P0-16): docs/protocol/mattermost-spike.md; scripts/dev/mattermost-local.sh start|stop"
+  - "make compose-up && docker compose --env-file deploy/dev/compose.env ps  (V-P0-04: all four services healthy from empty volumes; make compose-down resets)"

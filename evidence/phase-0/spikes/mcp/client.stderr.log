@@ -1,0 +1,2 @@
+/home/master/work/agent-colab/spikes/mcp/client.py:151: MCPDeprecationWarning: resources/subscribe is removed as of 2026-07-28; use Client.listen() instead.
+  await s.subscribe_resource(uri)

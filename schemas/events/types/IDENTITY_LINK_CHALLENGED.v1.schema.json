@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/IDENTITY_LINK_CHALLENGED.v1.schema.json",
+  "title": "IDENTITY_LINK_CHALLENGED payload v1",
+  "description": "Non-sensitive payload of IDENTITY_LINK_CHALLENGED (external_identity_link aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "link_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider_instance_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    }
+  },
+  "required": [
+    "link_id",
+    "provider_instance_id",
+    "expires_at"
+  ],
+  "additionalProperties": true
+}

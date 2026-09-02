@@ -1,0 +1,17 @@
+Script started on 2026-09-02 13:29:03+00:00 [COMMAND="uv run python -m tools.trace_matrix --check; uv run python -m tools.criteria_lint; uv run python -m tools.phase_dag_lint; uv run python -m tools.plan_baseline_lint; uv run python -m tools.policy_lint; uv run python -m tools.threat_model_lint; uv run python -m tools.name_role_lint" <not executed on terminal>]
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+trace_matrix: 111 REQ, 103 packages, 230 tests, 0 problems
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+criteria_lint: 230 tests, 0 problems, 1 criteria contain a vague word but also a deterministic criterion
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+phase_dag_lint: 333 items checked, 6 explicit stubs, 0 problems
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+plan_baseline_lint: 103 packages (weight 247), 230 tests, 19 risk rows, 22 dependency rows, 0 problems
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+policy_lint: permissions=53, minimum_permissions=33, action_classes=7, actions=162, baseline_tools=29, baseline_commands=45, unclassified=0, default_roles=9, fixture_roles=6, capabilities=32, problems=0
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+threat_model_lint: 5 mandatory boundaries, 0 problems
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+name_role_lint: 0 problems
+
+Script done on 2026-09-02 13:29:04+00:00 [COMMAND_EXIT_CODE="0"]

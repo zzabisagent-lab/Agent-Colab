@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/ARTIFACT_REGISTERED.v1.schema.json",
+  "title": "ARTIFACT_REGISTERED payload v1",
+  "description": "Non-sensitive payload of ARTIFACT_REGISTERED (artifact aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "size": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "mime": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "artifact_id",
+    "sha256",
+    "size",
+    "mime"
+  ],
+  "additionalProperties": true
+}
