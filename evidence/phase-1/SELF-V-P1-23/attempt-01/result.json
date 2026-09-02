@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P1-23",
+  "evidence_id": "SELF-V-P1-23",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_identity_core.py",
+    "tests/integration/test_identity_db.py",
+    "-q",
+    "-k",
+    "link or challenge or confirm or suspend or isolation or lockout or pending"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "cdd4e292332f20325c02c05d6775f53883ce2180",
+  "started_at": "2026-09-02T14:34:44.078385+00:00",
+  "finished_at": "2026-09-02T14:34:46.048411+00:00",
+  "output_sha256": "700bc0322b00f8e8db3ce495047983b54ab27ab59ed1fedac05f3aeba47dae24"
+}

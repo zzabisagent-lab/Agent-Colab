@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P1-08",
+  "evidence_id": "SELF-V-P1-08",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_identity_core.py",
+    "tests/integration/test_identity_db.py",
+    "-q",
+    "-k",
+    "spoof or token or session or credential"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "cdd4e292332f20325c02c05d6775f53883ce2180",
+  "started_at": "2026-09-02T14:34:41.932709+00:00",
+  "finished_at": "2026-09-02T14:34:43.973813+00:00",
+  "output_sha256": "7040371af15613c02e821ec0eecc1d1330f691ace4cef93a41bfa358822c4103"
+}
