@@ -8,20 +8,20 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 
 | ID | Work | Size | Prereq | Status | SELF evidence |
 |---|---|---|---|---|---|
-| P4-01 | Account Admin | M | P1-05 | NOT_STARTED | — |
-| P4-02 | Operations/Audit dashboard | M | P1-07 | NOT_STARTED | — |
-| P4-03 | Setup Wizard | L | P0-09, P4-05 | NOT_STARTED | — |
-| P4-04 | Settings | M | P4-02 | NOT_STARTED | — |
-| P4-05 | local Secret provider | M | P1-01 | NOT_STARTED | — |
-| P4-06 | Grant/Lease/Broker | M | P4-05 | NOT_STARTED | — |
-| P4-07 | Adapter injection | M | P4-06, P3-03 | NOT_STARTED | — |
-| P4-08 | admin security | M | P4-02 | NOT_STARTED | — |
-| P4-09 | MFA/OIDC | M | P1-05 | NOT_STARTED | — |
-| P4-10 | break-glass | M | P4-09 | NOT_STARTED | — |
-| P4-11 | hard delete workflow | L | P4-05, P1-02 | NOT_STARTED | — |
-| P4-12 | Secret sidecar | L | P4-06, P4-07 | NOT_STARTED | — |
-| P4-13 | maintenance mode | S | P4-02 | NOT_STARTED | — |
-| P4-14 | Web Approvals queue and re-authentication | M | P1-08, P4-09 | NOT_STARTED | — |
+| P4-01 | Account Admin | M | P1-05 | IN_PROGRESS (fork) | — |
+| P4-02 | Operations/Audit dashboard | M | P1-07 | IN_PROGRESS (fork) | — |
+| P4-03 | Setup Wizard | L | P0-09, P4-05 | IN_PROGRESS (fork) | — |
+| P4-04 | Settings | M | P4-02 | IN_PROGRESS (fork) | — |
+| P4-05 | local Secret provider | M | P1-01 | IN_PROGRESS (fork) | — |
+| P4-06 | Grant/Lease/Broker | M | P4-05 | IN_PROGRESS (fork) | — |
+| P4-07 | Adapter injection | M | P4-06, P3-03 | IN_PROGRESS (fork) | — |
+| P4-08 | admin security | M | P4-02 | IN_PROGRESS (fork) | — |
+| P4-09 | MFA/OIDC | M | P1-05 | IN_PROGRESS (fork) | — |
+| P4-10 | break-glass | M | P4-09 | IN_PROGRESS (fork) | — |
+| P4-11 | hard delete workflow | L | P4-05, P1-02 | IN_PROGRESS (fork) | — |
+| P4-12 | Secret sidecar | L | P4-06, P4-07 | IN_PROGRESS (fork) | — |
+| P4-13 | maintenance mode | S | P4-02 | IN_PROGRESS (fork) | — |
+| P4-14 | Web Approvals queue and re-authentication | M | P1-08, P4-09 | IN_PROGRESS (fork) | — |
 
 Phase 4 progress (size-weighted): 0 / 33
 
