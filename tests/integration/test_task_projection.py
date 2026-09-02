@@ -22,6 +22,7 @@ from server.application.bus import (
 )
 from server.db.engine import make_engine
 from server.domain.clock import SteppingClock
+from server.domain.criteria import criteria_id
 from server.domain.task import TaskStatus
 from server.events.postgres_store import PostgresEventStore
 from server.projections.runner import rebuild, snapshot_hash
@@ -35,6 +36,12 @@ HUMAN = uuid.uuid4()
 AGENT = uuid.uuid4()
 VERIFIER = uuid.uuid4()
 CLOCK = SteppingClock(dt.datetime(2026, 3, 1, tzinfo=dt.UTC))
+# P1-11: delegation needs ≥ 1 acceptance criterion and submit needs evidence per required one
+CRITERIA = ({"statement": "evidence attached", "check_type": "evidence"},)
+
+
+def _evidence(task_id: str) -> tuple[str, ...]:
+    return (f"{criteria_id(task_id, 1, 0, 'evidence attached')}:art-1",)
 
 
 class AllowAllAuthorizer:
@@ -135,7 +142,9 @@ def _drive_to_verifying(engine: Engine, task_id: str, prefix: str, verification_
     run(engine, tk.AcceptTask(task_id), AGENT_P, f"{prefix}-accept")
     run(engine, tk.StartTask(task_id), AGENT_P, f"{prefix}-start")
     run(engine, tk.ReportProgress(task_id, "half"), AGENT_P, f"{prefix}-progress")
-    run(engine, tk.SubmitImplementation(task_id, ("art-1",), 1), AGENT_P, f"{prefix}-submit")
+    run(
+        engine, tk.SubmitImplementation(task_id, _evidence(task_id), 1), AGENT_P, f"{prefix}-submit"
+    )
     run(engine, tk.StartVerification(task_id, verification_id), HUMAN_P, f"{prefix}-verify")
 
 
@@ -144,7 +153,7 @@ def test_normal_flow_read_after_write_and_events(
 ) -> None:  # V-P1-27 normal, V-P1-01 projection
     created = run(
         engine,
-        tk.CreateTask("Write report", str(CHANNEL), "research"),
+        tk.CreateTask("Write report", str(CHANNEL), "research", criteria=CRITERIA),
         HUMAN_P,
         "n-create",
         extras={"policy_snapshot": {"roles": ["worker@1"]}},
@@ -206,7 +215,10 @@ def test_normal_flow_read_after_write_and_events(
 
 def test_failed_returns_to_running_and_blocked_to_waiting(engine: Engine) -> None:  # V-P1-27
     tid = run(
-        engine, tk.CreateTask("recheck", str(CHANNEL), "research"), HUMAN_P, "f-create"
+        engine,
+        tk.CreateTask("recheck", str(CHANNEL), "research", criteria=CRITERIA),
+        HUMAN_P,
+        "f-create",
     ).resource_id
     _drive_to_verifying(engine, tid, "f", "vr-f-1")
     run(
@@ -216,7 +228,7 @@ def test_failed_returns_to_running_and_blocked_to_waiting(engine: Engine) -> Non
         "f-fail",
     )
     assert _status(engine, tid) == "RUNNING"
-    run(engine, tk.SubmitImplementation(tid, ("art-2",), 2), AGENT_P, "f-submit2")
+    run(engine, tk.SubmitImplementation(tid, _evidence(tid), 1), AGENT_P, "f-submit2")
     run(engine, tk.StartVerification(tid, "vr-f-2"), HUMAN_P, "f-verify2")
     run(
         engine,
@@ -231,7 +243,7 @@ def test_failed_returns_to_running_and_blocked_to_waiting(engine: Engine) -> Non
     assert exc.value.code == "TASK_TRANSITION_INVALID" and _status(engine, tid) == "WAITING"
     run(engine, tk.StartTask(tid), AGENT_P, "f-resume")
     assert _status(engine, tid) == "RUNNING"
-    run(engine, tk.SubmitImplementation(tid, ("art-3",), 3), AGENT_P, "f-submit3")
+    run(engine, tk.SubmitImplementation(tid, _evidence(tid), 1), AGENT_P, "f-submit3")
     run(engine, tk.StartVerification(tid, "vr-f-3"), HUMAN_P, "f-verify3")
     run(engine, tk.RecordVerificationResult(tid, "vr-f-3", "PASSED"), VERIFIER_P, "f-pass")
     assert _status(engine, tid) == "VERIFIED"
@@ -239,7 +251,10 @@ def test_failed_returns_to_running_and_blocked_to_waiting(engine: Engine) -> Non
 
 def test_complete_before_verification_is_rejected(engine: Engine) -> None:  # V-P1-14
     tid = run(
-        engine, tk.CreateTask("early", str(CHANNEL), "research"), HUMAN_P, "e-create"
+        engine,
+        tk.CreateTask("early", str(CHANNEL), "research", criteria=CRITERIA),
+        HUMAN_P,
+        "e-create",
     ).resource_id
     run(engine, tk.DelegateTask(tid, "acct-t-agent"), HUMAN_P, "e-delegate")
     for key in ("e-complete-1", "e-complete-2"):
@@ -253,7 +268,10 @@ def test_invalid_and_terminal_writes_have_zero_side_effects(
     engine: Engine,
 ) -> None:  # V-P1-09, V-P1-27
     tid = run(
-        engine, tk.CreateTask("terminal", str(CHANNEL), "research"), HUMAN_P, "t-create"
+        engine,
+        tk.CreateTask("terminal", str(CHANNEL), "research", criteria=CRITERIA),
+        HUMAN_P,
+        "t-create",
     ).resource_id
     for cmd, key, code in (
         (tk.AcceptTask(tid), "t-accept-open", "TASK_TRANSITION_INVALID"),
@@ -280,7 +298,10 @@ def test_invalid_and_terminal_writes_have_zero_side_effects(
     assert _status(engine, tid) == "CANCELLED" and _event_count(engine, tid) == count
     # completed tasks are equally immutable
     tid2 = run(
-        engine, tk.CreateTask("done", str(CHANNEL), "research"), HUMAN_P, "t2-create"
+        engine,
+        tk.CreateTask("done", str(CHANNEL), "research", criteria=CRITERIA),
+        HUMAN_P,
+        "t2-create",
     ).resource_id
     _drive_to_verifying(engine, tid2, "t2", "vr-t2")
     run(engine, tk.RecordVerificationResult(tid2, "vr-t2", "PASSED"), VERIFIER_P, "t2-pass")
@@ -297,7 +318,10 @@ def test_invalid_and_terminal_writes_have_zero_side_effects(
 
 def test_idempotent_replay_of_a_command_returns_the_same_event(engine: Engine) -> None:
     tid = run(
-        engine, tk.CreateTask("idem", str(CHANNEL), "research"), HUMAN_P, "i-create"
+        engine,
+        tk.CreateTask("idem", str(CHANNEL), "research", criteria=CRITERIA),
+        HUMAN_P,
+        "i-create",
     ).resource_id
     first = run(engine, tk.DelegateTask(tid, "acct-t-agent"), HUMAN_P, "i-delegate")
     again = run(engine, tk.DelegateTask(tid, "acct-t-agent"), HUMAN_P, "i-delegate")
@@ -307,7 +331,10 @@ def test_idempotent_replay_of_a_command_returns_the_same_event(engine: Engine) -
 
 def test_cancel_during_execution_and_accept_by_non_assignee(engine: Engine) -> None:
     tid = run(
-        engine, tk.CreateTask("cancel", str(CHANNEL), "research"), HUMAN_P, "c-create"
+        engine,
+        tk.CreateTask("cancel", str(CHANNEL), "research", criteria=CRITERIA),
+        HUMAN_P,
+        "c-create",
     ).resource_id
     run(engine, tk.DelegateTask(tid, "acct-t-agent"), HUMAN_P, "c-delegate")
     with pytest.raises(CommandError) as exc:
@@ -323,11 +350,19 @@ def test_cancel_during_execution_and_accept_by_non_assignee(engine: Engine) -> N
 
 def test_subtasks_edges_and_cycle_rejection(engine: Engine) -> None:
     root = run(
-        engine, tk.CreateTask("root", str(CHANNEL), "research"), HUMAN_P, "s-root"
+        engine,
+        tk.CreateTask("root", str(CHANNEL), "research", criteria=CRITERIA),
+        HUMAN_P,
+        "s-root",
     ).resource_id
-    child = run(engine, tk.CreateSubtask(root, "child", "research"), HUMAN_P, "s-child").resource_id
+    child = run(
+        engine, tk.CreateSubtask(root, "child", "research", criteria=CRITERIA), HUMAN_P, "s-child"
+    ).resource_id
     grand = run(
-        engine, tk.CreateSubtask(child, "grandchild", "research"), HUMAN_P, "s-grand"
+        engine,
+        tk.CreateSubtask(child, "grandchild", "research", criteria=CRITERIA),
+        HUMAN_P,
+        "s-grand",
     ).resource_id
     with Session(engine) as s:
         rows = s.execute(
@@ -342,7 +377,12 @@ def test_subtasks_edges_and_cycle_rejection(engine: Engine) -> None:
             load_state(s, grand).delegation_depth == 2 and load_state(s, grand).root_task_id == root
         )
     with pytest.raises(CommandError) as exc:
-        run(engine, tk.CreateSubtask(root, "self", "research", task_id=root), HUMAN_P, "s-self")
+        run(
+            engine,
+            tk.CreateSubtask(root, "self", "research", task_id=root, criteria=CRITERIA),
+            HUMAN_P,
+            "s-self",
+        )
     assert exc.value.code == "TASK_GRAPH_CYCLE"
     # an ancestor cannot become a child of its descendant (DB trigger)
     with Session(engine) as s, s.begin():
@@ -363,24 +403,38 @@ def test_subtasks_edges_and_cycle_rejection(engine: Engine) -> None:
             tk.link_subtask_edge(ctx, root, grand, root, 3, str(created))
         assert exc2.value.code == "TASK_GRAPH_CYCLE"
     with pytest.raises(CommandError) as exc3:
-        run(engine, tk.CreateSubtask("task-missing", "x", "research"), HUMAN_P, "s-missing")
+        run(
+            engine,
+            tk.CreateSubtask("task-missing", "x", "research", criteria=CRITERIA),
+            HUMAN_P,
+            "s-missing",
+        )
     assert exc3.value.code == "TASK_NOT_FOUND"
 
 
 def test_projection_rebuild_reproduces_identical_snapshot(engine: Engine) -> None:  # V-P1-10
     # self-contained: create Tasks in several states so the projection is non-trivial on its own
     done = run(
-        engine, tk.CreateTask("r-done", str(CHANNEL), "research"), HUMAN_P, "r-done"
+        engine,
+        tk.CreateTask("r-done", str(CHANNEL), "research", criteria=CRITERIA),
+        HUMAN_P,
+        "r-done",
     ).resource_id
     _drive_to_verifying(engine, done, "r-done", "vr-r-done")
     run(engine, tk.RecordVerificationResult(done, "vr-r-done", "PASSED"), VERIFIER_P, "r-done-pass")
     run(engine, tk.CompleteTask(done, "doc-r"), HUMAN_P, "r-done-complete")
     gone = run(
-        engine, tk.CreateTask("r-gone", str(CHANNEL), "research"), HUMAN_P, "r-gone"
+        engine,
+        tk.CreateTask("r-gone", str(CHANNEL), "research", criteria=CRITERIA),
+        HUMAN_P,
+        "r-gone",
     ).resource_id
     run(engine, tk.CancelTask(gone, "NOPE"), HUMAN_P, "r-gone-cancel")
     open_task = run(
-        engine, tk.CreateTask("r-open", str(CHANNEL), "research"), HUMAN_P, "r-open"
+        engine,
+        tk.CreateTask("r-open", str(CHANNEL), "research", criteria=CRITERIA),
+        HUMAN_P,
+        "r-open",
     ).resource_id
     run(engine, tk.DelegateTask(open_task, "acct-t-agent"), HUMAN_P, "r-open-delegate")
     with Session(engine) as s, s.begin():

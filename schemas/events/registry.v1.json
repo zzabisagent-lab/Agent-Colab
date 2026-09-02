@@ -231,6 +231,13 @@
         "sent"
       ]
     },
+    "task_criteria": {
+      "id_prefix": "task-",
+      "states": [
+        "pinned",
+        "revised"
+      ]
+    },
     "dependency": {
       "id_prefix": "dep-",
       "states": [
@@ -955,6 +962,13 @@
       "phase": 1,
       "schema_version": 1,
       "payload_schema": "types/ARTIFACT_ARCHIVED.v1.schema.json",
+      "extension": true
+    },
+    "ACCEPTANCE_CRITERIA_REVISED": {
+      "aggregate_type": "task_criteria",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/ACCEPTANCE_CRITERIA_REVISED.v1.schema.json",
       "extension": true
     },
     "DEPENDENCY_FAILURE_DETECTED": {

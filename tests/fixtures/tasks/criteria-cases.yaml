@@ -1,0 +1,41 @@
+# Acceptance-criteria validation cases (P1-11, development plan §7D.1)
+valid:
+  - name: single evidence criterion
+    criteria:
+      - {statement: "report.md attached", check_type: evidence}
+  - name: mixed required/optional
+    criteria:
+      - {statement: "tests pass", check_type: test_command, required: true}
+      - {statement: "screenshot attached", check_type: evidence, required: false}
+  - name: whitespace is stripped
+    criteria:
+      - {statement: "   hash recorded   ", check_type: artifact_hash}
+invalid:
+  - name: empty list
+    criteria: []
+    code: ACCEPTANCE_CRITERIA_REQUIRED
+  - name: missing statement
+    criteria:
+      - {check_type: evidence}
+    code: ACCEPTANCE_CRITERIA_INVALID
+  - name: blank statement
+    criteria:
+      - {statement: "   ", check_type: evidence}
+    code: ACCEPTANCE_CRITERIA_INVALID
+  - name: unknown check type
+    criteria:
+      - {statement: "x", check_type: vibes}
+    code: ACCEPTANCE_CRITERIA_INVALID
+  - name: extra field
+    criteria:
+      - {statement: "x", check_type: evidence, owner: bob}
+    code: ACCEPTANCE_CRITERIA_INVALID
+  - name: statement too long
+    criteria:
+      - {statement: "LONG", check_type: evidence}
+    long_statement: 2001
+    code: ACCEPTANCE_CRITERIA_INVALID
+  - name: too many entries
+    criteria: []
+    repeat: 51
+    code: ACCEPTANCE_CRITERIA_INVALID

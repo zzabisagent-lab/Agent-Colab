@@ -46,6 +46,7 @@ class CreateTask(Command):
     risk: str = "LOW"
     task_id: str | None = None
     join_policy: dict[str, Any] = field(default_factory=dict)
+    criteria: tuple[dict[str, Any], ...] = ()  # §7D.1 acceptance criteria, revision 1 (P1-11)
     idempotency_scope: str = "task:create"
 
 
@@ -56,6 +57,7 @@ class CreateSubtask(Command):
     domain: str
     risk: str = "LOW"
     task_id: str | None = None
+    criteria: tuple[dict[str, Any], ...] = ()  # §7D.1 acceptance criteria, revision 1 (P1-11)
     idempotency_scope: str = "task:create_subtask"
 
 
@@ -155,6 +157,17 @@ class CancelTask(Command):
 # ---------------------------------------------------------------- hooks for later packages
 PRE_SUBMIT_CHECKS: list[Any] = []
 """Callables ``(ctx, state, command) -> str | None`` (error code). P1-11 adds the criteria gate."""
+PRE_DELEGATE_CHECKS: list[Any] = []
+"""Same signature, run before TASK_DELEGATED is appended. P1-11 requires ≥ 1 criterion."""
+
+
+def pre_delegate_checks(ctx: CommandContext, state: TaskState, cmd: DelegateTask) -> None:
+    for check in PRE_DELEGATE_CHECKS:
+        code = check(ctx, state, cmd)
+        if code:
+            raise CommandError(
+                code, f"delegation rejected by {getattr(check, '__name__', 'check')}"
+            )
 
 
 def pre_submit_checks(ctx: CommandContext, state: TaskState, cmd: SubmitImplementation) -> None:
@@ -169,8 +182,10 @@ def pre_submit_checks(ctx: CommandContext, state: TaskState, cmd: SubmitImplemen
 # ---------------------------------------------------------------- helpers
 
 
-def _new_task_id() -> str:
-    return "task-" + uuid.uuid4().hex[:16]
+def _new_task_id(ctx: CommandContext, scope: str) -> str:
+    """Deterministic id per (workspace, actor, scope, idempotency key) so retries replay."""
+    seed = f"{ctx.workspace_id}|{ctx.principal.account_uuid}|{scope}|{ctx.idempotency_key}"
+    return "task-" + hashlib.sha256(seed.encode()).hexdigest()[:16]
 
 
 def load_task(ctx: CommandContext, task_id: str) -> TaskState:
@@ -378,7 +393,8 @@ def create_task(cmd: CreateTask, ctx: CommandContext) -> Any:
         raise CommandError("TASK_RISK_INVALID", cmd.risk, status=400)
     if not cmd.title.strip():
         raise CommandError("TASK_TITLE_REQUIRED", "title is empty", status=400)
-    task_id = cmd.task_id or _new_task_id()
+    task_id = cmd.task_id or _new_task_id(ctx, cmd.idempotency_scope)
+    pinned = criteria_app.prepare_initial(task_id, cmd.criteria)
     payload = {
         "task_id": task_id,
         "root_task_id": task_id,
@@ -388,8 +404,11 @@ def create_task(cmd: CreateTask, ctx: CommandContext) -> Any:
         "risk": cmd.risk,
         "join_policy": cmd.join_policy,
         "policy_snapshot_hash": _policy_snapshot_hash(ctx),
+        "criteria": pinned,
     }
     res, state = _create(ctx, cmd, task_id, "TASK_CREATED", payload)
+    if not res.replayed:
+        criteria_app.persist_initial(ctx, task_id, res.event_id, pinned)
     return _result(res, task_id, state)
 
 
@@ -399,11 +418,12 @@ def create_subtask(cmd: CreateSubtask, ctx: CommandContext) -> Any:
     require_permission(ctx, "task.delegate", channel_id=parent.channel_id, domain=cmd.domain)
     if parent.status in (TaskStatus.COMPLETED, TaskStatus.CANCELLED):
         raise CommandError("TASK_TERMINAL", f"parent {cmd.parent_task_id} is terminal", status=409)
-    task_id = cmd.task_id or _new_task_id()
+    task_id = cmd.task_id or _new_task_id(ctx, cmd.idempotency_scope)
     if task_id == cmd.parent_task_id:
         raise CommandError("TASK_GRAPH_CYCLE", "a Task cannot be its own parent", status=409)
     root_task_id = parent.root_task_id or cmd.parent_task_id
     depth = parent.delegation_depth + 1
+    pinned = criteria_app.prepare_initial(task_id, cmd.criteria)
     payload = {
         "task_id": task_id,
         "parent_task_id": cmd.parent_task_id,
@@ -414,9 +434,11 @@ def create_subtask(cmd: CreateSubtask, ctx: CommandContext) -> Any:
         "domain": cmd.domain,
         "risk": cmd.risk,
         "policy_snapshot_hash": _policy_snapshot_hash(ctx),
+        "criteria": pinned,
     }
     res, state = _create(ctx, cmd, task_id, "SUBTASK_CREATED", payload)
     if not res.replayed:
+        criteria_app.persist_initial(ctx, task_id, res.event_id, pinned)
         link_subtask_edge(
             ctx,
             task_id,
@@ -460,6 +482,12 @@ def delegate_task(cmd: DelegateTask, ctx: CommandContext) -> Any:
     state = load_task(ctx, cmd.task_id)
     require_permission(ctx, "task.delegate", channel_id=state.channel_id, domain=state.domain)
     assignee = _account_uuid(ctx, cmd.assignee_account_id)
+    if _replay_from_stream(ctx, cmd.task_id, cmd.idempotency_scope) is None:
+        try:
+            next_status(state.status, "TASK_DELEGATED")
+        except TaskTransitionError as exc:
+            raise CommandError(exc.code, exc.detail, status=409) from exc
+        pre_delegate_checks(ctx, state, cmd)
     payload = {
         "assignee_account_id": assignee,
         "assignment_revision": state.assignment_revision + 1,
@@ -652,3 +680,7 @@ def cancel_task(cmd: CancelTask, ctx: CommandContext) -> Any:
     require_permission(ctx, "task.cancel", channel_id=state.channel_id, domain=state.domain)
     res, state = _transition(ctx, cmd, state, "TASK_CANCELLED", {"reason_code": cmd.reason_code})
     return _result(res, cmd.task_id, state)
+
+
+# P1-11 registers the acceptance-criteria gates and the ReviseCriteria handler on import.
+from server.application import criteria as criteria_app  # noqa: E402

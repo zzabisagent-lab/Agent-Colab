@@ -29,6 +29,7 @@ aggregates:
   break_glass:    {id_prefix: "bg-",    states: [active, ended]}
   hard_delete:    {id_prefix: "hd-",    states: [requested, approved, executed, rejected]}
   notification:   {id_prefix: "ntf-",  states: [sent]}
+  task_criteria:  {id_prefix: "task-", states: [pinned, revised]}  # acceptance-criteria revisions of a Task (P1-11); aggregate_id = task_id
   dependency:     {id_prefix: "dep-",  states: [healthy, degraded, failed]}
 # authority declarations (V-P0-13): decisions that must never be taken from a projection
 authority:
@@ -154,4 +155,5 @@ events:
   TASK_VERIFICATION_STARTED: {aggregate: task, phase: 1, required: [task_id, verification_id], extension: "spec §8.2 VERIFYING state entry"}
   ARTIFACT_LINKED:         {aggregate: artifact, phase: 1, required: [artifact_id, subject_type, subject_id, relation], extension: "spec §9.1 ArtifactLink transitions leave an Event (P1-09)"}
   ARTIFACT_ARCHIVED:       {aggregate: artifact, phase: 1, required: [artifact_id], extension: "spec §7.2 Artifact archive (P1-09)"}
+  ACCEPTANCE_CRITERIA_REVISED: {aggregate: task_criteria, phase: 1, required: [task_id, criteria_revision], extension: "development plan §7D.1: criteria change only via a new revision + Event (P1-11); payload also carries criteria_ids[] and criteria[]"}
   DEPENDENCY_FAILURE_DETECTED: {aggregate: dependency, phase: 4, required: [dependency, error_code], extension: "development plan §7G dependency failure notification (P1-13/P4-02)"}
