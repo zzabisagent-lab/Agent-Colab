@@ -70,6 +70,25 @@ def _worktree_modifications(worktree: Path, phase: int) -> list[str]:
     return [line[3:] for line in out.splitlines() if line[3:] and not line[3:].startswith(allowed)]
 
 
+def _load_secret_env(paths: list[str]) -> dict[str, str]:
+    """Parse KEY=VALUE files; skip comments/blank lines and keys with spaces."""
+    out: dict[str, str] = {}
+    for raw in paths:
+        path = Path(raw).expanduser()
+        if not path.exists():
+            continue
+        for line in path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            key = key.strip()
+            if " " in key or not key:
+                continue
+            out[key] = value.strip().strip('"').strip("'")
+    return out
+
+
 def prepare_worktree(commit: str, phase: int, revision: int) -> Path:
     WORKTREES.mkdir(parents=True, exist_ok=True)
     path = WORKTREES / f"phase-{phase}-r{revision:03d}"
@@ -144,6 +163,13 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--extra-env", default="")
     ap.add_argument("--model", default=None)
     ap.add_argument(
+        "--secret-env",
+        action="append",
+        default=[],
+        help="KEY=VALUE files (e.g. .env, the Mattermost credentials file) whose variables are "
+        "exported to the verifier process; names are listed in the prompt, values never",
+    )
+    ap.add_argument(
         "--no-sandbox",
         action="store_true",
         help="run codex without its process sandbox (host blocks unprivileged user namespaces); "
@@ -186,11 +212,20 @@ def main(argv: list[str] | None = None) -> int:
     wt_report = f"verification/phase-{phase}/{report_name}"
     wt_evidence = f"verification/phase-{phase}/evidence-r{rev:03d}"
     (worktree / wt_evidence).mkdir(parents=True, exist_ok=True)
-    prompt = render_prompt(phase, commit, rev, wt_report, wt_evidence, ns.db_url, ns.extra_env)
+    secret_names = sorted(_load_secret_env(ns.secret_env))
+    extra_env = ns.extra_env
+    if secret_names:
+        extra_env += (
+            "- Test-environment credentials are exported to your process as environment "
+            f"variables (never print or record their values): {', '.join(secret_names)}.\n"
+        )
+    prompt = render_prompt(phase, commit, rev, wt_report, wt_evidence, ns.db_url, extra_env)
     (run_dir / "prompt.md").write_text(prompt, encoding="utf-8")
     started = dt.datetime.now(dt.UTC)
+    secret_env = _load_secret_env(ns.secret_env)
     env = {
         **os.environ,
+        **secret_env,
         "AGENT_COLAB_TEST_DATABASE_URL": ns.db_url,
         "PATH": f"{Path.home() / '.local' / 'bin'}:{os.environ.get('PATH', '')}",
     }
