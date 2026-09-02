@@ -16,12 +16,16 @@ regexes = [
   '''CANARY-NOT-A-SECRET-\d+''',
   '''token_hash: "[0-9a-f]{64}"''',
   '''"idempotency_key": "[a-z]+-\d{4}-[a-z]+-\d+"''',
+  # keyword argument text in tests (`idempotency_key=key`), not a credential
+  '''idempotency_key=key\b''',
 ]
 paths = [
   # local, git-ignored deployment-secrets file (never tracked: `git check-ignore .env`); the
   # directory scan walks ignored files, the history scan is the authoritative repository check
   '''^\.env$''',
   '''^docs/baseline/.*\.md$''',
+  # Bridge redaction-rule fixture: synthetic AWS/bearer/DSN samples the redactor must catch
+  '''^tests/fixtures/bridge/rules\.yaml$''',
   '''(^|/)\.venv/''',
   '''(^|/)node_modules/''',
 ]
