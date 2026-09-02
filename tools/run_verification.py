@@ -94,9 +94,10 @@ def render_prompt(
 ) -> str:
     b = load_baseline()
     last = max(int(t.split("-")[-1]) for t in b.test_ids() if phase_of(t) == phase)
-    manifest = yaml.safe_load(
-        (ROOT / "evidence" / f"phase-{phase}" / "manifest.yaml").read_text(encoding="utf-8")
+    manifest_path = (
+        ROOT / "verification" / f"phase-{phase}" / f"run-r{revision:03d}" / "manifest.yaml"
     )
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
     repro = manifest.get("reproduction") or [
         "make bootstrap",
         "make lint",
