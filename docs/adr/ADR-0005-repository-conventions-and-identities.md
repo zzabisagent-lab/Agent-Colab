@@ -29,3 +29,13 @@ are recorded in every Evidence Manifest and Verifier Report.
 
 `phase-<n>` branches; merge to `main` and tag `phase-<n>-passed` only after a `PASSED` report.
 Commits reference package IDs (`P0-03: ...`).
+
+## Addendum (Phase 0): verifier process sandbox
+
+The build host blocks unprivileged user namespaces (AppArmor, no root), so the Codex process
+sandbox (bubblewrap) cannot start any command. Verification runs therefore use
+`--no-sandbox` in `tools/run_verification.py`. Independence and safety are preserved by:
+a detached git worktree at the pinned target commit (read-only by rule, checked after the run:
+`worktree_modifications_outside_verification` must be empty in `run-r<n>/run.json`), a separate
+database (`colab_verify`), a fresh context per run, and the unmodified copy of the report with its
+SHA-256. If the host later allows user namespaces, the sandboxed mode is the default again.

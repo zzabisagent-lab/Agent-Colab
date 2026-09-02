@@ -57,6 +57,23 @@ def _env_fingerprint() -> str:
     return " | ".join(p for p in parts if p)
 
 
+def _worktree_modifications(worktree: Path, phase: int) -> list[str]:
+    """Files changed/added by the verifier outside its verification directory (must be empty)."""
+    out = subprocess.run(
+        ["git", "status", "--porcelain", "--untracked-files=all"],
+        capture_output=True,
+        text=True,
+        cwd=worktree,
+        check=False,
+    ).stdout
+    allowed = f"verification/phase-{phase}/"
+    return [
+        line[3:]
+        for line in out.splitlines()
+        if line[3:] and not line[3:].startswith(allowed) and not line[3:].startswith(".venv/")
+    ]
+
+
 def prepare_worktree(commit: str, phase: int, revision: int) -> Path:
     WORKTREES.mkdir(parents=True, exist_ok=True)
     path = WORKTREES / f"phase-{phase}-r{revision:03d}"
@@ -125,6 +142,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--db-url", default="postgresql://colab@127.0.0.1:54329/colab_verify")
     ap.add_argument("--extra-env", default="")
     ap.add_argument("--model", default=None)
+    ap.add_argument(
+        "--no-sandbox",
+        action="store_true",
+        help="run codex without its process sandbox (host blocks unprivileged user namespaces); "
+        "isolation then relies on the detached worktree, separate DB, and the post-run check",
+    )
     ns = ap.parse_args(argv)
     commit = ns.commit or _git("rev-parse", "HEAD").strip()
     phase, rev = ns.phase, ns.revision
@@ -148,16 +171,18 @@ def main(argv: list[str] | None = None) -> int:
         "AGENT_COLAB_TEST_DATABASE_URL": ns.db_url,
         "PATH": f"{Path.home() / '.local' / 'bin'}:{os.environ.get('PATH', '')}",
     }
+    sandbox_args = (
+        ["--dangerously-bypass-approvals-and-sandbox"]
+        if ns.no_sandbox
+        else ["-s", "workspace-write", "-c", "sandbox_workspace_write.network_access=true"]
+    )
     cmd = [
         "codex",
         "exec",
         "--skip-git-repo-check",
         "-C",
         str(worktree),
-        "-s",
-        "workspace-write",
-        "-c",
-        "sandbox_workspace_write.network_access=true",
+        *sandbox_args,
         "--color",
         "never",
         "--json",
@@ -193,6 +218,10 @@ def main(argv: list[str] | None = None) -> int:
         "finished_at": finished.isoformat(),
         "environment_fingerprint": _env_fingerprint(),
         "report_present": src.exists(),
+        "sandbox": "none (host AppArmor blocks bubblewrap userns)"
+        if ns.no_sandbox
+        else "workspace-write",
+        "worktree_modifications_outside_verification": _worktree_modifications(worktree, phase),
     }
     if src.exists():
         data = src.read_bytes()

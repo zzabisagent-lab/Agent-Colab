@@ -27,12 +27,13 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 19.5 / 20.5 (P0-13 blocked)
 
 ### Latest verification result
 
-VR-P0-001 requested (Codex, revision 1) on the commit containing evidence/phase-0/manifest.yaml. Known NOT_RUN: V-P0-04 (no container runtime), V-P0-19 (no Telegram bot).
+r001 aborted (Codex sandbox cannot execute on this host; see verification/phase-0/run-r001/ABORTED.md). VR-P0-002 requested (Codex, revision 2, unsandboxed in an isolated worktree). Known NOT_RUN: V-P0-04 (no container runtime), V-P0-19 (no Telegram bot).
 
 ### Open findings / blockers
 
 - B-001 Container runtime (Docker + Compose) absent on the build host; root required. Affects V-P0-04, ClamAV, Compose-based tests.
 - B-002 Telegram bot token and two test chats/topics not available. Affects P0-13/V-P0-19 and Phase 2.
+- B-003 (root-only, optional) AppArmor blocks unprivileged user namespaces, so Codex's process sandbox cannot run; verification runs unsandboxed in an isolated worktree (ADR-0005 addendum).
 
 ### Next step
 
