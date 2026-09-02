@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P1-24",
+  "evidence_id": "SELF-V-P1-24",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_verification_core.py",
+    "tests/unit/test_verification_rules.py",
+    "-q",
+    "-k",
+    "snapshot"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "b8bce73388f0b009918d673d099df621d9abe5f0",
+  "started_at": "2026-09-02T14:52:32.230352+00:00",
+  "finished_at": "2026-09-02T14:52:36.052067+00:00",
+  "output_sha256": "99db33d5c94c6f7da021687c7391181685cc33299c5435b1c861e2db3be3ec87"
+}

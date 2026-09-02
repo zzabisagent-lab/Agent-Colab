@@ -177,8 +177,12 @@ def test_application_check_covers_alias_graph() -> None:
 
 
 @pytest.fixture()
-def client(database_url: str) -> Iterator[TestClient]:
+def client(database_url: str, engine: Engine) -> Iterator[TestClient]:
+    from server.application.authz import AllowAllAuthorizer
+
     app = create_app(Settings(database_url=database_url))
+    app.state.runtime.workspace_id = str(_ids(engine)["ws"])
+    app.state.runtime.authorizer = AllowAllAuthorizer()
     with TestClient(app) as c:
         yield c
 

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/documents/verification-verdict.v1.schema.json",
+  "title": "Verification verdict (core subset of validation plan §6.2)",
+  "description": "Minimum report a verifier submits for a VerificationRun revision. Phase reports use the full verifier-report.v1 schema; this core schema is what the server validates for Task verifications.",
+  "type": "object",
+  "required": ["result", "criteria_version", "tests", "findings", "residual_risks"],
+  "properties": {
+    "result": {"type": "string", "enum": ["PASSED", "FAILED", "BLOCKED"]},
+    "criteria_version": {"type": "string", "minLength": 1},
+    "environment_fingerprint": {"type": "string"},
+    "started_at": {"type": "string"},
+    "completed_at": {"type": "string"},
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "result", "evidence_ref"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "result": {"type": "string", "enum": ["PASS", "FAIL", "NOT_RUN", "NOT_APPLICABLE"]},
+          "evidence_ref": {"type": "string"},
+          "note": {"type": "string"}
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "summary"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "severity": {"type": "string", "enum": ["Critical", "High", "Medium", "Low"]},
+          "summary": {"type": "string", "minLength": 1},
+          "affected": {"type": "array", "items": {"type": "string"}},
+          "reproduction": {"type": "array", "items": {"type": "string"}},
+          "expected": {"type": "string"},
+          "actual": {"type": "string"},
+          "evidence_ref": {"type": "string"},
+          "impact": {"type": "string"},
+          "fix_condition": {"type": "string"}
+        }
+      }
+    },
+    "residual_risks": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}
