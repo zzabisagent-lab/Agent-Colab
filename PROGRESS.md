@@ -9,7 +9,7 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 | ID | Work | Size | Prereq | Status | SELF evidence |
 |---|---|---|---|---|---|
 | P1-01 | DB migration/roles | M | P0-03 | IMPLEMENTED | SELF-V-P1-05, SELF-V-P1-25 |
-| P1-02 | aggregate Event append | L | P1-01 | IN_PROGRESS | — |
+| P1-02 | aggregate Event append | L | P1-01 | IMPLEMENTED | SELF-V-P1-01/02/03/04/06/21 |
 | P1-03 | Policy Engine | M | P1-01, P0-12 | IN_PROGRESS (fork) | — |
 | P1-04 | Task state/projection | M | P1-02 | NOT_STARTED | — |
 | P1-05 | identity/service token/external link core | M | P1-01 | IN_PROGRESS (fork) | — |
@@ -23,7 +23,7 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 | P1-13 | Notification core | S | P1-02 | NOT_STARTED | — |
 | P1-14 | Usage/Budget core | M | P1-02 | NOT_STARTED | — |
 
-Phase 1 progress (size-weighted): 2.5 / 33.5
+Phase 1 progress (size-weighted): 7.5 / 33.5
 
 ## Phase 0 (PASSED) — branch `phase-0`, tag `phase-0-passed`
 

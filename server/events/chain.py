@@ -129,9 +129,9 @@ def verify_chain(session: Session, spec: ChainSpec) -> list[str]:
 
 
 def record_anchor(session: Session, spec: ChainSpec, anchor_date: dt.date) -> str | None:
-    """Anchor the current chain head for ``anchor_date``; returns the anchor hash (None if empty)."""
+    """Anchor the current chain head for ``anchor_date``; returns the anchor hash or None."""
     row = session.execute(
-        text(  # noqa: S608 - constant identifiers
+        text(
             f"SELECT {spec.order_column} AS rid, content_hash FROM {spec.table} "
             f"ORDER BY {spec.order_column} DESC LIMIT 1"
         )
@@ -150,7 +150,8 @@ def record_anchor(session: Session, spec: ChainSpec, anchor_date: dt.date) -> st
     )
     session.execute(
         text(
-            "INSERT INTO audit_hash_anchors (chain, anchor_date, last_row_id, last_hash, anchor_hash) "
+            "INSERT INTO audit_hash_anchors "
+            "(chain, anchor_date, last_row_id, last_hash, anchor_hash) "
             "VALUES (:c, :d, :r, :h, :a)"
         ),
         {

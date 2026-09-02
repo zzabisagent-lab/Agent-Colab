@@ -1,0 +1,18 @@
+{
+  "test_id": "V-P1-06",
+  "evidence_id": "SELF-V-P1-06",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_event_store.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "ed8d4ee4a6226c3a202f8f372fa5b5a14aea4cf6",
+  "started_at": "2026-09-02T14:32:23.831516+00:00",
+  "finished_at": "2026-09-02T14:32:25.855544+00:00",
+  "output_sha256": "06955fb47f16312e5d13266c774a2aa4648c46e423cbe6564a92e25b68e39131"
+}
