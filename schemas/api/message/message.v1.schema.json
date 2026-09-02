@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/message/message.v1.schema.json",
+  "title": "Ingested Message (redacted view) v1",
+  "type": "object",
+  "required": ["message_id", "conversation_id", "channel_id", "source", "source_message_id", "sender_label", "body_redacted", "received_at", "status"],
+  "properties": {
+    "message_id": {"type": "string", "pattern": "^msg-[0-9a-f]{24}$"},
+    "conversation_id": {"type": "string", "minLength": 1},
+    "channel_id": {"type": "string", "minLength": 1},
+    "source": {"type": "string", "enum": ["mattermost", "telegram", "system"]},
+    "source_message_id": {"type": "string", "minLength": 1},
+    "sender_label": {"type": "string"},
+    "body_redacted": {"type": "string"},
+    "visibility": {"type": "string", "enum": ["channel", "thread", "private", "system"]},
+    "received_at": {"type": "string"},
+    "status": {"type": "string", "enum": ["available", "REDACTED_BY_RETENTION", "REDACTED_BY_HARD_DELETE"]},
+    "tombstone_ref": {"type": ["string", "null"]},
+    "redaction_findings": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

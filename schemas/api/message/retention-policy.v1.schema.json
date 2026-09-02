@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/message/retention-policy.v1.schema.json",
+  "title": "Channel message retention policy v1",
+  "type": "object",
+  "required": ["retention_days", "legal_hold", "documentation_policy"],
+  "properties": {
+    "retention_days": {"type": "integer", "minimum": 1, "maximum": 3650},
+    "legal_hold": {"type": "boolean"},
+    "documentation_policy": {"type": "string", "enum": ["task_threads", "full_channel"]}
+  },
+  "additionalProperties": false
+}
