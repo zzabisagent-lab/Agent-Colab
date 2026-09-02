@@ -8,23 +8,23 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 
 | ID | Work | Size | Prereq | Status | SELF evidence |
 |---|---|---|---|---|---|
-| P3-01 | Agent Registry | M | P1-05 | IN_PROGRESS (fork) | — |
-| P3-02 | Role/Capability | M | P1-03 | IN_PROGRESS (fork) | — |
-| P3-03 | Adapter SDK/contract | M | P1-12 | IN_PROGRESS (fork) | — |
-| P3-04 | default Adapters (MCP, REST/Webhook, Mattermost bot) | M | P3-03, P3-10, P3-11, P3-12 | IN_PROGRESS (fork) | — |
-| P3-05 | conformance suite CS-01~12 | M | P3-03 | IN_PROGRESS (fork) | — |
-| P3-06 | routing | M | P3-01, P3-02 | IN_PROGRESS (fork) | — |
-| P3-07 | Agent Admin UI | M | P3-01 | IN_PROGRESS | — |
-| P3-08 | Limits enforcement | M | P1-14, P3-01 | IN_PROGRESS (fork) | — |
-| P3-09 | multi-Agent orchestration | L | P3-06 | IN_PROGRESS (fork) | — |
-| P3-10 | MCP server transport | M | P1-07, P1-12, P0-11 | IN_PROGRESS (fork) | — |
-| P3-11 | Webhook push delivery | M | P1-12, P0-11 | IN_PROGRESS (fork) | — |
-| P3-12 | Mattermost bot adapter delivery | M | P1-12, P2-11 | IN_PROGRESS (fork) | — |
-| P3-13 | Verifier assignment engine | M | P1-06, P3-06 | IN_PROGRESS (fork) | — |
-| P3-14 | accept timeout/re-routing | S | P3-06, P1-12 | IN_PROGRESS (fork) | — |
-| P3-15 | usage reporting conformance | S | P1-14, P3-03 | IN_PROGRESS (fork) | — |
+| P3-01 | Agent Registry | M | P1-05 | IMPLEMENTED | SELF-V-P3-01/08/11/17 |
+| P3-02 | Role/Capability | M | P1-03 | IMPLEMENTED | SELF-V-P3-02/09/16 |
+| P3-03 | Adapter SDK/contract | M | P1-12 | IMPLEMENTED | SELF-V-P3-05/06/07 |
+| P3-04 | default Adapters (MCP, REST/Webhook, Mattermost bot) | M | P3-03, P3-10, P3-11, P3-12 | IMPLEMENTED | SELF-V-P3-05/12 |
+| P3-05 | conformance suite CS-01~12 | M | P3-03 | IMPLEMENTED | SELF-V-P3-05 |
+| P3-06 | routing | M | P3-01, P3-02 | IMPLEMENTED | SELF-V-P3-03/04/10 |
+| P3-07 | Agent Admin UI | M | P3-01 | IMPLEMENTED | SELF-V-P3-13 |
+| P3-08 | Limits enforcement | M | P1-14, P3-01 | IMPLEMENTED | SELF-V-P3-15 |
+| P3-09 | multi-Agent orchestration | L | P3-06 | IMPLEMENTED | SELF-V-P3-18/19/20 |
+| P3-10 | MCP server transport | M | P1-07, P1-12, P0-11 | IMPLEMENTED | SELF-V-P3-21 |
+| P3-11 | Webhook push delivery | M | P1-12, P0-11 | IMPLEMENTED | SELF-V-P3-22 |
+| P3-12 | Mattermost bot adapter delivery | M | P1-12, P2-11 | IMPLEMENTED | SELF-V-P3-23 |
+| P3-13 | Verifier assignment engine | M | P1-06, P3-06 | IMPLEMENTED | SELF-V-P3-14/24 |
+| P3-14 | accept timeout/re-routing | S | P3-06, P1-12 | IMPLEMENTED | SELF-V-P3-25 |
+| P3-15 | usage reporting conformance | S | P1-14, P3-03 | IMPLEMENTED | SELF-V-P3-26 |
 
-Phase 3 progress (size-weighted): 0 / 32
+Phase 3 progress (size-weighted): 32 / 32 — all packages implemented; full suite + lint + check-docs green; Codex verification pending (see Next step)
 
 ## Phase 2 (PASSED) — branch `phase-2`, tag `phase-2-passed`
 
@@ -114,7 +114,7 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 20.5 / 20.5
 
 ### Next step
 
-Phase 3 on branch `phase-3` (P3-01/P3-02/P3-03/P3-10/P3-11 first, in parallel where disjoint; P3-04 after the transports).
+Phase 3: run Codex verification revision 1 on branch `phase-3` (`tools/run_verification.py --phase 3 --revision 1 --commit <sha> --no-sandbox --secret-env .env --secret-env ~/.local/opt/mattermost/.spike-credentials`); on PASSED merge to `main`, tag `phase-3-passed`, start Phase 4.
 
 ## Phase history
 

@@ -197,7 +197,7 @@ class WebhookSimulationHarness(_Transport):
                     "capabilities": {
                         "tools": list(self.tools),
                         "unsupported": ["tool_not_advertised"],
-                        "secret_handles": "supported",
+                        "secret_handles": "supported",  # nosec B105 - advertisement value
                         "cancel": "supported",
                     },
                     "delivery_modes": ["push"],
