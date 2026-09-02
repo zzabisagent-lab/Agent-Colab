@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Any, Protocol, TypeVar
+from typing import Any, Protocol
 
 from sqlalchemy.orm import Session
 
@@ -90,13 +90,12 @@ class Command:
     idempotency_scope: str = ""
 
 
-C = TypeVar("C", bound=Command)
 Handler = Callable[[Any, CommandContext], CommandResult]
 
 _HANDLERS: dict[type[Command], Handler] = {}
 
 
-def handles(
+def handles[C: Command](
     command_type: type[C],
 ) -> Callable[
     [Callable[[C, CommandContext], CommandResult]], Callable[[C, CommandContext], CommandResult]
@@ -106,7 +105,7 @@ def handles(
     ) -> Callable[[C, CommandContext], CommandResult]:
         if command_type in _HANDLERS:
             raise RuntimeError(f"handler already registered for {command_type.__name__}")
-        _HANDLERS[command_type] = fn  # type: ignore[assignment]
+        _HANDLERS[command_type] = fn
         return fn
 
     return register
@@ -128,7 +127,7 @@ def execute(command: Command, ctx: CommandContext) -> CommandResult:
 
 
 def require_permission(ctx: CommandContext, permission: str, **scope: Any) -> None:
-    """Deny-by-default: without an authorizer nothing is allowed (except in explicit test doubles)."""
+    """Deny-by-default: without an authorizer nothing is allowed."""
     if ctx.authorizer is None:
         raise CommandError("POLICY_DENIED", "no authorizer configured", status=403)
     ctx.authorizer.require(
