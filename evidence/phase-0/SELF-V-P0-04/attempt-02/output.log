@@ -1,0 +1,3 @@
+
+--- stderr ---
+failed to read /home/master/work/agent-colab/.env: line 1: key cannot contain a space

@@ -1,0 +1,731 @@
+#0 building with "default" instance using docker driver
+
+#1 [server internal] load build definition from Dockerfile.server
+#1 transferring dockerfile: 1.11kB done
+#1 DONE 0.1s
+
+#2 [server] resolve image config for docker-image://docker.io/docker/dockerfile:1.7
+#2 DONE 2.0s
+
+#3 [server] docker-image://docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
+#3 resolve docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e 0.0s done
+#3 sha256:96918c57e42509b97f10c074d80672ecdbd3bb7dcd38c1bd95960cf291207416 0B / 11.98MB 0.2s
+#3 sha256:96918c57e42509b97f10c074d80672ecdbd3bb7dcd38c1bd95960cf291207416 9.44MB / 11.98MB 0.5s
+#3 sha256:96918c57e42509b97f10c074d80672ecdbd3bb7dcd38c1bd95960cf291207416 11.98MB / 11.98MB 0.6s done
+#3 extracting sha256:96918c57e42509b97f10c074d80672ecdbd3bb7dcd38c1bd95960cf291207416
+#3 extracting sha256:96918c57e42509b97f10c074d80672ecdbd3bb7dcd38c1bd95960cf291207416 0.3s done
+#3 DONE 1.0s
+
+#4 [server internal] load metadata for docker.io/library/python:3.12.11-slim
+#4 ...
+
+#5 [server internal] load metadata for ghcr.io/astral-sh/uv:0.12.9
+#5 DONE 1.5s
+
+#4 [server internal] load metadata for docker.io/library/python:3.12.11-slim
+#4 DONE 2.6s
+
+#6 [server internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [server stage-1 1/8] FROM docker.io/library/python:3.12.11-slim@sha256:47ae396f09c1303b8653019811a8498470603d7ffefc29cb07c88f1f8cb3d19f
+#7 resolve docker.io/library/python:3.12.11-slim@sha256:47ae396f09c1303b8653019811a8498470603d7ffefc29cb07c88f1f8cb3d19f 0.1s done
+#7 ...
+
+#8 [server internal] load build context
+#8 transferring context: 1.18MB 0.1s done
+#8 DONE 0.3s
+
+#9 [server] FROM ghcr.io/astral-sh/uv:0.12.9@sha256:8b940d3a9d65bed080436972241af2e21c84b5e8c9193f7014ed71479ee795ff
+#9 resolve ghcr.io/astral-sh/uv:0.12.9@sha256:8b940d3a9d65bed080436972241af2e21c84b5e8c9193f7014ed71479ee795ff 0.1s done
+#9 sha256:b78788eb72df97b4eb48100030897057071ffb692c402ce508f42bb9f334ede3 0B / 96B 0.2s
+#9 sha256:b78788eb72df97b4eb48100030897057071ffb692c402ce508f42bb9f334ede3 96B / 96B 0.2s done
+#9 sha256:e27de307e11aaf4fa2bf5878efdbd2315579aa4e6317d6c76fa39392703672d7 0B / 22.92MB 0.2s
+#9 sha256:e27de307e11aaf4fa2bf5878efdbd2315579aa4e6317d6c76fa39392703672d7 8.39MB / 22.92MB 0.5s
+#9 sha256:e27de307e11aaf4fa2bf5878efdbd2315579aa4e6317d6c76fa39392703672d7 14.68MB / 22.92MB 0.6s
+#9 sha256:e27de307e11aaf4fa2bf5878efdbd2315579aa4e6317d6c76fa39392703672d7 18.87MB / 22.92MB 0.8s
+#9 sha256:e27de307e11aaf4fa2bf5878efdbd2315579aa4e6317d6c76fa39392703672d7 20.97MB / 22.92MB 1.2s
+#9 sha256:e27de307e11aaf4fa2bf5878efdbd2315579aa4e6317d6c76fa39392703672d7 22.92MB / 22.92MB 1.8s done
+#9 extracting sha256:e27de307e11aaf4fa2bf5878efdbd2315579aa4e6317d6c76fa39392703672d7
+#9 extracting sha256:e27de307e11aaf4fa2bf5878efdbd2315579aa4e6317d6c76fa39392703672d7 0.6s done
+#9 DONE 2.7s
+
+#7 [server stage-1 1/8] FROM docker.io/library/python:3.12.11-slim@sha256:47ae396f09c1303b8653019811a8498470603d7ffefc29cb07c88f1f8cb3d19f
+#7 sha256:9a7c3b4d36fcfabc97648dc4dac85621c13b28259240b776ecca901127578796 249B / 249B 0.4s done
+#7 sha256:c8cc3e95286cdfcdfe1215ca0626fb6d9043077962c7d4e5bcbab8b96231f919 12.11MB / 12.11MB 1.0s done
+#7 sha256:3c43e65991bd080f60cac1c513796828316f1f90951eaad19edb90cc21292184 1.29MB / 1.29MB 0.8s done
+#7 sha256:8c7716127147648c1751940b9709b6325f2256290d3201662eca2701cadb2cdf 29.78MB / 29.78MB 1.5s done
+#7 extracting sha256:8c7716127147648c1751940b9709b6325f2256290d3201662eca2701cadb2cdf
+#7 ...
+
+#9 [server] FROM ghcr.io/astral-sh/uv:0.12.9@sha256:8b940d3a9d65bed080436972241af2e21c84b5e8c9193f7014ed71479ee795ff
+#9 extracting sha256:b78788eb72df97b4eb48100030897057071ffb692c402ce508f42bb9f334ede3 0.0s done
+#9 DONE 2.7s
+
+#7 [server stage-1 1/8] FROM docker.io/library/python:3.12.11-slim@sha256:47ae396f09c1303b8653019811a8498470603d7ffefc29cb07c88f1f8cb3d19f
+#7 extracting sha256:8c7716127147648c1751940b9709b6325f2256290d3201662eca2701cadb2cdf 1.7s done
+#7 DONE 3.7s
+
+#7 [server stage-1 1/8] FROM docker.io/library/python:3.12.11-slim@sha256:47ae396f09c1303b8653019811a8498470603d7ffefc29cb07c88f1f8cb3d19f
+#7 extracting sha256:3c43e65991bd080f60cac1c513796828316f1f90951eaad19edb90cc21292184
+#7 extracting sha256:3c43e65991bd080f60cac1c513796828316f1f90951eaad19edb90cc21292184 0.2s done
+#7 DONE 3.9s
+
+#7 [server stage-1 1/8] FROM docker.io/library/python:3.12.11-slim@sha256:47ae396f09c1303b8653019811a8498470603d7ffefc29cb07c88f1f8cb3d19f
+#7 extracting sha256:c8cc3e95286cdfcdfe1215ca0626fb6d9043077962c7d4e5bcbab8b96231f919
+#7 extracting sha256:c8cc3e95286cdfcdfe1215ca0626fb6d9043077962c7d4e5bcbab8b96231f919 1.0s done
+#7 DONE 4.8s
+
+#7 [server stage-1 1/8] FROM docker.io/library/python:3.12.11-slim@sha256:47ae396f09c1303b8653019811a8498470603d7ffefc29cb07c88f1f8cb3d19f
+#7 extracting sha256:9a7c3b4d36fcfabc97648dc4dac85621c13b28259240b776ecca901127578796 0.0s done
+#7 DONE 4.9s
+
+#10 [server build  2/11] COPY --from=ghcr.io/astral-sh/uv:0.12.9 /uv /uvx /bin/
+#10 DONE 1.5s
+
+#11 [server stage-1 2/8] RUN useradd --system --uid 10001 --create-home agentcolab  && mkdir -p /var/lib/agent-colab/bootstrap /var/lib/agent-colab/artifacts  && chown -R agentcolab:agentcolab /var/lib/agent-colab
+#11 0.989 useradd warning: agentcolab's uid 10001 is greater than SYS_UID_MAX 999
+#11 DONE 1.5s
+
+#12 [server build  3/11] WORKDIR /app
+#12 DONE 0.1s
+
+#13 [server build  4/11] COPY pyproject.toml uv.lock README.md LICENSE ./
+#13 DONE 0.1s
+
+#14 [server build  5/11] COPY server ./server
+#14 DONE 0.1s
+
+#15 [server build  6/11] COPY sidecar ./sidecar
+#15 DONE 0.1s
+
+#16 [server build  7/11] COPY schemas ./schemas
+#16 DONE 0.1s
+
+#17 [server build  8/11] COPY policy ./policy
+#17 DONE 0.1s
+
+#18 [server build  9/11] COPY migrations ./migrations
+#18 DONE 0.1s
+
+#19 [server build 10/11] COPY alembic.ini ./
+#19 DONE 0.1s
+
+#20 [server build 11/11] RUN uv sync --frozen --no-dev --no-editable
+#20 0.427 Using CPython 3.12.11 interpreter at: /usr/local/bin/python3
+#20 0.427 Creating virtual environment at: /opt/venv
+#20 0.454    Building agent-colab @ file:///app
+#20 0.598 Downloading sqlalchemy (3.2MiB)
+#20 0.599 Downloading cryptography (4.5MiB)
+#20 0.599 Downloading psycopg-binary (5.0MiB)
+#20 0.602 Downloading pydantic-core (2.0MiB)
+#20 0.603 Downloading uvloop (4.2MiB)
+#20 1.011  Downloaded pydantic-core
+#20 1.128  Downloaded sqlalchemy
+#20 1.186  Downloaded uvloop
+#20 1.213  Downloaded psycopg-binary
+#20 1.215  Downloaded cryptography
+#20 1.588       Built agent-colab @ file:///app
+#20 1.598 Prepared 51 packages in 1.16s
+#20 1.807 Installed 51 packages in 209ms
+#20 2.235 Bytecode compiled 1538 files in 427ms
+#20 2.235  + agent-colab==0.0.0 (from file:///app)
+#20 2.235  + alembic==1.19.1
+#20 2.235  + annotated-doc==0.0.5
+#20 2.235  + annotated-types==0.8.0
+#20 2.235  + anyio==4.14.2
+#20 2.235  + attrs==26.1.0
+#20 2.235  + certifi==2026.7.22
+#20 2.235  + cffi==2.1.1
+#20 2.235  + click==8.5.0
+#20 2.235  + cryptography==50.0.1
+#20 2.235  + fastapi==0.141.1
+#20 2.236  + greenlet==3.5.5
+#20 2.236  + h11==0.16.0
+#20 2.236  + httpcore==1.0.9
+#20 2.236  + httpcore2==2.12.0
+#20 2.236  + httptools==0.8.0
+#20 2.236  + httpx==0.28.1
+#20 2.236  + httpx2==2.12.0
+#20 2.236  + idna==3.19
+#20 2.236  + jsonschema==4.26.0
+#20 2.236  + jsonschema-specifications==2025.9.1
+#20 2.236  + mako==1.4.1
+#20 2.236  + markupsafe==3.0.3
+#20 2.236  + mcp==2.1.1
+#20 2.236  + mcp-types==2.1.1
+#20 2.236  + opentelemetry-api==1.44.0
+#20 2.236  + prometheus-client==0.26.0
+#20 2.236  + psycopg==3.3.5
+#20 2.236  + psycopg-binary==3.3.5
+#20 2.236  + psycopg-pool==3.3.1
+#20 2.236  + pycparser==3.0
+#20 2.236  + pydantic==2.13.5
+#20 2.236  + pydantic-core==2.46.5
+#20 2.236  + pydantic-settings==2.15.0
+#20 2.236  + pyjwt==2.13.0
+#20 2.236  + python-dotenv==1.2.3
+#20 2.236  + python-multipart==0.0.32
+#20 2.237  + pyyaml==6.0.3
+#20 2.237  + referencing==0.37.0
+#20 2.237  + rpds-py==2026.6.3
+#20 2.237  + sqlalchemy==2.0.52
+#20 2.237  + sse-starlette==3.4.8
+#20 2.237  + starlette==1.6.0
+#20 2.237  + truststore==0.10.4
+#20 2.237  + typing-extensions==4.16.0
+#20 2.237  + typing-inspection==0.4.4
+#20 2.237  + tzdata==2026.3
+#20 2.237  + uvicorn==0.52.4
+#20 2.237  + uvloop==0.22.1
+#20 2.237  + watchfiles==1.2.0
+#20 2.237  + websockets==17.1
+#20 DONE 3.6s
+
+#21 [server stage-1 3/8] COPY --from=build /opt/venv /opt/venv
+#21 DONE 1.4s
+
+#22 [server stage-1 4/8] COPY --from=build /app/schemas /app/schemas
+#22 DONE 0.2s
+
+#23 [server stage-1 5/8] COPY --from=build /app/policy /app/policy
+#23 DONE 0.1s
+
+#24 [server stage-1 6/8] COPY --from=build /app/migrations /app/migrations
+#24 DONE 0.1s
+
+#25 [server stage-1 7/8] COPY --from=build /app/alembic.ini /app/alembic.ini
+#25 DONE 0.1s
+
+#26 [server stage-1 8/8] WORKDIR /app
+#26 DONE 0.1s
+
+#27 [server] exporting to image
+#27 exporting layers
+#27 exporting layers 12.8s done
+#27 exporting manifest sha256:e70c44c041d60abbb35713178d42e1c2e820334f83bbc80d0e15830bba4f434e 0.0s done
+#27 exporting config sha256:1d7a9dd283c87f07c0e6823c131830f311408350cabc6c40d7c105130b46586d 0.0s done
+#27 exporting attestation manifest sha256:28583dc26c4a9cbd0d45388d84571a8891a73ae9990ab7eeefe9214a42b0c635 0.0s done
+#27 exporting manifest list sha256:f99401df2e9ef97e568213adde1e3afd71455661853dab2f3c36d58e98237f93
+#27 exporting manifest list sha256:f99401df2e9ef97e568213adde1e3afd71455661853dab2f3c36d58e98237f93 0.0s done
+#27 naming to docker.io/library/agent-colab-server:latest done
+#27 unpacking to docker.io/library/agent-colab-server:latest
+#27 unpacking to docker.io/library/agent-colab-server:latest 3.0s done
+#27 DONE 16.0s
+
+#28 [server] resolving provenance for metadata file
+#28 DONE 0.0s
+
+#29 [web-admin internal] load build definition from Dockerfile.web-admin
+#29 transferring dockerfile: 492B done
+#29 DONE 0.0s
+
+#2 [web-admin] resolve image config for docker-image://docker.io/docker/dockerfile:1.7
+#2 DONE 2.7s
+
+#3 [web-admin] docker-image://docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e
+#3 resolve docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e 0.0s done
+#3 CACHED
+
+#30 [web-admin internal] load metadata for docker.io/library/nginx:1.29-alpine
+#30 DONE 1.9s
+
+#31 [web-admin internal] load metadata for docker.io/library/node:22.23.2-alpine
+#31 DONE 1.9s
+
+#32 [web-admin internal] load .dockerignore
+#32 transferring context: 2B done
+#32 DONE 0.0s
+
+#33 [web-admin stage-1 1/3] FROM docker.io/library/nginx:1.29-alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de
+#33 resolve docker.io/library/nginx:1.29-alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de 0.1s done
+#33 sha256:612c0c1df4c55a0bf145f84df03cb28de505e6a52fb8e49c9da7b143fc00ad2d 0B / 20.25MB 0.2s
+#33 sha256:612c0c1df4c55a0bf145f84df03cb28de505e6a52fb8e49c9da7b143fc00ad2d 2.10MB / 20.25MB 0.3s
+#33 sha256:4a8b0b2a5b1937755263ac7ac4ee26db2906c13a5d70f1fb1875ba8e370cdd8f 0B / 1.40kB 0.2s
+#33 sha256:612c0c1df4c55a0bf145f84df03cb28de505e6a52fb8e49c9da7b143fc00ad2d 11.53MB / 20.25MB 0.5s
+#33 sha256:4a8b0b2a5b1937755263ac7ac4ee26db2906c13a5d70f1fb1875ba8e370cdd8f 1.40kB / 1.40kB 0.4s done
+#33 sha256:612c0c1df4c55a0bf145f84df03cb28de505e6a52fb8e49c9da7b143fc00ad2d 15.73MB / 20.25MB 0.6s
+#33 sha256:453da7dbc73e7338c4e201ec3f3c4a5f7751adbf5a6f127792c1cd001a780721 0B / 1.21kB 0.2s
+#33 sha256:781ff50d2644f74714c0d5a4ffa3447bbfd4b293cfb1dc6a637722ae24c89241 0B / 404B 0.2s
+#33 sha256:453da7dbc73e7338c4e201ec3f3c4a5f7751adbf5a6f127792c1cd001a780721 1.21kB / 1.21kB 0.3s
+#33 sha256:612c0c1df4c55a0bf145f84df03cb28de505e6a52fb8e49c9da7b143fc00ad2d 20.25MB / 20.25MB 0.8s done
+#33 sha256:453da7dbc73e7338c4e201ec3f3c4a5f7751adbf5a6f127792c1cd001a780721 1.21kB / 1.21kB 0.4s done
+#33 sha256:781ff50d2644f74714c0d5a4ffa3447bbfd4b293cfb1dc6a637722ae24c89241 404B / 404B 0.3s done
+#33 sha256:aee4e54b3865ee4d98545b6b49f9e8ab3b9b6ed114a2eafedc7a22e984ea5a68 0B / 956B 0.2s
+#33 sha256:583599bb7d382e9e986a9ff65204981307bfa71670a29f4190eedae93c4858be 0B / 627B 0.2s
+#33 sha256:aee4e54b3865ee4d98545b6b49f9e8ab3b9b6ed114a2eafedc7a22e984ea5a68 956B / 956B 0.2s done
+#33 sha256:583599bb7d382e9e986a9ff65204981307bfa71670a29f4190eedae93c4858be 627B / 627B 0.2s done
+#33 sha256:82736a35d0e7f1309edc13d09115410b81542cf8b91afff80deeace02b6f2f26 0B / 1.87MB 0.2s
+#33 ...
+
+#34 [web-admin internal] load build context
+#34 transferring context: 88.92MB 1.5s done
+#34 DONE 1.6s
+
+#33 [web-admin stage-1 1/3] FROM docker.io/library/nginx:1.29-alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de
+#33 sha256:6a0ac1617861a677b045b7ff88545213ec31c0ff08763195a70a4a5adda577bb 0B / 3.86MB 0.2s
+#33 sha256:82736a35d0e7f1309edc13d09115410b81542cf8b91afff80deeace02b6f2f26 1.05MB / 1.87MB 0.5s
+#33 sha256:6a0ac1617861a677b045b7ff88545213ec31c0ff08763195a70a4a5adda577bb 1.05MB / 3.86MB 0.3s
+#33 sha256:6a0ac1617861a677b045b7ff88545213ec31c0ff08763195a70a4a5adda577bb 2.10MB / 3.86MB 0.5s
+#33 sha256:82736a35d0e7f1309edc13d09115410b81542cf8b91afff80deeace02b6f2f26 1.87MB / 1.87MB 0.7s done
+#33 sha256:6a0ac1617861a677b045b7ff88545213ec31c0ff08763195a70a4a5adda577bb 3.86MB / 3.86MB 0.5s done
+#33 extracting sha256:6a0ac1617861a677b045b7ff88545213ec31c0ff08763195a70a4a5adda577bb
+#33 extracting sha256:6a0ac1617861a677b045b7ff88545213ec31c0ff08763195a70a4a5adda577bb 0.3s done
+#33 extracting sha256:82736a35d0e7f1309edc13d09115410b81542cf8b91afff80deeace02b6f2f26
+#33 extracting sha256:82736a35d0e7f1309edc13d09115410b81542cf8b91afff80deeace02b6f2f26 0.2s done
+#33 DONE 2.6s
+
+#35 [web-admin build 1/7] FROM docker.io/library/node:22.23.2-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32
+#35 resolve docker.io/library/node:22.23.2-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32 0.0s done
+#35 sha256:16da5a6403776464b5bf551ef294de57da242eac594527ea551a46e7f76ac2d6 445B / 445B 0.2s done
+#35 sha256:a2980c1fee17dfd6263234b253955e0e9d5f38d47c0e71c001139897134899d0 1.26MB / 1.26MB 0.5s done
+#35 sha256:efbef6f9e333972a10ca323e700496a64e7ddcc3a6725e6afbbae52e690f4a4a 52.63MB / 52.63MB 2.0s done
+#35 extracting sha256:efbef6f9e333972a10ca323e700496a64e7ddcc3a6725e6afbbae52e690f4a4a
+#35 ...
+
+#33 [web-admin stage-1 1/3] FROM docker.io/library/nginx:1.29-alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de
+#33 extracting sha256:583599bb7d382e9e986a9ff65204981307bfa71670a29f4190eedae93c4858be 0.0s done
+#33 extracting sha256:aee4e54b3865ee4d98545b6b49f9e8ab3b9b6ed114a2eafedc7a22e984ea5a68 0.0s done
+#33 extracting sha256:781ff50d2644f74714c0d5a4ffa3447bbfd4b293cfb1dc6a637722ae24c89241 0.0s done
+#33 extracting sha256:453da7dbc73e7338c4e201ec3f3c4a5f7751adbf5a6f127792c1cd001a780721 0.0s done
+#33 DONE 2.7s
+
+#33 [web-admin stage-1 1/3] FROM docker.io/library/nginx:1.29-alpine@sha256:5616878291a2eed594aee8db4dade5878cf7edcb475e59193904b198d9b830de
+#33 extracting sha256:4a8b0b2a5b1937755263ac7ac4ee26db2906c13a5d70f1fb1875ba8e370cdd8f 0.0s done
+#33 extracting sha256:612c0c1df4c55a0bf145f84df03cb28de505e6a52fb8e49c9da7b143fc00ad2d
+#33 extracting sha256:612c0c1df4c55a0bf145f84df03cb28de505e6a52fb8e49c9da7b143fc00ad2d 0.8s done
+#33 DONE 3.5s
+
+#35 [web-admin build 1/7] FROM docker.io/library/node:22.23.2-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32
+#35 ...
+
+#36 [web-admin stage-1 2/3] COPY deploy/dev/nginx.conf /etc/nginx/conf.d/default.conf
+#36 ...
+
+#35 [web-admin build 1/7] FROM docker.io/library/node:22.23.2-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32
+#35 extracting sha256:efbef6f9e333972a10ca323e700496a64e7ddcc3a6725e6afbbae52e690f4a4a 2.8s done
+#35 DONE 5.2s
+
+#36 [web-admin stage-1 2/3] COPY deploy/dev/nginx.conf /etc/nginx/conf.d/default.conf
+#36 DONE 1.7s
+
+#35 [web-admin build 1/7] FROM docker.io/library/node:22.23.2-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32
+#35 extracting sha256:a2980c1fee17dfd6263234b253955e0e9d5f38d47c0e71c001139897134899d0 0.1s done
+#35 DONE 5.3s
+
+#35 [web-admin build 1/7] FROM docker.io/library/node:22.23.2-alpine@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32
+#35 extracting sha256:16da5a6403776464b5bf551ef294de57da242eac594527ea551a46e7f76ac2d6 0.0s done
+#35 DONE 5.3s
+
+#37 [web-admin build 2/7] WORKDIR /app
+#37 DONE 0.1s
+
+#38 [web-admin build 3/7] RUN npm install -g pnpm@11.25.0
+#38 1.681 
+#38 1.681 added 1 package in 1s
+#38 1.681 
+#38 1.681 1 package is looking for funding
+#38 1.681   run `npm fund` for details
+#38 1.682 npm notice
+#38 1.682 npm notice New major version of npm available! 10.9.8 -> 12.0.2
+#38 1.682 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+#38 1.682 npm notice To update run: npm install -g npm@12.0.2
+#38 1.682 npm notice
+#38 DONE 2.0s
+
+#39 [web-admin build 4/7] COPY web-admin/package.json web-admin/pnpm-lock.yaml ./
+#39 DONE 0.1s
+
+#40 [web-admin build 5/7] RUN pnpm install --frozen-lockfile
+#40 1.333 ? Verifying lockfile against supply-chain policies (70 entries)...
+#40 1.345 Lockfile is up to date, resolution step is skipped
+#40 1.447 Progress: resolved 1, reused 0, downloaded 0, added 0
+#40 1.472 Packages: +27
+#40 1.472 +++++++++++++++++++++++++++
+#40 2.131 Packages are hard linked from the content-addressable store to the virtual store.
+#40 2.131   Content-addressable store is at: /root/.local/share/pnpm/store/v11
+#40 2.131   Virtual store is at:             node_modules/.pnpm
+#40 2.452 Progress: resolved 27, reused 0, downloaded 22, added 22
+#40 3.453 Progress: resolved 27, reused 0, downloaded 26, added 26
+#40 3.600 ✓ Lockfile passes supply-chain policies (70 entries in 2.2s)
+#40 3.761 Progress: resolved 27, reused 0, downloaded 27, added 27, done
+#40 3.866 
+#40 3.866 dependencies:
+#40 3.866 + react 19.2.8
+#40 3.866 + react-dom 19.2.8
+#40 3.866 
+#40 3.866 devDependencies:
+#40 3.866 + @types/node 24.13.3
+#40 3.866 + @types/react 19.2.18
+#40 3.866 + @types/react-dom 19.2.5
+#40 3.866 + @vitejs/plugin-react 6.1.1
+#40 3.866 + oxlint 1.80.0
+#40 3.866 + typescript 6.0.3
+#40 3.866 + vite 8.2.2
+#40 3.866 
+#40 3.987 Done in 3.6s using pnpm v11.25.0
+#40 DONE 4.9s
+
+#41 [web-admin build 6/7] COPY web-admin ./
+#41 DONE 0.8s
+
+#42 [web-admin build 7/7] RUN pnpm run build
+#42 1.056 $ tsc -b && vite build
+#42 3.648 vite v8.2.2 building client environment for production...
+#42 3.669 transforming...
+#42 3.751 ✓ 20 modules transformed.
+#42 3.791 rendering chunks...
+#42 3.867 computing gzip size...
+#42 3.877 dist/index.html                   0.46 kB │ gzip:  0.30 kB
+#42 3.877 dist/assets/react-CHdo91hT.svg    4.12 kB │ gzip:  2.06 kB
+#42 3.877 dist/assets/vite-BF8QNONU.svg     8.70 kB │ gzip:  1.60 kB
+#42 3.877 dist/assets/hero-CLDdwZDr.png    13.05 kB
+#42 3.877 dist/assets/index-D64VDMd1.css    4.10 kB │ gzip:  1.47 kB
+#42 3.877 dist/assets/index-CP6jzYRJ.js   193.28 kB │ gzip: 60.63 kB
+#42 3.877 
+#42 3.878 ✓ built in 227ms
+#42 DONE 4.0s
+
+#43 [web-admin stage-1 3/3] COPY --from=build /app/dist /usr/share/nginx/html
+#43 DONE 0.1s
+
+#44 [web-admin] exporting to image
+#44 exporting layers
+#44 exporting layers 0.2s done
+#44 exporting manifest sha256:ccb1360a6aa7a7cf04d2bd0b0d96ce643edfa933340c36c218b9c8d0596b8a0b 0.0s done
+#44 exporting config sha256:9797e68e6d613594823bf0dabf752b2afa0d9bbe057d5cba5f9be91d6b6eaf93 0.0s done
+#44 exporting attestation manifest sha256:76c9e28af5ba79bbd45ed147e4fbebca1500d430bd478b4cc096e7ee0df8196c 0.0s done
+#44 exporting manifest list sha256:d1b89b16507b5d3161573fffa6d06dcfc96226c06f71be2a129ae72e75bb1bf9
+#44 exporting manifest list sha256:d1b89b16507b5d3161573fffa6d06dcfc96226c06f71be2a129ae72e75bb1bf9 0.0s done
+#44 naming to docker.io/library/agent-colab-web-admin:latest done
+#44 unpacking to docker.io/library/agent-colab-web-admin:latest 0.1s done
+#44 DONE 0.5s
+
+#45 [web-admin] resolving provenance for metadata file
+#45 DONE 0.0s
+SERVICE     STATUS                    PORTS
+clamav      Up 17 seconds (healthy)   3310/tcp, 7357/tcp
+postgres    Up 17 seconds (healthy)   5432/tcp
+server      Up 11 seconds (healthy)   127.0.0.1:8080->8080/tcp
+web-admin   Up 5 seconds (healthy)    80/tcp, 127.0.0.1:8081->8080/tcp
+{"status":"ok","product":"Agent-Colab"}
+{"status":"ok","product":"Agent-Colab","database_configured":true}
+ok
+/var/run/postgresql:5432 - accepting connections
+PONG
+CONTAINER                 REPOSITORY              TAG                 PLATFORM            IMAGE ID            SIZE                CREATED
+agent-colab-clamav-1      clamav/clamav           1.4                 linux/amd64         b25d9199257a        155MB               About a minute ago
+agent-colab-postgres-1    postgres                16.11-alpine        linux/amd64         4327b9fd2955        110MB               About a minute ago
+agent-colab-server-1      agent-colab-server      latest              linux/amd64         f99401df2e9e        78.9MB              44 seconds ago
+agent-colab-web-admin-1   agent-colab-web-admin   latest              linux/amd64         d1b89b16507b        26.1MB              19 seconds ago
+
+--- stderr ---
+ postgres Pulling 
+ clamav Pulling 
+ 55afa1ecc21d Pulling fs layer 
+ 4d8dadd99112 Pulling fs layer 
+ f527720d74eb Pulling fs layer 
+ 305998260380 Pulling fs layer 
+ b2d2e9d2ca00 Pulling fs layer 
+ 97f0b3583304 Pulling fs layer 
+ c2b2d4b72978 Pulling fs layer 
+ 589002ba0eae Pulling fs layer 
+ 03e9530e5ed7 Pulling fs layer 
+ 7070ff9d4b70 Pulling fs layer 
+ 6daf4ec1dec2 Pulling fs layer 
+ 4c4deacffb95 Pulling fs layer 
+ c769f6af60d9 Pulling fs layer 
+ 73e9afde5b6b Pulling fs layer 
+ 42ff12e8060e Pulling fs layer 
+ 37ddbca09bc2 Pulling fs layer 
+ 4caa03786d3d Pulling fs layer 
+ 514526dc419d Pulling fs layer 
+ f527720d74eb Download complete 
+ 55afa1ecc21d Downloading [=============>                                     ]  1.049MB/3.846MB
+ 55afa1ecc21d Downloading [==================================================>]  3.846MB/3.846MB
+ b2d2e9d2ca00 Downloading [==================================================>]  1.227kB/1.227kB
+ 589002ba0eae Downloading [========================================>          ]  3.146MB/3.862MB
+ 55afa1ecc21d Download complete 
+ 97f0b3583304 Download complete 
+ 7070ff9d4b70 Downloading [=>                                                 ]  3.146MB/105.2MB
+ b2d2e9d2ca00 Download complete 
+ 589002ba0eae Download complete 
+ 589002ba0eae Extracting 1 s
+ 55afa1ecc21d Extracting 1 s
+ 55afa1ecc21d Extracting 1 s
+ 7070ff9d4b70 Downloading [==>                                                ]  6.291MB/105.2MB
+ 4c4deacffb95 Download complete 
+ 589002ba0eae Extracting 1 s
+ 55afa1ecc21d Extracting 1 s
+ c769f6af60d9 Download complete 
+ 7070ff9d4b70 Downloading [====>                                              ]  10.49MB/105.2MB
+ 589002ba0eae Extracting 1 s
+ c2b2d4b72978 Downloading [=>                                                 ]  3.146MB/112.8MB
+ 55afa1ecc21d Extracting 1 s
+ 7070ff9d4b70 Downloading [======>                                            ]  14.68MB/105.2MB
+ 589002ba0eae Extracting 1 s
+ c2b2d4b72978 Downloading [==>                                                ]  6.291MB/112.8MB
+ 42ff12e8060e Downloading [==================================================>]     116B/116B
+ 514526dc419d Downloading [==================================================>]     129B/129B
+ 7070ff9d4b70 Downloading [========>                                          ]  17.83MB/105.2MB
+ 73e9afde5b6b Download complete 
+ 55afa1ecc21d Extracting 1 s
+ 37ddbca09bc2 Download complete 
+ 589002ba0eae Extracting 1 s
+ 4d8dadd99112 Downloading [======>                                            ]  1.049MB/7.503MB
+ c2b2d4b72978 Downloading [===>                                               ]   7.34MB/112.8MB
+ 55afa1ecc21d Extracting 1 s
+ 42ff12e8060e Download complete 
+ 03e9530e5ed7 Download complete 
+ 514526dc419d Download complete 
+ 7070ff9d4b70 Downloading [========>                                          ]  18.87MB/105.2MB
+ 589002ba0eae Extracting 1 s
+ 4d8dadd99112 Downloading [====================>                              ]  3.146MB/7.503MB
+ c2b2d4b72978 Downloading [====>                                              ]  9.437MB/112.8MB
+ 55afa1ecc21d Pull complete 
+ 7070ff9d4b70 Downloading [=========>                                         ]  20.97MB/105.2MB
+ 589002ba0eae Pull complete 
+ c2b2d4b72978 Downloading [=====>                                             ]  11.53MB/112.8MB
+ 4d8dadd99112 Downloading [==================================>                ]  5.243MB/7.503MB
+ 7070ff9d4b70 Downloading [==========>                                        ]  23.07MB/105.2MB
+ 37ddbca09bc2 Pull complete 
+ 4d8dadd99112 Downloading [================================================>  ]   7.34MB/7.503MB
+ c2b2d4b72978 Downloading [======>                                            ]  13.63MB/112.8MB
+ 7070ff9d4b70 Downloading [============>                                      ]  26.21MB/105.2MB
+ 4d8dadd99112 Download complete 
+ c2b2d4b72978 Downloading [======>                                            ]  15.73MB/112.8MB
+ 3812d1d396eb Download complete 
+ 7070ff9d4b70 Downloading [=============>                                     ]  28.31MB/105.2MB
+ 4d8dadd99112 Extracting 1 s
+ 305998260380 Downloading [===>                                               ]  2.097MB/30.98MB
+ c2b2d4b72978 Downloading [=======>                                           ]  16.78MB/112.8MB
+ 7070ff9d4b70 Downloading [==============>                                    ]  30.41MB/105.2MB
+ 4d8dadd99112 Extracting 1 s
+ c2b2d4b72978 Downloading [========>                                          ]  19.92MB/112.8MB
+ 305998260380 Downloading [======>                                            ]  4.194MB/30.98MB
+ 7070ff9d4b70 Downloading [===============>                                   ]  32.51MB/105.2MB
+ 6daf4ec1dec2 Download complete 
+ 4d8dadd99112 Extracting 1 s
+ c2b2d4b72978 Downloading [=========>                                         ]  22.02MB/112.8MB
+ 305998260380 Downloading [==========>                                        ]  6.291MB/30.98MB
+ 4d8dadd99112 Extracting 1 s
+ 7070ff9d4b70 Downloading [===============>                                   ]  33.55MB/105.2MB
+ c2b2d4b72978 Downloading [==========>                                        ]  24.12MB/112.8MB
+ 305998260380 Downloading [=============>                                     ]  8.389MB/30.98MB
+ 4d8dadd99112 Pull complete 
+ 7070ff9d4b70 Downloading [================>                                  ]  35.65MB/105.2MB
+ 4caa03786d3d Download complete 
+ 4caa03786d3d Extracting 1 s
+ 398897f48dce Download complete 
+ c2b2d4b72978 Downloading [===========>                                       ]  26.21MB/112.8MB
+ 305998260380 Downloading [================>                                  ]  10.49MB/30.98MB
+ 7070ff9d4b70 Downloading [=================>                                 ]  37.75MB/105.2MB
+ 73e9afde5b6b Pull complete 
+ 4caa03786d3d Pull complete 
+ c2b2d4b72978 Downloading [============>                                      ]  27.26MB/112.8MB
+ 305998260380 Downloading [====================>                              ]  12.58MB/30.98MB
+ 7070ff9d4b70 Downloading [==================>                                ]   38.8MB/105.2MB
+ 42ff12e8060e Pull complete 
+ c2b2d4b72978 Downloading [=============>                                     ]  29.36MB/112.8MB
+ 305998260380 Downloading [=======================>                           ]  14.68MB/30.98MB
+ 4ba93bb41d54 Download complete 
+ 7070ff9d4b70 Downloading [===================>                               ]  40.89MB/105.2MB
+ c2b2d4b72978 Downloading [=============>                                     ]  31.46MB/112.8MB
+ 305998260380 Downloading [===========================>                       ]  16.78MB/30.98MB
+ 7070ff9d4b70 Downloading [====================>                              ]  42.99MB/105.2MB
+ 305998260380 Downloading [==============================>                    ]  18.87MB/30.98MB
+ c2b2d4b72978 Downloading [==============>                                    ]  33.55MB/112.8MB
+ 7070ff9d4b70 Downloading [=====================>                             ]  45.09MB/105.2MB
+ 305998260380 Downloading [=================================>                 ]  20.97MB/30.98MB
+ c2b2d4b72978 Downloading [================>                                  ]   36.7MB/112.8MB
+ 7070ff9d4b70 Downloading [======================>                            ]  47.19MB/105.2MB
+ 305998260380 Downloading [=====================================>             ]  23.07MB/30.98MB
+ c2b2d4b72978 Downloading [=================>                                 ]   38.8MB/112.8MB
+ 7070ff9d4b70 Downloading [======================>                            ]  48.23MB/105.2MB
+ c2b2d4b72978 Downloading [==================>                                ]  40.89MB/112.8MB
+ 305998260380 Downloading [========================================>          ]  25.17MB/30.98MB
+ 7070ff9d4b70 Downloading [=======================>                           ]  50.33MB/105.2MB
+ c2b2d4b72978 Downloading [===================>                               ]  42.99MB/112.8MB
+ 305998260380 Downloading [===========================================>       ]  27.26MB/30.98MB
+ 7070ff9d4b70 Downloading [========================>                          ]  52.43MB/105.2MB
+ 305998260380 Downloading [===============================================>   ]  29.36MB/30.98MB
+ c2b2d4b72978 Downloading [===================>                               ]  45.09MB/112.8MB
+ 7070ff9d4b70 Downloading [=========================>                         ]  54.53MB/105.2MB
+ 305998260380 Downloading [==================================================>]  30.98MB/30.98MB
+ c2b2d4b72978 Downloading [====================>                              ]  47.19MB/112.8MB
+ 7070ff9d4b70 Downloading [==========================>                        ]  56.62MB/105.2MB
+ c2b2d4b72978 Downloading [======================>                            ]  50.33MB/112.8MB
+ 7070ff9d4b70 Downloading [===========================>                       ]  58.72MB/105.2MB
+ 305998260380 Download complete 
+ c2b2d4b72978 Downloading [========================>                          ]  54.53MB/112.8MB
+ 7070ff9d4b70 Downloading [=============================>                     ]  61.87MB/105.2MB
+ 305998260380 Extracting 1 s
+ c2b2d4b72978 Downloading [=========================>                         ]  57.67MB/112.8MB
+ 305998260380 Extracting 1 s
+ 7070ff9d4b70 Downloading [==============================>                    ]  63.96MB/105.2MB
+ be3a6cab230a Download complete 
+ c2b2d4b72978 Downloading [==========================>                        ]  60.82MB/112.8MB
+ 7070ff9d4b70 Downloading [===============================>                   ]  66.06MB/105.2MB
+ 305998260380 Extracting 1 s
+ c2b2d4b72978 Downloading [============================>                      ]  65.01MB/112.8MB
+ 7070ff9d4b70 Downloading [================================>                  ]  69.21MB/105.2MB
+ 305998260380 Extracting 1 s
+ c2b2d4b72978 Downloading [==============================>                    ]  68.16MB/112.8MB
+ 7070ff9d4b70 Downloading [==================================>                ]  72.35MB/105.2MB
+ 305998260380 Extracting 1 s
+ c2b2d4b72978 Downloading [===============================>                   ]   71.3MB/112.8MB
+ 7070ff9d4b70 Downloading [===================================>               ]  74.45MB/105.2MB
+ 305998260380 Extracting 1 s
+ c2b2d4b72978 Downloading [=================================>                 ]   75.5MB/112.8MB
+ 7070ff9d4b70 Downloading [====================================>              ]  77.59MB/105.2MB
+ 305998260380 Extracting 1 s
+ c2b2d4b72978 Downloading [==================================>                ]  77.59MB/112.8MB
+ 7070ff9d4b70 Downloading [=====================================>             ]  79.69MB/105.2MB
+ 305998260380 Extracting 1 s
+ c2b2d4b72978 Downloading [====================================>              ]  81.79MB/112.8MB
+ 7070ff9d4b70 Downloading [=======================================>           ]  82.84MB/105.2MB
+ 305998260380 Extracting 1 s
+ c2b2d4b72978 Downloading [=====================================>             ]  84.93MB/112.8MB
+ 7070ff9d4b70 Downloading [========================================>          ]  85.98MB/105.2MB
+ 305998260380 Extracting 1 s
+ c2b2d4b72978 Downloading [=======================================>           ]  88.08MB/112.8MB
+ 7070ff9d4b70 Downloading [==========================================>        ]  89.13MB/105.2MB
+ 305998260380 Extracting 1 s
+ c2b2d4b72978 Downloading [========================================>          ]  91.23MB/112.8MB
+ f527720d74eb Pull complete 
+ 97f0b3583304 Pull complete 
+ b2d2e9d2ca00 Pull complete 
+ 7070ff9d4b70 Downloading [===========================================>       ]  91.23MB/105.2MB
+ 305998260380 Pull complete 
+ c2b2d4b72978 Downloading [==========================================>        ]  95.42MB/112.8MB
+ 7070ff9d4b70 Downloading [=============================================>     ]  95.42MB/105.2MB
+ c2b2d4b72978 Downloading [===========================================>       ]  97.52MB/112.8MB
+ 7070ff9d4b70 Downloading [==============================================>    ]  97.52MB/105.2MB
+ c2b2d4b72978 Downloading [============================================>      ]  100.7MB/112.8MB
+ 7070ff9d4b70 Downloading [===============================================>   ]  100.7MB/105.2MB
+ c2b2d4b72978 Downloading [==============================================>    ]  103.8MB/112.8MB
+ 7070ff9d4b70 Downloading [=================================================> ]  103.8MB/105.2MB
+ c2b2d4b72978 Downloading [================================================>  ]  109.1MB/112.8MB
+ 7070ff9d4b70 Downloading [==================================================>]  105.2MB/105.2MB
+ c2b2d4b72978 Downloading [==================================================>]  112.8MB/112.8MB
+ 7070ff9d4b70 Downloading [==================================================>]  105.2MB/105.2MB
+ c2b2d4b72978 Downloading [==================================================>]  112.8MB/112.8MB
+ 7070ff9d4b70 Downloading [==================================================>]  105.2MB/105.2MB
+ c2b2d4b72978 Downloading [==================================================>]  112.8MB/112.8MB
+ 7070ff9d4b70 Downloading [==================================================>]  105.2MB/105.2MB
+ c2b2d4b72978 Downloading [==================================================>]  112.8MB/112.8MB
+ 7070ff9d4b70 Downloading [==================================================>]  105.2MB/105.2MB
+ c2b2d4b72978 Downloading [==================================================>]  112.8MB/112.8MB
+ 7070ff9d4b70 Downloading [==================================================>]  105.2MB/105.2MB
+ c2b2d4b72978 Downloading [==================================================>]  112.8MB/112.8MB
+ 7070ff9d4b70 Downloading [==================================================>]  105.2MB/105.2MB
+ c2b2d4b72978 Downloading [==================================================>]  112.8MB/112.8MB
+ 7070ff9d4b70 Downloading [==================================================>]  105.2MB/105.2MB
+ c2b2d4b72978 Downloading [==================================================>]  112.8MB/112.8MB
+ 7070ff9d4b70 Downloading [==================================================>]  105.2MB/105.2MB
+ c2b2d4b72978 Downloading [==================================================>]  112.8MB/112.8MB
+ 7070ff9d4b70 Downloading [==================================================>]  105.2MB/105.2MB
+ c2b2d4b72978 Downloading [==================================================>]  112.8MB/112.8MB
+ c2b2d4b72978 Download complete 
+ c2b2d4b72978 Extracting 1 s
+ 7070ff9d4b70 Download complete 
+ 7070ff9d4b70 Extracting 1 s
+ c2b2d4b72978 Extracting 1 s
+ 7070ff9d4b70 Extracting 1 s
+ c2b2d4b72978 Extracting 1 s
+ 7070ff9d4b70 Extracting 1 s
+ c2b2d4b72978 Extracting 1 s
+ 7070ff9d4b70 Extracting 1 s
+ c2b2d4b72978 Extracting 1 s
+ 7070ff9d4b70 Extracting 1 s
+ c2b2d4b72978 Extracting 1 s
+ 7070ff9d4b70 Extracting 1 s
+ c2b2d4b72978 Extracting 1 s
+ 7070ff9d4b70 Extracting 1 s
+ c2b2d4b72978 Extracting 1 s
+ 7070ff9d4b70 Extracting 1 s
+ c2b2d4b72978 Extracting 1 s
+ 7070ff9d4b70 Extracting 1 s
+ c2b2d4b72978 Extracting 1 s
+ 7070ff9d4b70 Extracting 1 s
+ c2b2d4b72978 Extracting 1 s
+ 7070ff9d4b70 Extracting 1 s
+ c2b2d4b72978 Extracting 2 s
+ 7070ff9d4b70 Extracting 2 s
+ c2b2d4b72978 Pull complete 
+ clamav Pulled 
+ 7070ff9d4b70 Extracting 2 s
+ 7070ff9d4b70 Extracting 2 s
+ 7070ff9d4b70 Extracting 2 s
+ 7070ff9d4b70 Extracting 2 s
+ 7070ff9d4b70 Extracting 2 s
+ 7070ff9d4b70 Extracting 2 s
+ 7070ff9d4b70 Extracting 2 s
+ 7070ff9d4b70 Extracting 2 s
+ 7070ff9d4b70 Extracting 2 s
+ 7070ff9d4b70 Extracting 3 s
+ 7070ff9d4b70 Extracting 3 s
+ 7070ff9d4b70 Extracting 3 s
+ 7070ff9d4b70 Extracting 3 s
+ 7070ff9d4b70 Extracting 3 s
+ 7070ff9d4b70 Extracting 3 s
+ 7070ff9d4b70 Extracting 3 s
+ 7070ff9d4b70 Extracting 3 s
+ 7070ff9d4b70 Extracting 3 s
+ 7070ff9d4b70 Extracting 4 s
+ 7070ff9d4b70 Extracting 4 s
+ 7070ff9d4b70 Extracting 4 s
+ 7070ff9d4b70 Extracting 4 s
+ 7070ff9d4b70 Extracting 4 s
+ 7070ff9d4b70 Extracting 4 s
+ 7070ff9d4b70 Extracting 4 s
+ 6daf4ec1dec2 Extracting 1 s
+ 7070ff9d4b70 Pull complete 
+ 4c4deacffb95 Pull complete 
+ 514526dc419d Pull complete 
+ 6daf4ec1dec2 Pull complete 
+ c769f6af60d9 Pull complete 
+ 03e9530e5ed7 Pull complete 
+ postgres Pulled 
+time="2026-09-02T14:01:04Z" level=warning msg="Docker Compose is configured to build using Bake, but buildx isn't installed"
+ server  Built
+ web-admin  Built
+ Network agent-colab_default  Creating
+ Network agent-colab_default  Created
+ Volume agent-colab_pgdata  Creating
+ Volume agent-colab_pgdata  Created
+ Volume agent-colab_bootstrap  Creating
+ Volume agent-colab_bootstrap  Created
+ Volume agent-colab_artifacts  Creating
+ Volume agent-colab_artifacts  Created
+ Volume agent-colab_clamdb  Creating
+ Volume agent-colab_clamdb  Created
+ Container agent-colab-postgres-1  Creating
+ Container agent-colab-clamav-1  Creating
+ Container agent-colab-postgres-1  Created
+ Container agent-colab-server-1  Creating
+ Container agent-colab-clamav-1  Created
+ Container agent-colab-server-1  Created
+ Container agent-colab-web-admin-1  Creating
+ Container agent-colab-web-admin-1  Created
+ Container agent-colab-clamav-1  Starting
+ Container agent-colab-postgres-1  Starting
+ Container agent-colab-postgres-1  Started
+ Container agent-colab-postgres-1  Waiting
+ Container agent-colab-clamav-1  Started
+ Container agent-colab-postgres-1  Healthy
+ Container agent-colab-server-1  Starting
+ Container agent-colab-server-1  Started
+ Container agent-colab-server-1  Waiting
+ Container agent-colab-server-1  Healthy
+ Container agent-colab-web-admin-1  Starting
+ Container agent-colab-web-admin-1  Started
+ Container agent-colab-web-admin-1  Waiting
+ Container agent-colab-clamav-1  Waiting
+ Container agent-colab-postgres-1  Waiting
+ Container agent-colab-server-1  Waiting
+ Container agent-colab-postgres-1  Healthy
+ Container agent-colab-server-1  Healthy
+ Container agent-colab-clamav-1  Healthy
+ Container agent-colab-web-admin-1  Healthy

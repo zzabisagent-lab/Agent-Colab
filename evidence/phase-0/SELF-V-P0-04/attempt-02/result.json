@@ -1,0 +1,17 @@
+{
+  "test_id": "V-P0-04",
+  "evidence_id": "SELF-V-P0-04",
+  "attempt": 2,
+  "command": [
+    "sg",
+    "docker",
+    "-c",
+    "docker compose up -d --build --wait --wait-timeout 900 && docker compose ps --format 'table {{.Service}}\\t{{.Status}}\\t{{.Ports}}' && docker compose ps --format json | jq -r '.[] | \"\\(.Service): \\(.Health)\"' && curl -sf http://127.0.0.1:8080/healthz && echo && curl -sf http://127.0.0.1:8081/healthz && echo && docker compose exec -T postgres pg_isready -U colab -d colab && docker compose exec -T clamav clamdscan --ping 1"
+  ],
+  "exit_code": 1,
+  "result": "fail",
+  "commit_sha": "1ac07c7570ad0043fef70f05d1a5bea19d6581a0",
+  "started_at": "2026-09-02T13:59:42.635976+00:00",
+  "finished_at": "2026-09-02T13:59:42.713226+00:00",
+  "output_sha256": "301c92b7f0a54fd991a778d93e94c6e63f3f6d9431729fe7d9e57f99fc57c82c"
+}

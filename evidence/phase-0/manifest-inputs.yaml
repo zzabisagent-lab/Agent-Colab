@@ -2,8 +2,6 @@
 # by tools/run_verification.py at verification time so that commit_sha is exactly the verified
 # commit (Finding F-P0-002-03); it is stored under verification/phase-0/run-r<n>/manifest.yaml.
 known_gaps:
-  - "V-P0-04 (Compose health): compose.yaml, Dockerfiles and static contract tests exist, but no container runtime is available on the build host (no Docker, no root); runtime health of postgres/server/web-admin/clamav from empty volumes is NOT_RUN. Blocker B-001 raised to the user."
-  - "V-P0-19 (Telegram API spike, P0-13): no Telegram bot token or test chats exist in .env or the environment; the spike cannot be executed and P0-13 is BLOCKED. Blocker B-002 raised to the user."
   - "P0-10 spike used a locally provisioned Mattermost Team Edition 11.10.1 (self-provisioned test team) instead of an externally supplied test team (ADR-0003)."
   - "P0-11 MCP spike: resources/subscribe is not usable with the pinned mcp SDK client/server protocol pairing; long-poll only is the recorded decision for P3-10 (docs/protocol/mcp-spike.md)."
   - "F-P0-002-02 remediation: callback material issued by the local Mattermost test instance was committed in spike artifacts before r002; the slash-command token was regenerated, the artifacts were redacted, and the incident is recorded in docs/security/secret-scan.md. The pre-remediation values remain in git history of branch phase-0 as revoked test-instance material."
@@ -17,4 +15,4 @@ reproduction:
   - "uv run pytest tests/integration/test_verification_harness.py -q  (V-P0-07, needs the DB URL)"
   - "MCP spike (V-P0-17): SPIKE_PORT=8767 uv run python -m spikes.mcp.server & then uv run python -m spikes.mcp.client; logs in evidence/phase-0/spikes/mcp/"
   - "Mattermost spike (V-P0-16): docs/protocol/mattermost-spike.md; scripts/dev/mattermost-local.sh start|stop"
-  - "docker compose up -d --wait  (V-P0-04; requires Docker, unavailable on the build host)"
+  - "make compose-up && docker compose --env-file deploy/dev/compose.env ps  (V-P0-04: all four services healthy from empty volumes; make compose-down resets)"

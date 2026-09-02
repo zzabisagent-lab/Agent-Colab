@@ -49,8 +49,10 @@ secret-scan:
 
 ci: lint test check-docs build
 
+COMPOSE ?= docker compose --env-file deploy/dev/compose.env
+
 compose-up:
-	docker compose up -d --wait
+	$(COMPOSE) up -d --build --wait --wait-timeout 900
 
 compose-down:
-	docker compose down -v
+	$(COMPOSE) down -v --remove-orphans
