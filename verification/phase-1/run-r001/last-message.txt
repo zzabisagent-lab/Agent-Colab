@@ -1,0 +1,9 @@
+Verification completed and schema-validated.
+
+- Report: [VR-P1-001.yaml](/home/master/.local/verify/phase-1-r001/verification/phase-1/VR-P1-001.yaml)
+- Raw evidence: [evidence-r001](/home/master/.local/verify/phase-1-r001/verification/phase-1/evidence-r001)
+- Mandatory tests: 32/32 PASS
+- Findings: none
+- Report SHA-256: `7b862d12939447f283a674b198c08288644d4ec623854f2b2617cff5cea36a73`
+
+result: PASSED

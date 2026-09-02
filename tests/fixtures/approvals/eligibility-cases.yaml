@@ -1,0 +1,94 @@
+# Approver eligibility matrix (development plan §7E; V-P1-32). Evaluated by the pure decision
+# helper in tests/unit/test_approval_rules.py with a fake repository/authorizer.
+# approver types: human | agent; role_max_risk: role max_risk of the approver's matched role.
+cases:
+  - name: requester cannot approve own request
+    approver: {account: acct-req, type: human, has_permission: true, member: true, role_max_risk: CRITICAL}
+    grant: {risk: MEDIUM, requester: acct-req}
+    expect: SELF_APPROVAL_FORBIDDEN
+  - name: implementing agent cannot approve
+    approver: {account: acct-impl, type: agent, has_permission: true, member: true, role_max_risk: CRITICAL}
+    grant: {risk: MEDIUM, requester: acct-req, implementing_agent: acct-impl}
+    expect: SELF_APPROVAL_FORBIDDEN
+  - name: alias of the requester cannot approve
+    approver: {account: acct-alias, type: human, has_permission: true, member: true, role_max_risk: CRITICAL}
+    grant: {risk: MEDIUM, requester: acct-req}
+    aliases: {acct-alias: acct-req}
+    expect: SELF_APPROVAL_FORBIDDEN
+  - name: alias of the implementing agent cannot approve
+    approver: {account: acct-alias2, type: human, has_permission: true, member: true, role_max_risk: CRITICAL}
+    grant: {risk: LOW, requester: acct-req, implementing_agent: acct-impl}
+    aliases: {acct-alias2: acct-impl}
+    expect: SELF_APPROVAL_FORBIDDEN
+  - name: same human twice
+    approver: {account: acct-h1, type: human, has_permission: true, member: true, role_max_risk: CRITICAL}
+    grant: {risk: CRITICAL, requester: acct-req}
+    prior: [acct-h1]
+    reauth: true
+    expect: APPROVER_DUPLICATE
+  - name: agent may approve MEDIUM
+    approver: {account: acct-agent, type: agent, has_permission: true, member: true, role_max_risk: HIGH}
+    grant: {risk: MEDIUM, requester: acct-req}
+    expect: ELIGIBLE
+  - name: agent may not approve HIGH
+    approver: {account: acct-agent, type: agent, has_permission: true, member: true, role_max_risk: CRITICAL}
+    grant: {risk: HIGH, requester: acct-req}
+    reauth: true
+    expect: HUMAN_APPROVER_REQUIRED
+  - name: agent may not approve CRITICAL
+    approver: {account: acct-agent, type: agent, has_permission: true, member: true, role_max_risk: CRITICAL}
+    grant: {risk: CRITICAL, requester: acct-req}
+    reauth: true
+    expect: HUMAN_APPROVER_REQUIRED
+  - name: requires_human_approval forces a human even for LOW
+    approver: {account: acct-agent, type: agent, has_permission: true, member: true, role_max_risk: CRITICAL}
+    grant: {risk: LOW, requester: acct-req, requires_human_approval: true}
+    expect: HUMAN_APPROVER_REQUIRED
+  - name: no approval.decide permission
+    approver: {account: acct-h2, type: human, has_permission: false, member: true, role_max_risk: CRITICAL}
+    grant: {risk: MEDIUM, requester: acct-req}
+    expect: APPROVER_NOT_ELIGIBLE
+  - name: not a channel member
+    approver: {account: acct-h2, type: human, has_permission: true, member: false, role_max_risk: CRITICAL}
+    grant: {risk: MEDIUM, requester: acct-req}
+    expect: APPROVER_NOT_CHANNEL_MEMBER
+  - name: role max_risk below the action risk
+    approver: {account: acct-h3, type: human, has_permission: true, member: true, role_max_risk: LOW}
+    grant: {risk: HIGH, requester: acct-req}
+    reauth: true
+    expect: APPROVER_ROLE_RISK_TOO_LOW
+  - name: role max_risk equal to the action risk is enough
+    approver: {account: acct-h3, type: human, has_permission: true, member: true, role_max_risk: HIGH}
+    grant: {risk: HIGH, requester: acct-req}
+    reauth: true
+    expect: ELIGIBLE
+  - name: HIGH without re-authentication
+    approver: {account: acct-h1, type: human, has_permission: true, member: true, role_max_risk: CRITICAL}
+    grant: {risk: HIGH, requester: acct-req}
+    reauth: false
+    expect: REAUTH_REQUIRED
+  - name: CRITICAL without re-authentication
+    approver: {account: acct-h1, type: human, has_permission: true, member: true, role_max_risk: CRITICAL}
+    grant: {risk: CRITICAL, requester: acct-req}
+    reauth: false
+    expect: REAUTH_REQUIRED
+  - name: MEDIUM needs no re-authentication
+    approver: {account: acct-h1, type: human, has_permission: true, member: true, role_max_risk: MEDIUM}
+    grant: {risk: MEDIUM, requester: acct-req}
+    reauth: false
+    expect: ELIGIBLE
+  - name: inactive approver account
+    approver: {account: acct-h4, type: human, has_permission: true, member: true, role_max_risk: CRITICAL, status: SUSPENDED}
+    grant: {risk: LOW, requester: acct-req}
+    expect: APPROVER_NOT_ELIGIBLE
+  - name: second distinct human on CRITICAL is eligible
+    approver: {account: acct-h2, type: human, has_permission: true, member: true, role_max_risk: CRITICAL}
+    grant: {risk: CRITICAL, requester: acct-req}
+    prior: [acct-h1]
+    reauth: true
+    expect: ELIGIBLE
+quorum:
+  LOW: 0
+  MEDIUM: 1
+  HIGH: 1
+  CRITICAL: 2

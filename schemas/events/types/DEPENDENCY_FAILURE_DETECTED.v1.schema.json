@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/DEPENDENCY_FAILURE_DETECTED.v1.schema.json",
+  "title": "DEPENDENCY_FAILURE_DETECTED payload v1",
+  "description": "Non-sensitive payload of DEPENDENCY_FAILURE_DETECTED (dependency aggregate, Phase 4). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "dependency": {
+      "type": "string",
+      "minLength": 1
+    },
+    "error_code": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "dependency",
+    "error_code"
+  ],
+  "additionalProperties": true,
+  "x-extension": "development plan §7G dependency failure notification (P1-13/P4-02)"
+}

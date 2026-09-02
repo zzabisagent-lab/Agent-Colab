@@ -1,0 +1,30 @@
+# V-P1-08: identity claims that must be ignored (credential identity preserved) and audited.
+vectors:
+  - name: body actor_account_id
+    body: {actor_account_id: "acct-admin", title: "x"}
+    headers: {}
+    expect_claims: ["body:actor_account_id"]
+  - name: body on_behalf_of
+    body: {on_behalf_of: "acct-admin"}
+    headers: {}
+    expect_claims: ["body:on_behalf_of"]
+  - name: body actor and impersonate
+    body: {actor: "acct-admin", impersonate: "acct-owner"}
+    headers: {}
+    expect_claims: ["body:actor", "body:impersonate"]
+  - name: header X-Colab-Actor
+    body: {}
+    headers: {X-Colab-Actor: "acct-admin"}
+    expect_claims: ["header:X-Colab-Actor"]
+  - name: header x-on-behalf-of lower case
+    body: {}
+    headers: {x-on-behalf-of: "acct-admin"}
+    expect_claims: ["header:x-on-behalf-of"]
+  - name: mixed body and header
+    body: {actor_account_id: "acct-admin"}
+    headers: {X-Actor-Account: "acct-owner"}
+    expect_claims: ["body:actor_account_id", "header:X-Actor-Account"]
+  - name: legitimate parameters are not claims
+    body: {implementer_account_id: "acct-a", verifier_account_id: "acct-b", account_id: "acct-c"}
+    headers: {Authorization: "Bearer x", X-Correlation-ID: "corr-1"}
+    expect_claims: []

@@ -1,0 +1,10 @@
+Script started on 2026-09-02 15:28:50+00:00 [COMMAND="uv run python verification/phase-1/evidence-r001/projection_cli_check.py" <not executed on terminal>]
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Phase 0 verification harness: workspaces, accounts, credentials, agents, verification_runs.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 0002, Phase 1 core schema: append-only Event/Audit/Verification authority, projections, roles.
+command_exit_code=0
+tasks rebuild: 4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945
+
+Script done on 2026-09-02 15:28:52+00:00 [COMMAND_EXIT_CODE="0"]

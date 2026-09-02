@@ -1,0 +1,23 @@
+Script started on 2026-09-02 15:29:30+00:00 [COMMAND="date -u +verified_at=%Y-%m-%dT%H:%M:%SZ; printf "target_commit="; git rev-parse HEAD; printf "tree="; git rev-parse HEAD^{tree}; uname -srvmo; uv --version; python3 --version; node --version; pnpm --version; docker --version; pg16 psql --version; printf "database_server_version="; pg16 psql -d colab_verify -Atqc "show server_version"; sha256sum uv.lock pnpm-lock.yaml policy/permissions.yaml policy/risk-rules.yaml schemas/documents/verifier-report.v1.schema.json verification/phase-1/evidence-r001/phase1-tests.log verification/phase-1/evidence-r001/reproduction-build.log verification/phase-1/evidence-r001/targeted-negative-tests.log verification/phase-1/evidence-r001/projection-cli-python-attempt2.log" <not executed on terminal>]
+verified_at=2026-09-02T15:29:30Z
+target_commit=1244dda1756fecee2499e91739bf86d163935ea2
+tree=f72743059fc5c838ab33f865eb87dd84dea4ad24
+Linux 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 GNU/Linux
+uv 0.12.9 (x86_64-unknown-linux-gnu)
+Python 3.12.3
+v22.23.2
+11.25.0
+Docker version 29.1.3, build 29.1.3-0ubuntu3~24.04.2
+psql (PostgreSQL) 16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)
+database_server_version=16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)
+63d63d386dd1a703039252506687a82f2af7be765150cb765e40929d987462ed  uv.lock
+sha256sum: pnpm-lock.yaml: No such file or directory
+84c968d613897a5730fa99e6926e176a749dd7ee3a4885f0c381d4d86ce89cd9  policy/permissions.yaml
+1265282fdf988d063c7c3a0bb295c07a542f317f17e5729c18211b0aa3b9a954  policy/risk-rules.yaml
+1b227e1c0d6c9f97307e7f7d2133a8a47aa4cb3f93a25cb9d760116521b1d7c5  schemas/documents/verifier-report.v1.schema.json
+c20eb33d1a2de36577bcc358a00ce3a7a92af7aee25d85c6bf875edf5a66827b  verification/phase-1/evidence-r001/phase1-tests.log
+293f332d561023699608cb739b429faad163837d2867ea9346e1aa4606539b78  verification/phase-1/evidence-r001/reproduction-build.log
+01a41c68b26ba521382cb0d7d16f2c2c618fed63cc621d9c6c47ee9a31b4051b  verification/phase-1/evidence-r001/targeted-negative-tests.log
+087c873cb0aeccdb6ba10b0b469997080d0eef9220c95f0cee689d0514278402  verification/phase-1/evidence-r001/projection-cli-python-attempt2.log
+
+Script done on 2026-09-02 15:29:30+00:00 [COMMAND_EXIT_CODE="1"]

@@ -1,0 +1,19 @@
+{
+  "test_id": "V-P1-30",
+  "evidence_id": "SELF-V-P1-30",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_usage_budget.py",
+    "tests/integration/test_usage_db.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "fb2503b27c57097180c5d8d2fd80ad684fa45a23",
+  "started_at": "2026-09-02T14:41:02.962766+00:00",
+  "finished_at": "2026-09-02T14:41:04.902432+00:00",
+  "output_sha256": "1b8f208de3636df279448e40805982570c4351601ce5723301928feea7d343cf"
+}

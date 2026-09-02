@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/ACCEPTANCE_CRITERIA_REVISED.v1.schema.json",
+  "title": "ACCEPTANCE_CRITERIA_REVISED payload v1",
+  "description": "Non-sensitive payload of ACCEPTANCE_CRITERIA_REVISED (task_criteria aggregate, Phase 1). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "criteria_revision": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "task_id",
+    "criteria_revision"
+  ],
+  "additionalProperties": true,
+  "x-extension": "development plan §7D.1: criteria change only via a new revision + Event (P1-11); payload also carries criteria_ids[] and criteria[]"
+}

@@ -1,0 +1,19 @@
+{
+  "test_id": "V-P1-28",
+  "evidence_id": "SELF-V-P1-28",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_acceptance_criteria.py",
+    "tests/integration/test_acceptance_criteria_db.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "b8bce73388f0b009918d673d099df621d9abe5f0",
+  "started_at": "2026-09-02T14:52:17.019812+00:00",
+  "finished_at": "2026-09-02T14:52:18.993816+00:00",
+  "output_sha256": "e2289c230135b682d66e48107f8caab30f5b37878e8daf2e9fb92df9aebb1375"
+}

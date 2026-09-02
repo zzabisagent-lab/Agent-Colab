@@ -92,4 +92,7 @@ branch = true
 
 [tool.bandit]
 exclude_dirs = ["tests", ".venv", "node_modules"]
-skips = ["B101"]
+# B608 duplicates ruff S608, which is enforced per line with an explicit justification wherever a
+# query interpolates a constant identifier (column lists, table names from ChainSpec/Projector).
+# Every user-supplied value is bound as a parameter; see ADR-0008.
+skips = ["B101", "B608"]

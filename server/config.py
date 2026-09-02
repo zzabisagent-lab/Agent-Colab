@@ -27,6 +27,8 @@ class Settings(BaseSettings):
     default_timezone: str = "UTC"
     default_language: str = "en"
     log_json: bool = True
+    master_key_id: str = "mk-local-1"
+    master_key_b64: str | None = Field(default=None, repr=False)
 
 
 def get_settings() -> Settings:

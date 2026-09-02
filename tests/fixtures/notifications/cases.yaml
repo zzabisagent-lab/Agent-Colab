@@ -1,0 +1,91 @@
+# Pure planning cases for server.notifications.rules.plan_notifications (V-P1-31).
+# Account ids are labels; the planner treats them as opaque strings.
+now: "2026-03-01T10:00:00+00:00"
+rules:
+  - {rule_id: ntf-approval-requested, event_type: APPROVAL_REQUESTED, recipient_selectors: [eligible_approvers], channels: [mattermost:thread, mattermost:dm, mattermost:approval_channel], dedupe_window_seconds: 0, reminders: {at_ratio: [0.5], at_expiry: true}}
+  - {rule_id: ntf-verifier-assigned, event_type: VERIFIER_ASSIGNED, recipient_selectors: [verifier], channels: [work_item, mattermost:dm], dedupe_window_seconds: 0, re_notify_after_seconds: 600}
+  - {rule_id: ntf-task-waiting, event_type: TASK_WAITING, recipient_selectors: [delegator, channel_members], channels: [mattermost:thread, mattermost:dm], dedupe_window_seconds: 0}
+  - {rule_id: ntf-agent-offline, event_type: AGENT_MARKED_OFFLINE, recipient_selectors: [agent_owner], channels: [mattermost:dm], dedupe_window_seconds: 3600}
+  - {rule_id: ntf-quiet, event_type: BUDGET_EXCEEDED, recipient_selectors: [delegator], channels: [mattermost:dm], dedupe_window_seconds: 0, quiet_hours: {start: "22:00", end: "07:00", timezone: "Asia/Seoul"}}
+  - {rule_id: ntf-disabled, event_type: TASK_WAITING, recipient_selectors: [channel_members], channels: [smtp], dedupe_window_seconds: 0, enabled: false}
+  - {rule_id: ntf-smtp-only, event_type: RUN_FAILED, recipient_selectors: [channel_members], channels: [smtp], dedupe_window_seconds: 0}
+cases:
+  - name: approval requested reaches exactly the eligible approvers
+    event: {type: APPROVAL_REQUESTED, aggregate_type: approval, aggregate_id: apr-1, occurred_at: "2026-03-01T10:00:00+00:00"}
+    recipients: {eligible_approvers: [acct-approver-b, acct-approver-a]}
+    expect:
+      - {rule_id: ntf-approval-requested, recipient: acct-approver-a, status: queued, channels: [mattermost:thread, mattermost:dm]}
+      - {rule_id: ntf-approval-requested, recipient: acct-approver-b, status: queued, channels: [mattermost:thread, mattermost:dm]}
+  - name: verifier assigned reaches only the verifier through work item and DM
+    event: {type: VERIFIER_ASSIGNED, aggregate_type: verification_run, aggregate_id: vr-1, occurred_at: "2026-03-01T10:00:00+00:00"}
+    recipients: {verifier: [acct-verifier]}
+    expect:
+      - {rule_id: ntf-verifier-assigned, recipient: acct-verifier, status: queued, channels: [work_item, mattermost:dm]}
+  - name: task waiting reaches delegator and channel members once each (union, no duplicate)
+    event: {type: TASK_WAITING, aggregate_type: task, aggregate_id: task-1, occurred_at: "2026-03-01T10:00:00+00:00"}
+    recipients: {delegator: [acct-delegator], channel_members: [acct-delegator, acct-member]}
+    expect:
+      - {rule_id: ntf-task-waiting, recipient: acct-delegator, status: queued}
+      - {rule_id: ntf-task-waiting, recipient: acct-member, status: queued}
+  - name: disabled rule produces nothing
+    event: {type: TASK_WAITING, aggregate_type: task, aggregate_id: task-2, occurred_at: "2026-03-01T10:00:00+00:00"}
+    recipients: {channel_members: [acct-member]}
+    expect:
+      - {rule_id: ntf-task-waiting, recipient: acct-member, status: queued}
+  - name: muted recipient is suppressed
+    event: {type: VERIFIER_ASSIGNED, aggregate_type: verification_run, aggregate_id: vr-2, occurred_at: "2026-03-01T10:00:00+00:00"}
+    recipients: {verifier: [acct-muted]}
+    preferences: {acct-muted: {muted: true}}
+    expect:
+      - {rule_id: ntf-verifier-assigned, recipient: acct-muted, status: suppressed}
+  - name: digest recipient is deferred to the next hour
+    event: {type: VERIFIER_ASSIGNED, aggregate_type: verification_run, aggregate_id: vr-3, occurred_at: "2026-03-01T10:00:00+00:00"}
+    recipients: {verifier: [acct-digest]}
+    preferences: {acct-digest: {digest: true}}
+    expect:
+      - {rule_id: ntf-verifier-assigned, recipient: acct-digest, status: digest, deliver_at: "2026-03-01T11:00:00+00:00"}
+  - name: quiet hours defer delivery to the end of the window (10:00 UTC = 19:00 Seoul is outside)
+    event: {type: BUDGET_EXCEEDED, aggregate_type: budget, aggregate_id: bud-1, occurred_at: "2026-03-01T10:00:00+00:00"}
+    recipients: {delegator: [acct-delegator]}
+    expect:
+      - {rule_id: ntf-quiet, recipient: acct-delegator, status: queued, deliver_at: "2026-03-01T10:00:00+00:00"}
+  - name: quiet hours inside the window (14:00 UTC = 23:00 Seoul) defers to 07:00 Seoul
+    now: "2026-03-01T14:00:00+00:00"
+    event: {type: BUDGET_EXCEEDED, aggregate_type: budget, aggregate_id: bud-2, occurred_at: "2026-03-01T14:00:00+00:00"}
+    recipients: {delegator: [acct-delegator]}
+    expect:
+      - {rule_id: ntf-quiet, recipient: acct-delegator, status: queued, deliver_at: "2026-03-01T22:00:00+00:00"}
+  - name: channel not enabled (smtp) leaves no per-recipient channel -> suppressed
+    event: {type: RUN_FAILED, aggregate_type: schedule_run, aggregate_id: run-1, occurred_at: "2026-03-01T10:00:00+00:00"}
+    recipients: {channel_members: [acct-member]}
+    expect:
+      - {rule_id: ntf-smtp-only, recipient: acct-member, status: suppressed}
+  - name: no matching rule
+    event: {type: TASK_STARTED, aggregate_type: task, aggregate_id: task-9, occurred_at: "2026-03-01T10:00:00+00:00"}
+    recipients: {}
+    expect: []
+dedupe:
+  - name: same subject within a 3600 s window shares the key
+    rule: ntf-agent-offline
+    events:
+      - {aggregate_type: agent, aggregate_id: agent-1, occurred_at: "2026-03-01T10:00:00+00:00"}
+      - {aggregate_type: agent, aggregate_id: agent-1, occurred_at: "2026-03-01T10:40:00+00:00"}
+    same_key: true
+  - name: same subject in the next window gets a new key
+    rule: ntf-agent-offline
+    events:
+      - {aggregate_type: agent, aggregate_id: agent-1, occurred_at: "2026-03-01T10:00:00+00:00"}
+      - {aggregate_type: agent, aggregate_id: agent-1, occurred_at: "2026-03-01T11:10:00+00:00"}
+    same_key: false
+  - name: zero window means every Event is distinct
+    rule: ntf-task-waiting
+    events:
+      - {aggregate_type: task, aggregate_id: task-1, occurred_at: "2026-03-01T10:00:00+00:00"}
+      - {aggregate_type: task, aggregate_id: task-1, occurred_at: "2026-03-01T10:00:00.500+00:00"}
+    same_key: false
+  - name: different subjects never share a key
+    rule: ntf-agent-offline
+    events:
+      - {aggregate_type: agent, aggregate_id: agent-1, occurred_at: "2026-03-01T10:00:00+00:00"}
+      - {aggregate_type: agent, aggregate_id: agent-2, occurred_at: "2026-03-01T10:00:00+00:00"}
+    same_key: false

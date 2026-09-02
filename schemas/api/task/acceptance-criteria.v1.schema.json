@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/task/acceptance-criteria.v1.schema.json",
+  "title": "Task acceptance criteria v1 (development plan §7D.1)",
+  "description": "One revision of a Task's acceptance criteria. At least one entry; each entry is a checkable statement with a check type and a required flag. criteria_id is server-assigned and deterministic.",
+  "type": "array",
+  "minItems": 1,
+  "maxItems": 50,
+  "items": {
+    "type": "object",
+    "properties": {
+      "criteria_id": {"type": "string", "pattern": "^crit-[0-9a-f]{16}$"},
+      "statement": {"type": "string", "minLength": 1, "maxLength": 2000},
+      "check_type": {"type": "string", "enum": ["evidence", "test_command", "artifact_hash", "human_attest"]},
+      "required": {"type": "boolean", "default": true}
+    },
+    "required": ["statement", "check_type"],
+    "additionalProperties": false
+  }
+}

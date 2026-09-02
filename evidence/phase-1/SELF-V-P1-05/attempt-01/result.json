@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P1-05",
+  "evidence_id": "SELF-V-P1-05",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_immutability.py",
+    "-q",
+    "-k",
+    "app_roles or owner"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "6dcb5da35405f1193c804a357ecc5169571216d2",
+  "started_at": "2026-09-02T14:27:06.609119+00:00",
+  "finished_at": "2026-09-02T14:27:08.180523+00:00",
+  "output_sha256": "341d5dca33250b815baddbafb6001e174c20bf1716bb74f3d612e77777db8938"
+}

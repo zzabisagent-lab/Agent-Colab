@@ -1,0 +1,154 @@
+# Authorization cases (V-P1-07, V-P3-02/09 semantics). Roles are committed versions; the case
+# lists which roles the principal holds (with optional assignment state), capabilities, channel
+# memberships, and the request; `expect` is deterministic.
+roles:
+  worker:
+    permissions: [task.create, task.read, task.progress, task.submit, artifact.write, artifact.read]
+    constraints: {max_risk: MEDIUM}
+  delegator:
+    permissions: [task.delegate, task.reassign, task.read]
+    constraints: {max_risk: MEDIUM}
+  reviewer:
+    permissions: [task.read, artifact.read, verification.submit]
+    constraints: {domains: [research], side_effects: deny, requires_human_approval: [verification.submit], max_risk: HIGH}
+  denier:
+    permissions: []
+    deny: [task.submit]
+  admin:
+    permissions: ["*"]
+    constraints: {max_risk: CRITICAL}
+  channel_scoped:
+    permissions: [task.create]
+    constraints: {channels: [chan-a], max_risk: MEDIUM}
+  resource_scoped:
+    permissions: [artifact.read]
+    constraints: {resources: [art-1], max_risk: LOW}
+  retired_role:
+    permissions: [task.create]
+    status: retired
+  low_only:
+    permissions: [secret.grant, task.read]
+    constraints: {max_risk: LOW}
+  secret_granter:
+    permissions: [secret.grant]
+    constraints: {max_risk: HIGH}
+  old_v1_then_v2:   # version 2 (current) removes task.create
+    permissions: [task.read]
+    constraints: {max_risk: MEDIUM}
+cases:
+  - name: no role -> default deny + audit
+    roles: []
+    request: {permission: task.create, action: "tool:task_create", target_id: task-1}
+    expect: {allowed: false, code: DEFAULT_DENY, audited: true}
+  - name: plain allow LOW
+    roles: [worker]
+    request: {permission: task.create, action: "tool:task_create"}
+    expect: {allowed: true, code: ALLOW, risk: LOW, approval_required: false, audited: false}
+  - name: explicit deny wins across roles
+    roles: [worker, denier]
+    request: {permission: task.submit, action: "tool:implementation_submit"}
+    expect: {allowed: false, code: EXPLICIT_DENY, audited: true}
+  - name: explicit deny wins regardless of role order
+    roles: [denier, worker]
+    request: {permission: task.submit, action: "tool:implementation_submit"}
+    expect: {allowed: false, code: EXPLICIT_DENY}
+  - name: domain scope denial
+    roles: [reviewer]
+    request: {permission: task.read, action: "tool:task_get", domain: finance}
+    expect: {allowed: false, code: SCOPE_DOMAIN}
+  - name: domain scope satisfied
+    roles: [reviewer]
+    request: {permission: task.read, action: "tool:task_get", domain: research}
+    expect: {allowed: true, code: ALLOW}
+  - name: side effect denied by constraint
+    roles: [reviewer]
+    request: {permission: verification.submit, action: "tool:verification_submit", domain: research, side_effect: true}
+    expect: {allowed: false, code: SCOPE_SIDE_EFFECT}
+  - name: channel constraint denial
+    roles: [channel_scoped]
+    memberships: [chan-b]
+    request: {permission: task.create, action: "tool:task_create", channel_id: chan-b}
+    expect: {allowed: false, code: SCOPE_CHANNEL}
+  - name: channel constraint satisfied but not a member
+    roles: [channel_scoped]
+    memberships: []
+    request: {permission: task.create, action: "tool:task_create", channel_id: chan-a}
+    expect: {allowed: false, code: CHANNEL_NOT_MEMBER}
+  - name: channel constraint satisfied and member
+    roles: [channel_scoped]
+    memberships: [chan-a]
+    request: {permission: task.create, action: "tool:task_create", channel_id: chan-a}
+    expect: {allowed: true, code: ALLOW}
+  - name: resource scope denial
+    roles: [resource_scoped]
+    request: {permission: artifact.read, action: "tool:artifact_get", resource: art-2}
+    expect: {allowed: false, code: SCOPE_RESOURCE}
+  - name: capability missing
+    roles: [worker]
+    capabilities: []
+    request: {permission: task.progress, action: "tool:task_progress", required_capability: cap-task-progress}
+    expect: {allowed: false, code: CAPABILITY_MISSING}
+  - name: capability present
+    roles: [worker]
+    capabilities: [cap-task-progress]
+    request: {permission: task.progress, action: "tool:task_progress", required_capability: cap-task-progress}
+    expect: {allowed: true, code: ALLOW}
+  - name: non-member of channel (no constraint) denied
+    roles: [worker]
+    memberships: [chan-x]
+    request: {permission: task.create, action: "tool:task_create", channel_id: chan-y}
+    expect: {allowed: false, code: CHANNEL_NOT_MEMBER}
+  - name: expired assignment grants nothing
+    roles: [{role: worker, valid_to: "2026-01-01T00:00:00Z"}]
+    request: {permission: task.create, action: "tool:task_create"}
+    expect: {allowed: false, code: DEFAULT_DENY}
+  - name: not yet valid assignment grants nothing
+    roles: [{role: worker, valid_from: "2027-01-01T00:00:00Z"}]
+    request: {permission: task.create, action: "tool:task_create"}
+    expect: {allowed: false, code: DEFAULT_DENY}
+  - name: revoked assignment grants nothing
+    roles: [{role: worker, revoked: true}]
+    request: {permission: task.create, action: "tool:task_create"}
+    expect: {allowed: false, code: DEFAULT_DENY}
+  - name: retired role grants nothing
+    roles: [retired_role]
+    request: {permission: task.create, action: "tool:task_create"}
+    expect: {allowed: false, code: DEFAULT_DENY}
+  - name: stale version does not allow (current version lacks the permission)
+    roles: [old_v1_then_v2]
+    request: {permission: task.create, action: "tool:task_create"}
+    expect: {allowed: false, code: DEFAULT_DENY}
+  - name: side-effect conflict raises LOW read to MEDIUM
+    roles: [worker]
+    request: {permission: task.read, action: "tool:task_get", side_effect: true}
+    expect: {allowed: true, code: ALLOW, risk: MEDIUM, approval: channel_policy}
+  - name: HIGH action requires human approval
+    roles: [secret_granter]
+    request: {permission: secret.grant, action: "tool:secret_grant_create"}
+    expect: {allowed: true, code: ALLOW, risk: HIGH, approval_required: true, human_only: true}
+  - name: role max_risk below action risk is denied
+    roles: [low_only]
+    request: {permission: secret.grant, action: "tool:secret_grant_create"}
+    expect: {allowed: false, code: ROLE_MAX_RISK_EXCEEDED}
+  - name: requires_human_approval constraint sets approval_required
+    roles: [reviewer]
+    request: {permission: verification.submit, action: "tool:verification_submit", domain: research}
+    expect: {allowed: true, code: ALLOW, approval_required: true}
+  - name: unknown permission denied even for admin wildcard
+    roles: [admin]
+    request: {permission: task.explode, action: "tool:task_create"}
+    expect: {allowed: false, code: UNKNOWN_PERMISSION}
+  - name: unclassified action falls back to HIGH
+    roles: [admin]
+    request: {permission: task.create, action: "tool:not_in_catalog"}
+    expect: {allowed: true, code: ALLOW, risk: HIGH, approval_required: true}
+  - name: unknown principal
+    principal: nobody
+    roles: []
+    request: {permission: task.read, action: "tool:task_get"}
+    expect: {allowed: false, code: PRINCIPAL_UNKNOWN, audited: true}
+  - name: inactive principal
+    principal_status: SUSPENDED
+    roles: [admin]
+    request: {permission: task.read, action: "tool:task_get"}
+    expect: {allowed: false, code: PRINCIPAL_INACTIVE}

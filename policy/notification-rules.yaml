@@ -1,0 +1,86 @@
+# Default notification rules (development plan §7G). Administrators edit these in the web console
+# (Phase 4); the engine syncs them into `notification_rules` per Workspace. Channels vocabulary:
+# mattermost:thread (mention in the subject's Task/Brainstorm thread), mattermost:dm,
+# mattermost:approval_channel, mattermost:ops_channel, mattermost:channel (the Event's channel),
+# work_item (delivered through the durable work item, P1-12/P3-13), smtp (only when configured).
+version: 1
+rules:
+  - rule_id: ntf-approval-requested
+    event_type: APPROVAL_REQUESTED
+    recipient_selectors: [eligible_approvers]
+    channels: [mattermost:thread, mattermost:dm, mattermost:approval_channel]
+    dedupe_window_seconds: 0
+    reminders: {at_ratio: [0.5], at_expiry: true}
+  - rule_id: ntf-verifier-assigned
+    event_type: VERIFIER_ASSIGNED
+    recipient_selectors: [verifier]
+    channels: [work_item, mattermost:dm]
+    dedupe_window_seconds: 0
+    re_notify_after_seconds: 600
+  - rule_id: ntf-task-waiting
+    event_type: TASK_WAITING
+    recipient_selectors: [delegator, channel_members]
+    channels: [mattermost:thread, mattermost:dm]
+    dedupe_window_seconds: 0
+  - rule_id: ntf-budget-exceeded
+    event_type: BUDGET_EXCEEDED
+    recipient_selectors: [delegator, channel_members, ops_channel_members]
+    channels: [mattermost:thread, mattermost:dm, mattermost:ops_channel]
+    dedupe_window_seconds: 0
+  - rule_id: ntf-run-succeeded
+    event_type: RUN_SUCCEEDED
+    recipient_selectors: [channel_members]
+    channels: [mattermost:channel]
+    dedupe_window_seconds: 0
+  - rule_id: ntf-run-failed
+    event_type: RUN_FAILED
+    recipient_selectors: [channel_members]
+    channels: [mattermost:channel]
+    dedupe_window_seconds: 0
+  - rule_id: ntf-run-skipped
+    event_type: RUN_SKIPPED
+    recipient_selectors: [channel_members]
+    channels: [mattermost:channel]
+    dedupe_window_seconds: 0
+  - rule_id: ntf-run-timed-out
+    event_type: RUN_TIMED_OUT
+    recipient_selectors: [channel_members]
+    channels: [mattermost:channel]
+    dedupe_window_seconds: 0
+  - rule_id: ntf-break-glass-started
+    event_type: BREAK_GLASS_STARTED
+    recipient_selectors: [ops_channel_members, administrators]
+    channels: [mattermost:ops_channel, mattermost:dm, smtp]
+    dedupe_window_seconds: 0
+  - rule_id: ntf-break-glass-ended
+    event_type: BREAK_GLASS_ENDED
+    recipient_selectors: [ops_channel_members, administrators]
+    channels: [mattermost:ops_channel, mattermost:dm, smtp]
+    dedupe_window_seconds: 0
+  - rule_id: ntf-hard-delete-requested
+    event_type: HARD_DELETE_REQUESTED
+    recipient_selectors: [ops_channel_members, administrators]
+    channels: [mattermost:ops_channel, mattermost:dm, smtp]
+    dedupe_window_seconds: 0
+  - rule_id: ntf-hard-delete-approved
+    event_type: HARD_DELETE_APPROVED
+    recipient_selectors: [ops_channel_members, administrators]
+    channels: [mattermost:ops_channel, mattermost:dm, smtp]
+    dedupe_window_seconds: 0
+  - rule_id: ntf-hard-delete-executed
+    event_type: HARD_DELETE_EXECUTED
+    recipient_selectors: [ops_channel_members, administrators]
+    channels: [mattermost:ops_channel, mattermost:dm, smtp]
+    dedupe_window_seconds: 0
+  # "dependency failure" (§7G) has no Event type in spec §9.3; the operations dashboard (P4-02)
+  # raises DEPENDENCY_FAILURE_DETECTED as an additive extension when it lands.
+  - rule_id: ntf-dependency-failure
+    event_type: DEPENDENCY_FAILURE_DETECTED
+    recipient_selectors: [ops_channel_members, administrators]
+    channels: [mattermost:ops_channel, mattermost:dm, smtp]
+    dedupe_window_seconds: 300
+  - rule_id: ntf-agent-offline
+    event_type: AGENT_MARKED_OFFLINE
+    recipient_selectors: [agent_owner]
+    channels: [mattermost:dm]
+    dedupe_window_seconds: 3600

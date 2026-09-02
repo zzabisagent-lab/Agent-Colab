@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P1-19",
+  "evidence_id": "SELF-V-P1-19",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_document_lifecycle.py",
+    "tests/unit/test_document_skeleton.py",
+    "-q",
+    "-k",
+    "lifecycle or finalized or write_once"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "4ff53d9fcc91a296dc470edeb8c17c831aed174e",
+  "started_at": "2026-09-02T15:07:28.380332+00:00",
+  "finished_at": "2026-09-02T15:07:30.791731+00:00",
+  "output_sha256": "c4b808d34f4db00b333696dec1f3a43a2887d8bfe0cb7af07a3cb98ff43a7830"
+}

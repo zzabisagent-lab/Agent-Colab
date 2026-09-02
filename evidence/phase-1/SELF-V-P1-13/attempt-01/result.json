@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P1-13",
+  "evidence_id": "SELF-V-P1-13",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_verification_core.py",
+    "tests/unit/test_verification_rules.py",
+    "-q",
+    "-k",
+    "fix_recheck or transition or recheck_paths"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "b8bce73388f0b009918d673d099df621d9abe5f0",
+  "started_at": "2026-09-02T14:52:24.284670+00:00",
+  "finished_at": "2026-09-02T14:52:28.235600+00:00",
+  "output_sha256": "a5bad37fc2190bed21c8f7befa636dc4fbe8b2f6206048cff2d3378a016c4864"
+}

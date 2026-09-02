@@ -1,0 +1,19 @@
+{
+  "test_id": "V-P1-07",
+  "evidence_id": "SELF-V-P1-07",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_policy_authorization.py",
+    "tests/integration/test_policy_engine_db.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "f48ab20187934b81f18065033bb5f95145a5f63b",
+  "started_at": "2026-09-02T14:32:44.629306+00:00",
+  "finished_at": "2026-09-02T14:32:46.371345+00:00",
+  "output_sha256": "cb27fd7f42b6d224dfa05db3fc71777af0a383bcb32d6cfe1be44ebfcab22739"
+}

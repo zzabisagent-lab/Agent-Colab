@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P1-20",
+  "evidence_id": "SELF-V-P1-20",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_document_lifecycle.py",
+    "tests/integration/test_event_store.py",
+    "-q",
+    "-k",
+    "shredding or sensitive"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "4ff53d9fcc91a296dc470edeb8c17c831aed174e",
+  "started_at": "2026-09-02T15:07:30.894166+00:00",
+  "finished_at": "2026-09-02T15:07:32.714427+00:00",
+  "output_sha256": "99db33d5c94c6f7da021687c7391181685cc33299c5435b1c861e2db3be3ec87"
+}

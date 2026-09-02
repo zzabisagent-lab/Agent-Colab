@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/approval/approval-consume.v1.schema.json",
+  "title": "ConsumeApproval internal command v1",
+  "description": "Internal command API (development plan §7.2): consumed atomically inside the Task/Run execution transaction; never exposed to clients.",
+  "type": "object",
+  "required": ["approval_id", "consumption_key", "consumed_for_type", "consumed_for_id"],
+  "properties": {
+    "approval_id": {"type": "string", "pattern": "^apr-[0-9a-f]{16}$"},
+    "consumption_key": {"type": "string", "minLength": 1, "maxLength": 200},
+    "consumed_for_type": {"type": "string", "enum": ["task", "schedule", "run", "action"]},
+    "consumed_for_id": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false,
+  "x-errors": ["APPROVAL_NOT_USABLE", "APPROVAL_EXHAUSTED", "APPROVAL_SCOPE_MISMATCH", "APPROVAL_NOT_FOUND"]
+}

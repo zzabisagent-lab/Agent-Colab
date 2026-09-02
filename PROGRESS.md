@@ -2,7 +2,34 @@
 
 Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENTS.md`, ADRs in `docs/adr/`.
 
-## Current phase: 0 (Baseline and Bootstrap) — branch `phase-0`
+## Current phase: 2 (Mattermost/Telegram) — branch `phase-2`
+
+## Phase 1 (PASSED) — branch `phase-1`, tag `phase-1-passed`
+
+### Phase 1 package status
+
+| ID | Work | Size | Prereq | Status | SELF evidence |
+|---|---|---|---|---|---|
+| P1-01 | DB migration/roles | M | P0-03 | IMPLEMENTED | SELF-V-P1-05, SELF-V-P1-25 |
+| P1-02 | aggregate Event append | L | P1-01 | IMPLEMENTED | SELF-V-P1-01/02/03/04/06/21 |
+| P1-03 | Policy Engine | M | P1-01, P0-12 | IMPLEMENTED | SELF-V-P1-07 |
+| P1-04 | Task state/projection | M | P1-02 | IMPLEMENTED | SELF-V-P1-09/10/27 |
+| P1-05 | identity/service token/external link core | M | P1-01 | IMPLEMENTED | SELF-V-P1-08, SELF-V-P1-23 |
+| P1-06 | VerificationRun core | M | P1-02, P1-05 | IMPLEMENTED | SELF-V-P1-12/13/14/24 |
+| P1-07 | REST/MCP/SSE | L | P1-02, P1-03 | IMPLEMENTED | SELF-V-P1-11, SELF-V-P1-26 |
+| P1-08 | Approval Core | L | P1-02, P1-03 | IMPLEMENTED | SELF-V-P1-15/16/22/32 |
+| P1-09 | Artifact Core | M | P1-02 | IMPLEMENTED | SELF-V-P1-17 |
+| P1-10 | Document lifecycle Core | M | P1-04, P1-06, P1-09 | IMPLEMENTED | SELF-V-P1-18/19/20 |
+| P1-11 | Task acceptance criteria | S | P1-04 | IMPLEMENTED | SELF-V-P1-28 |
+| P1-12 | Work item inbox core | M | P1-02, P1-04 | IMPLEMENTED | SELF-V-P1-29 |
+| P1-13 | Notification core | S | P1-02 | IMPLEMENTED | SELF-V-P1-31 |
+| P1-14 | Usage/Budget core | M | P1-02 | IMPLEMENTED | SELF-V-P1-30 |
+
+Phase 1 progress (size-weighted): 33.5 / 33.5
+
+Latest verification: **VR-P1-001: PASSED** (Codex, 2026-09-02, `verification/phase-1/VR-P1-001.yaml`, target 1244dda). 32/32 Tests PASS.
+
+## Phase 0 (PASSED) — branch `phase-0`, tag `phase-0-passed`
 
 ### Package status
 
@@ -46,3 +73,4 @@ Phase 1 on branch `phase-1` (P1-01 first; then P1-02/03/05 in parallel).
 | Phase | Result | Report | Tag |
 |---|---|---|---|
 | 0 | PASSED | verification/phase-0/VR-P0-003.yaml | phase-0-passed |
+| 1 | PASSED | verification/phase-1/VR-P1-001.yaml | phase-1-passed |

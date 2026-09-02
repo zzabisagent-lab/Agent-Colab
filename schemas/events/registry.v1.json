@@ -230,6 +230,21 @@
       "states": [
         "sent"
       ]
+    },
+    "task_criteria": {
+      "id_prefix": "task-",
+      "states": [
+        "pinned",
+        "revised"
+      ]
+    },
+    "dependency": {
+      "id_prefix": "dep-",
+      "states": [
+        "healthy",
+        "degraded",
+        "failed"
+      ]
     }
   },
   "authority": {
@@ -933,6 +948,34 @@
       "phase": 1,
       "schema_version": 1,
       "payload_schema": "types/TASK_VERIFICATION_STARTED.v1.schema.json",
+      "extension": true
+    },
+    "ARTIFACT_LINKED": {
+      "aggregate_type": "artifact",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/ARTIFACT_LINKED.v1.schema.json",
+      "extension": true
+    },
+    "ARTIFACT_ARCHIVED": {
+      "aggregate_type": "artifact",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/ARTIFACT_ARCHIVED.v1.schema.json",
+      "extension": true
+    },
+    "ACCEPTANCE_CRITERIA_REVISED": {
+      "aggregate_type": "task_criteria",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/ACCEPTANCE_CRITERIA_REVISED.v1.schema.json",
+      "extension": true
+    },
+    "DEPENDENCY_FAILURE_DETECTED": {
+      "aggregate_type": "dependency",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/DEPENDENCY_FAILURE_DETECTED.v1.schema.json",
       "extension": true
     }
   }

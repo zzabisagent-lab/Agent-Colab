@@ -1,0 +1,46 @@
+# P1-14 usage/budget cases (V-P1-30, V-P5-28 arithmetic). Hand-computed from policy/pricing.yaml
+# (pricing-v1): cost = ceil(in*rate_in/1000) + ceil(out*rate_out/1000) + calls*rate_call
+#                    + ceil(wall_ms*rate_wall/1000), each component rounded up independently.
+usage_cases:
+  - name: known model generic-small
+    usage: {model: generic-small, input_tokens: 1234, output_tokens: 567, tool_calls: 3, wall_time_ms: 4500}
+    expect: {cost_units: 850, source: computed}        # 186 + 341 + 300 + 23
+  - name: known model generic-large
+    usage: {model: generic-large, input_tokens: 1000, output_tokens: 100, tool_calls: 0, wall_time_ms: 999}
+    expect: {cost_units: 22520, source: computed}      # 15000 + 7500 + 0 + 20
+  - name: tool-only model
+    usage: {model: tool-only, input_tokens: 999999, output_tokens: 999999, tool_calls: 7, wall_time_ms: 1}
+    expect: {cost_units: 1751, source: computed}       # 0 + 0 + 1750 + ceil(1*2/1000)=1
+  - name: unknown model uses default rate and is estimated
+    usage: {model: mystery-9000, input_tokens: 1234, output_tokens: 567, tool_calls: 3, wall_time_ms: 4500}
+    expect: {cost_units: 13752, source: estimated}     # 3702 + 8505 + 1500 + 45
+  - name: adapter-reported cost_units preserved
+    usage: {model: generic-small, input_tokens: 1, output_tokens: 1, tool_calls: 0, wall_time_ms: 0, cost_units: 777}
+    expect: {cost_units: 777, source: reported}
+  - name: zero usage costs zero
+    usage: {model: generic-small, input_tokens: 0, output_tokens: 0, tool_calls: 0, wall_time_ms: 0}
+    expect: {cost_units: 0, source: computed}
+  - name: usage unavailable with reason
+    usage_unavailable_reason: ADAPTER_NO_METERING
+    expect: {cost_units: 0, source: unavailable}
+  - name: missing usage without reason is rejected
+    expect_error: USAGE_REQUIRED
+  - name: invalid usage shape is rejected
+    usage: {model: generic-small, input_tokens: -1, output_tokens: 0, tool_calls: 0, wall_time_ms: 0}
+    expect_error: USAGE_INVALID
+  - name: invalid reason is rejected
+    usage_unavailable_reason: BECAUSE
+    expect_error: USAGE_INVALID
+reservation_cases:   # limit 100, used 0, reserved 0 (V-P5-28: 99/100 allowed, 101 rejected)
+  - {used: 0, reserved: 0, estimate: 99, limit: 100, exceed: false}
+  - {used: 0, reserved: 0, estimate: 100, limit: 100, exceed: false}
+  - {used: 0, reserved: 0, estimate: 101, limit: 100, exceed: true}
+  - {used: 60, reserved: 30, estimate: 10, limit: 100, exceed: false}
+  - {used: 60, reserved: 30, estimate: 11, limit: 100, exceed: true}
+  - {used: 100, reserved: 0, estimate: 0, limit: 100, exceed: false}
+  - {used: 0, reserved: 0, estimate: 1, limit: 0, exceed: true}
+settlement_cases:
+  - {actual: 50, available: 100, status: settled}
+  - {actual: 100, available: 100, status: settled}
+  - {actual: 101, available: 100, status: exceeded}
+  - {actual: 0, available: 0, status: settled}

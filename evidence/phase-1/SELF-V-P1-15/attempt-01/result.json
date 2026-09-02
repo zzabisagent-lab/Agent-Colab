@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P1-15",
+  "evidence_id": "SELF-V-P1-15",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_approval_core.py",
+    "tests/unit/test_approval_rules.py",
+    "-q",
+    "-k",
+    "subjects or subject_registry"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "f1f9594e197c1715bac467789c71e27b6118915d",
+  "started_at": "2026-09-02T14:49:49.228539+00:00",
+  "finished_at": "2026-09-02T14:49:51.022413+00:00",
+  "output_sha256": "99db33d5c94c6f7da021687c7391181685cc33299c5435b1c861e2db3be3ec87"
+}
