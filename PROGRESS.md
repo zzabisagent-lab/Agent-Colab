@@ -20,21 +20,21 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 | P0-10 | Mattermost interaction contract and spike | M | P0-03 | IMPLEMENTED | SELF-V-P0-16; spike: docs/protocol/mattermost-spike.md |
 | P0-11 | Agent work-item/usage contract and MCP spike | M | P0-03 | IMPLEMENTED | SELF-V-P0-17; spike: docs/protocol/mcp-spike.md |
 | P0-12 | permission/risk catalog | S | P0-03 | IMPLEMENTED | SELF-V-P0-18 |
-| P0-13 | Telegram API spike | S | — | BLOCKED | needs Telegram bot token + test chats (user) |
+| P0-13 | Telegram API spike | S | — | IMPLEMENTED | SELF-V-P0-19; docs/protocol/telegram-spike.md |
 | P0-14 | plan operating baseline | S | P0-02 | IMPLEMENTED | SELF-V-P0-20 (attempt 2), docs/plan-baseline.md |
 
-Phase progress (size-weighted, S=1 M=2.5 L=5): 19.5 / 20.5 (P0-13 blocked)
+Phase progress (size-weighted, S=1 M=2.5 L=5): 20.5 / 20.5
 
 ### Latest verification result
 
-**VR-P0-002: FAILED** (Codex, 2026-09-02, `verification/phase-0/VR-P0-002.yaml`). 16 PASS, 2 FAIL (V-P0-09, V-P0-17), 2 NOT_RUN (V-P0-04 no container runtime, V-P0-19 no Telegram bot). Findings: F-P0-002-01 Medium (MCP long-poll 30.083 s > 30 s) — fixed, spike re-run 29.587 s; F-P0-002-02 Medium (spike artifact held live-issued Mattermost callback material) — token regenerated, artifacts and runner log redacted, gitleaks rule + incident record; F-P0-002-03 Low (manifest pinned to an earlier commit) — runner now generates the manifest at verification time for the exact target commit. r001 was aborted (sandbox could not execute; run-r001/ABORTED.md). Next revision (r003) is requested once B-001/B-002 are resolved so that V-P0-04 and V-P0-19 can run.
+**VR-P0-002: FAILED** (Codex, 2026-09-02, `verification/phase-0/VR-P0-002.yaml`). 16 PASS, 2 FAIL (V-P0-09, V-P0-17), 2 NOT_RUN (V-P0-04 no container runtime, V-P0-19 no Telegram bot). Findings: F-P0-002-01 Medium (MCP long-poll 30.083 s > 30 s) — fixed, spike re-run 29.587 s; F-P0-002-02 Medium (spike artifact held live-issued Mattermost callback material) — token regenerated, artifacts and runner log redacted, gitleaks rule + incident record; F-P0-002-03 Low (manifest pinned to an earlier commit) — runner now generates the manifest at verification time for the exact target commit. r001 was aborted (sandbox could not execute; run-r001/ABORTED.md). V-P0-04 and V-P0-19 now executed (SELF PASS); revision r003 requested.
 
 ### Open findings / blockers
 
 - F-P0-002-01/02/03 fixed on phase-0 (pending recheck in r003).
 
 - B-001 resolved 2026-09-02: Docker 29.1 + Compose 2.40 installed by the user (this shell uses `sg docker -c`).
-- B-002 resolved 2026-09-02: TELEGRAM_BOT_TOKEN/TEST_CHAT_A/B provided in .env; P0-13 spike in progress.
+- B-002 resolved 2026-09-02: TELEGRAM_BOT_TOKEN/TEST_CHAT_A/B provided in .env; P0-13 spike completed.
 - B-003 (root-only, optional) AppArmor blocks unprivileged user namespaces, so Codex's process sandbox cannot run; verification runs unsandboxed in an isolated worktree (ADR-0005 addendum).
 
 ### Next step

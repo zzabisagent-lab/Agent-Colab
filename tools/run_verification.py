@@ -110,8 +110,12 @@ def render_prompt(
         f"- Disposable PostgreSQL 16 for your own tests: "
         f"`AGENT_COLAB_TEST_DATABASE_URL={db_url}` (exported; tests create and drop their own "
         f"databases). psql: `pg16 psql -d colab_verify`.\n"
-        f"- No Docker/container runtime on this host; no root. Record Tests needing it as "
-        f"NOT_RUN.\n"
+        f"- Docker Engine 29 + Compose v2 are installed; this user is in the docker group but "
+        f"non-login shells need `sg docker -c '<command>'` (or `newgrp docker`). Compose must be "
+        f"run with `--env-file deploy/dev/compose.env` (`make compose-up` / `make compose-down`); "
+        f"the repository `.env` is a deployment-secrets file and must never be read or printed. "
+        f"No root. Telegram: `.env` holds TELEGRAM_BOT_TOKEN and two forum-enabled test chats "
+        f"(TELEGRAM_TEST_CHAT_A/B) for read-only re-checks; never print their values.\n"
         f"- Tools: gitleaks, jq, rg, uv, pnpm, node 22, python 3.12.\n{extra_env}"
     )
     return template.format(
