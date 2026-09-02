@@ -2,7 +2,9 @@
 
 Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENTS.md`, ADRs in `docs/adr/`.
 
-## Current phase: 1 (Core Event/Policy) — branch `phase-1`
+## Current phase: 2 (Mattermost/Telegram) — branch `phase-2`
+
+## Phase 1 (PASSED) — branch `phase-1`, tag `phase-1-passed`
 
 ### Phase 1 package status
 
@@ -25,7 +27,7 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 
 Phase 1 progress (size-weighted): 33.5 / 33.5
 
-Latest verification: VR-P1-001 requested (Codex, unsandboxed in an isolated worktree).
+Latest verification: **VR-P1-001: PASSED** (Codex, 2026-09-02, `verification/phase-1/VR-P1-001.yaml`, target 1244dda). 32/32 Tests PASS.
 
 ## Phase 0 (PASSED) — branch `phase-0`, tag `phase-0-passed`
 
@@ -71,3 +73,4 @@ Phase 1 on branch `phase-1` (P1-01 first; then P1-02/03/05 in parallel).
 | Phase | Result | Report | Tag |
 |---|---|---|---|
 | 0 | PASSED | verification/phase-0/VR-P0-003.yaml | phase-0-passed |
+| 1 | PASSED | verification/phase-1/VR-P1-001.yaml | phase-1-passed |

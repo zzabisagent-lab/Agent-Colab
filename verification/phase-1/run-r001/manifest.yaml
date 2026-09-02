@@ -1,0 +1,470 @@
+implementation_id: P1-IMPLEMENT-001
+phase: 1
+implementer_agent_id: agent-claude-code
+implementer_account_id: account-implementer-claude
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+identity_graph_version: identity-v8-001
+commit_sha: 1244dda1756fecee2499e91739bf86d163935ea2
+image_digests: []
+requirements:
+- REQ-AGENT-007
+- REQ-API-001
+- REQ-APRV-001
+- REQ-APRV-002
+- REQ-APRV-003
+- REQ-ARTF-001
+- REQ-BRDG-006
+- REQ-CNTR-001
+- REQ-COST-001
+- REQ-DOCS-001
+- REQ-DOCS-005
+- REQ-DOCS-008
+- REQ-EVNT-001
+- REQ-EVNT-002
+- REQ-EVNT-003
+- REQ-IDNT-001
+- REQ-NOTF-001
+- REQ-POLC-001
+- REQ-QGAT-001
+- REQ-SCHD-013
+- REQ-TASK-001
+- REQ-VRFY-001
+- REQ-VRFY-002
+changed_files:
+- PROGRESS.md
+- docs/adr/ADR-0008-phase1-core-decisions.md
+- docs/architecture/acceptance-criteria.md
+- docs/architecture/approvals.md
+- docs/architecture/artifacts.md
+- docs/architecture/documents.md
+- docs/architecture/identity.md
+- docs/architecture/notifications.md
+- docs/architecture/policy-engine.md
+- docs/architecture/task-lifecycle.md
+- docs/architecture/usage-budget.md
+- docs/architecture/verification.md
+- docs/architecture/work-delivery.md
+- evidence/phase-1/SELF-V-P1-01/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-01/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-02/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-02/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-03/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-03/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-04/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-04/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-05/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-05/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-06/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-06/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-07/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-07/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-08/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-08/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-09/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-09/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-10/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-10/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-10/attempt-02/output.log
+- evidence/phase-1/SELF-V-P1-10/attempt-02/result.json
+- evidence/phase-1/SELF-V-P1-11/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-11/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-12/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-12/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-13/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-13/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-14/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-14/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-15/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-15/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-16/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-16/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-17/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-17/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-18/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-18/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-18/attempt-02/output.log
+- evidence/phase-1/SELF-V-P1-18/attempt-02/result.json
+- evidence/phase-1/SELF-V-P1-19/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-19/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-19/attempt-02/output.log
+- evidence/phase-1/SELF-V-P1-19/attempt-02/result.json
+- evidence/phase-1/SELF-V-P1-20/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-20/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-20/attempt-02/output.log
+- evidence/phase-1/SELF-V-P1-20/attempt-02/result.json
+- evidence/phase-1/SELF-V-P1-21/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-21/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-22/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-22/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-23/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-23/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-24/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-24/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-25/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-25/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-26/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-26/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-26/attempt-02/output.log
+- evidence/phase-1/SELF-V-P1-26/attempt-02/result.json
+- evidence/phase-1/SELF-V-P1-27/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-27/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-28/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-28/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-29/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-29/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-30/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-30/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-31/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-31/attempt-01/result.json
+- evidence/phase-1/SELF-V-P1-31/attempt-02/output.log
+- evidence/phase-1/SELF-V-P1-31/attempt-02/result.json
+- evidence/phase-1/SELF-V-P1-31/attempt-03/output.log
+- evidence/phase-1/SELF-V-P1-31/attempt-03/result.json
+- evidence/phase-1/SELF-V-P1-32/attempt-01/output.log
+- evidence/phase-1/SELF-V-P1-32/attempt-01/result.json
+- evidence/phase-1/manifest-inputs.yaml
+- migrations/sql/0002_phase1_core.sql
+- migrations/versions/0002_phase1_core.py
+- policy/notification-rules.yaml
+- pyproject.toml
+- schemas/api/approval/approval-consume.v1.schema.json
+- schemas/api/approval/approval-decision.v1.schema.json
+- schemas/api/approval/approval-request.v1.schema.json
+- schemas/api/approval/approval.v1.schema.json
+- schemas/api/artifact/artifact-link.v1.schema.json
+- schemas/api/artifact/artifact.v1.schema.json
+- schemas/api/notification/notification-rule.v1.schema.json
+- schemas/api/task/acceptance-criteria.v1.schema.json
+- schemas/documents/document-manifest.v1.schema.json
+- schemas/documents/verification-verdict.v1.schema.json
+- schemas/events/catalog.v1.yaml
+- schemas/events/registry.v1.json
+- schemas/events/types/ACCEPTANCE_CRITERIA_REVISED.v1.schema.json
+- schemas/events/types/ARTIFACT_ARCHIVED.v1.schema.json
+- schemas/events/types/ARTIFACT_LINKED.v1.schema.json
+- schemas/events/types/DEPENDENCY_FAILURE_DETECTED.v1.schema.json
+- server/agents/mcp_server.py
+- server/api/deps.py
+- server/api/dispatch.py
+- server/api/v1/approvals.py
+- server/api/v1/events.py
+- server/api/v1/identity.py
+- server/api/v1/tasks.py
+- server/api/v1/verification.py
+- server/application/approvals.py
+- server/application/artifacts.py
+- server/application/authz.py
+- server/application/bus.py
+- server/application/criteria.py
+- server/application/documents.py
+- server/application/tasks.py
+- server/application/usage.py
+- server/application/verification.py
+- server/application/work.py
+- server/approvals/__init__.py
+- server/approvals/eligibility.py
+- server/approvals/model.py
+- server/approvals/service.py
+- server/artifacts/__init__.py
+- server/artifacts/links.py
+- server/artifacts/service.py
+- server/artifacts/storage.py
+- server/config.py
+- server/db/engine.py
+- server/documents/__init__.py
+- server/documents/builder.py
+- server/documents/lifecycle.py
+- server/documents/store.py
+- server/documents/templates.py
+- server/domain/criteria.py
+- server/domain/task.py
+- server/events/chain.py
+- server/events/integrity.py
+- server/events/postgres_store.py
+- server/events/store.py
+- server/identity/external_links.py
+- server/identity/principals.py
+- server/identity/repository.py
+- server/identity/service_tokens.py
+- server/main.py
+- server/notifications/__init__.py
+- server/notifications/dispatch.py
+- server/notifications/outbox.py
+- server/notifications/rules.py
+- server/notifications/selectors.py
+- server/observability/audit.py
+- server/policy/__init__.py
+- server/policy/authorization.py
+- server/policy/repository.py
+- server/projections/approvals.py
+- server/projections/base.py
+- server/projections/runner.py
+- server/projections/tasks.py
+- server/secrets/envelope.py
+- server/usage/budget.py
+- server/usage/records.py
+- server/usage/versions.py
+- server/verification/gate.py
+- server/verification/runs.py
+- server/work/inbox.py
+- server/work/push.py
+- server/work/receipts.py
+- server/work/timeouts.py
+- tests/conftest.py
+- tests/e2e/test_phase1_exit_gate.py
+- tests/fixtures/approvals/eligibility-cases.yaml
+- tests/fixtures/documents/skeleton-sources.json
+- tests/fixtures/identity/spoof-vectors.yaml
+- tests/fixtures/notifications/cases.yaml
+- tests/fixtures/policy/authorization-cases.yaml
+- tests/fixtures/tasks/criteria-cases.yaml
+- tests/fixtures/tasks/transitions.yaml
+- tests/fixtures/usage/budget-cases.yaml
+- tests/integration/test_acceptance_criteria_db.py
+- tests/integration/test_approval_core.py
+- tests/integration/test_artifact_core.py
+- tests/integration/test_document_lifecycle.py
+- tests/integration/test_event_store.py
+- tests/integration/test_events_api.py
+- tests/integration/test_identity_db.py
+- tests/integration/test_immutability.py
+- tests/integration/test_notifications_db.py
+- tests/integration/test_policy_engine_db.py
+- tests/integration/test_rest_mcp_parity.py
+- tests/integration/test_task_projection.py
+- tests/integration/test_usage_db.py
+- tests/integration/test_verification_core.py
+- tests/integration/test_verification_harness.py
+- tests/integration/test_work_inbox_db.py
+- tests/unit/test_acceptance_criteria.py
+- tests/unit/test_approval_rules.py
+- tests/unit/test_artifact_links.py
+- tests/unit/test_bus_authz.py
+- tests/unit/test_document_skeleton.py
+- tests/unit/test_identity_core.py
+- tests/unit/test_notification_rules.py
+- tests/unit/test_policy_authorization.py
+- tests/unit/test_task_transitions.py
+- tests/unit/test_usage_budget.py
+- tests/unit/test_verification_rules.py
+- tests/unit/test_work_inbox.py
+- tools/name_role_lint.py
+migrations:
+- migrations/versions/0002_phase1_core.py
+tests_run:
+- id: SELF-V-P1-01
+  command: uv run pytest tests/integration/test_event_store.py -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-01/attempt-01
+- id: SELF-V-P1-02
+  command: uv run pytest tests/integration/test_event_store.py -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-02/attempt-01
+- id: SELF-V-P1-03
+  command: uv run pytest tests/integration/test_event_store.py -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-03/attempt-01
+- id: SELF-V-P1-04
+  command: uv run pytest tests/integration/test_event_store.py -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-04/attempt-01
+- id: SELF-V-P1-05
+  command: uv run pytest tests/integration/test_immutability.py -q -k app_roles or
+    owner
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-05/attempt-01
+- id: SELF-V-P1-06
+  command: uv run pytest tests/integration/test_event_store.py -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-06/attempt-01
+- id: SELF-V-P1-07
+  command: uv run pytest tests/unit/test_policy_authorization.py tests/integration/test_policy_engine_db.py
+    -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-07/attempt-01
+- id: SELF-V-P1-08
+  command: uv run pytest tests/unit/test_identity_core.py tests/integration/test_identity_db.py
+    -q -k spoof or token or session or credential
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-08/attempt-01
+- id: SELF-V-P1-09
+  command: uv run pytest tests/integration/test_task_projection.py -q -k terminal
+    or invalid
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-09/attempt-01
+- id: SELF-V-P1-10
+  command: uv run pytest tests/integration/test_task_projection.py -q -k rebuild
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-10/attempt-02
+- id: SELF-V-P1-11
+  command: uv run pytest tests/integration/test_events_api.py -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-11/attempt-01
+- id: SELF-V-P1-12
+  command: uv run pytest tests/integration/test_verification_core.py tests/integration/test_verification_harness.py
+    tests/unit/test_verification_rules.py -q -k self_verification or submitter or
+    api_rejects or db_rejects
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-12/attempt-01
+- id: SELF-V-P1-13
+  command: uv run pytest tests/integration/test_verification_core.py tests/unit/test_verification_rules.py
+    -q -k fix_recheck or transition or recheck_paths
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-13/attempt-01
+- id: SELF-V-P1-14
+  command: uv run pytest tests/integration/test_verification_core.py -q -k completion_gate
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-14/attempt-01
+- id: SELF-V-P1-15
+  command: uv run pytest tests/integration/test_approval_core.py tests/unit/test_approval_rules.py
+    -q -k subjects or subject_registry
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-15/attempt-01
+- id: SELF-V-P1-16
+  command: uv run pytest tests/integration/test_approval_core.py -q -k bounded_consume
+    or service_consume
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-16/attempt-01
+- id: SELF-V-P1-17
+  command: uv run pytest tests/integration/test_artifact_core.py tests/unit/test_artifact_links.py
+    -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-17/attempt-01
+- id: SELF-V-P1-18
+  command: uv run pytest tests/unit/test_document_skeleton.py tests/integration/test_document_lifecycle.py
+    -q -k draft or lifecycle or reproducible or headings or unavailable
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-18/attempt-02
+- id: SELF-V-P1-19
+  command: uv run pytest tests/integration/test_document_lifecycle.py tests/unit/test_document_skeleton.py
+    -q -k lifecycle or finalized or write_once
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-19/attempt-02
+- id: SELF-V-P1-20
+  command: uv run pytest tests/integration/test_document_lifecycle.py tests/integration/test_event_store.py
+    -q -k shredding or sensitive
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-20/attempt-02
+- id: SELF-V-P1-21
+  command: uv run pytest tests/integration/test_event_store.py -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-21/attempt-01
+- id: SELF-V-P1-22
+  command: uv run pytest tests/integration/test_approval_core.py -q -k stale_or_deleted_projection
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-22/attempt-01
+- id: SELF-V-P1-23
+  command: uv run pytest tests/unit/test_identity_core.py tests/integration/test_identity_db.py
+    -q -k link or challenge or confirm or suspend or isolation or lockout or pending
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-23/attempt-01
+- id: SELF-V-P1-24
+  command: uv run pytest tests/integration/test_verification_core.py tests/unit/test_verification_rules.py
+    -q -k snapshot
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-24/attempt-01
+- id: SELF-V-P1-25
+  command: uv run pytest tests/integration/test_immutability.py -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-25/attempt-01
+- id: SELF-V-P1-26
+  command: uv run pytest tests/integration/test_rest_mcp_parity.py -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-26/attempt-02
+- id: SELF-V-P1-27
+  command: uv run pytest tests/unit/test_task_transitions.py tests/integration/test_task_projection.py
+    -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-27/attempt-01
+- id: SELF-V-P1-28
+  command: uv run pytest tests/unit/test_acceptance_criteria.py tests/integration/test_acceptance_criteria_db.py
+    -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-28/attempt-01
+- id: SELF-V-P1-29
+  command: uv run pytest tests/unit/test_work_inbox.py tests/integration/test_work_inbox_db.py
+    -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-29/attempt-01
+- id: SELF-V-P1-30
+  command: uv run pytest tests/unit/test_usage_budget.py tests/integration/test_usage_db.py
+    -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-30/attempt-01
+- id: SELF-V-P1-31
+  command: uv run pytest tests/unit/test_notification_rules.py tests/integration/test_notifications_db.py
+    -q
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-31/attempt-03
+- id: SELF-V-P1-32
+  command: uv run pytest tests/integration/test_approval_core.py tests/unit/test_approval_rules.py
+    -q -k eligibility or quorum or transition
+  result: pass
+  evidence_ref: evidence/phase-1/SELF-V-P1-32/attempt-01
+known_gaps:
+- 'Verifier assignment (§7D.2) is Phase 3 (P3-13): Phase 1 VerificationRuns are created
+  with explicit verifier identities; independence, snapshots, revisions and the completion
+  gate are complete.'
+- Notification providers (Mattermost DM/mention, SMTP) are stubbed (P1-13 by design);
+  the rules engine, dedupe, digest, reminders and outbox drain are exercised with
+  a stub provider.
+- MCP resource subscriptions are unsupported by the pinned SDK protocol pairing (Phase
+  0 decision); work_poll long-poll is the delivery path; the Phase 1 MCP surface covers
+  task_create/delegate/accept/progress, implementation_submit, approval_request (remaining
+  §7.4 tools arrive with P3-10/P6).
+- Envelope encryption uses an instance master key from configuration (AGENT_COLAB_MASTER_KEY_B64);
+  the Secret provider interface and key custody arrive in Phase 4 (P4-05).
+- Projection rebuilds tolerate raw Event streams that bypassed the command handlers
+  by skipping and reporting them (only possible from outside the API); the integrity
+  job reports such streams.
+rollback: git checkout 6dcb5da35405f1193c804a357ecc5169571216d2 (merge-base with main);
+  drop test databases
+evidence_refs:
+- evidence/phase-1/SELF-V-P1-01/attempt-01
+- evidence/phase-1/SELF-V-P1-02/attempt-01
+- evidence/phase-1/SELF-V-P1-03/attempt-01
+- evidence/phase-1/SELF-V-P1-04/attempt-01
+- evidence/phase-1/SELF-V-P1-05/attempt-01
+- evidence/phase-1/SELF-V-P1-06/attempt-01
+- evidence/phase-1/SELF-V-P1-07/attempt-01
+- evidence/phase-1/SELF-V-P1-08/attempt-01
+- evidence/phase-1/SELF-V-P1-09/attempt-01
+- evidence/phase-1/SELF-V-P1-10/attempt-02
+- evidence/phase-1/SELF-V-P1-11/attempt-01
+- evidence/phase-1/SELF-V-P1-12/attempt-01
+- evidence/phase-1/SELF-V-P1-13/attempt-01
+- evidence/phase-1/SELF-V-P1-14/attempt-01
+- evidence/phase-1/SELF-V-P1-15/attempt-01
+- evidence/phase-1/SELF-V-P1-16/attempt-01
+- evidence/phase-1/SELF-V-P1-17/attempt-01
+- evidence/phase-1/SELF-V-P1-18/attempt-02
+- evidence/phase-1/SELF-V-P1-19/attempt-02
+- evidence/phase-1/SELF-V-P1-20/attempt-02
+- evidence/phase-1/SELF-V-P1-21/attempt-01
+- evidence/phase-1/SELF-V-P1-22/attempt-01
+- evidence/phase-1/SELF-V-P1-23/attempt-01
+- evidence/phase-1/SELF-V-P1-24/attempt-01
+- evidence/phase-1/SELF-V-P1-25/attempt-01
+- evidence/phase-1/SELF-V-P1-26/attempt-02
+- evidence/phase-1/SELF-V-P1-27/attempt-01
+- evidence/phase-1/SELF-V-P1-28/attempt-01
+- evidence/phase-1/SELF-V-P1-29/attempt-01
+- evidence/phase-1/SELF-V-P1-30/attempt-01
+- evidence/phase-1/SELF-V-P1-31/attempt-03
+- evidence/phase-1/SELF-V-P1-32/attempt-01
+reproduction:
+- git clone git@github.com:zzabisagent-lab/Agent-Colab.git && git checkout <target
+  commit>
+- export PATH=$HOME/.local/bin:$PATH; export AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test
+  (any empty PostgreSQL 16 maintenance DB; the test session creates and drops its
+  own database and runs migrations 0001-0002)
+- make bootstrap && make lint && make test && make check-docs && make build
+- 'uv run pytest tests/integration -q   # every V-P1 Test has a SELF evidence attempt
+  under evidence/phase-1/SELF-V-P1-NN/ listing the exact pytest command'
+- 'DB-level immutability: uv run pytest tests/integration/test_immutability.py -q
+  (V-P1-05, V-P1-25); Event store: tests/integration/test_event_store.py (V-P1-01/02/03/04/06/21
+  + crypto-shredding)'
+- 'REST/MCP parity: uv run pytest tests/integration/test_rest_mcp_parity.py -q (starts
+  the real app on a loopback port; MCP at /mcp with Bearer service tokens)'
+- 'Projection rebuild CLI: AGENT_COLAB_DATABASE_URL=<url> uv run python -m server.projections.runner
+  rebuild tasks'

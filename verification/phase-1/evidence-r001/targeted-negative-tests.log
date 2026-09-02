@@ -1,0 +1,72 @@
+Script started on 2026-09-02 15:27:22+00:00 [COMMAND="uv run pytest tests/integration/test_immutability.py -vv && uv run pytest tests/integration/test_event_store.py -vv && uv run pytest tests/integration/test_rest_mcp_parity.py -vv" <not executed on terminal>]
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/master/.local/verify/phase-1-r001/.venv/bin/python
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /home/master/.local/verify/phase-1-r001
+configfile: pyproject.toml
+plugins: asyncio-1.4.0, cov-7.1.0, anyio-4.14.2, hypothesis-6.167.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 21 items                                                             
+
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[UPDATE events SET type = 'TASK_CANCELLED' WHERE event_id = :e-agent_colab_runtime] PASSED [  4%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[UPDATE events SET type = 'TASK_CANCELLED' WHERE event_id = :e-agent_colab_admin] PASSED [  9%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[DELETE FROM events WHERE event_id = :e-agent_colab_runtime] PASSED [ 14%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[DELETE FROM events WHERE event_id = :e-agent_colab_admin] PASSED [ 19%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[UPDATE audit_events SET result = 'forged'-agent_colab_runtime] PASSED [ 23%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[UPDATE audit_events SET result = 'forged'-agent_colab_admin] PASSED [ 28%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[DELETE FROM audit_events-agent_colab_runtime] PASSED [ 33%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[DELETE FROM audit_events-agent_colab_admin] PASSED [ 38%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[UPDATE verification_revisions SET result = 'PASSED'-agent_colab_runtime] PASSED [ 42%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[UPDATE verification_revisions SET result = 'PASSED'-agent_colab_admin] PASSED [ 47%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[DELETE FROM verification_revisions-agent_colab_runtime] PASSED [ 52%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[DELETE FROM verification_revisions-agent_colab_admin] PASSED [ 57%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[UPDATE audit_hash_anchors SET anchor_hash = 'x'-agent_colab_runtime] PASSED [ 61%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[UPDATE audit_hash_anchors SET anchor_hash = 'x'-agent_colab_admin] PASSED [ 66%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[DELETE FROM key_tombstones-agent_colab_runtime] PASSED [ 71%]
+tests/integration/test_immutability.py::test_app_roles_cannot_modify_authority_tables[DELETE FROM key_tombstones-agent_colab_admin] PASSED [ 76%]
+tests/integration/test_immutability.py::test_even_the_owner_is_blocked_by_triggers[UPDATE events SET type = 'TASK_CANCELLED' WHERE event_id = :e] PASSED [ 80%]
+tests/integration/test_immutability.py::test_even_the_owner_is_blocked_by_triggers[DELETE FROM events WHERE event_id = :e] PASSED [ 85%]
+tests/integration/test_immutability.py::test_audit_chain_appends_and_anchors_verify PASSED [ 90%]
+tests/integration/test_immutability.py::test_verification_revisions_chain_and_tamper_detection PASSED [ 95%]
+tests/integration/test_immutability.py::test_audit_chain_tamper_detected PASSED [100%]
+
+============================== 21 passed in 0.86s ==============================
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/master/.local/verify/phase-1-r001/.venv/bin/python
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /home/master/.local/verify/phase-1-r001
+configfile: pyproject.toml
+plugins: asyncio-1.4.0, cov-7.1.0, anyio-4.14.2, hypothesis-6.167.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 8 items                                                              
+
+tests/integration/test_event_store.py::test_append_sequence_and_response_consistent PASSED [ 12%]
+tests/integration/test_event_store.py::test_idempotent_retry_returns_same_event_and_conflict_on_different_body PASSED [ 25%]
+tests/integration/test_event_store.py::test_concurrent_identical_retries_produce_one_event PASSED [ 37%]
+tests/integration/test_event_store.py::test_concurrent_appends_keep_unique_monotonic_sequence PASSED [ 50%]
+tests/integration/test_event_store.py::test_expected_sequence_cas PASSED [ 62%]
+tests/integration/test_event_store.py::test_causality_and_workspace_errors_have_no_side_effects PASSED [ 75%]
+tests/integration/test_event_store.py::test_hash_chain_recompute_and_tamper_detection PASSED [ 87%]
+tests/integration/test_event_store.py::test_crypto_shredding_leaves_bytes_and_hash_unchanged PASSED [100%]
+
+============================== 8 passed in 1.23s ===============================
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/master/.local/verify/phase-1-r001/.venv/bin/python
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /home/master/.local/verify/phase-1-r001
+configfile: pyproject.toml
+plugins: asyncio-1.4.0, cov-7.1.0, anyio-4.14.2, hypothesis-6.167.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collecting 1 item                                                              collected 1 item                                                               
+
+tests/integration/test_rest_mcp_parity.py::test_rest_and_mcp_share_handlers_errors_and_idempotency[asyncio] PASSED [100%]
+
+============================== 1 passed in 3.32s ===============================
+
+Script done on 2026-09-02 15:27:30+00:00 [COMMAND_EXIT_CODE="0"]
