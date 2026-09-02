@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import subprocess
+
 from tools import threat_model_lint
+from tools.baseline import ROOT
 from tools.threat_model_lint import lint
 
 KNOWN = {"V-P0-16", "V-P2-09", "V-P4-02", "V-P4-10", "V-P4-08"}
@@ -46,8 +49,6 @@ def test_no_table_fails() -> None:
 
 
 def test_env_file_is_git_ignored() -> None:
-    import subprocess
-
     proc = subprocess.run(
         ["git", "check-ignore", "-q", ".env"], cwd=ROOT, check=False, capture_output=True
     )
