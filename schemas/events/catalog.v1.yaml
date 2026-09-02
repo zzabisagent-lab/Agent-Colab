@@ -151,3 +151,5 @@ events:
   WORK_ITEM_CANCELLED:     {aggregate: work_item, phase: 1, required: [work_item_id, reason_code], extension: "development plan §7B.1 CANCELLED state"}
   DOCUMENT_ATTEMPT_FINALIZED: {aggregate: document, phase: 1, required: [document_id, version, verification_id, result, sha256], extension: "development plan §10.1 ATTEMPT_FINALIZED version"}
   TASK_VERIFICATION_STARTED: {aggregate: task, phase: 1, required: [task_id, verification_id], extension: "spec §8.2 VERIFYING state entry"}
+  ARTIFACT_LINKED:         {aggregate: artifact, phase: 1, required: [artifact_id, subject_type, subject_id, relation], extension: "spec §9.1 ArtifactLink transitions leave an Event (P1-09)"}
+  ARTIFACT_ARCHIVED:       {aggregate: artifact, phase: 1, required: [artifact_id], extension: "spec §7.2 Artifact archive (P1-09)"}

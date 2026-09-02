@@ -934,6 +934,20 @@
       "schema_version": 1,
       "payload_schema": "types/TASK_VERIFICATION_STARTED.v1.schema.json",
       "extension": true
+    },
+    "ARTIFACT_LINKED": {
+      "aggregate_type": "artifact",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/ARTIFACT_LINKED.v1.schema.json",
+      "extension": true
+    },
+    "ARTIFACT_ARCHIVED": {
+      "aggregate_type": "artifact",
+      "phase": 1,
+      "schema_version": 1,
+      "payload_schema": "types/ARTIFACT_ARCHIVED.v1.schema.json",
+      "extension": true
     }
   }
 }

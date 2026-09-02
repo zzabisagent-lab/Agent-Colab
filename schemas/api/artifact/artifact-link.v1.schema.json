@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/artifact/artifact-link.v1.schema.json",
+  "title": "ArtifactLink v1",
+  "description": "Generic subject link (development plan §6.8). Subject handlers activate per phase: task (1), schedule_run (5), brainstorm/decision (6).",
+  "type": "object",
+  "required": ["subject_type", "subject_id", "relation", "linked_by", "linked_at"],
+  "properties": {
+    "artifact_id": {"type": "string", "pattern": "^art-[0-9a-f]{20}$"},
+    "subject_type": {"type": "string", "enum": ["task", "schedule_run", "brainstorm", "decision"]},
+    "subject_id": {"type": "string", "minLength": 1, "maxLength": 200},
+    "relation": {"type": "string", "minLength": 1, "maxLength": 64},
+    "linked_by": {"type": "string", "format": "uuid"},
+    "linked_at": {"type": "string"}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,19 @@
+{
+  "test_id": "V-P1-17",
+  "evidence_id": "SELF-V-P1-17",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_artifact_core.py",
+    "tests/unit/test_artifact_links.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "47d304100d962974d3cf30668906bf90477393d7",
+  "started_at": "2026-09-02T14:38:53.102193+00:00",
+  "finished_at": "2026-09-02T14:38:54.840926+00:00",
+  "output_sha256": "a4ba55c7ec7daeede2ecfea3dda9a793665ee142066911215af4f033a9e8412a"
+}
