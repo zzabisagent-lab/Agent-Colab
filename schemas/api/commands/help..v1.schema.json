@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/help..v1.schema.json",
+  "title": "/colab help",
+  "description": "Arguments of `/colab help `.",
+  "x-permission": "none",
+  "x-target": null,
+  "x-target-field": null,
+  "x-unlinked-allowed": true,
+  "x-example": "/colab help task",
+  "type": "object",
+  "properties": {
+    "resource": {
+      "type": "string",
+      "enum": [
+        "task",
+        "approve",
+        "verify",
+        "brainstorm",
+        "doc",
+        "schedule",
+        "link",
+        "notify"
+      ]
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

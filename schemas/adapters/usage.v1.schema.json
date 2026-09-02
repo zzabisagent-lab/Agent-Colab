@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/adapters/usage.v1.schema.json",
+  "title": "Agent-Colab usage report v1",
+  "description": "§7C usage block carried by every work_result, invoke result, and heartbeat. Either `usage` or `usage_unavailable` is required.",
+  "$defs": {
+    "usage": {
+      "type": "object",
+      "properties": {
+        "model": {"type": "string", "minLength": 1, "maxLength": 200},
+        "input_tokens": {"type": "integer", "minimum": 0},
+        "output_tokens": {"type": "integer", "minimum": 0},
+        "tool_calls": {"type": "integer", "minimum": 0},
+        "wall_time_ms": {"type": "integer", "minimum": 0},
+        "cost_units": {"type": "integer", "minimum": 0}
+      },
+      "required": ["model", "input_tokens", "output_tokens", "tool_calls", "wall_time_ms"],
+      "additionalProperties": false
+    },
+    "usage_unavailable": {
+      "type": "object",
+      "properties": {
+        "reason": {"type": "string", "enum": ["ADAPTER_NO_METERING", "MODEL_UNKNOWN", "ERROR"]},
+        "detail": {"type": "string", "maxLength": 500}
+      },
+      "required": ["reason"],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "usage": {"$ref": "#/$defs/usage"},
+    "usage_unavailable": {"$ref": "#/$defs/usage_unavailable"}
+  },
+  "oneOf": [
+    {"required": ["usage"], "not": {"required": ["usage_unavailable"]}},
+    {"required": ["usage_unavailable"], "not": {"required": ["usage"]}}
+  ]
+}

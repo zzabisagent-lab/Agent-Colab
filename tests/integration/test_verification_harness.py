@@ -42,7 +42,8 @@ def engine(database_url: str) -> Iterator[Engine]:
         ):
             conn.execute(
                 text(
-                    "INSERT INTO accounts (id, account_id, workspace_id, account_type, display_name) "
+                    "INSERT INTO accounts "
+                    "(id, account_id, workspace_id, account_type, display_name) "
                     "VALUES (:id, :a, :w, :t, :a)"
                 ),
                 {"id": uuid.uuid4(), "a": acct, "w": ws, "t": typ},
@@ -89,12 +90,13 @@ def _insert_sql(
     with engine.begin() as conn:
         conn.execute(
             text(
-                "INSERT INTO verification_runs (id, verification_id, workspace_id, target_type, target_id, "
-                "implementer_account_id, verifier_account_id, implementer_agent_id, verifier_agent_id, "
-                "implementer_credential_fingerprint, verifier_credential_fingerprint, identity_graph_version, "
-                "effective_policy_hash, criteria_version, target_commit, snapshot_hash, created_by_account_id) "
-                "VALUES (:id, :vid, :ws, 'phase', 'phase-0', :impl, :ver, :ia, :va, :ifp, :vfp, 'identity-v8-001', "
-                "'sha256:policy', 'v8.0', 'deadbeef', 'sha256:snap', :impl)"
+                "INSERT INTO verification_runs (id, verification_id, workspace_id, target_type, "
+                "target_id, implementer_account_id, verifier_account_id, implementer_agent_id, "
+                "verifier_agent_id, implementer_credential_fingerprint, "
+                "verifier_credential_fingerprint, identity_graph_version, effective_policy_hash, "
+                "criteria_version, target_commit, snapshot_hash, created_by_account_id) VALUES "
+                "(:id, :vid, :ws, 'phase', 'phase-0', :impl, :ver, :ia, :va, :ifp, :vfp, "
+                "'identity-v8-001', 'sha256:policy', 'v8.0', 'deadbeef', 'sha256:snap', :impl)"
             ),
             {
                 "id": uuid.uuid4(),
@@ -135,7 +137,8 @@ def test_db_accepts_independent_pair_and_snapshot_is_immutable(engine: Engine) -
         with engine.begin() as conn:
             conn.execute(
                 text(
-                    "UPDATE verification_runs SET target_commit = 'other' WHERE verification_id = :v"
+                    "UPDATE verification_runs SET target_commit = 'other' "
+                    "WHERE verification_id = :v"
                 ),
                 {"v": vid},
             )
@@ -217,7 +220,8 @@ def test_api_rejects_same_implementer_and_verifier(client: TestClient, engine: E
     with engine.connect() as conn:
         n = conn.execute(
             text(
-                "SELECT count(*) FROM verification_runs WHERE verifier_account_id = implementer_account_id"
+                "SELECT count(*) FROM verification_runs "
+                "WHERE verifier_account_id = implementer_account_id"
             )
         ).scalar_one()
     assert n == 0

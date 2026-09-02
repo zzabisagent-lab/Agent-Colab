@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/task.list.v1.schema.json",
+  "title": "/colab task list",
+  "description": "Arguments of `/colab task list`.",
+  "x-permission": "task.list",
+  "x-target": null,
+  "x-target-field": null,
+  "x-unlinked-allowed": false,
+  "x-example": "/colab task list --status RUNNING --limit 20",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    },
+    "assignee": {
+      "type": "string",
+      "pattern": "^(@[A-Za-z0-9._-]{1,64}|agent-[A-Za-z0-9._-]{1,120})$"
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

@@ -1,0 +1,59 @@
+# One or more valid commands per resource/verb (V-P0-16, V-P2-24). `context` defaults: linked, no thread.
+- {name: task create, text: '/colab task create "Write the report" --criteria "report.md attached" --criteria "reviewed by @lee" --domain research --risk LOW', expect: {resource: task, verb: create, permission: task.create, args: {title: Write the report, criteria: [report.md attached, "reviewed by @lee"], domain: research, risk: LOW}}}
+- {name: task create via mention, text: '@colab task create "Mention form" --criteria=done', expect: {resource: task, verb: create, args: {title: Mention form, criteria: [done]}}}
+- {name: task create single quotes, text: "/colab task create 'Single quoted title' --criteria 'c1'", expect: {args: {title: Single quoted title, criteria: [c1]}}}
+- {name: task delegate explicit, text: '/colab task delegate task-123 --to @research-agent', expect: {resource: task, verb: delegate, permission: task.delegate, target_kind: task, target_id: task-123, target_source: explicit, args: {task_id: task-123, to: '@research-agent'}}}
+- {name: task delegate in thread, text: '/colab task delegate --to agent-77', context: {thread_subject_kind: task, thread_subject_id: task-9}, expect: {target_id: task-9, target_source: thread, args: {task_id: task-9, to: agent-77}}}
+- {name: task accept, text: '/colab task accept task-1', expect: {verb: accept, permission: task.accept, target_id: task-1}}
+- {name: task accept in thread, text: '/colab task accept', context: {thread_subject_kind: task, thread_subject_id: task-2}, expect: {target_id: task-2, target_source: thread}}
+- {name: task reject, text: '/colab task reject task-1 --reason CAPACITY', expect: {verb: reject, args: {task_id: task-1, reason: CAPACITY}}}
+- {name: task progress, text: '/colab task progress task-1 "half done"', expect: {verb: progress, permission: task.progress, args: {task_id: task-1, message: half done}}}
+- {name: task progress in thread, text: '/colab task progress "half done"', context: {thread_subject_kind: task, thread_subject_id: task-3}, expect: {target_id: task-3, args: {task_id: task-3, message: half done}}}
+- {name: task submit, text: '/colab task submit task-1 --evidence art-45 --evidence art-46', expect: {verb: submit, permission: task.submit, args: {task_id: task-1, evidence: [art-45, art-46]}}}
+- {name: task complete, text: '/colab task complete task-1', expect: {verb: complete, permission: task.complete}}
+- {name: task cancel, text: '/colab task cancel task-1 --reason "no longer needed"', expect: {verb: cancel, permission: task.cancel, args: {task_id: task-1, reason: no longer needed}}}
+- {name: task reassign, text: '/colab task reassign task-1 --to @other --reason offline', expect: {verb: reassign, permission: task.reassign, args: {task_id: task-1, to: '@other', reason: offline}}}
+- {name: task show, text: '/colab task show task-1', expect: {verb: show, permission: task.read}}
+- {name: task list, text: '/colab task list --status RUNNING --limit 20', expect: {verb: list, permission: task.list, args: {status: RUNNING, limit: 20}}}
+- {name: task list bare, text: '/colab task list', expect: {verb: list, args: {}}}
+- {name: approve request, text: '/colab approve request task-1 --action external_send --risk HIGH', expect: {resource: approve, verb: request, permission: approval.request, args: {task_id: task-1, action: external_send, risk: HIGH}}}
+- {name: approve grant, text: '/colab approve grant apr-77', expect: {verb: grant, permission: approval.decide, args: {approval_id: apr-77}}}
+- {name: approve reject, text: '/colab approve reject apr-77 --reason "scope too wide"', expect: {verb: reject, permission: approval.decide, args: {approval_id: apr-77, reason: scope too wide}}}
+- {name: approve show, text: '/colab approve show apr-77', expect: {verb: show, permission: approval.read}}
+- {name: approve list, text: '/colab approve list --status PENDING', expect: {verb: list, args: {status: PENDING}}}
+- {name: verify assign, text: '/colab verify assign task-1 --to @reviewer', expect: {resource: verify, verb: assign, permission: verification.assign, args: {task_id: task-1, to: '@reviewer'}}}
+- {name: verify pass, text: '/colab verify pass task-1 --evidence art-90', expect: {verb: pass, permission: verification.submit, args: {task_id: task-1, evidence: [art-90]}}}
+- {name: verify fail, text: '/colab verify fail task-1 --evidence art-91 --finding "criterion 2 not met"', expect: {verb: fail, args: {task_id: task-1, evidence: [art-91], finding: [criterion 2 not met]}}}
+- {name: verify block, text: '/colab verify block task-1 --reason "sandbox unreachable"', expect: {verb: block, args: {task_id: task-1, reason: sandbox unreachable}}}
+- {name: verify show, text: '/colab verify show task-1', expect: {verb: show, permission: verification.read}}
+- {name: brainstorm start, text: '/colab brainstorm start "Q4 roadmap" --participants @a,@b --turns-per-agent 5 --max-consecutive 1 --total-turns 40 --budget 2000000 --time 30', expect: {resource: brainstorm, verb: start, permission: brainstorm.facilitate, args: {topic: Q4 roadmap, participants: ['@a', '@b'], turns-per-agent: 5, max-consecutive: 1, total-turns: 40, budget: 2000000, time: 30}}}
+- {name: brainstorm start participants space separated, text: '/colab brainstorm start "Topic" --participants "@a @b @c"', expect: {args: {participants: ['@a', '@b', '@c']}}}
+- {name: brainstorm contribute, text: '/colab brainstorm contribute bs-5 "ship the beta first" --type IDEA', expect: {verb: contribute, permission: brainstorm.contribute, target_kind: brainstorm, target_id: bs-5, args: {brainstorm_id: bs-5, text: ship the beta first, type: IDEA}}}
+- {name: brainstorm contribute in thread, text: '/colab brainstorm contribute "an idea"', context: {thread_subject_kind: brainstorm, thread_subject_id: bs-8}, expect: {target_id: bs-8, target_source: thread, args: {brainstorm_id: bs-8, text: an idea}}}
+- {name: brainstorm summarize, text: '/colab brainstorm summarize bs-5', expect: {verb: summarize, permission: brainstorm.summarize}}
+- {name: brainstorm decide, text: '/colab brainstorm decide bs-5 "adopt option B" --rationale "lower cost" --source evt-1 --source evt-2 --vote', expect: {verb: decide, args: {brainstorm_id: bs-5, statement: adopt option B, rationale: lower cost, source: [evt-1, evt-2], vote: true}}}
+- {name: brainstorm taskify, text: '/colab brainstorm taskify bs-5 --decision dec-9', expect: {verb: taskify, args: {brainstorm_id: bs-5, decision: dec-9}}}
+- {name: brainstorm pause, text: '/colab brainstorm pause bs-5', expect: {verb: pause}}
+- {name: brainstorm resume, text: '/colab brainstorm resume bs-5 --total-turns 60', expect: {verb: resume, args: {brainstorm_id: bs-5, total-turns: 60}}}
+- {name: brainstorm close, text: '/colab brainstorm close bs-5', expect: {verb: close}}
+- {name: brainstorm show, text: '/colab brainstorm show bs-5', expect: {verb: show, permission: brainstorm.read}}
+- {name: doc show task, text: '/colab doc show task-1', expect: {resource: doc, verb: show, permission: document.read, target_kind: task, target_id: task-1}}
+- {name: doc show brainstorm in thread, text: '/colab doc show', context: {thread_subject_kind: brainstorm, thread_subject_id: bs-2}, expect: {target_kind: brainstorm, target_id: bs-2, target_source: thread}}
+- {name: doc review, text: '/colab doc review task-1 --result approve --comment "facts verified"', expect: {verb: review, permission: document.review, args: {subject_id: task-1, result: approve, comment: facts verified}}}
+- {name: doc publish, text: '/colab doc publish bs-2 --publisher git', expect: {verb: publish, permission: document.publish, args: {subject_id: bs-2, publisher: git}}}
+- {name: schedule show, text: '/colab schedule show sch-3', expect: {resource: schedule, verb: show, permission: schedule.read, args: {schedule_or_run_id: sch-3}}}
+- {name: schedule show run, text: '/colab schedule show run-31', expect: {args: {schedule_or_run_id: run-31}}}
+- {name: schedule list, text: '/colab schedule list --status ENABLED', expect: {verb: list, args: {status: ENABLED}}}
+- {name: schedule run-now, text: '/colab schedule run-now sch-3', expect: {verb: run-now, permission: schedule.run, args: {schedule_id: sch-3}}}
+- {name: schedule pause, text: '/colab schedule pause sch-3', expect: {verb: pause, permission: schedule.manage}}
+- {name: schedule resume, text: '/colab schedule resume sch-3', expect: {verb: resume, permission: schedule.manage}}
+- {name: schedule cancel-run, text: '/colab schedule cancel-run run-31 --reason stuck', expect: {verb: cancel-run, permission: schedule.run, args: {run_id: run-31, reason: stuck}}}
+- {name: link start, text: '/colab link start', context: {linked: false}, expect: {resource: link, verb: start, permission: identity.link}}
+- {name: link confirm, text: '/colab link confirm 123456', context: {linked: false}, expect: {verb: confirm, args: {code: '123456'}}}
+- {name: notify mute, text: '/colab notify mute --until 2026-01-16T09:00:00Z', expect: {resource: notify, verb: mute, args: {until: '2026-01-16T09:00:00Z'}}}
+- {name: notify unmute, text: '/colab notify unmute', expect: {verb: unmute}}
+- {name: notify digest, text: '/colab notify digest --interval hourly', expect: {verb: digest, args: {interval: hourly}}}
+- {name: help, text: '/colab help', context: {linked: false}, expect: {resource: help, verb: '', permission: none}}
+- {name: help resource, text: '/colab help task', context: {linked: false}, expect: {resource: help, args: {resource: task}}}
+- {name: bare prefix is help, text: '/colab', expect: {resource: help}}
+- {name: case-insensitive resource/verb, text: '/colab Task SHOW task-1', expect: {resource: task, verb: show}}

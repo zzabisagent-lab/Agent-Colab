@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/schedule.list.v1.schema.json",
+  "title": "/colab schedule list",
+  "description": "Arguments of `/colab schedule list`.",
+  "x-permission": "schedule.read",
+  "x-target": null,
+  "x-target-field": null,
+  "x-unlinked-allowed": false,
+  "x-example": "/colab schedule list --status ENABLED",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

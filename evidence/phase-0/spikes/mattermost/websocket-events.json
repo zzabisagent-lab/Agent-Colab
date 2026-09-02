@@ -1,0 +1,15 @@
+{
+  "events_observed": [
+    "hello",
+    "status_change",
+    "posted",
+    "post_edited",
+    "reaction_added"
+  ],
+  "required": [
+    "posted",
+    "post_edited",
+    "reaction_added"
+  ],
+  "all_required_present": true
+}

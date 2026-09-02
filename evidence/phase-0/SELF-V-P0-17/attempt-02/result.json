@@ -1,0 +1,19 @@
+{
+  "test_id": "V-P0-17",
+  "evidence_id": "SELF-V-P0-17",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_work_item_contract.py",
+    "tests/unit/test_usage_contract.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "33c949846e69fca4f4f1d8203e3c9dfd49ec3f46",
+  "started_at": "2026-09-02T13:20:46.173452+00:00",
+  "finished_at": "2026-09-02T13:20:47.277745+00:00",
+  "output_sha256": "1c296f620adc850f9ed88d75c847738d725f60f1de7a89002059c40eff811d9a"
+}

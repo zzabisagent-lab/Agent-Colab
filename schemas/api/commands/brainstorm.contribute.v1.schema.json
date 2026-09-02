@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/brainstorm.contribute.v1.schema.json",
+  "title": "/colab brainstorm contribute",
+  "description": "Arguments of `/colab brainstorm contribute`.",
+  "x-permission": "brainstorm.contribute",
+  "x-target": "brainstorm",
+  "x-target-field": "brainstorm_id",
+  "x-unlinked-allowed": false,
+  "x-example": "/colab brainstorm contribute bs-5 \"ship the beta first\" --type IDEA",
+  "type": "object",
+  "properties": {
+    "brainstorm_id": {
+      "type": "string",
+      "pattern": "^bs-[A-Za-z0-9._-]{1,120}$",
+      "description": "omitted inside a Brainstorm thread"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "IDEA",
+        "CHALLENGE",
+        "QUESTION",
+        "GUIDANCE"
+      ]
+    }
+  },
+  "required": [
+    "text"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/task.accept.v1.schema.json",
+  "title": "/colab task accept",
+  "description": "Arguments of `/colab task accept`.",
+  "x-permission": "task.accept",
+  "x-target": "task",
+  "x-target-field": "task_id",
+  "x-unlinked-allowed": false,
+  "x-example": "/colab task accept task-123",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^task-[A-Za-z0-9._-]{1,120}$",
+      "description": "omitted inside a Task thread"
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

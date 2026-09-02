@@ -85,7 +85,7 @@ class PolicyCatalog:
                 raise PolicyCatalogError(
                     "POLICY_ACTION_UNCLASSIFIED", f"{action}: unknown class {spec['class']}"
                 )
-            if spec["permission"] not in self._vocabulary:
+            if spec["permission"] != "none" and spec["permission"] not in self._vocabulary:
                 raise PolicyCatalogError(
                     "POLICY_PERMISSION_UNKNOWN", f"{action}: {spec['permission']}"
                 )

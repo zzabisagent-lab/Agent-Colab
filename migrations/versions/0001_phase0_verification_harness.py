@@ -169,7 +169,8 @@ def upgrade() -> None:
         """
     )
     op.execute(
-        "CREATE RULE verification_runs_no_delete AS ON DELETE TO verification_runs DO INSTEAD NOTHING;"
+        "CREATE RULE verification_runs_no_delete AS ON DELETE TO verification_runs "
+        "DO INSTEAD NOTHING;"
     )
 
 

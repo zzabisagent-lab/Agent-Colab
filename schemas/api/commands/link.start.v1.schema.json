@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/link.start.v1.schema.json",
+  "title": "/colab link start",
+  "description": "Arguments of `/colab link start`.",
+  "x-permission": "identity.link",
+  "x-target": null,
+  "x-target-field": null,
+  "x-unlinked-allowed": true,
+  "x-example": "/colab link start",
+  "type": "object",
+  "properties": {},
+  "required": [],
+  "additionalProperties": false
+}

@@ -42,7 +42,8 @@ def _alias_graph(session: Session, workspace_uuid: uuid.UUID) -> dict[str, str]:
     rows = session.execute(
         text(
             "SELECT a.account_id, b.account_id FROM account_aliases al "
-            "JOIN accounts a ON a.id = al.account_id JOIN accounts b ON b.id = al.alias_of_account_id "
+            "JOIN accounts a ON a.id = al.account_id "
+            "JOIN accounts b ON b.id = al.alias_of_account_id "
             "WHERE a.workspace_id = :ws"
         ),
         {"ws": workspace_uuid},

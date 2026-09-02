@@ -1,0 +1,24 @@
+{
+  "pricing_invalid": [
+    {"name": "negative rate", "table": {"version": "pricing-v9", "cost_units_per_credit": 1000000, "default": {"input_per_1k_tokens": -1, "output_per_1k_tokens": 0, "per_tool_call": 0, "per_wall_second": 0}, "models": {}}},
+    {"name": "missing default", "table": {"version": "pricing-v9", "cost_units_per_credit": 1000000, "models": {}}},
+    {"name": "wrong credit size", "table": {"version": "pricing-v9", "cost_units_per_credit": 1000, "default": {"input_per_1k_tokens": 1, "output_per_1k_tokens": 1, "per_tool_call": 1, "per_wall_second": 1}, "models": {}}},
+    {"name": "float rate", "table": {"version": "pricing-v9", "cost_units_per_credit": 1000000, "default": {"input_per_1k_tokens": 1.5, "output_per_1k_tokens": 1, "per_tool_call": 1, "per_wall_second": 1}, "models": {}}},
+    {"name": "bad version", "table": {"version": "v1", "cost_units_per_credit": 1000000, "default": {"input_per_1k_tokens": 1, "output_per_1k_tokens": 1, "per_tool_call": 1, "per_wall_second": 1}, "models": {}}}
+  ],
+  "cost_cases": [
+    {"name": "known model computed", "report": {"usage": {"model": "generic-medium", "input_tokens": 1200, "output_tokens": 300, "tool_calls": 2, "wall_time_ms": 4500}}, "expect": {"cost_units": 9145, "source": "computed"}},
+    {"name": "known model exact thousands", "report": {"usage": {"model": "generic-small", "input_tokens": 1000, "output_tokens": 1000, "tool_calls": 0, "wall_time_ms": 0}}, "expect": {"cost_units": 750, "source": "computed"}},
+    {"name": "ceil rounding per component", "report": {"usage": {"model": "generic-small", "input_tokens": 1, "output_tokens": 1, "tool_calls": 0, "wall_time_ms": 1}}, "expect": {"cost_units": 3, "source": "computed"}},
+    {"name": "unknown model uses default and is estimated", "report": {"usage": {"model": "mystery-9000", "input_tokens": 1000, "output_tokens": 1000, "tool_calls": 1, "wall_time_ms": 1000}}, "expect": {"cost_units": 18510, "source": "estimated"}},
+    {"name": "adapter-reported cost_units wins", "report": {"usage": {"model": "mystery-9000", "input_tokens": 1000, "output_tokens": 1000, "tool_calls": 1, "wall_time_ms": 1000, "cost_units": 42}}, "expect": {"cost_units": 42, "source": "reported"}},
+    {"name": "zero usage", "report": {"usage": {"model": "generic-large", "input_tokens": 0, "output_tokens": 0, "tool_calls": 0, "wall_time_ms": 0}}, "expect": {"cost_units": 0, "source": "computed"}},
+    {"name": "unavailable with reason", "report": {"usage_unavailable": {"reason": "ADAPTER_NO_METERING"}}, "expect": null}
+  ],
+  "cost_errors": [
+    {"name": "missing usage and reason", "report": {}, "code": "USAGE_REQUIRED"},
+    {"name": "unknown reason code", "report": {"usage_unavailable": {"reason": "LAZY"}}, "code": "USAGE_INVALID"},
+    {"name": "negative tokens", "report": {"usage": {"model": "generic-small", "input_tokens": -5, "output_tokens": 0, "tool_calls": 0, "wall_time_ms": 0}}, "code": "USAGE_INVALID"},
+    {"name": "both usage and unavailable", "report": {"usage": {"model": "generic-small", "input_tokens": 0, "output_tokens": 0, "tool_calls": 0, "wall_time_ms": 0}, "usage_unavailable": {"reason": "ERROR"}}, "code": "USAGE_INVALID"}
+  ]
+}

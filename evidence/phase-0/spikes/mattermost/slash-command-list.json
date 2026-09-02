@@ -1,0 +1,22 @@
+[
+  {
+    "id": "59zbf1xu5pfu8yuctb644tpsoh",
+    "token": "<redacted>",
+    "create_at": 1788354690812,
+    "update_at": 1788354690812,
+    "delete_at": 0,
+    "creator_id": "q7z1rtth4pgw8chei1x8gwscse",
+    "team_id": "dhmmszncpjb1ir1n4qdomygnsc",
+    "trigger": "colab",
+    "method": "P",
+    "username": "",
+    "icon_url": "",
+    "auto_complete": true,
+    "auto_complete_desc": "Agent-Colab commands",
+    "auto_complete_hint": "<resource> <verb> [args]",
+    "display_name": "Agent-Colab",
+    "description": "/colab <resource> <verb>",
+    "url": "http://127.0.0.1:8080/api/v1/providers/mattermost/commands",
+    "plugin_id": ""
+  }
+]

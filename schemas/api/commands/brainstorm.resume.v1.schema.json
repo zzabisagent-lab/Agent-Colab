@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/brainstorm.resume.v1.schema.json",
+  "title": "/colab brainstorm resume",
+  "description": "Arguments of `/colab brainstorm resume`.",
+  "x-permission": "brainstorm.facilitate",
+  "x-target": "brainstorm",
+  "x-target-field": "brainstorm_id",
+  "x-unlinked-allowed": false,
+  "x-example": "/colab brainstorm resume bs-5 --total-turns 60",
+  "type": "object",
+  "properties": {
+    "brainstorm_id": {
+      "type": "string",
+      "pattern": "^bs-[A-Za-z0-9._-]{1,120}$",
+      "description": "omitted inside a Brainstorm thread"
+    },
+    "turns-per-agent": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "max-consecutive": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10
+    },
+    "total-turns": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000
+    },
+    "budget": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "time": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

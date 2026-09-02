@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/approve.reject.v1.schema.json",
+  "title": "/colab approve reject",
+  "description": "Arguments of `/colab approve reject`.",
+  "x-permission": "approval.decide",
+  "x-target": null,
+  "x-target-field": null,
+  "x-unlinked-allowed": false,
+  "x-example": "/colab approve reject apr-77 --reason \"scope too wide\"",
+  "type": "object",
+  "properties": {
+    "approval_id": {
+      "type": "string",
+      "pattern": "^apr-[A-Za-z0-9._-]{1,120}$"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    }
+  },
+  "required": [
+    "approval_id"
+  ],
+  "additionalProperties": false
+}

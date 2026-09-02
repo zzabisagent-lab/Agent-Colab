@@ -1,0 +1,17 @@
+# Interactive action callback security fixtures (V-P0-16, V-P2-26). Keys and tokens are fixtures,
+# not secrets. `now` is the server clock; `timestamp` is the value embedded in the action context.
+signing_key: "fixture-signing-key-not-a-secret"
+expected_token: "fixture-integration-token-0001"
+now: "2026-01-15T10:00:00Z"
+cases:
+  - {name: valid callback, timestamp: 1768471200, nonce: nonce-valid-000000001, body: '{"a":1}', tamper: none, expect: ok}
+  - {name: valid at +299 s skew, timestamp: 1768470901, nonce: nonce-valid-000000002, body: '{"a":1}', tamper: none, expect: ok}
+  - {name: expired at +301 s skew, timestamp: 1768470899, nonce: nonce-exp-0000000001, body: '{"a":1}', tamper: none, expect: CALLBACK_TIMESTAMP_EXPIRED}
+  - {name: future timestamp beyond tolerance, timestamp: 1768471501, nonce: nonce-fut-0000000001, body: '{"a":1}', tamper: none, expect: CALLBACK_TIMESTAMP_EXPIRED}
+  - {name: wrong integration token, timestamp: 1768471200, nonce: nonce-tok-0000000001, body: '{"a":1}', tamper: token, expect: CALLBACK_SIGNATURE_INVALID}
+  - {name: tampered signature, timestamp: 1768471200, nonce: nonce-sig-0000000001, body: '{"a":1}', tamper: signature, expect: CALLBACK_SIGNATURE_INVALID}
+  - {name: signature from another key, timestamp: 1768471200, nonce: nonce-key-0000000001, body: '{"a":1}', tamper: other_key, expect: CALLBACK_SIGNATURE_INVALID}
+  - {name: timestamp altered after signing, timestamp: 1768471200, nonce: nonce-ts-00000000001, body: '{"a":1}', tamper: timestamp, expect: CALLBACK_SIGNATURE_INVALID}
+  - {name: body replaced after signing, timestamp: 1768471200, nonce: nonce-body-000000001, body: '{"a":1}', tamper: body, expect: CALLBACK_BODY_HASH_MISMATCH}
+  - {name: nonce replay, timestamp: 1768471200, nonce: nonce-replay-00000001, body: '{"a":1}', tamper: replay, expect: CALLBACK_NONCE_REUSED}
+  - {name: forged request does not burn the nonce, timestamp: 1768471200, nonce: nonce-burn-000000001, body: '{"a":1}', tamper: forged_then_valid, expect: ok}

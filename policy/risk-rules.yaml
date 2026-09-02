@@ -81,7 +81,7 @@ actions:
   command:verify.fail:              {class: internal_write,     permission: verification.submit}
   command:verify.block:             {class: internal_write,     permission: verification.submit}
   command:verify.show:              {class: read_query,         permission: verification.read}
-  command:brainstorm.start:         {class: internal_write,     permission: brainstorm.open}
+  command:brainstorm.start:         {class: internal_write,     permission: brainstorm.facilitate}  # §7F: the starter is the facilitator
   command:brainstorm.contribute:    {class: internal_write,     permission: brainstorm.contribute}
   command:brainstorm.summarize:     {class: internal_write,     permission: brainstorm.summarize}
   command:brainstorm.decide:        {class: internal_write,     permission: brainstorm.facilitate}
@@ -104,7 +104,7 @@ actions:
   command:notify.mute:              {class: internal_write,     permission: notification.self}
   command:notify.unmute:            {class: internal_write,     permission: notification.self}
   command:notify.digest:            {class: internal_write,     permission: notification.self}
-  command:help:                     {class: read_query,         permission: identity.link}
+  command:help:                     {class: read_query,         permission: none}  # §7A.2: everyone, including unlinked users
   # --- REST/Admin write actions (§7.2)
   api:setup_bootstrap:              {class: production_change,  permission: admin.settings}
   api:setup_reconfigure:            {class: production_change,  permission: admin.settings}

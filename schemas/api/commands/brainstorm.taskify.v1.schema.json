@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/brainstorm.taskify.v1.schema.json",
+  "title": "/colab brainstorm taskify",
+  "description": "Arguments of `/colab brainstorm taskify`.",
+  "x-permission": "brainstorm.facilitate",
+  "x-target": "brainstorm",
+  "x-target-field": "brainstorm_id",
+  "x-unlinked-allowed": false,
+  "x-example": "/colab brainstorm taskify bs-5 --decision dec-9",
+  "type": "object",
+  "properties": {
+    "brainstorm_id": {
+      "type": "string",
+      "pattern": "^bs-[A-Za-z0-9._-]{1,120}$",
+      "description": "omitted inside a Brainstorm thread"
+    },
+    "decision": {
+      "type": "string",
+      "pattern": "^dec-[A-Za-z0-9._-]{1,120}$"
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

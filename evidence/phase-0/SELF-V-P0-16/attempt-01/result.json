@@ -1,0 +1,18 @@
+{
+  "test_id": "V-P0-16",
+  "evidence_id": "SELF-V-P0-16",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_mattermost_contract.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "c065e66c8ad59a206eb9a9064e93ffe499adec3d",
+  "started_at": "2026-09-02T13:16:01.921748+00:00",
+  "finished_at": "2026-09-02T13:16:03.289321+00:00",
+  "output_sha256": "457eab217183b11d58af123f2c744d92857c5ed075c893800113f52f81d036bd"
+}

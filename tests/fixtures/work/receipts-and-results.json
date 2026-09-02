@@ -1,0 +1,26 @@
+{
+  "receipts_valid": [
+    {"schema_id": "colab.delivery-receipt.v1", "work_item_id": "wi-0123456789abcdef", "correlation_id": "corr-task-0001", "accepted_at": "2026-01-15T10:00:01.000Z"},
+    {"schema_id": "colab.delivery-receipt.v1", "work_item_id": "wi-0123456789abcdef", "correlation_id": "corr-task-0001", "rejection_code": "CAPACITY", "rejection_detail": "3/3 slots busy"}
+  ],
+  "receipts_invalid": [
+    {"name": "both accepted and rejected", "item": {"schema_id": "colab.delivery-receipt.v1", "work_item_id": "wi-0123456789abcdef", "correlation_id": "c", "accepted_at": "2026-01-15T10:00:01.000Z", "rejection_code": "OTHER"}},
+    {"name": "neither", "item": {"schema_id": "colab.delivery-receipt.v1", "work_item_id": "wi-0123456789abcdef", "correlation_id": "c"}},
+    {"name": "unknown rejection code", "item": {"schema_id": "colab.delivery-receipt.v1", "work_item_id": "wi-0123456789abcdef", "correlation_id": "c", "rejection_code": "BUSY"}}
+  ],
+  "results_valid": [
+    {"schema_id": "colab.work-result.v1", "work_item_id": "wi-0123456789abcdef", "correlation_id": "corr-task-0001", "task_id": "task-0001", "status": "SUCCEEDED", "result": {"summary": "done"}, "events": [{"type": "TASK_PROGRESS_REPORTED", "payload": {"task_id": "task-0001", "summary": "100%"}}], "artifacts": [{"sha256": "0000000000000000000000000000000000000000000000000000000000000000", "mime": "text/markdown", "size": 12}], "usage": {"model": "generic-medium", "input_tokens": 1200, "output_tokens": 300, "tool_calls": 2, "wall_time_ms": 4500}},
+    {"schema_id": "colab.work-result.v1", "work_item_id": "wi-0123456789abcdef", "correlation_id": "corr-task-0001", "status": "FAILED", "error_code": "TOOL_TIMEOUT", "result": {}, "events": [], "artifacts": [], "usage_unavailable": {"reason": "ERROR"}}
+  ],
+  "results_invalid": [
+    {"name": "no usage and no reason", "item": {"schema_id": "colab.work-result.v1", "work_item_id": "wi-0123456789abcdef", "correlation_id": "c", "status": "SUCCEEDED", "result": {}, "events": [], "artifacts": []}},
+    {"name": "failed without error_code", "item": {"schema_id": "colab.work-result.v1", "work_item_id": "wi-0123456789abcdef", "correlation_id": "c", "status": "FAILED", "result": {}, "events": [], "artifacts": [], "usage_unavailable": {"reason": "ERROR"}}},
+    {"name": "usage with float tokens", "item": {"schema_id": "colab.work-result.v1", "work_item_id": "wi-0123456789abcdef", "correlation_id": "c", "status": "SUCCEEDED", "result": {}, "events": [], "artifacts": [], "usage": {"model": "m", "input_tokens": 1.5, "output_tokens": 1, "tool_calls": 0, "wall_time_ms": 1}}}
+  ],
+  "probe_valid": {"schema_id": "colab.probe-response.v1", "identity": {"agent_id": "agent-0001", "adapter_type": "mcp", "instance_fingerprint": "sha256:0000000000000000000000000000000000000000000000000000000000000000"}, "runtime": {"product": "generic-runtime", "model": "generic-medium", "version": "1.0"}, "capabilities": {"tools": ["task_get", "implementation_submit"], "domains": ["research"], "unsupported": ["external_send"], "secret_handles": "supported", "cancel": "supported"}, "delivery_modes": ["pull"], "limits": {"concurrent_tasks": 2, "requests_per_minute": 60}},
+  "probe_invalid": [
+    {"name": "missing unsupported declaration", "item": {"schema_id": "colab.probe-response.v1", "identity": {"agent_id": "agent-0001", "adapter_type": "mcp", "instance_fingerprint": "sha256:0000000000000000000000000000000000000000000000000000000000000000"}, "capabilities": {"tools": [], "secret_handles": "supported", "cancel": "supported"}, "delivery_modes": ["pull"], "limits": {}}},
+    {"name": "unknown delivery mode", "item": {"schema_id": "colab.probe-response.v1", "identity": {"agent_id": "agent-0001", "adapter_type": "webhook", "instance_fingerprint": "sha256:0000000000000000000000000000000000000000000000000000000000000000"}, "capabilities": {"tools": [], "unsupported": [], "secret_handles": "supported", "cancel": "supported"}, "delivery_modes": ["chat"], "limits": {}}}
+  ],
+  "heartbeat_valid": {"schema_id": "colab.heartbeat.v1", "agent_id": "agent-0001", "sent_at": "2026-01-15T10:00:30.000Z", "health": "ok", "capacity": {"concurrent_tasks_max": 2, "concurrent_tasks_in_use": 1}, "usage_since_last": {"usage_unavailable": {"reason": "ADAPTER_NO_METERING"}}}
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/mattermost/brainstorm-card.v1.schema.json",
+  "title": "Brainstorm card v1",
+  "description": "Render model of the one root post per Brainstorm session (development plan §7A.3, §7F).",
+  "type": "object",
+  "properties": {
+    "brainstorm_id": {"type": "string", "pattern": "^bs-"},
+    "root_post_id": {"type": "string", "minLength": 1},
+    "topic": {"type": "string", "minLength": 1, "maxLength": 300},
+    "status": {"type": "string", "enum": ["OPEN", "PAUSED", "SUMMARY", "DECISION", "CLOSED"]},
+    "facilitator": {"type": "object", "properties": {"account_id": {"type": "string"}, "display_name": {"type": "string"}}, "required": ["account_id", "display_name"]},
+    "participants": {"type": "array", "items": {"type": "object", "properties": {"account_id": {"type": "string"}, "display_name": {"type": "string"}, "kind": {"type": "string", "enum": ["human", "agent"]}, "turns_used": {"type": "integer", "minimum": 0}, "turns_remaining": {"type": "integer", "minimum": 0}}, "required": ["account_id", "display_name", "kind", "turns_used", "turns_remaining"]}},
+    "remaining_turns": {"type": "object", "properties": {"total": {"type": "integer", "minimum": 0}, "per_agent_limit": {"type": "integer", "minimum": 1}, "max_consecutive": {"type": "integer", "minimum": 1}}, "required": ["total", "per_agent_limit", "max_consecutive"]},
+    "budget": {"type": "object", "properties": {"limit_cost_units": {"type": ["integer", "null"], "minimum": 0}, "used_cost_units": {"type": "integer", "minimum": 0}, "time_limit_min": {"type": ["integer", "null"]}, "elapsed_min": {"type": "integer", "minimum": 0}}, "required": ["limit_cost_units", "used_cost_units", "time_limit_min", "elapsed_min"]},
+    "pause_reason": {"type": ["string", "null"]},
+    "summary_document_id": {"type": ["string", "null"]},
+    "decisions": {"type": "array", "items": {"type": "object", "properties": {"decision_id": {"type": "string"}, "statement": {"type": "string"}, "task_ids": {"type": "array", "items": {"type": "string"}}}, "required": ["decision_id", "statement", "task_ids"]}},
+    "buttons": {"type": "array", "items": {"type": "object", "properties": {"action": {"type": "string", "enum": ["pause", "resume", "summarize", "close"]}, "label_key": {"type": "string"}, "requires_permission": {"type": "string"}}, "required": ["action", "label_key", "requires_permission"]}},
+    "card_version": {"type": "integer", "minimum": 1},
+    "language": {"type": "string", "enum": ["ko", "en"]}
+  },
+  "required": ["brainstorm_id", "root_post_id", "topic", "status", "facilitator", "participants", "remaining_turns", "budget", "pause_reason", "summary_document_id", "decisions", "buttons", "card_version", "language"],
+  "additionalProperties": false
+}

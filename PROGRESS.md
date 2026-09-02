@@ -17,13 +17,13 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 | P0-07 | verification harness | S | P0-03 | IMPLEMENTED | SELF-V-P0-07 |
 | P0-08 | Schedule contract | M | P0-03 | IMPLEMENTED | SELF-V-P0-11 |
 | P0-09 | pre-DB bootstrap store contract | M | P0-05 | IMPLEMENTED | SELF-V-P0-12 |
-| P0-10 | Mattermost interaction contract and spike | M | P0-03 | NOT_STARTED | — |
-| P0-11 | Agent work-item/usage contract and MCP spike | M | P0-03 | NOT_STARTED | — |
+| P0-10 | Mattermost interaction contract and spike | M | P0-03 | IMPLEMENTED | SELF-V-P0-16; spike: docs/protocol/mattermost-spike.md |
+| P0-11 | Agent work-item/usage contract and MCP spike | M | P0-03 | IMPLEMENTED | SELF-V-P0-17; spike: docs/protocol/mcp-spike.md |
 | P0-12 | permission/risk catalog | S | P0-03 | IMPLEMENTED | SELF-V-P0-18 |
 | P0-13 | Telegram API spike | S | — | BLOCKED | needs Telegram bot token + test chats (user) |
 | P0-14 | plan operating baseline | S | P0-02 | IMPLEMENTED | SELF-V-P0-20 (attempt 2), docs/plan-baseline.md |
 
-Phase progress (size-weighted, S=1 M=2.5 L=5): 15.5 / 20.5
+Phase progress (size-weighted, S=1 M=2.5 L=5): 19.5 / 20.5 (P0-13 blocked)
 
 ### Latest verification result
 

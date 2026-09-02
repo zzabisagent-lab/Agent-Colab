@@ -59,7 +59,7 @@
         "type": "object",
         "properties": {
           "class": {"type": "string", "pattern": "^[a-z_]+$"},
-          "permission": {"type": "string", "pattern": "^[a-z]+\\.[a-z_]+$"}
+          "permission": {"type": "string", "pattern": "^([a-z]+\\.[a-z_]+|none)$"}
         },
         "required": ["class", "permission"],
         "additionalProperties": false

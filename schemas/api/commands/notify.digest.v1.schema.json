@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/notify.digest.v1.schema.json",
+  "title": "/colab notify digest",
+  "description": "Arguments of `/colab notify digest`.",
+  "x-permission": "notification.self",
+  "x-target": null,
+  "x-target-field": null,
+  "x-unlinked-allowed": false,
+  "x-example": "/colab notify digest --interval hourly",
+  "type": "object",
+  "properties": {
+    "interval": {
+      "type": "string",
+      "enum": [
+        "hourly",
+        "off"
+      ]
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

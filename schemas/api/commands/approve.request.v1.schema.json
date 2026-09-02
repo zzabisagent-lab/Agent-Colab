@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/approve.request.v1.schema.json",
+  "title": "/colab approve request",
+  "description": "Arguments of `/colab approve request`.",
+  "x-permission": "approval.request",
+  "x-target": "task",
+  "x-target-field": "task_id",
+  "x-unlinked-allowed": false,
+  "x-example": "/colab approve request task-123 --action external_send --scope mail:ops@example.test",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^task-[A-Za-z0-9._-]{1,120}$",
+      "description": "omitted inside a Task thread"
+    },
+    "action": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    },
+    "risk": {
+      "type": "string",
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "CRITICAL"
+      ]
+    }
+  },
+  "required": [
+    "action"
+  ],
+  "additionalProperties": false
+}

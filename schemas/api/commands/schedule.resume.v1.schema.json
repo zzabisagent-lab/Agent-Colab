@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/schedule.resume.v1.schema.json",
+  "title": "/colab schedule resume",
+  "description": "Arguments of `/colab schedule resume`.",
+  "x-permission": "schedule.manage",
+  "x-target": null,
+  "x-target-field": null,
+  "x-unlinked-allowed": false,
+  "x-example": "/colab schedule resume sch-3",
+  "type": "object",
+  "properties": {
+    "schedule_id": {
+      "type": "string",
+      "pattern": "^sch-[A-Za-z0-9._-]{1,120}$"
+    }
+  },
+  "required": [
+    "schedule_id"
+  ],
+  "additionalProperties": false
+}

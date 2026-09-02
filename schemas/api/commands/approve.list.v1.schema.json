@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/api/commands/approve.list.v1.schema.json",
+  "title": "/colab approve list",
+  "description": "Arguments of `/colab approve list`.",
+  "x-permission": "approval.read",
+  "x-target": null,
+  "x-target-field": null,
+  "x-unlinked-allowed": false,
+  "x-example": "/colab approve list --status PENDING",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 16000
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}
