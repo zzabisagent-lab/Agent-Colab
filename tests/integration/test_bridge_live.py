@@ -1,4 +1,4 @@
-"""Live Bridge check against the real Telegram Bot API (skipped only when neither exported TELEGRAM_* variables nor `.env` provide keys):
+"""Live Bridge check against the real Telegram Bot API (skipped without TELEGRAM_* keys):
 one Mattermost→Telegram relay delivered through the outbox drain with the real client, the
 mapping completed with the real topic/message ids, then cleanup."""
 
