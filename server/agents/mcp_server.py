@@ -28,8 +28,21 @@ from server.identity.principals import Principal, resolve_service_token
 
 SCHEMA_ID_BASE = "https://agent-colab.dev/schemas/api/mcp"
 
-# tool name -> (command class, required top-level idempotency behaviour)
+# tool name (development plan §7.4) -> command class; the same handlers as REST
 TOOL_MAP: dict[str, type[bus.Command]] = {}
+
+
+def register_core_tools() -> None:
+    from server.application import tasks as t
+
+    for name, command_type in {
+        "task_create": t.CreateTask,
+        "task_delegate": t.DelegateTask,
+        "task_accept": t.AcceptTask,
+        "task_progress": t.ReportProgress,
+        "implementation_submit": t.SubmitImplementation,
+    }.items():
+        TOOL_MAP.setdefault(name, command_type)
 
 
 def register_tool(name: str, command_type: type[bus.Command]) -> None:
@@ -143,6 +156,7 @@ def _make_tool(runtime: Runtime, name: str, command_type: type[bus.Command]) -> 
 
 
 def build_mcp_server(runtime: Runtime, base_url: str) -> MCPServer:
+    register_core_tools()
     server = MCPServer(
         name="Agent-Colab",
         version="0.0.0",

@@ -11,6 +11,7 @@ from server.api.dispatch import default_runtime
 from server.api.errors import ApiError, api_error_handler
 from server.api.v1.events import router as events_router
 from server.api.v1.identity import router as identity_router
+from server.api.v1.tasks import router as tasks_router
 from server.api.v1.verification import router as verification_router
 from server.config import PRODUCT_NAME, Settings, get_settings
 from server.db.engine import make_engine, make_session_factory
@@ -34,6 +35,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(verification_router)
     app.include_router(identity_router)
     app.include_router(events_router)
+    app.include_router(tasks_router)
     if app.state.runtime is not None:
         from server.agents.mcp_server import build_mcp_server
 
