@@ -1,0 +1,17 @@
+# Button → command mapping and guidance cases for the interactive action handler (P2-12)
+buttons:
+  - {action: accept, subject_type: task, subject_id: task-1, expect: {command: AcceptTask}}
+  - {action: cancel, subject_type: task, subject_id: task-1, expect: {command: RequestCancel}}
+  - {action: submit, subject_type: task, subject_id: task-1, expect: {guidance: EVIDENCE_REQUIRED}}
+  - {action: approve, subject_type: approval, subject_id: apr-low, risk: LOW, expect: {command: DecideApproval, decision: APPROVE}}
+  - {action: reject, subject_type: approval, subject_id: apr-medium, risk: MEDIUM, expect: {command: DecideApproval, decision: REJECT}}
+  - {action: approve, subject_type: approval, subject_id: apr-high, risk: HIGH, expect: {guidance: REAUTH_REQUIRED}}
+  - {action: approve, subject_type: approval, subject_id: apr-critical, risk: CRITICAL, expect: {guidance: REAUTH_REQUIRED}}
+  - {action: verify_pass, subject_type: task, subject_id: task-no-run, expect: {guidance: VERIFICATION_NOT_FOUND}}
+  - {action: bogus, subject_type: task, subject_id: task-1, expect: {guidance: ACTION_UNKNOWN}}
+context_rejections:
+  - {name: tampered signature, mutate: signature, expect: CALLBACK_SIGNATURE_INVALID, status: 401}
+  - {name: altered subject, mutate: subject_id, expect: CALLBACK_SIGNATURE_INVALID, status: 401}
+  - {name: altered body hash, mutate: body_sha256, expect: CALLBACK_BODY_HASH_MISMATCH, status: 401}
+  - {name: expired, mutate: issued_at, expect: CALLBACK_TIMESTAMP_EXPIRED, status: 403}
+  - {name: missing field, mutate: drop_nonce, expect: CALLBACK_CONTEXT_INVALID, status: 400}

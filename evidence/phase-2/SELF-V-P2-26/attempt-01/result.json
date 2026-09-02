@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P2-26",
+  "evidence_id": "SELF-V-P2-26",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_interactive_actions.py",
+    "tests/integration/test_actions_db.py",
+    "-q",
+    "-k",
+    "not identity"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "d59ff36317f7d269a0981892b3705ef2627047a1",
+  "started_at": "2026-09-02T16:06:55.143308+00:00",
+  "finished_at": "2026-09-02T16:06:59.079510+00:00",
+  "output_sha256": "32faef56d0289369b1ac111e68ee0bb7b2ed1bcf92d3f33b75313bd0556c3e6f"
+}

@@ -20,6 +20,7 @@ from typing import Any
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from server.channels.actions import attach_button_contexts
 from server.channels.outbox import Delivery, card_post_id, enqueue_delivery
 from server.channels.renderer import (
     CardInput,
@@ -248,6 +249,9 @@ def render_task_event(
     destination = f"mattermost:{target.external_channel_id}"
     keys: list[str] = []
     card = render_task_card(_card_input(session, row), bundle)
+    card_props = attach_button_contexts(
+        card.props, subject_type="task", subject_id=task_id, now=now
+    )
     root = card_post_id(session, target.provider_instance_id, "task", task_id)
     if root is None:
         # the card is created once; later transitions patch it in place
@@ -259,7 +263,7 @@ def render_task_event(
             delivery=Delivery(
                 "mattermost.post",
                 destination,
-                {"message": card.text, "props": card.props},
+                {"message": card.text, "props": card_props},
                 key,
                 subject_type="task",
                 subject_id=task_id,
@@ -280,7 +284,7 @@ def render_task_event(
             delivery=Delivery(
                 "mattermost.patch",
                 destination,
-                {"post_id": root, "message": card.text, "props": card.props},
+                {"post_id": root, "message": card.text, "props": card_props},
                 key,
             ),
             provider_instance_id=target.provider_instance_id,
