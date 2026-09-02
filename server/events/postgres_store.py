@@ -32,17 +32,22 @@ _INSERT = text(
     "INSERT INTO events (id, event_id, schema_version, workspace_id, aggregate_type, aggregate_id, "
     "aggregate_seq, channel_id, task_id, type, actor_account_id, caused_by, correlation_id, "
     "idempotency_scope, idempotency_key, request_body_hash, policy_version, payload, "
-    "sensitive_payload_ciphertext, sensitive_payload_key_ref, previous_hash, content_hash, occurred_at) "
+    "sensitive_payload_ciphertext, sensitive_payload_key_ref, previous_hash, content_hash, "
+    "occurred_at) "
     "VALUES (:id, :event_id, :schema_version, :workspace_id, :aggregate_type, :aggregate_id, "
     ":aggregate_seq, :channel_id, :task_id, :type, :actor_account_id, :caused_by, :correlation_id, "
-    ":idempotency_scope, :idempotency_key, :request_body_hash, :policy_version, CAST(:payload AS jsonb), "
+    ":idempotency_scope, :idempotency_key, :request_body_hash, :policy_version, CAST(:payload AS "
+    "jsonb), "
     ":ciphertext, :key_ref, :previous_hash, :content_hash, :occurred_at) RETURNING recorded_seq"
 )
 
 _COLUMNS = (
-    "event_id, schema_version, workspace_id, aggregate_type, aggregate_id, aggregate_seq, channel_id, "
-    "task_id, type, actor_account_id, caused_by, correlation_id, idempotency_scope, idempotency_key, "
-    "policy_version, payload, sensitive_payload_ciphertext, sensitive_payload_key_ref, previous_hash, "
+    "event_id, schema_version, workspace_id, aggregate_type, aggregate_id, aggregate_seq, "
+    "channel_id, "
+    "task_id, type, actor_account_id, caused_by, correlation_id, idempotency_scope, "
+    "idempotency_key, "
+    "policy_version, payload, sensitive_payload_ciphertext, sensitive_payload_key_ref, "
+    "previous_hash, "
     "content_hash, occurred_at, recorded_at, recorded_seq, request_body_hash"
 )
 
@@ -84,7 +89,8 @@ class PostgresEventStore:
         row = (
             self._s.execute(
                 text(
-                    f"SELECT {_COLUMNS} FROM events WHERE workspace_id = :ws AND actor_account_id = :actor "
+                    f"SELECT {_COLUMNS} FROM events WHERE workspace_id = :ws AND actor_account_id "  # noqa: S608
+                    f"= :actor "
                     "AND idempotency_scope = :scope AND idempotency_key = :key"
                 ),
                 {
@@ -166,7 +172,8 @@ class PostgresEventStore:
         self._check_workspace(r)
         last = self._s.execute(
             text(
-                "SELECT aggregate_seq, content_hash FROM events WHERE workspace_id = :ws AND aggregate_type = :t "
+                "SELECT aggregate_seq, content_hash FROM events WHERE workspace_id = :ws AND "
+                "aggregate_type = :t "
                 "AND aggregate_id = :a ORDER BY aggregate_seq DESC LIMIT 1"
             ),
             {"ws": uuid.UUID(r.workspace_id), "t": r.aggregate_type, "a": r.aggregate_id},
@@ -263,7 +270,7 @@ class PostgresEventStore:
     ) -> list[dict[str, Any]]:
         rows = self._s.execute(
             text(
-                f"SELECT {_COLUMNS} FROM events WHERE workspace_id = :ws AND aggregate_type = :t "
+                f"SELECT {_COLUMNS} FROM events WHERE workspace_id = :ws AND aggregate_type = :t "  # noqa: S608
                 "AND aggregate_id = :a ORDER BY aggregate_seq"
             ),
             {"ws": uuid.UUID(workspace_id), "t": aggregate_type, "a": aggregate_id},
@@ -275,7 +282,7 @@ class PostgresEventStore:
     ) -> list[dict[str, Any]]:
         rows = self._s.execute(
             text(
-                f"SELECT {_COLUMNS} FROM events WHERE workspace_id = :ws AND recorded_seq > :after "
+                f"SELECT {_COLUMNS} FROM events WHERE workspace_id = :ws AND recorded_seq > :after "  # noqa: S608
                 "ORDER BY recorded_seq LIMIT :lim"
             ),
             {
@@ -289,7 +296,7 @@ class PostgresEventStore:
     def get(self, event_id: str) -> dict[str, Any] | None:
         row = (
             self._s.execute(
-                text(f"SELECT {_COLUMNS} FROM events WHERE event_id = :e"), {"e": event_id}
+                text(f"SELECT {_COLUMNS} FROM events WHERE event_id = :e"), {"e": event_id}  # noqa: S608
             )
             .mappings()
             .first()

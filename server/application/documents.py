@@ -113,15 +113,37 @@ def finalize(cmd: FinalizeAttempt, ctx: CommandContext) -> CommandResult:
 
 
 def on_implementation_submitted(ctx: CommandContext, task_id: str) -> CommandResult:
-    """Hook for the Task package/API: draft automatically after IMPLEMENTATION_SUBMITTED."""
-    return draft(DraftDocument(task_id), ctx)
+    """Automatic draft after IMPLEMENTATION_SUBMITTED (spec §14.1): the Documentation Service
+    acts on behalf of the system, so no ``document.draft`` permission of the submitter is needed;
+    the DOCUMENT_DRAFTED Event records the triggering actor."""
+    try:
+        return _result(
+            draft_document(
+                ctx.session, ctx.store, _storage(ctx), task_id=task_id, actor=_actor(ctx)
+            )
+        )
+    except DocumentLifecycleError as exc:
+        raise CommandError(exc.code, exc.detail, status=exc.status) from exc
 
 
 def on_verification_terminal(
     ctx: CommandContext, task_id: str, verification_id: str
 ) -> CommandResult:
-    """Hook for the verification package/API: finalize after a terminal verdict."""
-    return finalize(FinalizeAttempt(task_id, verification_id), ctx)
+    """Automatic attempt/final version after a terminal verdict (system-triggered, no
+    ``document.finalize`` permission of the verifier required)."""
+    try:
+        return _result(
+            finalize_attempt(
+                ctx.session,
+                ctx.store,
+                _storage(ctx),
+                task_id=task_id,
+                verification_id=verification_id,
+                actor=_actor(ctx),
+            )
+        )
+    except DocumentLifecycleError as exc:
+        raise CommandError(exc.code, exc.detail, status=exc.status) from exc
 
 
 def register_hooks() -> None:

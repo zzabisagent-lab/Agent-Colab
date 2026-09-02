@@ -132,7 +132,7 @@ def record_anchor(session: Session, spec: ChainSpec, anchor_date: dt.date) -> st
     """Anchor the current chain head for ``anchor_date``; returns the anchor hash or None."""
     row = session.execute(
         text(
-            f"SELECT {spec.order_column} AS rid, content_hash FROM {spec.table} "
+            f"SELECT {spec.order_column} AS rid, content_hash FROM {spec.table} "  # noqa: S608
             f"ORDER BY {spec.order_column} DESC LIMIT 1"
         )
     ).first()

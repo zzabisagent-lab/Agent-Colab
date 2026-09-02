@@ -1,4 +1,4 @@
-"""P1-02: aggregate Event append — V-P1-01/02/03/04/06/21 and envelope crypto-shredding (V-P1-20)."""
+"""P1-02: aggregate Event append (V-P1-01/02/03/04/06/21) and crypto-shredding (V-P1-20)."""
 
 from __future__ import annotations
 
@@ -44,13 +44,15 @@ def engine(database_url: str) -> Iterator[Engine]:
         for acc, ws, name in ((ACTOR, WS, "acct-es"), (ACTOR2, WS2, "acct-es-2")):
             c.execute(
                 text(
-                    "INSERT INTO accounts (id, account_id, workspace_id, account_type, display_name) VALUES (:i, :a, :w, 'service', :a)"
+                    "INSERT INTO accounts (id, account_id, workspace_id, account_type, "
+                    "display_name) VALUES (:i, :a, :w, 'service', :a)"
                 ),
                 {"i": acc, "a": name, "w": ws},
             )
         c.execute(
             text(
-                "INSERT INTO channels (id, channel_id, workspace_id, channel_type, display_name) VALUES (:i, 'chan-es', :w, 'work', 'es')"
+                "INSERT INTO channels (id, channel_id, workspace_id, channel_type, display_name) "
+                "VALUES (:i, 'chan-es', :w, 'work', 'es')"
             ),
             {"i": CHANNEL, "w": WS},
         )
@@ -307,7 +309,8 @@ def test_hash_chain_recompute_and_tamper_detection(engine: Engine) -> None:  # V
         c.execute(text("ALTER TABLE events DISABLE TRIGGER trg_events_immutable"))
         c.execute(
             text(
-                "UPDATE events SET payload = payload || '{\"summary\": \"forged\"}' WHERE aggregate_id = 'task-es-7' AND aggregate_seq = 2"
+                'UPDATE events SET payload = payload || \'{"summary": "forged"}\' WHERE '
+                "aggregate_id = 'task-es-7' AND aggregate_seq = 2"
             )
         )
         c.execute(text("ALTER TABLE events ENABLE TRIGGER trg_events_immutable"))
@@ -318,7 +321,8 @@ def test_hash_chain_recompute_and_tamper_detection(engine: Engine) -> None:  # V
         c.execute(text("ALTER TABLE events DISABLE TRIGGER trg_events_immutable"))
         c.execute(
             text(
-                "UPDATE events SET payload = payload || '{\"summary\": \"step h1\"}' WHERE aggregate_id = 'task-es-7' AND aggregate_seq = 2"
+                'UPDATE events SET payload = payload || \'{"summary": "step h1"}\' WHERE '
+                "aggregate_id = 'task-es-7' AND aggregate_seq = 2"
             )
         )
         c.execute(text("ALTER TABLE events ENABLE TRIGGER trg_events_immutable"))
@@ -344,7 +348,8 @@ def test_crypto_shredding_leaves_bytes_and_hash_unchanged(engine: Engine) -> Non
         ) == {"credential_hint": "CANARY-NOT-A-SECRET-0042"}
         before = s.execute(
             text(
-                "SELECT content_hash, sensitive_payload_ciphertext, payload FROM events WHERE event_id = :e"
+                "SELECT content_hash, sensitive_payload_ciphertext, payload FROM events WHERE "
+                "event_id = :e"
             ),
             {"e": res.event_id},
         ).first()
@@ -358,7 +363,8 @@ def test_crypto_shredding_leaves_bytes_and_hash_unchanged(engine: Engine) -> Non
         assert exc.value.code == "KEY_DESTROYED"
         after = s.execute(
             text(
-                "SELECT content_hash, sensitive_payload_ciphertext, payload FROM events WHERE event_id = :e"
+                "SELECT content_hash, sensitive_payload_ciphertext, payload FROM events WHERE "
+                "event_id = :e"
             ),
             {"e": res.event_id},
         ).first()

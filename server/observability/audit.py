@@ -1,4 +1,4 @@
-"""AuditEvent appends (spec §9.1 AuditEvent, §15.20). Values are never recorded, only redacted metadata."""
+"""AuditEvent appends (spec §9.1, §15.20). Values are never recorded, only redacted metadata."""
 
 from __future__ import annotations
 
@@ -65,7 +65,8 @@ def append_audit(
     content_hash = chain_hash(hashed_row_fields(AUDIT_CHAIN, fields), previous)
     session.execute(
         text(
-            "INSERT INTO audit_events (audit_id, workspace_id, actor_account_id, actor_label, action, "
+            "INSERT INTO audit_events (audit_id, workspace_id, actor_account_id, actor_label, "
+            "action, "
             "target_type, target_id, result, error_code, correlation_id, redacted_metadata, "
             "previous_hash, content_hash, occurred_at) VALUES (:audit_id, :workspace_id, "
             ":actor_account_id, :actor_label, :action, :target_type, :target_id, :result, "

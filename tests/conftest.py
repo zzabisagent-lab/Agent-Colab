@@ -47,3 +47,12 @@ def database_url() -> Iterator[str]:
             )
             conn.execute(text(f'DROP DATABASE IF EXISTS "{name}"'))
         maint.dispose()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _storage_roots(tmp_path_factory: pytest.TempPathFactory) -> Iterator[None]:
+    """Artifact and document stores write under a per-session temp root, never /var/lib."""
+    root = tmp_path_factory.mktemp("agent-colab-storage")
+    os.environ.setdefault("AGENT_COLAB_ARTIFACT_ROOT", str(root / "artifacts"))
+    os.environ.setdefault("AGENT_COLAB_DOCUMENT_ROOT", str(root / "documents"))
+    yield

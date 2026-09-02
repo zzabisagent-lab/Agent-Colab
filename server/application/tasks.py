@@ -570,6 +570,10 @@ def submit_implementation(cmd: SubmitImplementation, ctx: CommandContext) -> Any
         pre_submit_checks(ctx, state, cmd)
     payload = {"evidence_refs": list(cmd.evidence_refs), "criteria_revision": cmd.criteria_revision}
     res, state = _transition(ctx, cmd, state, "IMPLEMENTATION_SUBMITTED", payload)
+    if not res.replayed:
+        from server.application import documents as documents_app
+
+        documents_app.on_implementation_submitted(ctx, cmd.task_id)
     return _result(res, cmd.task_id, state)
 
 
@@ -649,6 +653,12 @@ def complete_task(cmd: CompleteTask, ctx: CommandContext) -> Any:
         if state.status in (TaskStatus.COMPLETED, TaskStatus.CANCELLED):
             raise CommandError("TASK_TERMINAL", f"{state.status} is terminal", status=409)
         missing = completion_prerequisites(state, ctx.session)
+        if not missing:
+            from server.documents.lifecycle import expected_document_id
+
+            expected = expected_document_id(ctx.session, cmd.task_id)
+            if expected is None or cmd.document_id != expected:
+                missing = ["COMPLETION_PREREQUISITE_MISSING"]
         if missing:
             raise CommandError(
                 missing[0],

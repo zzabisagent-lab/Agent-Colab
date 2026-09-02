@@ -248,6 +248,26 @@ def draft_document(
     )
     if replay is not None:
         return replay
+    existing = list_versions(session, document_id)
+    if existing:
+        latest = existing[-1]
+        if (
+            latest["status"] == "DRAFT_PRE_VERIFICATION"
+            and int(latest["source_freeze_event_seq"]) == freeze.up_to_recorded_seq
+        ):
+            # the same source freeze already has a draft: nothing new to record
+            return DocumentVersion(
+                document_id=document_id,
+                version=int(latest["version"]),
+                status=str(latest["status"]),
+                sha256=str(latest["sha256"]),
+                storage_uri=str(latest["storage_uri"]),
+                verification_id=None,
+                verification_result=None,
+                event_id=str(latest["event_id"]),
+                source_freeze_event_seq=int(latest["source_freeze_event_seq"]),
+                replayed=True,
+            )
     version = _ensure_document(session, workspace_id, task_id, document_id)
     built = build_skeleton(
         sources, "DRAFT_PRE_VERIFICATION", document_id=document_id, version=version

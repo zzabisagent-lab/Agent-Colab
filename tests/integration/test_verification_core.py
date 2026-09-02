@@ -30,6 +30,7 @@ from server.application.tasks import (
 from server.application.verification import CreateVerificationRun, SubmitVerdict
 from server.config import Settings
 from server.db.engine import RUNTIME_ROLE, make_engine, make_engine_for_role
+from server.documents.lifecycle import expected_document_id
 from server.domain.clock import FixedClock
 from server.events.chain import VERIFICATION_CHAIN, verify_chain
 from server.events.postgres_store import PostgresEventStore
@@ -525,7 +526,10 @@ def test_completion_gate_requires_passed_verification(client: TestClient, engine
         assert verdict.data["status"] == "PASSED"
         gate = verification_gate(s, "task", task_id)
         assert gate.passed and gate.verification_id == vid and gate.revision == 1
-        done = bus.execute(CompleteTask(task_id, "doc-1"), _ctx(s, "acct-vc-admin", "t-complete"))
+        done = bus.execute(
+            CompleteTask(task_id, expected_document_id(s, task_id) or "doc-missing"),
+            _ctx(s, "acct-vc-admin", "t-complete"),
+        )
         assert done.data.get("status") in ("COMPLETED", None)
         status = s.execute(
             text("SELECT status, verification_status FROM tasks_projection WHERE task_id = :t"),

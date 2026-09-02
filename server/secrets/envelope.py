@@ -78,7 +78,8 @@ class EnvelopeCrypto:
         dek = AESGCM.generate_key(bit_length=256)
         session.execute(
             text(
-                "INSERT INTO sensitive_keys (key_ref, workspace_id, target_type, target_id, wrapped_dek, "
+                "INSERT INTO sensitive_keys (key_ref, workspace_id, target_type, target_id, "
+                "wrapped_dek, "
                 "master_key_id, status) VALUES (:k, :ws, :tt, :ti, :w, :m, 'active')"
             ),
             {
@@ -132,10 +133,11 @@ class EnvelopeCrypto:
         reason: str,
         audit_event_id: str | None = None,
     ) -> str:
-        """Destroy the DEK (wrapped key removed) and append a chained tombstone; returns its hash."""
+        """Destroy the DEK (wrapped key removed), append a chained tombstone; return its hash."""
         row = session.execute(
             text(
-                "SELECT workspace_id, target_type, target_id, status FROM sensitive_keys WHERE key_ref = :k FOR UPDATE"
+                "SELECT workspace_id, target_type, target_id, status FROM sensitive_keys WHERE "
+                "key_ref = :k FOR UPDATE"
             ),
             {"k": key_ref},
         ).first()
@@ -145,7 +147,8 @@ class EnvelopeCrypto:
             raise CryptoError("KEY_ALREADY_DESTROYED", key_ref)
         session.execute(
             text(
-                "UPDATE sensitive_keys SET wrapped_dek = NULL, status = 'destroyed', destroyed_at = now() WHERE key_ref = :k"
+                "UPDATE sensitive_keys SET wrapped_dek = NULL, status = 'destroyed', destroyed_at "
+                "= now() WHERE key_ref = :k"
             ),
             {"k": key_ref},
         )
@@ -164,8 +167,10 @@ class EnvelopeCrypto:
         content_hash = chain_hash(hashed_row_fields(TOMBSTONE_CHAIN, fields), previous)
         session.execute(
             text(
-                "INSERT INTO key_tombstones (key_ref, workspace_id, target_type, target_id, reason, requested_by, "
-                "audit_event_id, previous_hash, content_hash, destroyed_at) VALUES (:key_ref, :workspace_id, :target_type, "
+                "INSERT INTO key_tombstones (key_ref, workspace_id, target_type, target_id, "
+                "reason, requested_by, "
+                "audit_event_id, previous_hash, content_hash, destroyed_at) VALUES (:key_ref, "
+                ":workspace_id, :target_type, "
                 ":target_id, :reason, :requested_by, :audit_event_id, :prev, :hash, :destroyed_at)"
             ),
             {**fields, "prev": previous, "hash": content_hash},

@@ -42,7 +42,8 @@ def owner(database_url: str) -> Iterator[Engine]:
         for acc, name in ((ACTOR, "acct-imm-actor"), (VERIFIER, "acct-imm-verifier")):
             c.execute(
                 text(
-                    "INSERT INTO accounts (id, account_id, workspace_id, account_type, display_name) VALUES (:i, :a, :w, 'service', :a)"
+                    "INSERT INTO accounts (id, account_id, workspace_id, account_type, "
+                    "display_name) VALUES (:i, :a, :w, 'service', :a)"
                 ),
                 {"i": acc, "a": name, "w": WS},
             )
@@ -78,10 +79,14 @@ def owner(database_url: str) -> Iterator[Engine]:
         ev["content_hash"] = compute_content_hash(ev)
         c.execute(
             text(
-                "INSERT INTO events (id, event_id, schema_version, workspace_id, aggregate_type, aggregate_id, aggregate_seq, "
-                "task_id, type, actor_account_id, correlation_id, idempotency_scope, idempotency_key, request_body_hash, "
-                "policy_version, payload, content_hash, occurred_at) VALUES (:id, :event_id, 1, :ws, 'task', :agg, 1, :task, "
-                ":type, :actor, :corr, :scope, :key, 'rbh', 'policy-v1', CAST(:payload AS jsonb), :hash, :occ)"
+                "INSERT INTO events (id, event_id, schema_version, workspace_id, aggregate_type, "
+                "aggregate_id, aggregate_seq, "
+                "task_id, type, actor_account_id, correlation_id, idempotency_scope, "
+                "idempotency_key, request_body_hash, "
+                "policy_version, payload, content_hash, occurred_at) VALUES (:id, :event_id, 1, "
+                ":ws, 'task', :agg, 1, :task, "
+                ":type, :actor, :corr, :scope, :key, 'rbh', 'policy-v1', CAST(:payload AS jsonb), "
+                ":hash, :occ)"
             ),
             {
                 "id": uuid.uuid4(),
@@ -101,10 +106,14 @@ def owner(database_url: str) -> Iterator[Engine]:
         )
         c.execute(
             text(
-                "INSERT INTO verification_runs (id, verification_id, workspace_id, target_type, target_id, implementer_account_id, "
-                "verifier_account_id, implementer_credential_fingerprint, verifier_credential_fingerprint, identity_graph_version, "
-                "effective_policy_hash, criteria_version, target_commit, snapshot_hash, created_by_account_id) VALUES (:id, 'vr-imm-1', :ws, "
-                "'task', 'task-imm-1', :impl, :ver, 'fp-a', 'fp-b', 'identity-v8-001', 'sha256:p', 'v8.0', 'abc', 'snap', :impl)"
+                "INSERT INTO verification_runs (id, verification_id, workspace_id, target_type, "
+                "target_id, implementer_account_id, "
+                "verifier_account_id, implementer_credential_fingerprint, "
+                "verifier_credential_fingerprint, identity_graph_version, "
+                "effective_policy_hash, criteria_version, target_commit, snapshot_hash, "
+                "created_by_account_id) VALUES (:id, 'vr-imm-1', :ws, "
+                "'task', 'task-imm-1', :impl, :ver, 'fp-a', 'fp-b', 'identity-v8-001', 'sha256:p', "
+                "'v8.0', 'abc', 'snap', :impl)"
             ),
             {"id": uuid.uuid4(), "ws": WS, "impl": ACTOR, "ver": VERIFIER},
         )
@@ -131,9 +140,12 @@ def _add_revision(engine: Engine, n: int) -> None:
         content_hash = chain_hash(hashed_row_fields(VERIFICATION_CHAIN, fields), previous)
         c.execute(
             text(
-                "INSERT INTO verification_revisions (revision_id, verification_id, revision, result, submitted_by_account_id, "
-                "submitter_credential_fingerprint, report, report_sha256, event_id, previous_hash, content_hash, created_at) VALUES "
-                "(:revision_id, :verification_id, :revision, :result, :submitted_by_account_id, :submitter_credential_fingerprint, "
+                "INSERT INTO verification_revisions (revision_id, verification_id, revision, "
+                "result, submitted_by_account_id, "
+                "submitter_credential_fingerprint, report, report_sha256, event_id, previous_hash, "
+                "content_hash, created_at) VALUES "
+                "(:revision_id, :verification_id, :revision, :result, :submitted_by_account_id, "
+                ":submitter_credential_fingerprint, "
                 "'{}'::jsonb, :report_sha256, :event_id, :prev, :hash, :created_at)"
             ),
             {**fields, "prev": previous, "hash": content_hash},
@@ -223,13 +235,15 @@ def test_verification_revisions_chain_and_tamper_detection(owner: Engine) -> Non
     with owner.begin() as c:
         c.execute(
             text(
-                "ALTER TABLE verification_revisions DISABLE TRIGGER trg_verification_revisions_immutable"
+                "ALTER TABLE verification_revisions DISABLE TRIGGER "
+                "trg_verification_revisions_immutable"
             )
         )
         c.execute(text("UPDATE verification_revisions SET result = 'PASSED' WHERE revision = 1"))
         c.execute(
             text(
-                "ALTER TABLE verification_revisions ENABLE TRIGGER trg_verification_revisions_immutable"
+                "ALTER TABLE verification_revisions ENABLE TRIGGER "
+                "trg_verification_revisions_immutable"
             )
         )
     with Session(owner) as s:
@@ -239,13 +253,15 @@ def test_verification_revisions_chain_and_tamper_detection(owner: Engine) -> Non
     with owner.begin() as c:  # restore so later tests see an intact chain
         c.execute(
             text(
-                "ALTER TABLE verification_revisions DISABLE TRIGGER trg_verification_revisions_immutable"
+                "ALTER TABLE verification_revisions DISABLE TRIGGER "
+                "trg_verification_revisions_immutable"
             )
         )
         c.execute(text("UPDATE verification_revisions SET result = 'FAILED' WHERE revision = 1"))
         c.execute(
             text(
-                "ALTER TABLE verification_revisions ENABLE TRIGGER trg_verification_revisions_immutable"
+                "ALTER TABLE verification_revisions ENABLE TRIGGER "
+                "trg_verification_revisions_immutable"
             )
         )
     with Session(owner) as s:

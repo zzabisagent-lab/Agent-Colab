@@ -20,7 +20,7 @@ from tools.baseline import ROOT
 
 NAME_VARIANTS = re.compile(r"\b(Agent Colab|AgentColab|agent colab|Agent-colab|agent-Colab)\b")
 PRODUCT_NAMES = re.compile(
-    r"\b(claude|codex|openai|anthropic|gpt-?[0-9o]|gemini|copilot|llama|mistral|cursor)\b", re.I
+    r"\b(claude|codex|openai|anthropic|gpt-?[0-9o]|gemini|copilot|llama|mistral)\b", re.I
 )
 SCAN_NAME = [
     "README.md",

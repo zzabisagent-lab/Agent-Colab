@@ -250,14 +250,15 @@ def test_two_stage_lifecycle_and_completion_gate(engine: Engine, store: Document
         )
         assert again.replayed and again.data["version"] == 2  # one version per terminal revision
 
-        # ---- BLOCKED -> ATTEMPT_FINALIZED v3, still not completed
+        # ---- BLOCKED -> ATTEMPT_FINALIZED v4 (v3 = automatic draft of the re-submission)
         _recheck(s, store, task_id, vid, "dl1-r1")
         _verdict(s, store, vid, "BLOCKED", "dl1-block")
         att2 = bus.execute(
             FinalizeAttempt(task_id, vid), _ctx(s, "acct-dl-admin", "dl1-att2", store)
         )
-        assert att2.data["status"] == "ATTEMPT_FINALIZED" and att2.data["version"] == 3
-        md3, _ = _read(store, doc_id, 3)
+        assert att2.data["status"] == "ATTEMPT_FINALIZED" and att2.data["version"] == 4
+        assert att2.replayed  # the terminal verdict already produced it automatically
+        md3, _ = _read(store, doc_id, 4)
         assert "**BLOCKED**" in md3 and "Earlier attempts: revision 1 FAILED" in md3
         with pytest.raises(bus.CommandError) as exc2:
             bus.execute(
@@ -265,17 +266,12 @@ def test_two_stage_lifecycle_and_completion_gate(engine: Engine, store: Document
             )
         assert exc2.value.code == "VERIFICATION_REQUIRED"
 
-        # ---- PASSED -> FINALIZED v4 -> completion allowed
+        # ---- PASSED -> FINALIZED v6 (v5 = automatic draft) -> completion allowed
         _recheck(s, store, task_id, vid, "dl1-r2")
         _verdict(s, store, vid, "PASSED", "dl1-pass", ["monitor in production"])
-        with pytest.raises(bus.CommandError) as exc3:
-            bus.execute(
-                CompleteTask(task_id, doc_id), _ctx(s, "acct-dl-admin", "dl1-complete-3", store)
-            )
-        assert exc3.value.code == "COMPLETION_PREREQUISITE_MISSING"
         fin = bus.execute(FinalizeAttempt(task_id, vid), _ctx(s, "acct-dl-admin", "dl1-fin", store))
-        assert fin.data["status"] == "FINALIZED" and fin.data["version"] == 4
-        md4, mf4 = _read(store, doc_id, 4)
+        assert fin.data["status"] == "FINALIZED" and fin.data["version"] == 6 and fin.replayed
+        md4, mf4 = _read(store, doc_id, 6)
         assert "**PASSED**" in md4 and mf4["status"] == "FINALIZED"
         assert "Residual risk: monitor in production" in md4
         assert expected_document_id(s, task_id) == doc_id
@@ -288,10 +284,19 @@ def test_two_stage_lifecycle_and_completion_gate(engine: Engine, store: Document
         assert [v["status"] for v in versions] == [
             "DRAFT_PRE_VERIFICATION",
             "ATTEMPT_FINALIZED",
+            "DRAFT_PRE_VERIFICATION",
             "ATTEMPT_FINALIZED",
+            "DRAFT_PRE_VERIFICATION",
             "FINALIZED",
         ]
-        assert [v["verification_result"] for v in versions] == [None, "FAILED", "BLOCKED", "PASSED"]
+        assert [v["verification_result"] for v in versions] == [
+            None,
+            "FAILED",
+            None,
+            "BLOCKED",
+            None,
+            "PASSED",
+        ]
         types = (
             s.execute(
                 text("SELECT type FROM events WHERE aggregate_id = :d ORDER BY aggregate_seq"),
@@ -303,7 +308,9 @@ def test_two_stage_lifecycle_and_completion_gate(engine: Engine, store: Document
         assert types == [
             "DOCUMENT_DRAFTED",
             "DOCUMENT_ATTEMPT_FINALIZED",
+            "DOCUMENT_DRAFTED",
             "DOCUMENT_ATTEMPT_FINALIZED",
+            "DOCUMENT_DRAFTED",
             "DOCUMENT_FINALIZED",
         ]
         # earlier versions byte-identical (store) and DB rows unchanged

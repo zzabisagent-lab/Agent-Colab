@@ -423,7 +423,7 @@ def assign_verifier(cmd: AssignVerifier, ctx: CommandContext) -> CommandResult:
 
 @handles(StartVerification)
 def start_verification(cmd: StartVerification, ctx: CommandContext) -> CommandResult:
-    return _simple_move(
+    result = _simple_move(
         cmd,
         ctx,
         cmd.verification_id,
@@ -431,6 +431,26 @@ def start_verification(cmd: StartVerification, ctx: CommandContext) -> CommandRe
         "verification.submit",
         verifier_only=True,
     )
+    if not result.replayed:
+        _enter_task_verifying(ctx, cmd.verification_id)
+    return result
+
+
+def _enter_task_verifying(ctx: CommandContext, verification_id: str) -> None:
+    """A Task target enters VERIFYING when its verification run starts (spec §8.2)."""
+    from server.application.tasks import StartVerification as TaskStartVerification
+    from server.application.tasks import load_task
+    from server.application.tasks import start_verification as task_start_verification
+    from server.verification.runs import load_run
+
+    run = load_run(ctx.session, verification_id)
+    if run.target_type != "task" or not run.task_id:
+        return
+    state = load_task(ctx, str(run.task_id))
+    if state.status.value == "IMPLEMENTED":
+        task_start_verification(
+            TaskStartVerification(task_id=str(run.task_id), verification_id=verification_id), ctx
+        )
 
 
 @handles(SubmitFix)
@@ -563,6 +583,11 @@ def submit_verdict(cmd: SubmitVerdict, ctx: CommandContext) -> CommandResult:
         )
     except VerificationError as exc:
         raise CommandError(exc.code, exc.detail, status=exc.status) from exc
+    if run.target_type == "task" and run.task_id and not res.replayed:
+        # Documentation Service: attempt/final version for the terminal verdict (spec §14.1)
+        from server.application import documents as documents_app
+
+        documents_app.on_verification_terminal(ctx, str(run.task_id), run.verification_id)
     return _result(
         res,
         cmd.verification_id,

@@ -74,7 +74,8 @@ def freeze_for_task(session: Session, task_id: str) -> SourceFreeze:
     seq = session.execute(
         text(
             "SELECT COALESCE(MAX(recorded_seq), 0) FROM events "
-            "WHERE task_id = :t OR (aggregate_type = 'task' AND aggregate_id = :t)"
+            "WHERE (task_id = :t OR (aggregate_type = 'task' AND aggregate_id = :t)) "
+            "AND aggregate_type <> 'document'"
         ),
         {"t": task_id},
     ).scalar_one()
