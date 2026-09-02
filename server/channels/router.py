@@ -11,8 +11,10 @@ keys (``MESSAGES``) so P2-16 can localize them.
 from __future__ import annotations
 
 import hashlib
+import os
 import uuid
 from collections.abc import Callable
+from contextvars import ContextVar
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -72,8 +74,39 @@ MESSAGES: dict[str, str] = {
 }
 
 
+_LANGUAGE: ContextVar[str] = ContextVar("agent_colab_router_language", default="en")
+
+
+def language_for_channel(
+    session: Session, provider_instance_uuid: Any, external_channel_id: str
+) -> str:
+    """Channel language override, else the instance default (development plan §7H)."""
+    from server.i18n import resolve_language
+
+    row = session.execute(
+        text(
+            "SELECT language FROM channels WHERE provider_instance_id = :p "
+            "AND external_channel_id = :c"
+        ),
+        {"p": provider_instance_uuid, "c": external_channel_id},
+    ).first()
+    instance_default = os.environ.get("AGENT_COLAB_DEFAULT_LANGUAGE", "en")
+    return resolve_language(instance_default, row[0] if row else None)
+
+
 def render(key: str, **fields: Any) -> str:
-    return MESSAGES.get(key, key).format(**fields)
+    """Localized message for the current request language; English text is the fallback."""
+    from server.i18n import UnsupportedLanguageError, bundle
+
+    language = _LANGUAGE.get()
+    try:
+        template = bundle(language).get(key) or MESSAGES.get(key, key)
+    except UnsupportedLanguageError:
+        template = MESSAGES.get(key, key)
+    try:
+        return template.format(**fields)
+    except (KeyError, IndexError):
+        return template
 
 
 @dataclass(frozen=True)
@@ -149,6 +182,8 @@ class Router:
     def route(self, req: SlashRequest) -> CommandResponse:
         with session_scope(self._runtime.session_factory) as session:
             inst = prov.load_instance(session, req.provider_instance_id)
+            if inst is not None:
+                _LANGUAGE.set(language_for_channel(session, inst.id, req.channel_id))
             if inst is None:
                 return ephemeral(
                     "command.error", "PROVIDER_INSTANCE_UNKNOWN", req.provider_instance_id

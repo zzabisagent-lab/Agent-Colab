@@ -30,7 +30,8 @@ def engine(database_url: str) -> Iterator[Engine]:
         ):
             c.execute(
                 text(
-                    "INSERT INTO accounts (id, account_id, workspace_id, account_type, display_name) "
+                    "INSERT INTO accounts (id, account_id, workspace_id, account_type, "
+                    "display_name) "
                     "VALUES (:i, :a, :w, :t, :a)"
                 ),
                 {"i": acc, "a": name, "w": WS, "t": typ},
