@@ -1,0 +1,18 @@
+{
+  "test_id": "V-P0-07",
+  "evidence_id": "SELF-V-P0-07",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_verification_harness.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "301f00452fa46efefc74178fcb1791e4fdb5aadd",
+  "started_at": "2026-09-02T13:12:48.272852+00:00",
+  "finished_at": "2026-09-02T13:12:50.002939+00:00",
+  "output_sha256": "83a1593c5b5783693fe3006d1f6597bcb4f3a5968f23b59481ee09a0477f910a"
+}

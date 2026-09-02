@@ -1,0 +1,77 @@
+# Agent-Colab development stack (development plan P0-04, V-P0-04).
+# `docker compose up -d --wait` must report every service healthy from empty volumes.
+name: agent-colab
+
+services:
+  postgres:
+    image: postgres:16.11-alpine
+    environment:
+      POSTGRES_USER: colab
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-colab-dev-only}
+      POSTGRES_DB: colab
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U colab -d colab"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    # not published on the host: PostgreSQL is never exposed externally (spec §15.3)
+
+  server:
+    build:
+      context: .
+      dockerfile: deploy/dev/Dockerfile.server
+    environment:
+      AGENT_COLAB_DATABASE_URL: postgresql://colab:${POSTGRES_PASSWORD:-colab-dev-only}@postgres:5432/colab
+      AGENT_COLAB_BIND_HOST: 0.0.0.0
+      AGENT_COLAB_BIND_PORT: "8080"
+      AGENT_COLAB_BASE_URL: http://127.0.0.1:8080
+      AGENT_COLAB_BOOTSTRAP_STATE_PATH: /var/lib/agent-colab/bootstrap/state.json
+    volumes:
+      - bootstrap:/var/lib/agent-colab/bootstrap
+      - artifacts:/var/lib/agent-colab/artifacts
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=3).status == 200 else 1)"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  web-admin:
+    build:
+      context: .
+      dockerfile: deploy/dev/Dockerfile.web-admin
+    ports:
+      - "127.0.0.1:8081:8080"
+    depends_on:
+      server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/healthz"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  clamav:
+    image: clamav/clamav:1.4
+    environment:
+      CLAMAV_NO_FRESHCLAMD: "false"
+    volumes:
+      - clamdb:/var/lib/clamav
+    healthcheck:
+      test: ["CMD", "clamdscan", "--ping", "1"]
+      interval: 15s
+      timeout: 10s
+      retries: 40
+      start_period: 180s
+
+volumes:
+  pgdata:
+  bootstrap:
+  artifacts:
+  clamdb:

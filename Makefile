@@ -2,6 +2,7 @@ SHELL := /bin/bash
 export PATH := $(HOME)/.local/bin:$(PATH)
 UV ?= uv
 PNPM ?= pnpm
+export AGENT_COLAB_TEST_DATABASE_URL ?= postgresql://colab@127.0.0.1:54329/colab_test
 
 .PHONY: bootstrap lint typecheck test test-db build check-docs secret-scan ci compose-up compose-down web-install
 

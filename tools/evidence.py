@@ -61,7 +61,7 @@ def record(test_id: str, command: list[str], env: dict[str, str] | None = None) 
         "output_sha256": hashlib.sha256(output.encode("utf-8")).hexdigest(),
     }
     (out_dir / "result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-    print(print(f"[{status.upper()}] {test_id} attempt {attempt} -> {out_dir.relative_to(ROOT)}"))
+    print(f"[{status.upper()}] {test_id} attempt {attempt} -> {out_dir.relative_to(ROOT)}")
     return proc.returncode
 
 
