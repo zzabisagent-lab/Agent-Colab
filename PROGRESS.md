@@ -4,6 +4,30 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 
 ## Current phase: 2 (Mattermost/Telegram) — branch `phase-2`
 
+### Phase 2 package status
+
+| ID | Work | Size | Prereq | Status | SELF evidence |
+|---|---|---|---|---|---|
+| P2-01 | Mattermost provider | M | P1-07, P0-10 | IMPLEMENTED | SELF-V-P2-01, SELF-V-P2-19 |
+| P2-02 | Channel/external identity config | M | P2-01, P1-05 | IN_PROGRESS (fork) | — |
+| P2-03 | Renderer/outbox | M | P2-01 | IMPLEMENTED | SELF-V-P2-02, SELF-V-P2-23 |
+| P2-04 | Telegram provider | M | P1-07, P0-13 | IMPLEMENTED | SELF-V-P2-09, SELF-V-P2-11 |
+| P2-05 | per-channel Bridge | M | P2-03, P2-04 | IN_PROGRESS (fork) | — |
+| P2-06 | dedupe/loop/retry | M | P2-05 | IN_PROGRESS (fork) | — |
+| P2-07 | Bridge Admin UI | S | P2-05 | NOT_STARTED | — |
+| P2-08 | Telegram command policy | S | P2-05, P2-10 | NOT_STARTED | — |
+| P2-09 | Channel lifecycle | S | P2-02 | IN_PROGRESS (fork) | — |
+| P2-10 | Command Router | M | P2-01, P1-07 | IMPLEMENTED | SELF-V-P2-24 |
+| P2-11 | Task card/thread Renderer | M | P2-03, P2-10 | IMPLEMENTED | SELF-V-P2-25 |
+| P2-12 | Interactive actions | S | P2-11 | IN_PROGRESS (fork) | — |
+| P2-13 | Mattermost link challenge | S | P2-02, P2-10 | IN_PROGRESS (fork) | — |
+| P2-14 | Agent identity display | S | P2-11 | IN_PROGRESS (fork) | — |
+| P2-15 | Message ingestion/retention | M | P2-03 | IMPLEMENTED | SELF-V-P2-29 |
+| P2-16 | i18n | S | P2-10 | IN_PROGRESS | bundles + document headings done; router/card wiring pending |
+| P2-17 | Notification providers | S | P1-13, P2-01 | IN_PROGRESS (fork) | — |
+
+Phase 2 progress (size-weighted): 15 / 33
+
 ## Phase 1 (PASSED) — branch `phase-1`, tag `phase-1-passed`
 
 ### Phase 1 package status
