@@ -422,6 +422,8 @@ def create_subtask(cmd: CreateSubtask, ctx: CommandContext) -> Any:
     task_id = cmd.task_id or _new_task_id(ctx, cmd.idempotency_scope)
     if task_id == cmd.parent_task_id:
         raise CommandError("TASK_GRAPH_CYCLE", "a Task cannot be its own parent", status=409)
+    if _replay_from_stream(ctx, task_id, cmd.idempotency_scope) is None:
+        orchestration_app.check_subtask_creation(ctx, parent, task_id)  # P3-09 graph limits
     root_task_id = parent.root_task_id or cmd.parent_task_id
     depth = parent.delegation_depth + 1
     pinned = criteria_app.prepare_initial(task_id, cmd.criteria)
@@ -498,6 +500,7 @@ def delegate_task(cmd: DelegateTask, ctx: CommandContext) -> Any:
     res, state = _transition(ctx, cmd, state, "TASK_DELEGATED", payload)
     if not res.replayed:
         _record_assignment(ctx, state, cmd, res.event_id)
+        orchestration_app.after_assignment(ctx, state, res.event_id)  # P3-09 work item
     return _result(res, cmd.task_id, state, assignee_account_id=assignee)
 
 
@@ -515,7 +518,34 @@ def reassign_task(cmd: ReassignTask, ctx: CommandContext) -> Any:
     res, state = _transition(ctx, cmd, state, "TASK_REASSIGNED", payload)
     if not res.replayed:
         _record_assignment(ctx, state, cmd, res.event_id)
+        orchestration_app.after_assignment(
+            ctx, state, res.event_id, resume_context=cmd.resume_context
+        )
     return _result(res, cmd.task_id, state, assignee_account_id=assignee)
+
+
+def _enforce_agent_limits(ctx: CommandContext, kind: str, task_id: str) -> None:
+    """P3-08: an Agent actor is held to its Limits (concurrent Tasks, rate, cost) on acceptance."""
+    if ctx.principal.account_type != "agent":
+        return
+    from server.agents.limits import enforce_limits
+    from server.agents.registry import agent_for_account
+
+    row = agent_for_account(ctx.session, uuid.UUID(ctx.principal.account_uuid))
+    if row is None:
+        return
+    enforce_limits(
+        ctx.session,
+        row.agent_id,
+        kind,
+        ctx.clock,
+        workspace_id=ctx.workspace_id,
+        task_id=task_id,
+        exclude_task_id=task_id,
+        actor_account_uuid=ctx.principal.account_uuid,
+        actor_label=ctx.principal.account_id,
+        correlation_id=ctx.correlation_id,
+    )
 
 
 @handles(AcceptTask)
@@ -529,6 +559,7 @@ def accept_task(cmd: AcceptTask, ctx: CommandContext) -> Any:
             raise CommandError(exc.code, exc.detail, status=409) from exc
         if state.assignee_account_id != ctx.principal.account_uuid:
             raise CommandError("TASK_NOT_ASSIGNEE", "only the assignee can accept", status=403)
+        _enforce_agent_limits(ctx, "task_accept", cmd.task_id)
     res, state = _transition(
         ctx, cmd, state, "TASK_ACCEPTED", {"assignee_account_id": ctx.principal.account_uuid}
     )
@@ -643,6 +674,8 @@ def record_verification_result(cmd: RecordVerificationResult, ctx: CommandContex
     )
     state = load_task(ctx, cmd.task_id)
     write_state(ctx.session, state, _occurred_at(ctx, res.event_id))
+    if cmd.result == "PASSED":
+        orchestration_app.on_child_terminal(ctx, state)  # P3-09 parent join evaluation
     return _result(res, cmd.task_id, state, verification_id=cmd.verification_id)
 
 
@@ -674,6 +707,8 @@ def complete_task(cmd: CompleteTask, ctx: CommandContext) -> Any:
         "document_id": cmd.document_id,
     }
     res, state = _transition(ctx, cmd, state, "TASK_COMPLETED", payload)
+    if not res.replayed:
+        orchestration_app.on_child_terminal(ctx, state)
     return _result(res, cmd.task_id, state)
 
 
@@ -697,3 +732,6 @@ def cancel_task(cmd: CancelTask, ctx: CommandContext) -> Any:
 
 # P1-11 registers the acceptance-criteria gates and the ReviseCriteria handler on import.
 from server.application import criteria as criteria_app  # noqa: E402
+
+# P3-09 registers the parent join completion gate on import.
+from server.application import orchestration as orchestration_app  # noqa: E402

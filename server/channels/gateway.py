@@ -21,6 +21,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from server.api.dispatch import Runtime
+from server.channels import work_messages
 from server.channels.outbox import ChannelProvider
 from server.channels.telegram.bridge import Bridge, MattermostPostView
 from server.channels.telegram.intake import InboundMessage
@@ -40,6 +41,10 @@ class ChannelGateway:
     providers: dict[str, ChannelProvider] = field(default_factory=dict)
     inbound_hooks: list[InboundHook] = field(default_factory=list)  # e.g. Telegram commands
     drain_interval_s: float = 1.0
+    maintenance_interval_s: float = float(
+        os.environ.get("AGENT_COLAB_MAINTENANCE_INTERVAL_S", "30")
+    )
+    _since_maintenance: float = 0.0
     _task: asyncio.Task[None] | None = None
     drains: int = 0
 
@@ -77,6 +82,8 @@ class ChannelGateway:
                 props=dict(props),
                 user_is_bot=bool(props.get("from_bot") in ("true", True)),
             )
+            if work_messages.run_post_hooks(session, self.clock, view):  # P3-12 bot replies
+                return
             self.bridge.on_mattermost_post(session, self.clock, view)
 
     def _instance_for_channel(self, session: Session, external_channel_id: str) -> str | None:
@@ -100,12 +107,25 @@ class ChannelGateway:
         self.drains += 1
         return result
 
+    def maintenance_once(self) -> dict[str, int]:
+        """P3 sweeps (work-item timeouts → re-routing, verifier offers, offline Agents)."""
+        from server.agents.maintenance import run_maintenance
+
+        return run_maintenance(self.runtime)
+
     async def _loop(self) -> None:
         while True:
             try:
                 await asyncio.to_thread(self.drain_once)
             except Exception:
                 log.exception("gateway drain failed")
+            self._since_maintenance += self.drain_interval_s
+            if self._since_maintenance >= self.maintenance_interval_s:
+                self._since_maintenance = 0.0
+                try:
+                    await asyncio.to_thread(self.maintenance_once)
+                except Exception:
+                    log.exception("gateway maintenance failed")
             await asyncio.sleep(self.drain_interval_s)
 
     def start(self) -> None:
@@ -143,6 +163,7 @@ def build_gateway(runtime: Runtime) -> ChannelGateway:
     from server.channels.telegram.commands import TelegramCommandGateway
 
     commands = TelegramCommandGateway(runtime, runtime.clock)
+    work_messages.register_post_hook(work_messages.BotReplyIntake(runtime))  # P3-12
 
     def telegram_commands(session: Session, msg: InboundMessage) -> bool:
         # P2-08: a handled command replies through the outbox and is never relayed as chat

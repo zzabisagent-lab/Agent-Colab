@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/VERIFIER_ASSIGNMENT_EXHAUSTED.v1.schema.json",
+  "title": "VERIFIER_ASSIGNMENT_EXHAUSTED payload v1",
+  "description": "Non-sensitive payload of VERIFIER_ASSIGNMENT_EXHAUSTED (verification_run aggregate, Phase 3). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "verification_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "offers": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "verification_id",
+    "task_id",
+    "offers"
+  ],
+  "additionalProperties": true,
+  "x-extension": "development plan §7D.2: verifier offers exhausted → WAITING + Administrator notification"
+}

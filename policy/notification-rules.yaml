@@ -22,6 +22,11 @@ rules:
     recipient_selectors: [delegator, channel_members]
     channels: [mattermost:thread, mattermost:dm]
     dedupe_window_seconds: 0
+  - rule_id: ntf-verifier-exhausted
+    event_type: VERIFIER_ASSIGNMENT_EXHAUSTED
+    recipient_selectors: [administrators, delegator]
+    channels: [mattermost:dm, mattermost:ops_channel]
+    dedupe_window_seconds: 0
   - rule_id: ntf-budget-exceeded
     event_type: BUDGET_EXCEEDED
     recipient_selectors: [delegator, channel_members, ops_channel_members]

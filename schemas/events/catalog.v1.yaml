@@ -116,6 +116,7 @@ events:
   VERIFICATION_PASSED:     {aggregate: verification_run, phase: 1, required: [verification_id, revision, evidence_refs]}
   VERIFICATION_FAILED:     {aggregate: verification_run, phase: 1, required: [verification_id, revision, finding_ids]}
   VERIFICATION_BLOCKED:    {aggregate: verification_run, phase: 1, required: [verification_id, revision, reason_code]}
+  VERIFIER_ASSIGNMENT_EXHAUSTED: {aggregate: verification_run, phase: 3, required: [verification_id, task_id, offers], extension: "development plan §7D.2: verifier offers exhausted → WAITING + Administrator notification"}
   # Secret
   SECRET_REGISTERED:       {aggregate: secret, phase: 4, required: [secret_id, provider, version]}
   SECRET_GRANT_CREATED:    {aggregate: secret_grant, phase: 4, required: [grant_id, secret_id, grantee_agent_id, task_id, action_scope, expires_at]}

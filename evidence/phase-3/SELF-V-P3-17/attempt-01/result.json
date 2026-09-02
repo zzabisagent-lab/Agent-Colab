@@ -1,0 +1,23 @@
+{
+  "test_id": "V-P3-17",
+  "evidence_id": "SELF-V-P3-17",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_agents_db.py",
+    "tests/unit/test_agent_registry.py",
+    "-k",
+    "register_three or connection_test or heartbeat_offline or suspend_and_revoke or lifecycle_rebuild or fold_lifecycle",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "e19cf67893424d0e9ca974fb75ab33564ecd7c6e",
+  "started_at": "2026-09-02T17:31:03.137222+00:00",
+  "finished_at": "2026-09-02T17:31:06.536041+00:00",
+  "output_sha256": "700bc0322b00f8e8db3ce495047983b54ab27ab59ed1fedac05f3aeba47dae24"
+}

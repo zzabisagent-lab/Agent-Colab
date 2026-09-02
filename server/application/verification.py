@@ -70,6 +70,7 @@ class CreateVerificationRun(Command):
     verifier_agent_id: str | None = None
     phase: int | None = None
     task_id: str | None = None
+    auto_assign: bool = False  # P3-13: the assignment engine picks the Verifier (§7D.2)
     idempotency_scope: str = "verification_run:create"
 
 
@@ -252,6 +253,10 @@ def create_verification_run(cmd: CreateVerificationRun, ctx: CommandContext) -> 
     require_permission(ctx, "verification.assign", action="tool:verification_assign")
     if cmd.target_type not in ("phase", "task"):
         raise CommandError("VERIFICATION_TARGET_INVALID", cmd.target_type, status=400)
+    if cmd.auto_assign and not cmd.verifier_account_id:
+        from server.verification import assignment
+
+        cmd = assignment.resolve_auto_assign(cmd, ctx)  # P3-13; zero side effects on failure
     impl_uuid, _ = _account(ctx, cmd.implementer_account_id)
     ver_uuid, _ = _account(ctx, cmd.verifier_account_id)
     graph = alias_graph(ctx.session, ctx.workspace_id)
@@ -363,6 +368,10 @@ def create_verification_run(cmd: CreateVerificationRun, ctx: CommandContext) -> 
         },
         cmd.idempotency_scope,
     )
+    if cmd.auto_assign and not res.replayed and ctx.extras.get("verifier_candidate") is not None:
+        from server.verification import assignment
+
+        assignment.record_offer(ctx, run, ctx.extras["verifier_candidate"])  # P3-13 offer
     return _result(res, verification_id, "PLANNED", snapshot_hash=snap_hash)
 
 

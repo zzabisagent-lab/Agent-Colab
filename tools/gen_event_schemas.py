@@ -28,6 +28,7 @@ _TIMESTAMP_FIELDS = {
     "executable_after",
 }
 _INT_FIELDS = {
+    "offers",
     "assignment_revision",
     "depth",
     "role_version",

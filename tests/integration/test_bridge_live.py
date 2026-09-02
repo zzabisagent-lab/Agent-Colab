@@ -1,10 +1,11 @@
-"""Live Bridge check against the real Telegram Bot API (skipped only when `.env` lacks keys):
+"""Live Bridge check against the real Telegram Bot API (skipped without TELEGRAM_* keys):
 one Mattermost→Telegram relay delivered through the outbox drain with the real client, the
 mapping completed with the real topic/message ids, then cleanup."""
 
 from __future__ import annotations
 
 import datetime as dt
+import os
 import uuid
 from collections.abc import Iterator
 from pathlib import Path
@@ -32,6 +33,10 @@ def _load_env() -> dict[str, str]:
         if "=" in line and not line.lstrip().startswith("#"):
             k, v = line.split("=", 1)
             env[k.strip()] = v.strip().strip('"').strip("'")
+    # exported variables win (an independent verifier may supply credentials without .env)
+    for key, value in os.environ.items():
+        if key.startswith("TELEGRAM_") and value:
+            env[key] = value
     return env
 
 

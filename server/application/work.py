@@ -19,6 +19,7 @@ from server.application.bus import (
     handles,
     require_permission,
 )
+from server.usage.conformance import record_result_usage
 from server.work import inbox
 from server.work.state import WorkItemError
 
@@ -75,6 +76,10 @@ class QueueWorkItem(Command):
     idempotency_scope = "work_item:queue"
 
 
+REJECTION_HOOKS: list[Any] = []
+"""Callables ``(ctx, item, reason_code)`` run after a work item is rejected (P3-14 re-routing)."""
+
+
 def caller_agent_id(ctx: CommandContext) -> str:
     """The Agent bound to the caller's Account (credential-derived, §3.1 Identity)."""
     if ctx.principal.agent_id:
@@ -86,6 +91,23 @@ def caller_agent_id(ctx: CommandContext) -> str:
     if row is None:
         raise CommandError("AGENT_NOT_FOUND", "caller is not an Agent account", status=404)
     return str(row[0])
+
+
+def _enforce(ctx: CommandContext, agent_id: str, kind: str, task_id: str | None = None) -> None:
+    """P3-08: server-side Agent Limits before any work side effect (audited on exceed)."""
+    from server.agents.limits import enforce_limits
+
+    enforce_limits(
+        ctx.session,
+        agent_id,
+        kind,
+        ctx.clock,
+        workspace_id=ctx.workspace_id,
+        task_id=task_id,
+        actor_account_uuid=ctx.principal.account_uuid,
+        actor_label=ctx.principal.account_id,
+        correlation_id=ctx.correlation_id,
+    )
 
 
 def _wrap(exc: WorkItemError) -> CommandError:
@@ -111,6 +133,7 @@ def work_poll(cmd: WorkPoll, ctx: CommandContext) -> CommandResult:
     agent_id = caller_agent_id(ctx)
     if cmd.agent_id != agent_id:
         raise CommandError("WORK_ITEM_NOT_OWNER", "poll is limited to the caller's inbox", 404)
+    _enforce(ctx, agent_id, "request")
     try:
         res = inbox.poll(
             ctx.session,
@@ -186,6 +209,8 @@ def work_reject(cmd: WorkReject, ctx: CommandContext) -> CommandResult:
         )
     except WorkItemError as exc:
         raise _wrap(exc) from exc
+    for hook in REJECTION_HOOKS:
+        hook(ctx, item, cmd.reason_code)
     return CommandResult(item.work_item_id, "", 0, "work_item", data=_item_data(item))
 
 
@@ -193,6 +218,7 @@ def work_reject(cmd: WorkReject, ctx: CommandContext) -> CommandResult:
 def work_result(cmd: WorkResult, ctx: CommandContext) -> CommandResult:
     require_permission(ctx, "work.poll")
     agent_id = caller_agent_id(ctx)
+    _enforce(ctx, agent_id, "request")
     try:
         outcome = inbox.result(
             ctx.session,
@@ -205,6 +231,19 @@ def work_result(cmd: WorkResult, ctx: CommandContext) -> CommandResult:
         )
     except WorkItemError as exc:
         raise _wrap(exc) from exc
+    if outcome.code == "RESULT_ACCEPTED":
+        # §7C: every accepted result carries usage or a reason; recorded exactly once (P3-15)
+        record_result_usage(
+            ctx.session,
+            workspace_id=ctx.workspace_id,
+            account_id=ctx.principal.account_uuid,
+            agent_id=agent_id,
+            work_item_id=cmd.work_item_id,
+            payload=cmd.result,
+            task_id=outcome.item.task_id,
+            brainstorm_id=outcome.item.brainstorm_id,
+            clock=ctx.clock,
+        )
     return CommandResult(
         outcome.work_item_id,
         outcome.event_id or "",

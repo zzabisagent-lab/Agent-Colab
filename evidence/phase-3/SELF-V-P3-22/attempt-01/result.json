@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P3-22",
+  "evidence_id": "SELF-V-P3-22",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_webhook_adapter.py",
+    "tests/integration/test_webhook_delivery.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "e19cf67893424d0e9ca974fb75ab33564ecd7c6e",
+  "started_at": "2026-09-02T17:26:26.751572+00:00",
+  "finished_at": "2026-09-02T17:26:31.082822+00:00",
+  "output_sha256": "cfc14fd2dc11c362cccf5421245ca5ab0e9d286b54a604a80bd2dd5522f6feb9"
+}

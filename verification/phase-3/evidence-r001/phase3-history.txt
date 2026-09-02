@@ -1,0 +1,34 @@
+b9bcc43 2026-09-02 12:47:38 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P0-01: repository, build, and CI skeleton
+34e1c9a 2026-09-02 12:54:46 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P0-02: ADRs, baseline parsers, traceability matrix and document linters
+301f004 2026-09-02 13:04:28 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P0-03 + P0-06: Event/schema/policy contracts, threat model, secret scan
+2e37ff6 2026-09-02 13:12:51 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P0-07 + P0-04 + P0-14: verification harness, Compose stack, plan baseline
+288bf8b 2026-09-02 13:16:06 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P0-12: permission and risk catalog
+33c9498 2026-09-02 13:16:55 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P0-08 + P0-05 + P0-09: Schedule contract, Setup state skeleton, pre-DB bootstrap store contract
+0e43f20 2026-09-02 13:20:47 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P0-10 + P0-11: Mattermost interaction contract and spike, work-item/usage contract and MCP spike
+9f37fb1 2026-09-02 13:23:38 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> Phase 0: Evidence Manifest (P0-IMPLEMENT-001) and self-test evidence
+9f7f127 2026-09-02 13:26:32 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> Verification runner: unsandboxed mode with worktree modification check; r001 aborted (sandbox cannot execute on host)
+1ac07c7 2026-09-02 13:41:15 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> Phase 0: fix VR-P0-002 findings F-01 (MCP long-poll bound), F-02 (spike callback material), F-03 (manifest pinning)
+c17d4d5 2026-09-02 14:02:50 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P0-04: Compose health verified from empty volumes (V-P0-04); Compose uses deploy/dev/compose.env, never the repository .env
+bf15824 2026-09-02 14:09:07 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P0-13: Telegram API spike and Bridge thread-mapping contract (V-P0-19)
+ac80867 2026-09-02 14:21:33 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> verification: Phase 0 Verifier Report VR-P0-003 PASSED (Codex, unmodified) with SHA-256, run log and evidence
+ed8d4ee 2026-09-02 14:27:34 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P1-01: Phase 1 core schema, application roles, append-only authority tables, hash chains
+f48ab20 2026-09-02 14:32:28 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P1-02: PostgreSQL Event store, envelope crypto with crypto-shredding, integrity job, command bus skeleton
+3dfbd49 2026-09-02 14:41:09 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P1-07 (part): transport-neutral command dispatch, Event list/SSE with Last-Event-ID resume, MCP server on the command bus, app wiring (V-P1-11)
+7af6c69 2026-09-02 14:43:19 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> PROGRESS: Phase 1 package status
+f1f9594 2026-09-02 14:47:32 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P1-07: Task REST routes and MCP core tools on the shared command bus
+9ec1e40 2026-09-02 14:57:41 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P1-07: REST/MCP parity — same handlers, stable errors, idempotency, expected-seq, policy (V-P1-26); MCP mounted at exact /mcp; workspace resolved from the principal
+9bafabf 2026-09-02 15:03:04 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> P1-07: Approval REST routes and MCP approval_request; parity covers create/delegate/approval (V-P1-26)
+b864537 2026-09-02 15:19:54 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> PROGRESS: Phase 1 packages all IMPLEMENTED; lint fix
+1244dda 2026-09-02 15:24:35 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> PROGRESS: Phase 1 verification requested
+a990ec8 2026-09-02 15:32:25 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> verification: Phase 1 Verifier Report VR-P1-001 PASSED (Codex, unmodified) with SHA-256, run log and evidence
+3b94df3 2026-09-02 15:59:31 +0000 zzabisagent-lab <zzabis.ageng@gmail.com> PROGRESS: Phase 2 package status
+622ad2b 2026-09-02 16:31:29 +0000 zzabisagent-lab <zzabisagent-lab@users.noreply.github.com> Phase 2 close-out: PROGRESS, manifest inputs, ADR-0009; lint scope and test isolation
+88adc56 2026-09-02 16:57:00 +0000 zzabisagent-lab <zzabisagent-lab@users.noreply.github.com> P2 revision 2: fixes for VR-P2-001 findings F-P2-001/002/003
+d840e52 2026-09-02 17:06:43 +0000 zzabisagent-lab <zzabisagent-lab@users.noreply.github.com> Phase 2 PASSED: VR-P2-001 (FAILED) and VR-P2-002 (PASSED) reports stored unmodified; PROGRESS updated
+2d14229 2026-09-02 17:10:41 +0000 zzabisagent-lab <zzabisagent-lab@users.noreply.github.com> P3 foundation: Agent registry runtime schema (0008), package-owned migration slots 0009-0011, Adapter contract (§7.3) with plugin registry, module ownership note
+5afb34b 2026-09-02 17:15:05 +0000 zzabisagent-lab <zzabisagent-lab@users.noreply.github.com> P3-07: Agents and Roles console pages (register/test/activate/suspend/revoke/limits; role versions, assignment, effective preview); Phase 3 package table
+e19cf67 2026-09-02 17:16:48 +0000 zzabisagent-lab <zzabisagent-lab@users.noreply.github.com> ADR-0010: Phase 3 generic-Agent decisions
+cc05188 2026-09-02 17:52:03 +0000 zzabisagent-lab <zzabisagent-lab@users.noreply.github.com> P3-01..P3-06/P3-08..P3-15: Agent registry, roles, limits, Adapter types (mcp/webhook/mattermost_bot), MCP work transport, webhook and bot delivery, conformance suite, usage conformance, routing, orchestration, verifier assignment, re-routing, maintenance tick
+30a6f48 2026-09-02 17:57:28 +0000 zzabisagent-lab <zzabisagent-lab@users.noreply.github.com> P3 integration fixes: VERIFIER_ASSIGNMENT_EXHAUSTED flagged as a documented extension; rejection hook tolerates orphan work items; console e2e seeds use distinct account ids
+96b8d22 2026-09-02 18:02:28 +0000 zzabisagent-lab <zzabisagent-lab@users.noreply.github.com> P3-05: conformance harnesses for the webhook and mattermost_bot types (all three adapter types pass CS-01..12); suite uses schema-valid ids/tool/handle names; webhook adapter on-demand endpoint heartbeat (health_check); bot adapter health probe + full error normalization; SELF-V-P3-05 attempt-02
+887de42 2026-09-02 18:03:51 +0000 zzabisagent-lab <zzabisagent-lab@users.noreply.github.com> Phase 3 close-out: PROGRESS (15/15 packages IMPLEMENTED), manifest inputs, bandit annotation

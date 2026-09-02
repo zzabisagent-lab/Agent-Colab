@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="8.424" timestamp="2026-09-02T18:08:17.479834+00:00" hostname="ai"><testcase classname="tests.e2e.test_admin_agents_ui" name="test_agent_admin_console_paths" time="7.376" /></testsuite></testsuites>

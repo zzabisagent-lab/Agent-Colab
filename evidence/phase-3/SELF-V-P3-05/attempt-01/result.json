@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P3-05",
+  "evidence_id": "SELF-V-P3-05",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_conformance_suite.py",
+    "tests/unit/test_adapter_contract.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "2f3ef56ebe62459325643d82ad33a3e130728ddc",
+  "started_at": "2026-09-02T17:48:49.535033+00:00",
+  "finished_at": "2026-09-02T17:48:51.417708+00:00",
+  "output_sha256": "ecf57d762b443151696ef4727347520d0d5715719bac1e0cd93caddf627ffa61"
+}

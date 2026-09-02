@@ -1,0 +1,150 @@
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{
+  "adapter_type": "webhook",
+  "agent_id": "agent-conformance-webhook",
+  "checks": [
+    {
+      "detail": "",
+      "evidence": {
+        "delivery_modes": [
+          "push"
+        ],
+        "identity_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      },
+      "id": "CS-01",
+      "result": "PASS",
+      "title": "probe identity stability"
+    },
+    {
+      "detail": "",
+      "evidence": {
+        "side_effects": 1,
+        "work_item_id": "wi-782e5d3f1a4644ddab15e7a3"
+      },
+      "id": "CS-02",
+      "result": "PASS",
+      "title": "deliver idempotency"
+    },
+    {
+      "detail": "",
+      "evidence": {
+        "accept_s": 20.0,
+        "ack_s": 5.0
+      },
+      "id": "CS-03",
+      "result": "PASS",
+      "title": "ack/accept timing"
+    },
+    {
+      "detail": "",
+      "evidence": {
+        "usage": {
+          "usage": {
+            "input_tokens": 10,
+            "model": "hook-1",
+            "output_tokens": 5,
+            "tool_calls": 1,
+            "wall_time_ms": 40
+          }
+        }
+      },
+      "id": "CS-04",
+      "result": "PASS",
+      "title": "invoke result schema"
+    },
+    {
+      "detail": "",
+      "evidence": {
+        "ack_s": 0.0,
+        "cleanup_s": 60.0
+      },
+      "id": "CS-05",
+      "result": "PASS",
+      "title": "cancel"
+    },
+    {
+      "detail": "",
+      "evidence": {
+        "capacity": 3,
+        "gaps_s": [
+          30.0,
+          30.0,
+          30.0
+        ]
+      },
+      "id": "CS-06",
+      "result": "PASS",
+      "title": "heartbeat"
+    },
+    {
+      "detail": "",
+      "evidence": {
+        "leaks": 0,
+        "secret_handles": "supported"
+      },
+      "id": "CS-07",
+      "result": "PASS",
+      "title": "secret handle non-exposure"
+    },
+    {
+      "detail": "",
+      "evidence": {
+        "echoed": 10,
+        "total": 10
+      },
+      "id": "CS-08",
+      "result": "PASS",
+      "title": "correlation preserved"
+    },
+    {
+      "detail": "",
+      "evidence": {
+        "deliveries": 3,
+        "side_effects": 1
+      },
+      "id": "CS-09",
+      "result": "PASS",
+      "title": "retry duplicate prevention"
+    },
+    {
+      "detail": "",
+      "evidence": {
+        "code": "CAPABILITY_UNSUPPORTED"
+      },
+      "id": "CS-10",
+      "result": "PASS",
+      "title": "unsupported declared"
+    },
+    {
+      "detail": "",
+      "evidence": {
+        "codes": {
+          "auth": "ADAPTER_AUTH_FAILED",
+          "bad_response": "ADAPTER_BAD_RESPONSE",
+          "rate_limited": "ADAPTER_RATE_LIMITED",
+          "timeout": "ADAPTER_TIMEOUT",
+          "unreachable": "ADAPTER_UNREACHABLE"
+        }
+      },
+      "id": "CS-11",
+      "result": "PASS",
+      "title": "error normalization"
+    },
+    {
+      "detail": "",
+      "evidence": {
+        "redelivered": [
+          "wi-868eef55fb974094b7fa1be2"
+        ]
+      },
+      "id": "CS-12",
+      "result": "PASS",
+      "title": "reconnect"
+    }
+  ],
+  "generated_at": "2026-09-02T18:08:04.359033+00:00",
+  "harness": "WebhookSimulationHarness",
+  "result": "PASS",
+  "schema_id": "colab.adapter-conformance-report.v1"
+}
+exit_code=0

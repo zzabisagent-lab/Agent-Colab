@@ -53,7 +53,19 @@ TRANSITIONS: dict[tuple[TaskStatus, str], TaskStatus] = {
     (TaskStatus.IMPLEMENTED, "TASK_CANCEL_REQUESTED"): TaskStatus.CANCEL_REQUESTED,
     (TaskStatus.VERIFYING, "TASK_CANCEL_REQUESTED"): TaskStatus.CANCEL_REQUESTED,
     (TaskStatus.CANCEL_REQUESTED, "TASK_CANCELLED"): TaskStatus.CANCELLED,
+    # §7D.3 re-routing (Phase 3, P3-14): the assignee is lost (reject, accept timeout, offline,
+    # revocation, budget overrun) before or during execution → one reassignment (the new
+    # assignee accepts again) or WAITING when no candidate exists.
+    (TaskStatus.DELEGATED, "TASK_WAITING"): TaskStatus.WAITING,
+    (TaskStatus.ACCEPTED, "TASK_WAITING"): TaskStatus.WAITING,
+    (TaskStatus.IMPLEMENTED, "TASK_WAITING"): TaskStatus.WAITING,
+    (TaskStatus.ACCEPTED, "TASK_REASSIGNED"): TaskStatus.DELEGATED,
+    (TaskStatus.RUNNING, "TASK_REASSIGNED"): TaskStatus.DELEGATED,
+    (TaskStatus.WAITING, "TASK_REASSIGNED"): TaskStatus.DELEGATED,
 }
+# Events recorded on the task aggregate that annotate the Task without changing its status
+# (P3-09: the parent's join condition became satisfied).
+ANNOTATION_EVENTS: frozenset[str] = frozenset({"TASK_JOIN_SATISFIED"})
 
 CREATION_EVENTS: frozenset[str] = frozenset({"TASK_CREATED", "SUBTASK_CREATED"})
 VERIFICATION_RESULT_EVENTS: frozenset[str] = frozenset(
@@ -111,6 +123,8 @@ class TaskState:
     created_at: str | None = None
     updated_at: str | None = None
     join_policy: dict[str, Any] = field(default_factory=dict)
+    join_satisfied: bool = False
+    join_satisfied_children: list[str] = field(default_factory=list)
 
 
 def apply_event(state: TaskState, event: dict[str, Any]) -> TaskState:
@@ -150,6 +164,14 @@ def apply_event(state: TaskState, event: dict[str, Any]) -> TaskState:
         state.updated_at = event.get("occurred_at")
         return state
     if event.get("aggregate_id") != state.task_id or event.get("aggregate_type") != "task":
+        return state
+    if etype in ANNOTATION_EVENTS:
+        state.last_event_id = event.get("event_id")
+        state.last_aggregate_seq = int(event.get("aggregate_seq", state.last_aggregate_seq))
+        state.updated_at = event.get("occurred_at")
+        if etype == "TASK_JOIN_SATISFIED":
+            state.join_satisfied = True
+            state.join_satisfied_children = list(payload.get("satisfied_children", []))
         return state
     state.status = next_status(state.status, etype)
     state.last_event_id = event.get("event_id")

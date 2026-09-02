@@ -719,6 +719,13 @@
       "payload_schema": "types/VERIFICATION_BLOCKED.v1.schema.json",
       "extension": false
     },
+    "VERIFIER_ASSIGNMENT_EXHAUSTED": {
+      "aggregate_type": "verification_run",
+      "phase": 3,
+      "schema_version": 1,
+      "payload_schema": "types/VERIFIER_ASSIGNMENT_EXHAUSTED.v1.schema.json",
+      "extension": true
+    },
     "SECRET_REGISTERED": {
       "aggregate_type": "secret",
       "phase": 4,

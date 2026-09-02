@@ -1,0 +1,76 @@
+tests/e2e/test_admin_agents_ui.py:119:def test_agent_admin_console_paths(server: str, engine: Engine) -> None:
+tests/e2e/test_admin_agents_ui.py:151:        "limits": {"concurrent_tasks": 2, "requests_per_minute": 60, "daily_cost_units": 1000000},
+tests/integration/test_verifier_assignment_db.py:4:notification Event)."""
+tests/integration/test_verifier_assignment_db.py:128:def test_eligibility_excludes_implementer_alias_credential_offline_and_wrong_domain(
+tests/integration/test_verifier_assignment_db.py:167:def test_best_scored_candidate_gets_the_assignment_with_criteria_and_evidence(
+tests/integration/test_verifier_assignment_db.py:203:def test_silent_candidate_is_replaced_after_ten_minutes_then_exhausted(engine: Engine) -> None:
+tests/integration/test_verifier_assignment_db.py:264:def test_no_eligible_verifier_is_a_stable_error_with_zero_side_effects(engine: Engine) -> None:
+tests/integration/test_agent_limits.py:136:def test_rate_limit_rejects_third_request_per_minute_with_audit(engine: Engine) -> None:
+tests/integration/test_agent_limits.py:148:    assert _limit_audits(engine) == audits_before + 1  # audited despite the rollback
+tests/integration/test_agent_limits.py:155:def test_concurrent_task_limit_rejects_second_acceptance(engine: Engine) -> None:
+tests/integration/test_agent_limits.py:212:def test_unknown_limit_kind_and_agent(engine: Engine) -> None:
+tests/integration/test_rerouting_db.py:3:reassigned with history, resume_context, zero duplicate side effects; WAITING without candidate)
+tests/integration/test_rerouting_db.py:104:def _poll_ack(
+tests/integration/test_rerouting_db.py:107:    """Poll the Agent's inbox and ack the items of ``task_id`` (all when None)."""
+tests/integration/test_rerouting_db.py:111:        _run(engine, wk.WorkAck(it["work_item_id"]), who, f"{key}-ack-{it['work_item_id']}", clock)
+tests/integration/test_rerouting_db.py:116:def test_rejection_codes_reroute_once_to_the_next_candidate(engine: Engine, code: str) -> None:
+tests/integration/test_rerouting_db.py:119:    items = _poll_ack(engine, "acct-rr-a", f"rej-{code}", clock, tid)
+tests/integration/test_rerouting_db.py:137:    resume = _items(engine, tid)[1][2]["resume_context"]
+tests/integration/test_rerouting_db.py:148:def test_unsupported_without_fallback_goes_waiting(engine: Engine) -> None:
+tests/integration/test_rerouting_db.py:149:    """V-P3-04: no eligible fallback → WAITING, zero duplicate side effects."""
+tests/integration/test_rerouting_db.py:152:    items = _poll_ack(engine, "acct-rr-a", "nofb", clock, tid)
+tests/integration/test_rerouting_db.py:175:def test_accept_timeout_reroutes_once_then_waiting(engine: Engine) -> None:
+tests/integration/test_rerouting_db.py:179:    _poll_ack(engine, "acct-rr-a", "to", clock, tid)  # acked, never accepted
+tests/integration/test_rerouting_db.py:217:    # b acks but never accepts either: the single re-route is used up → WAITING
+tests/integration/test_rerouting_db.py:218:    b_items = _poll_ack(engine, "acct-rr-b", "to-b", clock, tid)
+tests/integration/test_rerouting_db.py:246:def test_offline_before_and_during_execution(engine: Engine) -> None:
+tests/integration/test_rerouting_db.py:248:    resume_context; already-started side effects are handed over, never repeated."""
+tests/integration/test_rerouting_db.py:266:    _poll_ack(engine, "acct-rr-a", "off2", clock, tid2)
+tests/integration/test_rerouting_db.py:298:    resume = items[1][2]["resume_context"]
+tests/integration/test_rerouting_db.py:305:    _poll_ack(engine, "acct-rr-b", "off2-b", clock, tid2)
+tests/integration/test_usage_conformance.py:2:normalized into usage_records (cost_units from pricing, estimated for unknown models), a missing
+tests/integration/test_usage_conformance.py:3:report is recorded as unavailable with a reason, and the usage_unavailable ratio is measured."""
+tests/integration/test_usage_conformance.py:21:    usage_unavailable_ratio,
+tests/integration/test_usage_conformance.py:58:def test_normalize_usage_cases() -> None:
+tests/integration/test_usage_conformance.py:71:    reason = normalize_usage({"usage_unavailable": {"reason": "ADAPTER_NO_METERING"}})
+tests/integration/test_usage_conformance.py:79:def test_results_heartbeats_and_ratio(engine: Engine) -> None:
+tests/integration/test_usage_conformance.py:98:        assert measured is not None and measured.source == "estimated" and measured.cost_units > 0
+tests/integration/test_usage_conformance.py:105:            payload={"usage": {**usage, "cost_units": 4242}},
+tests/integration/test_usage_conformance.py:109:            reported is not None and reported.source == "reported" and reported.cost_units == 4242
+tests/integration/test_usage_conformance.py:117:            payload={"usage_unavailable": {"reason": "ADAPTER_NO_METERING"}},
+tests/integration/test_usage_conformance.py:146:        assert beat.cost_units >= 0 and beat.source in ("computed", "estimated")
+tests/integration/test_usage_conformance.py:148:        ratio = usage_unavailable_ratio(
+tests/integration/test_orchestration_db.py:113:def test_graph_limits_reject_with_zero_side_effects(engine: Engine) -> None:
+tests/integration/test_orchestration_db.py:188:def test_concurrency_limit(engine: Engine) -> None:
+tests/integration/test_orchestration_db.py:234:def test_fan_out_join_and_parent_gate(engine: Engine, policy: dict[str, Any], needed: int) -> None:
+tests/integration/test_orchestration_db.py:303:def test_assignment_work_items_follow_delegation(engine: Engine) -> None:
+tests/integration/test_bot_adapter_db.py:2:work_result; duplicates ignored; malformed replies → ephemeral error, zero side effects;
+tests/integration/test_bot_adapter_db.py:169:        "usage_unavailable": {"reason": "ADAPTER_NO_METERING"},
+tests/integration/test_bot_adapter_db.py:182:def test_work_message_and_reply_intake(engine: Engine) -> None:
+tests/integration/test_bot_adapter_db.py:230:        # malformed reply → ephemeral error, audit, zero side effects
+tests/integration/test_bot_adapter_db.py:238:                "'mattermost.ephemeral' AND dedupe_key = 'botreply-error:p-reply-3'"
+tests/integration/test_bot_adapter_db.py:269:def test_secret_requiring_work_excludes_the_bot(engine: Engine) -> None:
+tests/unit/test_conformance_push_harnesses.py:1:"""P3-05 (V-P3-05): the webhook and mattermost_bot adapter types pass CS-01..CS-12 through their
+tests/unit/test_conformance_push_harnesses.py:2:harnesses; a leaking endpoint fails CS-07 and a non-echoing one fails CS-08."""
+tests/unit/test_conformance_push_harnesses.py:20:def test_push_adapter_types_pass_every_check(adapter_type: str) -> None:
+tests/unit/test_conformance_push_harnesses.py:24:    assert [c.id for c in report.checks] == [f"CS-{n:02d}" for n in range(1, 13)]
+tests/unit/test_conformance_push_harnesses.py:27:def test_webhook_leaking_secret_fails_cs07() -> None:
+tests/unit/test_conformance_push_harnesses.py:32:    assert report.result == "FAIL" and "CS-07" in _failed(report)
+tests/unit/test_conformance_push_harnesses.py:35:def test_bot_without_correlation_fails_cs08() -> None:
+tests/unit/test_conformance_push_harnesses.py:42:    # the bot adapter echoes correlation ids itself (server-side), so CS-08 stays green; the
+tests/unit/test_conformance_push_harnesses.py:43:    # secret-handle advertisement is what distinguishes it (CS-07 rejection path)
+tests/unit/test_conformance_suite.py:26:def test_conformant_adapter_passes_all_twelve() -> None:
+tests/unit/test_conformance_suite.py:31:        f"CS-{i:02d}" for i in range(1, 13)
+tests/unit/test_conformance_suite.py:39:        ("CS-03", lambda clock: SimulatedAgent(clock, ack_delay_s=61)),
+tests/unit/test_conformance_suite.py:40:        ("CS-03", lambda clock: SimulatedAgent(clock, accept_delay_s=121)),
+tests/unit/test_conformance_suite.py:41:        ("CS-04", lambda clock: SimulatedAgent(clock, include_usage=False, echo_correlation=True)),
+tests/unit/test_conformance_suite.py:42:        ("CS-05", lambda clock: SimulatedAgent(clock, cancel_ack_s=11)),
+tests/unit/test_conformance_suite.py:43:        ("CS-05", lambda clock: SimulatedAgent(clock, cancel_cleanup_s=61)),
+tests/unit/test_conformance_suite.py:44:        ("CS-06", lambda clock: SimulatedAgent(clock, heartbeat_interval_s=50)),
+tests/unit/test_conformance_suite.py:45:        ("CS-07", lambda clock: SimulatedAgent(clock, leak_secrets=True)),
+tests/unit/test_conformance_suite.py:46:        ("CS-08", lambda clock: SimulatedAgent(clock, echo_correlation=False)),
+tests/unit/test_conformance_suite.py:49:def test_injected_nonconformance_fails_the_right_check(
+tests/unit/test_conformance_suite.py:55:        check == "CS-04"
+tests/unit/test_conformance_suite.py:56:    ):  # usage_unavailable with a reason is conformant; only *missing* usage fails
+tests/unit/test_conformance_suite.py:57:        assert results["CS-04"] == "PASS"
+tests/unit/test_conformance_suite.py:63:def test_cli_writes_a_valid_report(tmp_path) -> None:  # type: ignore[no-untyped-def]

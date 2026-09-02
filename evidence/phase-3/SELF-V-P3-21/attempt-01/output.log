@@ -1,0 +1,7 @@
+........                                                                 [100%]
+=============================== warnings summary ===============================
+tests/integration/test_mcp_transport.py::test_inbox_resource_and_subscription[asyncio]
+  /home/master/work/agent-colab/tests/integration/test_mcp_transport.py:325: MCPDeprecationWarning: resources/subscribe is removed as of 2026-07-28; use Client.listen() instead.
+    await s.subscribe_resource(uri)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
