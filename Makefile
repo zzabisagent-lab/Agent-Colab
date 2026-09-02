@@ -16,7 +16,8 @@ lint:
 	$(UV) run ruff check .
 	$(UV) run ruff format --check .
 	$(UV) run mypy
-	$(UV) run bandit -q -c pyproject.toml -r server sidecar tools
+	$(UV) run bandit -q -c pyproject.toml -r server sidecar
+	$(UV) run bandit -q -c pyproject.toml -ll -r tools
 	cd web-admin && $(PNPM) run lint && $(PNPM) exec tsc -b
 
 typecheck:
@@ -38,6 +39,7 @@ check-docs:
 	$(UV) run python -m tools.phase_dag_lint
 	$(UV) run python -m tools.plan_baseline_lint
 	$(UV) run python -m tools.policy_lint
+	$(UV) run python -m tools.name_role_lint
 	$(UV) run python -m tools.threat_model_lint
 	$(UV) run python -m tools.gen_event_schemas --check
 	$(UV) run python -m tools.gen_event_fixtures --check

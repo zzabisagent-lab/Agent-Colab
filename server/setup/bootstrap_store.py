@@ -93,10 +93,10 @@ class BootstrapStore:
             "schema_version": 1,
             "state": SetupState.UNINITIALIZED.value,
             "stage_ordinal": 0,
-            "token_hash": None,
-            "token_fingerprint": None,
-            "token_expires_at": None,
-            "token_used": False,
+            "token_hash": None,  # nosec B105 - hash/flag placeholder, never a secret value
+            "token_fingerprint": None,  # nosec B105 - hash/flag placeholder, never a secret value
+            "token_expires_at": None,  # nosec B105 - hash/flag placeholder, never a secret value
+            "token_used": False,  # nosec B105 - hash/flag placeholder, never a secret value
             "config_pointers": {},
             "failure_counters": {},
             "last_failure": None,
@@ -111,10 +111,10 @@ class BootstrapStore:
             "schema_version": 1,
             "state": SetupState.LOCKED.value,
             "stage_ordinal": STAGE_ORDINAL[SetupState.LOCKED],
-            "token_hash": None,
-            "token_fingerprint": None,
-            "token_expires_at": None,
-            "token_used": True,
+            "token_hash": None,  # nosec B105 - hash/flag placeholder, never a secret value
+            "token_fingerprint": None,  # nosec B105 - hash/flag placeholder, never a secret value
+            "token_expires_at": None,  # nosec B105 - hash/flag placeholder, never a secret value
+            "token_used": True,  # nosec B105 - hash/flag placeholder, never a secret value
             "config_pointers": {},
             "failure_counters": {},
             "last_failure": None,

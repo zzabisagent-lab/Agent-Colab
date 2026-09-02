@@ -1,0 +1,637 @@
+clean checkout of HEAD into /tmp/agent-colab-clean-VbbHuQ
+cd web-admin && pnpm install --frozen-lockfile
+✓ Lockfile passes supply-chain policies (verified 35m ago)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +27
++++++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/master/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 27, reused 27, downloaded 0, added 27, done
+
+dependencies:
++ react 19.2.8
++ react-dom 19.2.8
+
+devDependencies:
++ @types/node 24.13.3
++ @types/react 19.2.18
++ @types/react-dom 19.2.5
++ @vitejs/plugin-react 6.1.1
++ oxlint 1.80.0
++ typescript 6.0.3
++ vite 8.2.2
+
+Done in 968ms using pnpm v11.25.0
+/home/master/.local/bin/uv sync --all-extras
+/home/master/.local/bin/uv run ruff check .
+All checks passed!
+/home/master/.local/bin/uv run ruff format --check .
+130 files already formatted
+/home/master/.local/bin/uv run mypy
+Success: no issues found in 74 source files
+/home/master/.local/bin/uv run bandit -q -c pyproject.toml -r server sidecar tools
+Run started:2026-09-02 13:21:28.147948+00:00
+
+Test results:
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'None'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: server/setup/bootstrap_store.py:96:12
+95	            "stage_ordinal": 0,
+96	            "token_hash": None,
+97	            "token_fingerprint": None,
+98	            "token_expires_at": None,
+99	            "token_used": False,
+100	            "config_pointers": {},
+101	            "failure_counters": {},
+102	            "last_failure": None,
+103	            "lock_marker": False,
+104	            "recovery_metadata": {},
+105	            "updated_at": self._now(),
+106	        }
+107	
+108	    def lock_marker_document(self, recovery_metadata: dict[str, str]) -> dict[str, Any]:
+109	        """After DB migration only the LOCKED marker and minimal recovery metadata remain."""
+110	        return {
+111	            "schema_version": 1,
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'None'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: server/setup/bootstrap_store.py:97:12
+96	            "token_hash": None,
+97	            "token_fingerprint": None,
+98	            "token_expires_at": None,
+99	            "token_used": False,
+100	            "config_pointers": {},
+101	            "failure_counters": {},
+102	            "last_failure": None,
+103	            "lock_marker": False,
+104	            "recovery_metadata": {},
+105	            "updated_at": self._now(),
+106	        }
+107	
+108	    def lock_marker_document(self, recovery_metadata: dict[str, str]) -> dict[str, Any]:
+109	        """After DB migration only the LOCKED marker and minimal recovery metadata remain."""
+110	        return {
+111	            "schema_version": 1,
+112	            "state": SetupState.LOCKED.value,
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'None'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: server/setup/bootstrap_store.py:98:12
+97	            "token_fingerprint": None,
+98	            "token_expires_at": None,
+99	            "token_used": False,
+100	            "config_pointers": {},
+101	            "failure_counters": {},
+102	            "last_failure": None,
+103	            "lock_marker": False,
+104	            "recovery_metadata": {},
+105	            "updated_at": self._now(),
+106	        }
+107	
+108	    def lock_marker_document(self, recovery_metadata: dict[str, str]) -> dict[str, Any]:
+109	        """After DB migration only the LOCKED marker and minimal recovery metadata remain."""
+110	        return {
+111	            "schema_version": 1,
+112	            "state": SetupState.LOCKED.value,
+113	            "stage_ordinal": STAGE_ORDINAL[SetupState.LOCKED],
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'False'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: server/setup/bootstrap_store.py:99:12
+98	            "token_expires_at": None,
+99	            "token_used": False,
+100	            "config_pointers": {},
+101	            "failure_counters": {},
+102	            "last_failure": None,
+103	            "lock_marker": False,
+104	            "recovery_metadata": {},
+105	            "updated_at": self._now(),
+106	        }
+107	
+108	    def lock_marker_document(self, recovery_metadata: dict[str, str]) -> dict[str, Any]:
+109	        """After DB migration only the LOCKED marker and minimal recovery metadata remain."""
+110	        return {
+111	            "schema_version": 1,
+112	            "state": SetupState.LOCKED.value,
+113	            "stage_ordinal": STAGE_ORDINAL[SetupState.LOCKED],
+114	            "token_hash": None,
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'None'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: server/setup/bootstrap_store.py:114:12
+113	            "stage_ordinal": STAGE_ORDINAL[SetupState.LOCKED],
+114	            "token_hash": None,
+115	            "token_fingerprint": None,
+116	            "token_expires_at": None,
+117	            "token_used": True,
+118	            "config_pointers": {},
+119	            "failure_counters": {},
+120	            "last_failure": None,
+121	            "lock_marker": True,
+122	            "recovery_metadata": {"setup_state_location": "db", **recovery_metadata},
+123	            "updated_at": self._now(),
+124	        }
+125	
+126	    # ----- validation ------------------------------------------------------------------
+127	    def validate(self, document: dict[str, Any]) -> None:
+128	        errors = sorted(self._validator.iter_errors(document), key=lambda e: list(e.path))
+129	        if errors:
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'None'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: server/setup/bootstrap_store.py:115:12
+114	            "token_hash": None,
+115	            "token_fingerprint": None,
+116	            "token_expires_at": None,
+117	            "token_used": True,
+118	            "config_pointers": {},
+119	            "failure_counters": {},
+120	            "last_failure": None,
+121	            "lock_marker": True,
+122	            "recovery_metadata": {"setup_state_location": "db", **recovery_metadata},
+123	            "updated_at": self._now(),
+124	        }
+125	
+126	    # ----- validation ------------------------------------------------------------------
+127	    def validate(self, document: dict[str, Any]) -> None:
+128	        errors = sorted(self._validator.iter_errors(document), key=lambda e: list(e.path))
+129	        if errors:
+130	            where = "/".join(str(p) for p in errors[0].path) or "<root>"
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'None'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: server/setup/bootstrap_store.py:116:12
+115	            "token_fingerprint": None,
+116	            "token_expires_at": None,
+117	            "token_used": True,
+118	            "config_pointers": {},
+119	            "failure_counters": {},
+120	            "last_failure": None,
+121	            "lock_marker": True,
+122	            "recovery_metadata": {"setup_state_location": "db", **recovery_metadata},
+123	            "updated_at": self._now(),
+124	        }
+125	
+126	    # ----- validation ------------------------------------------------------------------
+127	    def validate(self, document: dict[str, Any]) -> None:
+128	        errors = sorted(self._validator.iter_errors(document), key=lambda e: list(e.path))
+129	        if errors:
+130	            where = "/".join(str(p) for p in errors[0].path) or "<root>"
+131	            raise SetupError("BOOTSTRAP_STORE_SCHEMA_INVALID", f"{where}: {errors[0].message}")
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'True'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: server/setup/bootstrap_store.py:117:12
+116	            "token_expires_at": None,
+117	            "token_used": True,
+118	            "config_pointers": {},
+119	            "failure_counters": {},
+120	            "last_failure": None,
+121	            "lock_marker": True,
+122	            "recovery_metadata": {"setup_state_location": "db", **recovery_metadata},
+123	            "updated_at": self._now(),
+124	        }
+125	
+126	    # ----- validation ------------------------------------------------------------------
+127	    def validate(self, document: dict[str, Any]) -> None:
+128	        errors = sorted(self._validator.iter_errors(document), key=lambda e: list(e.path))
+129	        if errors:
+130	            where = "/".join(str(p) for p in errors[0].path) or "<root>"
+131	            raise SetupError("BOOTSTRAP_STORE_SCHEMA_INVALID", f"{where}: {errors[0].message}")
+132	        findings = scan_for_secrets(document)
+
+--------------------------------------------------
+>> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess
+   Location: tools/evidence.py:15:0
+14	import os
+15	import subprocess
+16	import sys
+
+--------------------------------------------------
+>> Issue: [B607:start_process_with_partial_path] Starting a process with a partial executable path
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b607_start_process_with_partial_path.html
+   Location: tools/evidence.py:23:14
+22	    try:
+23	        out = subprocess.run(
+24	            ["git", "rev-parse", "HEAD"], check=True, capture_output=True, text=True, cwd=ROOT
+25	        )
+26	        return out.stdout.strip()
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: tools/evidence.py:23:14
+22	    try:
+23	        out = subprocess.run(
+24	            ["git", "rev-parse", "HEAD"], check=True, capture_output=True, text=True, cwd=ROOT
+25	        )
+26	        return out.stdout.strip()
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: tools/evidence.py:39:11
+38	    started = dt.datetime.now(dt.UTC)
+39	    proc = subprocess.run(
+40	        command,
+41	        capture_output=True,
+42	        text=True,
+43	        cwd=ROOT,
+44	        env={**os.environ, **(env or {})},
+45	        check=False,
+46	    )
+47	    finished = dt.datetime.now(dt.UTC)
+
+--------------------------------------------------
+>> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess
+   Location: tools/evidence_manifest.py:14:0
+13	import json
+14	import subprocess
+15	import sys
+
+--------------------------------------------------
+>> Issue: [B607:start_process_with_partial_path] Starting a process with a partial executable path
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b607_start_process_with_partial_path.html
+   Location: tools/evidence_manifest.py:32:11
+31	def _git(*args: str) -> str:
+32	    return subprocess.run(
+33	        ["git", *args], check=True, capture_output=True, text=True, cwd=ROOT
+34	    ).stdout
+35	
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: tools/evidence_manifest.py:32:11
+31	def _git(*args: str) -> str:
+32	    return subprocess.run(
+33	        ["git", *args], check=True, capture_output=True, text=True, cwd=ROOT
+34	    ).stdout
+35	
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'sec-0001'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: tools/gen_event_fixtures.py:295:20
+294	                    "grant_id": "grant-0001",
+295	                    "secret_id": "sec-0001",
+296	                    "grantee_agent_id": agent,
+297	                    "task_id": task,
+298	                    "action_scope": "http.get",
+299	                    "expires_at": "2026-01-15T10:30:00.000Z",
+300	                },
+301	                "grant",
+302	            )
+303	        ],
+
+--------------------------------------------------
+>> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b404-import-subprocess
+   Location: tools/run_verification.py:18:0
+17	import shutil
+18	import subprocess
+19	import sys
+
+--------------------------------------------------
+>> Issue: [B607:start_process_with_partial_path] Starting a process with a partial executable path
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b607_start_process_with_partial_path.html
+   Location: tools/run_verification.py:33:11
+32	def _git(*args: str, cwd: Path = ROOT) -> str:
+33	    return subprocess.run(
+34	        ["git", *args], check=True, capture_output=True, text=True, cwd=cwd
+35	    ).stdout
+36	
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: tools/run_verification.py:33:11
+32	def _git(*args: str, cwd: Path = ROOT) -> str:
+33	    return subprocess.run(
+34	        ["git", *args], check=True, capture_output=True, text=True, cwd=cwd
+35	    ).stdout
+36	
+
+--------------------------------------------------
+>> Issue: [B607:start_process_with_partial_path] Starting a process with a partial executable path
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b607_start_process_with_partial_path.html
+   Location: tools/run_verification.py:47:8
+46	    parts = [
+47	        subprocess.run(
+48	            ["uname", "-srm"], capture_output=True, text=True, check=False
+49	        ).stdout.strip(),
+50	        subprocess.run(
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: tools/run_verification.py:47:8
+46	    parts = [
+47	        subprocess.run(
+48	            ["uname", "-srm"], capture_output=True, text=True, check=False
+49	        ).stdout.strip(),
+50	        subprocess.run(
+
+--------------------------------------------------
+>> Issue: [B607:start_process_with_partial_path] Starting a process with a partial executable path
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b607_start_process_with_partial_path.html
+   Location: tools/run_verification.py:50:8
+49	        ).stdout.strip(),
+50	        subprocess.run(
+51	            ["python3", "--version"], capture_output=True, text=True, check=False
+52	        ).stdout.strip(),
+53	        subprocess.run(
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: tools/run_verification.py:50:8
+49	        ).stdout.strip(),
+50	        subprocess.run(
+51	            ["python3", "--version"], capture_output=True, text=True, check=False
+52	        ).stdout.strip(),
+53	        subprocess.run(
+
+--------------------------------------------------
+>> Issue: [B607:start_process_with_partial_path] Starting a process with a partial executable path
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b607_start_process_with_partial_path.html
+   Location: tools/run_verification.py:53:8
+52	        ).stdout.strip(),
+53	        subprocess.run(
+54	            ["codex", "--version"], capture_output=True, text=True, check=False
+55	        ).stdout.strip(),
+56	    ]
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: tools/run_verification.py:53:8
+52	        ).stdout.strip(),
+53	        subprocess.run(
+54	            ["codex", "--version"], capture_output=True, text=True, check=False
+55	        ).stdout.strip(),
+56	    ]
+
+--------------------------------------------------
+>> Issue: [B607:start_process_with_partial_path] Starting a process with a partial executable path
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b607_start_process_with_partial_path.html
+   Location: tools/run_verification.py:64:8
+63	    if path.exists():
+64	        subprocess.run(["git", "worktree", "remove", "--force", str(path)], cwd=ROOT, check=False)
+65	        shutil.rmtree(path, ignore_errors=True)
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: tools/run_verification.py:64:8
+63	    if path.exists():
+64	        subprocess.run(["git", "worktree", "remove", "--force", str(path)], cwd=ROOT, check=False)
+65	        shutil.rmtree(path, ignore_errors=True)
+
+--------------------------------------------------
+>> Issue: [B607:start_process_with_partial_path] Starting a process with a partial executable path
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b607_start_process_with_partial_path.html
+   Location: tools/run_verification.py:67:4
+66	    _git("worktree", "add", "--detach", str(path), commit)
+67	    subprocess.run(
+68	        ["uv", "sync", "--all-extras", "--frozen"], cwd=path, check=True, capture_output=True
+69	    )
+70	    return path
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: tools/run_verification.py:67:4
+66	    _git("worktree", "add", "--detach", str(path), commit)
+67	    subprocess.run(
+68	        ["uv", "sync", "--all-extras", "--frozen"], cwd=path, check=True, capture_output=True
+69	    )
+70	    return path
+
+--------------------------------------------------
+>> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input.
+   Severity: Low   Confidence: High
+   CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b603_subprocess_without_shell_equals_true.html
+   Location: tools/run_verification.py:174:15
+173	    ):
+174	        proc = subprocess.run(
+175	            cmd,
+176	            stdin=prompt_file,
+177	            stdout=events,
+178	            stderr=stderr,
+179	            env=env,
+180	            timeout=ns.timeout,
+181	            check=False,
+182	        )
+183	    finished = dt.datetime.now(dt.UTC)
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 5367
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 30
+		Medium: 0
+		High: 0
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 9
+		High: 21
+Files skipped (0):
+
+--- stderr ---
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Using CPython 3.12.3 interpreter at: /usr/bin/python3
+Creating virtual environment at: .venv
+Resolved 100 packages in 2ms
+   Building agent-colab @ file:///tmp/agent-colab-clean-VbbHuQ/repo
+      Built agent-colab @ file:///tmp/agent-colab-clean-VbbHuQ/repo
+Prepared 1 package in 368ms
+Installed 97 packages in 50ms
+ + agent-colab==0.0.0 (from file:///tmp/agent-colab-clean-VbbHuQ/repo)
+ + alembic==1.19.1
+ + annotated-doc==0.0.5
+ + annotated-types==0.8.0
+ + anyio==4.14.2
+ + ast-serialize==0.8.0
+ + attrs==26.1.0
+ + bandit==1.9.4
+ + boolean-py==5.0
+ + cachecontrol==0.14.4
+ + certifi==2026.7.22
+ + cffi==2.1.1
+ + charset-normalizer==3.5.1
+ + click==8.5.0
+ + coverage==7.16.0
+ + croniter==6.2.4
+ + cryptography==50.0.1
+ + cyclonedx-python-lib==11.12.0
+ + defusedxml==0.7.1
+ + fastapi==0.141.1
+ + filelock==3.32.5
+ + greenlet==3.5.5
+ + h11==0.16.0
+ + httpcore==1.0.9
+ + httpcore2==2.12.0
+ + httptools==0.8.0
+ + httpx==0.28.1
+ + httpx2==2.12.0
+ + hypothesis==6.167.1
+ + idna==3.19
+ + iniconfig==2.3.0
+ + jsonschema==4.26.0
+ + jsonschema-specifications==2025.9.1
+ + librt==0.15.0
+ + license-expression==30.4.4
+ + mako==1.4.1
+ + markdown-it-py==4.2.0
+ + markupsafe==3.0.3
+ + mcp==2.1.1
+ + mcp-types==2.1.1
+ + mdurl==0.1.2
+ + msgpack==1.2.2
+ + mypy==2.3.1
+ + mypy-extensions==1.1.0
+ + opentelemetry-api==1.44.0
+ + packageurl-python==0.17.6
+ + packaging==26.3
+ + pathspec==1.1.1
+ + pip==26.2.1
+ + pip-api==0.0.34
+ + pip-audit==2.10.1
+ + pip-requirements-parser==32.0.1
+ + platformdirs==4.11.7
+ + pluggy==1.6.0
+ + prometheus-client==0.26.0
+ + psycopg==3.3.5
+ + psycopg-binary==3.3.5
+ + psycopg-pool==3.3.1
+ + py-serializable==2.1.0
+ + pycparser==3.0
+ + pydantic==2.13.5
+ + pydantic-core==2.46.5
+ + pydantic-settings==2.15.0
+ + pygments==2.21.0
+ + pyjwt==2.13.0
+ + pyparsing==3.3.2
+ + pytest==9.1.1
+ + pytest-asyncio==1.4.0
+ + pytest-cov==7.1.0
+ + python-dateutil==2.9.0.post0
+ + python-dotenv==1.2.3
+ + python-multipart==0.0.32
+ + pyyaml==6.0.3
+ + referencing==0.37.0
+ + requests==2.34.2
+ + rich==15.0.0
+ + rpds-py==2026.6.3
+ + ruff==0.16.5
+ + six==1.17.0
+ + sortedcontainers==2.4.0
+ + sqlalchemy==2.0.52
+ + sse-starlette==3.4.8
+ + starlette==1.6.0
+ + stevedore==5.9.1
+ + tomli==2.4.1
+ + tomli-w==1.2.0
+ + truststore==0.10.4
+ + types-jsonschema==4.26.0.20260518
+ + types-pyyaml==6.0.12.20260815
+ + typing-extensions==4.16.0
+ + typing-inspection==0.4.4
+ + tzdata==2026.3
+ + urllib3==2.7.0
+ + uvicorn==0.52.4
+ + uvloop==0.22.1
+ + watchfiles==1.2.0
+ + websockets==17.1
+
+real	0m1.605s
+user	0m4.708s
+sys	0m0.952s
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+make: *** [Makefile:19: lint] Error 1
+
+real	0m15.671s
+user	0m15.251s
+sys	0m0.624s
