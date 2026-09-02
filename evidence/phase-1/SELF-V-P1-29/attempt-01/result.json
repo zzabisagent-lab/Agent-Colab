@@ -1,0 +1,19 @@
+{
+  "test_id": "V-P1-29",
+  "evidence_id": "SELF-V-P1-29",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_work_inbox.py",
+    "tests/integration/test_work_inbox_db.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "f1f9594e197c1715bac467789c71e27b6118915d",
+  "started_at": "2026-09-02T14:51:56.960648+00:00",
+  "finished_at": "2026-09-02T14:51:59.262944+00:00",
+  "output_sha256": "ecf57d762b443151696ef4727347520d0d5715719bac1e0cd93caddf627ffa61"
+}
