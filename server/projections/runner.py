@@ -29,6 +29,7 @@ from server.projections.base import Projector, get_projector, projector_names
 BATCH = 500
 _REPLAY_SQL_TEXT = f"SELECT {_COLUMNS} FROM events WHERE recorded_seq > :after"  # noqa: S608
 _REPLAY_SQL = text(_REPLAY_SQL_TEXT + " ORDER BY recorded_seq LIMIT :lim")
+_REPLAY_SQL_WS = text(_REPLAY_SQL_TEXT + " AND workspace_id = :ws ORDER BY recorded_seq LIMIT :lim")
 
 
 def _plain(value: Any) -> Any:
@@ -45,26 +46,39 @@ def _plain(value: Any) -> Any:
     return value
 
 
-def snapshot_hash(session: Session, projection_name: str) -> str:
+def snapshot_hash(session: Session, projection_name: str, workspace_id: str | None = None) -> str:
+    """Canonical hash of the projection rows (optionally one Workspace's)."""
     p: Projector = get_projector(projection_name)
+    where = "WHERE workspace_id = :ws" if workspace_id else ""
     rows = session.execute(
-        text(f"SELECT * FROM {p.table} ORDER BY {p.primary_key}")  # noqa: S608 - constant identifiers
+        text(f"SELECT * FROM {p.table} {where} ORDER BY {p.primary_key}"),  # noqa: S608
+        {"ws": workspace_id} if workspace_id else {},
     ).mappings()
     canonical_rows = [{k: _plain(v) for k, v in dict(r).items()} for r in rows]
     return sha256_hex(canonical_json(canonical_rows))
 
 
-def rebuild(session: Session, projection_name: str) -> str:
-    """Delete the projection, replay every Event in recorded order, checkpoint; return the hash."""
+def rebuild(session: Session, projection_name: str, workspace_id: str | None = None) -> str:
+    """Delete the projection (optionally one Workspace's rows), replay every Event in recorded
+    order, checkpoint; return the snapshot hash."""
     p: Projector = get_projector(projection_name)
     session.execute(
         text("SELECT pg_advisory_xact_lock(hashtext(:k))"), {"k": f"projection:{p.name}"}
     )
-    session.execute(text(f"DELETE FROM {p.table}"))  # noqa: S608 - constant identifier
+    where = "WHERE workspace_id = :ws" if workspace_id else ""
+    session.execute(
+        text(f"DELETE FROM {p.table} {where}"),  # noqa: S608 - constant identifier
+        {"ws": workspace_id} if workspace_id else {},
+    )
     after = 0
     last = 0
     while True:
-        rows = session.execute(_REPLAY_SQL, {"after": after, "lim": BATCH}).mappings().all()
+        params: dict[str, Any] = {"after": after, "lim": BATCH}
+        if workspace_id:
+            params["ws"] = workspace_id
+            rows = session.execute(_REPLAY_SQL_WS, params).mappings().all()
+        else:
+            rows = session.execute(_REPLAY_SQL, params).mappings().all()
         if not rows:
             break
         for row in rows:
@@ -72,7 +86,7 @@ def rebuild(session: Session, projection_name: str) -> str:
             p.apply(session, event)
             last = int(event["recorded_seq"])
         after = last
-    digest = snapshot_hash(session, projection_name)
+    digest = snapshot_hash(session, projection_name, workspace_id)
     session.execute(
         text(
             "INSERT INTO projection_checkpoints "

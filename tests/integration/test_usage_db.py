@@ -77,9 +77,9 @@ def engine(database_url: str) -> Iterator[Engine]:
             text(
                 "INSERT INTO work_items (work_item_id, workspace_id, kind, agent_id, task_id, "
                 "correlation_id, deadline, payload, expected_result_schema, idempotency_key, "
-                "status, created_at, updated_at) VALUES ('wi-usage-1', :w, 'task_assignment', :a, "
-                "'task-usage-1', 'corr', now(), '{}'::jsonb, 'work-result.v1', 'wi-usage-1', "
-                "'ACKED', now(), now())"
+                "status, delivered_at, acked_at, created_at, updated_at) VALUES ('wi-usage-1', :w, "
+                "'task_assignment', :a, 'task-usage-1', 'corr', now(), '{}'::jsonb, "
+                "'work-result.v1', 'wi-usage-1', 'ACKED', now(), now(), now(), now())"
             ),
             {"w": WS, "a": AGENT},
         )

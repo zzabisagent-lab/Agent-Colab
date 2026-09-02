@@ -15,6 +15,7 @@ from server.domain.task import (
     VERIFICATION_RESULT_EVENTS,
     TaskState,
     TaskStatus,
+    TaskTransitionError,
     apply_event,
 )
 from server.projections.base import register_projector
@@ -118,6 +119,9 @@ class TasksProjector:
     table = "tasks_projection"
     primary_key = "task_id"
 
+    def __init__(self) -> None:
+        self.skipped: list[str] = []
+
     def apply(self, session: Session, event: dict[str, Any]) -> None:
         etype = event["type"]
         if event.get("aggregate_type") == "task":
@@ -129,7 +133,14 @@ class TasksProjector:
         state = load_state(session, task_id)
         if not state.exists and etype not in CREATION_EVENTS:
             return
-        apply_event(state, event)
+        try:
+            apply_event(state, event)
+        except TaskTransitionError as exc:
+            # An Event that violates the transition table can only come from outside the command
+            # handlers (raw inserts, fixtures). A rebuild never aborts on it: the Event is skipped
+            # and reported; the integrity job (server.events.integrity) surfaces such streams.
+            self.skipped.append(f"{event['event_id']}: {exc.code}")
+            return
         write_state(session, state, event["occurred_at"])
 
 

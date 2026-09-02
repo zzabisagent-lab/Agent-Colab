@@ -442,10 +442,13 @@ def test_projection_rebuild_reproduces_identical_snapshot(engine: Engine) -> Non
             dict(r)
             for r in s.execute(text("SELECT * FROM tasks_projection ORDER BY task_id")).mappings()
         ]
-        before = snapshot_hash(s, "tasks")
-        s.execute(text("DELETE FROM tasks_projection"))
-        assert s.execute(text("SELECT count(*) FROM tasks_projection")).scalar_one() == 0
-        after = rebuild(s, "tasks")
+        before = snapshot_hash(s, "tasks", str(WS))
+        s.execute(text("DELETE FROM tasks_projection WHERE workspace_id = :w"), {"w": WS})
+        remaining = s.execute(
+            text("SELECT count(*) FROM tasks_projection WHERE workspace_id = :w"), {"w": WS}
+        ).scalar_one()
+        assert remaining == 0
+        after = rebuild(s, "tasks", str(WS))
         after_rows = [
             dict(r)
             for r in s.execute(text("SELECT * FROM tasks_projection ORDER BY task_id")).mappings()

@@ -21,7 +21,7 @@ from sqlalchemy.orm import Session
 from server.domain.clock import Clock
 from server.events.store import EventStore
 from server.work import inbox
-from server.work.state import NextAction, next_action
+from server.work.state import NextAction, WorkItemError, next_action
 
 
 @dataclass(frozen=True)
@@ -37,6 +37,7 @@ class SweepReport:
     expired: list[SweepOutcome] = field(default_factory=list)
     reroute_required: list[SweepOutcome] = field(default_factory=list)
     waiting_required: list[SweepOutcome] = field(default_factory=list)
+    invalid: list[str] = field(default_factory=list)
 
     @property
     def outcomes(self) -> list[SweepOutcome]:
@@ -57,17 +58,22 @@ def sweep(
     report = SweepReport()
     counts = reroute_counts or {}
     for item in inbox.open_items(session, agent_id=agent_id):
-        decision = next_action(
-            item.status,
-            item.delivered_at,
-            item.acked_at,
-            now,
-            item.delivery_count,
-            kind=item.kind,
-            accepted_at=item.accepted_at,
-            reroute_count=counts.get(item.work_item_id, 0),
-            deadline=item.deadline,
-        )
+        try:
+            decision = next_action(
+                item.status,
+                item.delivered_at,
+                item.acked_at,
+                now,
+                item.delivery_count,
+                kind=item.kind,
+                accepted_at=item.accepted_at,
+                reroute_count=counts.get(item.work_item_id, 0),
+                deadline=item.deadline,
+            )
+        except WorkItemError as exc:
+            # a malformed row (only possible outside the inbox API) never stops the sweep job
+            report.invalid.append(f"{item.work_item_id}: {exc.code}")
+            continue
         if decision.action is NextAction.NONE:
             continue
         if decision.action is NextAction.REDELIVER:
