@@ -205,7 +205,7 @@ def test_audit_chain_appends_and_anchors_verify(owner: Engine) -> None:
                 s,
                 action="policy.deny",
                 target_type="task",
-                target_id=f"task-{i}",
+                target_id=f"task-imm-audit-{i}",
                 result="DENY",
                 actor_label="acct-imm-actor",
                 correlation_id="corr-imm",
@@ -239,7 +239,12 @@ def test_verification_revisions_chain_and_tamper_detection(owner: Engine) -> Non
                 "trg_verification_revisions_immutable"
             )
         )
-        c.execute(text("UPDATE verification_revisions SET result = 'PASSED' WHERE revision = 1"))
+        c.execute(
+            text(
+                "UPDATE verification_revisions SET result = 'PASSED' "
+                "WHERE verification_id = 'vr-imm-1' AND revision = 1"
+            )
+        )
         c.execute(
             text(
                 "ALTER TABLE verification_revisions ENABLE TRIGGER "
@@ -257,7 +262,12 @@ def test_verification_revisions_chain_and_tamper_detection(owner: Engine) -> Non
                 "trg_verification_revisions_immutable"
             )
         )
-        c.execute(text("UPDATE verification_revisions SET result = 'FAILED' WHERE revision = 1"))
+        c.execute(
+            text(
+                "UPDATE verification_revisions SET result = 'FAILED' "
+                "WHERE verification_id = 'vr-imm-1' AND revision = 1"
+            )
+        )
         c.execute(
             text(
                 "ALTER TABLE verification_revisions ENABLE TRIGGER "
@@ -276,12 +286,16 @@ def test_audit_chain_tamper_detected(owner: Engine) -> None:
 
     with owner.begin() as c:
         c.execute(text("ALTER TABLE audit_events DISABLE TRIGGER trg_audit_events_immutable"))
-        c.execute(text("UPDATE audit_events SET result = 'ALLOW' WHERE target_id = 'task-1'"))
+        c.execute(
+            text("UPDATE audit_events SET result = 'ALLOW' WHERE target_id = 'task-imm-audit-1'")
+        )
         c.execute(text("ALTER TABLE audit_events ENABLE TRIGGER trg_audit_events_immutable"))
     with Session(owner) as s:
         assert any("tampered" in p for p in verify_chain(s, AUDIT_CHAIN))
         assert verify_anchors(s, AUDIT_CHAIN)
     with owner.begin() as c:
         c.execute(text("ALTER TABLE audit_events DISABLE TRIGGER trg_audit_events_immutable"))
-        c.execute(text("UPDATE audit_events SET result = 'DENY' WHERE target_id = 'task-1'"))
+        c.execute(
+            text("UPDATE audit_events SET result = 'DENY' WHERE target_id = 'task-imm-audit-1'")
+        )
         c.execute(text("ALTER TABLE audit_events ENABLE TRIGGER trg_audit_events_immutable"))

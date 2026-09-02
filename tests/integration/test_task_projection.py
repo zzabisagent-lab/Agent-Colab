@@ -30,6 +30,22 @@ from server.projections.tasks import load_state
 
 pytestmark = pytest.mark.db
 
+
+@pytest.fixture(autouse=True)
+def _without_document_gate() -> Iterator[None]:
+    """These tests exercise the Task transition machine; the FINALIZED-document completion gate
+    (P1-10) is covered by tests/integration/test_document_lifecycle.py and tests/e2e."""
+    from server.domain.task import COMPLETION_CHECKS
+
+    removed = [
+        c for c in COMPLETION_CHECKS if getattr(c, "__name__", "") == "finalized_document_check"
+    ]
+    for check in removed:
+        COMPLETION_CHECKS.remove(check)
+    yield
+    COMPLETION_CHECKS.extend(removed)
+
+
 WS = uuid.uuid4()
 CHANNEL = uuid.uuid4()
 HUMAN = uuid.uuid4()
@@ -185,6 +201,7 @@ def test_normal_flow_read_after_write_and_events(
             "TASK_STARTED",
             "TASK_PROGRESS_REPORTED",
             "IMPLEMENTATION_SUBMITTED",
+            "DOCUMENT_DRAFTED",
             "TASK_VERIFICATION_STARTED",
             "VERIFICATION_PASSED",
             "TASK_COMPLETED",

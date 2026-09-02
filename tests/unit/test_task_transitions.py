@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
@@ -20,6 +21,22 @@ from server.domain.task import (
     next_status,
     register_completion_check,
 )
+
+
+@pytest.fixture(autouse=True)
+def _without_document_gate() -> Iterator[None]:
+    """These tests exercise the Task transition machine; the FINALIZED-document completion gate
+    (P1-10) is covered by tests/integration/test_document_lifecycle.py and tests/e2e."""
+    from server.domain.task import COMPLETION_CHECKS
+
+    removed = [
+        c for c in COMPLETION_CHECKS if getattr(c, "__name__", "") == "finalized_document_check"
+    ]
+    for check in removed:
+        COMPLETION_CHECKS.remove(check)
+    yield
+    COMPLETION_CHECKS.extend(removed)
+
 
 FIXTURE = Path(__file__).resolve().parents[1] / "fixtures" / "tasks" / "transitions.yaml"
 TABLE = yaml.safe_load(FIXTURE.read_text(encoding="utf-8"))

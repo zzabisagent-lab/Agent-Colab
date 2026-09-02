@@ -24,6 +24,7 @@ from server.application.bus import (
     require_permission,
 )
 from server.domain.task import (
+    COMPLETION_CHECKS,
     TaskState,
     TaskStatus,
     TaskTransitionError,
@@ -653,7 +654,9 @@ def complete_task(cmd: CompleteTask, ctx: CommandContext) -> Any:
         if state.status in (TaskStatus.COMPLETED, TaskStatus.CANCELLED):
             raise CommandError("TASK_TERMINAL", f"{state.status} is terminal", status=409)
         missing = completion_prerequisites(state, ctx.session)
-        if not missing:
+        if not missing and any(
+            getattr(c, "__name__", "") == "finalized_document_check" for c in COMPLETION_CHECKS
+        ):
             from server.documents.lifecycle import expected_document_id
 
             expected = expected_document_id(ctx.session, cmd.task_id)

@@ -249,13 +249,16 @@ def draft_document(
     if replay is not None:
         return replay
     existing = list_versions(session, document_id)
-    if existing:
+    if existing and existing[-1]["status"] == "DRAFT_PRE_VERIFICATION":
         latest = existing[-1]
-        if (
-            latest["status"] == "DRAFT_PRE_VERIFICATION"
-            and int(latest["source_freeze_event_seq"]) == freeze.up_to_recorded_seq
-        ):
-            # the same source freeze already has a draft: nothing new to record
+        probe = build_skeleton(
+            sources,
+            "DRAFT_PRE_VERIFICATION",
+            document_id=document_id,
+            version=int(latest["version"]),
+        )
+        if probe.sha256 == str(latest["sha256"]):
+            # byte-identical to the current draft (same sources): nothing new to record
             return DocumentVersion(
                 document_id=document_id,
                 version=int(latest["version"]),
