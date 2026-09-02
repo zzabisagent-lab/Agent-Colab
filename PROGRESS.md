@@ -25,6 +25,8 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 
 Phase 1 progress (size-weighted): 33.5 / 33.5
 
+Latest verification: VR-P1-001 requested (Codex, unsandboxed in an isolated worktree).
+
 ## Phase 0 (PASSED) — branch `phase-0`, tag `phase-0-passed`
 
 ### Package status
