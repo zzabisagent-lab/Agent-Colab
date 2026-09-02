@@ -23,5 +23,6 @@
     "task_id",
     "offers"
   ],
-  "additionalProperties": true
+  "additionalProperties": true,
+  "x-extension": "development plan §7D.2: verifier offers exhausted → WAITING + Administrator notification"
 }

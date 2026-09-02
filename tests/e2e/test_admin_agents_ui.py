@@ -53,7 +53,7 @@ def engine(database_url: str) -> Iterator[Engine]:
         )
         for acc, name, tok in (
             (ADMIN, "acct-ui-ag-admin", TOK_ADMIN),
-            (MEMBER, "acct-ui-member", TOK_MEMBER),
+            (MEMBER, "acct-ui-ag-member", TOK_MEMBER),
         ):
             s.execute(
                 text(
@@ -126,7 +126,7 @@ def test_agent_admin_console_paths(server: str, engine: Engine) -> None:
         "E2E_AUTHORIZED_TOKEN": TOK_ADMIN,
         "E2E_UNAUTHORIZED_TOKEN": TOK_MEMBER,
         "E2E_AGENT_ID": "agent-ui-1",
-        "E2E_ASSIGN_ACCOUNT": "acct-ui-member",
+        "E2E_ASSIGN_ACCOUNT": "acct-ui-ag-member",
     }
     if wrapper.exists():
         env["PLAYWRIGHT_CHROMIUM_EXECUTABLE"] = str(wrapper)

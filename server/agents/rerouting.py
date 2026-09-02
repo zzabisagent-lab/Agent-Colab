@@ -13,6 +13,7 @@ Re-routing is a server action performed by the Workspace's system service Accoun
 
 from __future__ import annotations
 
+import logging
 import uuid
 from collections.abc import Iterable
 from dataclasses import dataclass
@@ -32,6 +33,9 @@ from server.events.store import EventStore
 from server.work import inbox
 from server.work.state import WorkItemError
 from server.work.timeouts import SweepReport
+
+log = logging.getLogger(__name__)
+
 
 REROUTE_REASONS = frozenset(
     {
@@ -368,17 +372,27 @@ def on_work_rejected(
 ) -> RerouteOutcome | None:
     if item.kind not in ("task_assignment", "subtask_assignment") or item.task_id is None:
         return None
-    return reroute_task(
-        session,
-        store,
-        clock=clock,
-        workspace_id=workspace_id,
-        task_id=item.task_id,
-        reason_code=reason_code,
-        actor=actor,
-        authorizer=authorizer,
-        correlation_id=item.correlation_id,
-    )
+    try:
+        return reroute_task(
+            session,
+            store,
+            clock=clock,
+            workspace_id=workspace_id,
+            task_id=item.task_id,
+            reason_code=reason_code,
+            actor=actor,
+            authorizer=authorizer,
+            correlation_id=item.correlation_id,
+        )
+    except bus.CommandError as exc:
+        if exc.code != "TASK_NOT_FOUND":
+            raise
+        # an orphan work item (its Task is gone from the projection): the rejection itself is
+        # recorded; there is nothing left to re-route
+        log.warning(
+            "reject of %s: task %s not found, no re-routing", item.work_item_id, item.task_id
+        )
+        return None
 
 
 def on_agent_unavailable(

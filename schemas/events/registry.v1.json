@@ -724,7 +724,7 @@
       "phase": 3,
       "schema_version": 1,
       "payload_schema": "types/VERIFIER_ASSIGNMENT_EXHAUSTED.v1.schema.json",
-      "extension": false
+      "extension": true
     },
     "SECRET_REGISTERED": {
       "aggregate_type": "secret",
