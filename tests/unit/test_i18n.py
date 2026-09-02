@@ -33,3 +33,13 @@ def test_renderer_uses_the_selected_bundle() -> None:
     ko = render_transition("TASK_STARTED", {}, i18n.bundle("ko"))
     en = render_transition("TASK_STARTED", {}, i18n.bundle("en"))
     assert ko == "작업 시작" and en == "Work started"
+
+
+def test_document_headings_localized_but_keys_and_order_stable() -> None:
+    from server.documents.templates import SECTIONS, headings_of, render
+
+    en = render("T", {}, "en")
+    ko = render("T", {}, "ko")
+    assert headings_of(en) == [h for _, h in SECTIONS]
+    assert headings_of(ko)[0] == "목적과 범위" and len(headings_of(ko)) == len(SECTIONS)
+    assert render("T", {}) == en  # default language is English (canonical spec text)
