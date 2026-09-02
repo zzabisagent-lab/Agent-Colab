@@ -296,7 +296,8 @@ class PostgresEventStore:
     def get(self, event_id: str) -> dict[str, Any] | None:
         row = (
             self._s.execute(
-                text(f"SELECT {_COLUMNS} FROM events WHERE event_id = :e"), {"e": event_id}  # noqa: S608
+                text(f"SELECT {_COLUMNS} FROM events WHERE event_id = :e"),
+                {"e": event_id},  # noqa: S608
             )
             .mappings()
             .first()
