@@ -193,7 +193,7 @@ def render_task_card(card: CardInput, bundle: dict[str, str] | None = None) -> R
         suffix = f" [{card.join_policy}]" if card.join_policy else ""
         lines.append(message("renderer.card.subtasks", bundle, subtasks=joined + suffix))
     if card.pending_approvals:
-        offered = ("approve", "reject") + BUTTONS_BY_STATUS.get(card.status, ())
+        offered = ("approve", "reject", *BUTTONS_BY_STATUS.get(card.status, ()))
     else:
         offered = BUTTONS_BY_STATUS.get(card.status, ())
     buttons = tuple(b for b in offered if BUTTON_PERMISSION[b] in card.actor_permissions)
