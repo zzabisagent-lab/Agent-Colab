@@ -5,29 +5,99 @@
   "description": "Contents of /var/lib/agent-colab/bootstrap/state.json (spec §12, development plan §8.1). Only setup state, the setup-token hash, and non-secret configuration pointers are allowed; secret values never appear here.",
   "type": "object",
   "properties": {
-    "schema_version": {"type": "integer", "const": 1},
-    "state": {"type": "string", "enum": ["UNINITIALIZED", "PREFLIGHT_PASSED", "BOOTSTRAPPING", "BOOTSTRAP_FAILED", "CONFIGURED", "LOCKED", "RECONFIGURING"]},
-    "stage_ordinal": {"type": "integer", "minimum": 0, "maximum": 4},
-    "token_hash": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
-    "token_fingerprint": {"type": ["string", "null"], "pattern": "^[0-9a-f]{8}$"},
-    "token_expires_at": {"type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"},
-    "token_used": {"type": "boolean"},
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "UNINITIALIZED",
+        "PREFLIGHT_PASSED",
+        "BOOTSTRAPPING",
+        "BOOTSTRAP_FAILED",
+        "CONFIGURED",
+        "LOCKED",
+        "RECONFIGURING"
+      ]
+    },
+    "stage_ordinal": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4
+    },
+    "token_hash": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "token_fingerprint": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{8}$"
+    },
+    "token_expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "token_used": {
+      "type": "boolean"
+    },
     "config_pointers": {
       "type": "object",
       "description": "Non-secret pointers only: hostnames, ports, database/user names, provider names, filesystem paths.",
       "properties": {
-        "db_host": {"type": "string"},
-        "db_port": {"type": "integer", "minimum": 1, "maximum": 65535},
-        "db_name": {"type": "string"},
-        "db_user": {"type": "string"},
-        "secret_provider": {"type": "string", "enum": ["local_encrypted", "vault", "infisical", "sops"]},
-        "master_key_path": {"type": "string"},
-        "artifact_path": {"type": "string"},
-        "document_path": {"type": "string"},
-        "instance_name": {"type": "string"},
-        "base_url": {"type": "string"},
-        "language": {"type": "string"},
-        "timezone": {"type": "string"}
+        "db_host": {
+          "type": "string"
+        },
+        "db_port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "db_name": {
+          "type": "string"
+        },
+        "db_user": {
+          "type": "string"
+        },
+        "secret_provider": {
+          "type": "string",
+          "enum": [
+            "local_encrypted",
+            "vault",
+            "infisical",
+            "sops"
+          ]
+        },
+        "master_key_path": {
+          "type": "string"
+        },
+        "artifact_path": {
+          "type": "string"
+        },
+        "document_path": {
+          "type": "string"
+        },
+        "instance_name": {
+          "type": "string"
+        },
+        "base_url": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        }
       },
       "additionalProperties": false
     },
@@ -36,37 +106,125 @@
       "additionalProperties": {
         "type": "object",
         "properties": {
-          "failures": {"type": "integer", "minimum": 0},
-          "blocked_until": {"type": ["string", "null"]}
+          "failures": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "blocked_until": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
         },
-        "required": ["failures"],
+        "required": [
+          "failures"
+        ],
         "additionalProperties": false
       }
     },
     "last_failure": {
-      "type": ["object", "null"],
+      "type": [
+        "object",
+        "null"
+      ],
       "properties": {
-        "failed_step": {"type": "string"},
-        "error_code": {"type": "string"},
-        "retry_token_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{8}$"},
-        "failed_at": {"type": "string"}
+        "failed_step": {
+          "type": "string"
+        },
+        "error_code": {
+          "type": "string"
+        },
+        "retry_token_fingerprint": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}$"
+        },
+        "failed_at": {
+          "type": "string"
+        }
       },
-      "required": ["failed_step", "error_code", "retry_token_fingerprint", "failed_at"],
+      "required": [
+        "failed_step",
+        "error_code",
+        "retry_token_fingerprint",
+        "failed_at"
+      ],
       "additionalProperties": false
     },
-    "lock_marker": {"type": "boolean"},
+    "lock_marker": {
+      "type": "boolean"
+    },
     "recovery_metadata": {
       "type": "object",
       "properties": {
-        "instance_id": {"type": "string"},
-        "locked_at": {"type": "string"},
-        "setup_state_location": {"type": "string", "enum": ["db"]},
-        "schema_migration_head": {"type": "string"}
+        "instance_id": {
+          "type": "string"
+        },
+        "locked_at": {
+          "type": "string"
+        },
+        "setup_state_location": {
+          "type": "string",
+          "enum": [
+            "db"
+          ]
+        },
+        "schema_migration_head": {
+          "type": "string"
+        }
       },
       "additionalProperties": false
     },
-    "updated_at": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"}
+    "updated_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "rejection_log": {
+      "type": "array",
+      "description": "Redacted setup-token rejections before the DB exists (ip, token fingerprint, code, time); never a token value.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "at": {
+            "type": "string"
+          },
+          "ip": {
+            "type": "string"
+          },
+          "token_fingerprint": {
+            "type": "string",
+            "pattern": "^([0-9a-f]{8})?$"
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^SETUP_[A-Z_]+$"
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^rej-[0-9a-f]{16}$"
+          },
+          "audited": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "at",
+          "ip",
+          "token_fingerprint",
+          "code"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 50
+    }
   },
-  "required": ["schema_version", "state", "stage_ordinal", "token_used", "lock_marker", "updated_at"],
+  "required": [
+    "schema_version",
+    "state",
+    "stage_ordinal",
+    "token_used",
+    "lock_marker",
+    "updated_at"
+  ],
   "additionalProperties": false
 }

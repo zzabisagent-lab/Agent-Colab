@@ -1,0 +1,97 @@
+Script started on 2026-09-03 02:02:28+00:00 [COMMAND="gitleaks git --no-banner --redact --verbose ." <not executed on terminal>]
+Finding:     ...v8-001\ncommit_sha: [1;3;mREDACTED[0m\nimage_digests: []\nr...
+Secret:      [1;3;mREDACTED[0m
+RuleID:      sourcegraph-access-token
+Entropy:     3.699582
+File:        verification/phase-4/run-r001/events.jsonl
+Line:        7
+Commit:      4e774efd1500db7ba444679d684e92def376225e
+Author:      zzabisagent-lab
+Email:       zzabisagent-lab@users.noreply.github.com
+Date:        2026-09-03T01:50:59Z
+Fingerprint: 4e774efd1500db7ba444679d684e92def376225e:verification/phase-4/run-r001/events.jsonl:sourcegraph-access-token:7
+Link:        https://github.com/zzabisagent-lab/Agent-Colab/blob/4e774efd1500db7ba444679d684e92def376225e/verification/phase-4/run-r001/events.jsonl#L7
+
+Finding:     ...-oneline --decorate [1;3;mREDACTED[0m; git log -1 --format...
+Secret:      [1;3;mREDACTED[0m
+RuleID:      sourcegraph-access-token
+Entropy:     3.699582
+File:        verification/phase-4/run-r001/events.jsonl
+Line:        24
+Commit:      4e774efd1500db7ba444679d684e92def376225e
+Author:      zzabisagent-lab
+Email:       zzabisagent-lab@users.noreply.github.com
+Date:        2026-09-03T01:50:59Z
+Fingerprint: 4e774efd1500db7ba444679d684e92def376225e:verification/phase-4/run-r001/events.jsonl:sourcegraph-access-token:24
+Link:        https://github.com/zzabisagent-lab/Agent-Colab/blob/4e774efd1500db7ba444679d684e92def376225e/verification/phase-4/run-r001/events.jsonl#L24
+
+Finding:     ...-oneline --decorate [1;3;mREDACTED[0m; git log -1 --format...
+Secret:      [1;3;mREDACTED[0m
+RuleID:      sourcegraph-access-token
+Entropy:     3.699582
+File:        verification/phase-4/run-r001/events.jsonl
+Line:        25
+Commit:      4e774efd1500db7ba444679d684e92def376225e
+Author:      zzabisagent-lab
+Email:       zzabisagent-lab@users.noreply.github.com
+Date:        2026-09-03T01:50:59Z
+Fingerprint: 4e774efd1500db7ba444679d684e92def376225e:verification/phase-4/run-r001/events.jsonl:sourcegraph-access-token:25
+Link:        https://github.com/zzabisagent-lab/Agent-Colab/blob/4e774efd1500db7ba444679d684e92def376225e/verification/phase-4/run-r001/events.jsonl#L25
+
+Finding:     ...eletions(-)\ncommit [1;3;mREDACTED[0m\nAuthor:     zzabisag...
+Secret:      [1;3;mREDACTED[0m
+RuleID:      sourcegraph-access-token
+Entropy:     3.699582
+File:        verification/phase-4/run-r001/events.jsonl
+Line:        25
+Commit:      4e774efd1500db7ba444679d684e92def376225e
+Author:      zzabisagent-lab
+Email:       zzabisagent-lab@users.noreply.github.com
+Date:        2026-09-03T01:50:59Z
+Fingerprint: 4e774efd1500db7ba444679d684e92def376225e:verification/phase-4/run-r001/events.jsonl:sourcegraph-access-token:25
+Link:        https://github.com/zzabisagent-lab/Agent-Colab/blob/4e774efd1500db7ba444679d684e92def376225e/verification/phase-4/run-r001/events.jsonl#L25
+
+Finding:     ....CmmWaM checkout -q [1;3;mREDACTED[0m && script -q -e -c ...
+Secret:      [1;3;mREDACTED[0m
+RuleID:      sourcegraph-access-token
+Entropy:     3.699582
+File:        verification/phase-4/run-r001/events.jsonl
+Line:        28
+Commit:      4e774efd1500db7ba444679d684e92def376225e
+Author:      zzabisagent-lab
+Email:       zzabisagent-lab@users.noreply.github.com
+Date:        2026-09-03T01:50:59Z
+Fingerprint: 4e774efd1500db7ba444679d684e92def376225e:verification/phase-4/run-r001/events.jsonl:sourcegraph-access-token:28
+Link:        https://github.com/zzabisagent-lab/Agent-Colab/blob/4e774efd1500db7ba444679d684e92def376225e/verification/phase-4/run-r001/events.jsonl#L28
+
+Finding:     ....CmmWaM checkout -q [1;3;mREDACTED[0m && script -q -e -c ...
+Secret:      [1;3;mREDACTED[0m
+RuleID:      sourcegraph-access-token
+Entropy:     3.699582
+File:        verification/phase-4/run-r001/events.jsonl
+Line:        29
+Commit:      4e774efd1500db7ba444679d684e92def376225e
+Author:      zzabisagent-lab
+Email:       zzabisagent-lab@users.noreply.github.com
+Date:        2026-09-03T01:50:59Z
+Fingerprint: 4e774efd1500db7ba444679d684e92def376225e:verification/phase-4/run-r001/events.jsonl:sourcegraph-access-token:29
+Link:        https://github.com/zzabisagent-lab/Agent-Colab/blob/4e774efd1500db7ba444679d684e92def376225e/verification/phase-4/run-r001/events.jsonl#L29
+
+Finding:     ...lback: git checkout [1;3;mREDACTED[0m (merge-base with ma...
+Secret:      [1;3;mREDACTED[0m
+RuleID:      sourcegraph-access-token
+Entropy:     3.675716
+File:        verification/phase-4/run-r001/events.jsonl
+Line:        31
+Commit:      4e774efd1500db7ba444679d684e92def376225e
+Author:      zzabisagent-lab
+Email:       zzabisagent-lab@users.noreply.github.com
+Date:        2026-09-03T01:50:59Z
+Fingerprint: 4e774efd1500db7ba444679d684e92def376225e:verification/phase-4/run-r001/events.jsonl:sourcegraph-access-token:31
+Link:        https://github.com/zzabisagent-lab/Agent-Colab/blob/4e774efd1500db7ba444679d684e92def376225e/verification/phase-4/run-r001/events.jsonl#L31
+
+2:02AM INF 108 commits scanned.
+2:02AM INF scanned ~7871752 bytes (7.87 MB) in 1.36s
+2:02AM WRN leaks found: 7
+
+Script done on 2026-09-03 02:02:29+00:00 [COMMAND_EXIT_CODE="1"]

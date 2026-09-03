@@ -1,0 +1,25 @@
+Script started on 2026-09-03 01:44:22+00:00 [COMMAND="uv run python -c "import json,yaml; from jsonschema import Draft202012Validator; d=yaml.safe_load(open(\"verification/phase-4/VR-P4-001.yaml\")); s=json.load(open(\"schemas/documents/verifier-report.v1.schema.json\")); Draft202012Validator(s).validate(d); assert len(d[\"tests\"]) == 33; assert [x[\"id\"] for x in d[\"tests\"]] == [f\"V-P4-{i:02d}\" for i in range(1,34)]; print(\"schema_valid=true tests=33 result=\" + d[\"result\"])" && sha256sum verification/phase-4/VR-P4-001.yaml verification/phase-4/evidence-r001/*.log verification/phase-4/evidence-r001/*.py && git diff --check && git status --short" <not executed on terminal>]
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+schema_valid=true tests=33 result=FAILED
+f5a07a0e15c15e8bfc2e1d2aef69d05be1d8d6394bc725386998f8f651aaf021  verification/phase-4/VR-P4-001.yaml
+363a7e7915e78a57c16d7821c742000e704caea3e6653e3f70ca45baf18ab008  verification/phase-4/evidence-r001/accounts-ops-delete.log
+12c532cc0ed8619e9b8754998407da0c3a7e4ace22c1d72cd009494e5dd7fd7e  verification/phase-4/evidence-r001/admin-security.log
+df99f2cd11162ac7f62013e5ec93231947323978ea71dbf08fc52bbe674916c1  verification/phase-4/evidence-r001/check-docs-build-sidecar-gitleaks.log
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  verification/phase-4/evidence-r001/final-validation-hashes.log
+da21c263218205a25f3410cd59d2af1ea6c3c2158fb1d1128371f459dd0e7fc8  verification/phase-4/evidence-r001/make-ci.log
+a7325ab319ba42e2d9615247f885373063a8e7175fcd2dfc9b0e524e260a5ecd  verification/phase-4/evidence-r001/make-test.log
+c617caa04febe924aece34ae21309e5093e9bb6b38e53aba6a3979772391ba29  verification/phase-4/evidence-r001/repro-setup-rejection-audit-attempt2.log
+673fd1cac8afb7f3091ec10377eaebf32cd4f8c3bda61c1281a804a5fcefde53  verification/phase-4/evidence-r001/repro-setup-rejection-audit.log
+635f436f827d579e100e51528fed790fe74ee702f60da30604f6cb44ee0f197c  verification/phase-4/evidence-r001/repro-web-setup-contract-attempt2.log
+9121baf080431a0aa6df0df2da9b060de76146dbfbc7f6e547bc6221e4ab70bc  verification/phase-4/evidence-r001/repro-web-setup-contract-attempt3.log
+43935247fe628a9989d09daddf441a006320652bb538d7c37c2d8c012d99d56a  verification/phase-4/evidence-r001/repro-web-setup-contract.log
+150dfd1f786ff978bb4ea9cbdd936c58b042e7fd32121a0be7fdd0c1f641b0f4  verification/phase-4/evidence-r001/secrets.log
+da3e7c18ba92de39073290e32595e49b745c228a5981fc24bdb6585b162774e7  verification/phase-4/evidence-r001/setup-settings-maintenance.log
+fc37f34a7266bc20f07fefa094cd4ee8fbed906478ee8723b14dabac7ce0d3aa  verification/phase-4/evidence-r001/sidecar.log
+978cef170e5db1dfb2f907f76474f502d88adf91cda737d0a450226a137f7a4a  verification/phase-4/evidence-r001/ui-build-e2e.log
+6bd5ba336e5100ffc57fe71c1d501948dc480d4721a4cb817fc2f824de0c2f0f  verification/phase-4/evidence-r001/repro_setup_rejection_audit.py
+57b8fb713b31e77bd98d94ad40514d0c89a08eb58549e1cc549933271192a061  verification/phase-4/evidence-r001/repro_web_setup_contract.py
+[31m??[m evidence/phase-4/manifest.yaml
+[31m??[m verification/phase-4/
+
+Script done on 2026-09-03 01:44:23+00:00 [COMMAND_EXIT_CODE="0"]

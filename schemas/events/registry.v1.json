@@ -901,6 +901,41 @@
       "payload_schema": "types/ACCOUNT_CREATED.v1.schema.json",
       "extension": true
     },
+    "ACCOUNT_UPDATED": {
+      "aggregate_type": "account",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/ACCOUNT_UPDATED.v1.schema.json",
+      "extension": true
+    },
+    "ACCOUNT_REINSTATED": {
+      "aggregate_type": "account",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/ACCOUNT_REINSTATED.v1.schema.json",
+      "extension": true
+    },
+    "ACCOUNT_DELETION_REQUESTED": {
+      "aggregate_type": "account",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/ACCOUNT_DELETION_REQUESTED.v1.schema.json",
+      "extension": true
+    },
+    "ACCOUNT_HARD_DELETED": {
+      "aggregate_type": "account",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/ACCOUNT_HARD_DELETED.v1.schema.json",
+      "extension": true
+    },
+    "HARD_DELETE_REJECTED": {
+      "aggregate_type": "hard_delete",
+      "phase": 4,
+      "schema_version": 1,
+      "payload_schema": "types/HARD_DELETE_REJECTED.v1.schema.json",
+      "extension": true
+    },
     "ROLE_VERSION_CREATED": {
       "aggregate_type": "role",
       "phase": 1,

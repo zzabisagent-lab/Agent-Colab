@@ -1,0 +1,519 @@
+implementation_id: P4-IMPLEMENT-001
+phase: 4
+implementer_agent_id: agent-claude-code
+implementer_account_id: account-implementer-claude
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+identity_graph_version: identity-v8-001
+commit_sha: a488dfe25ab39358e207307ecc394729ae8f403f
+image_digests: []
+requirements:
+- REQ-ADMN-001
+- REQ-ADMN-002
+- REQ-ADMN-003
+- REQ-ADMN-004
+- REQ-ADMN-005
+- REQ-ADMN-006
+- REQ-APRV-003
+- REQ-OPS-005
+- REQ-OPS-009
+- REQ-QGAT-004
+- REQ-SCHD-014
+- REQ-SCRT-001
+- REQ-SCRT-002
+- REQ-SCRT-003
+- REQ-SCRT-004
+- REQ-SETP-001
+- REQ-SETP-002
+- REQ-SETP-003
+- REQ-SETP-004
+- REQ-SETP-005
+- REQ-SETT-001
+changed_files:
+- .gitleaks.toml
+- PROGRESS.md
+- docs/adr/ADR-0011-phase4-admin-decisions.md
+- docs/architecture/account-admin.md
+- docs/architecture/admin-security.md
+- docs/architecture/hard-delete.md
+- docs/architecture/ops-dashboard.md
+- docs/architecture/phase4-admin.md
+- docs/architecture/secret-broker.md
+- docs/architecture/settings.md
+- docs/architecture/setup-wizard.md
+- docs/protocol/secret-sidecar-api.md
+- docs/protocol/secret-sidecar.md
+- evidence/phase-4/SELF-V-P4-01/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-01/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-02/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-02/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-03/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-03/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-04/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-04/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-05/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-05/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-06/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-06/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-07/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-07/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-07/attempt-02/output.log
+- evidence/phase-4/SELF-V-P4-07/attempt-02/result.json
+- evidence/phase-4/SELF-V-P4-08/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-08/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-08/attempt-02/output.log
+- evidence/phase-4/SELF-V-P4-08/attempt-02/result.json
+- evidence/phase-4/SELF-V-P4-08/attempt-03/output.log
+- evidence/phase-4/SELF-V-P4-08/attempt-03/result.json
+- evidence/phase-4/SELF-V-P4-08/attempt-04/output.log
+- evidence/phase-4/SELF-V-P4-08/attempt-04/result.json
+- evidence/phase-4/SELF-V-P4-09/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-09/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-10/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-10/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-10/attempt-02/output.log
+- evidence/phase-4/SELF-V-P4-10/attempt-02/result.json
+- evidence/phase-4/SELF-V-P4-11/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-11/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-11/attempt-02/output.log
+- evidence/phase-4/SELF-V-P4-11/attempt-02/result.json
+- evidence/phase-4/SELF-V-P4-12/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-12/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-13/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-13/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-13/attempt-02/output.log
+- evidence/phase-4/SELF-V-P4-13/attempt-02/result.json
+- evidence/phase-4/SELF-V-P4-14/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-14/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-15/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-15/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-16/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-16/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-17/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-17/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-17/attempt-02/output.log
+- evidence/phase-4/SELF-V-P4-17/attempt-02/result.json
+- evidence/phase-4/SELF-V-P4-18/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-18/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-18/attempt-02/output.log
+- evidence/phase-4/SELF-V-P4-18/attempt-02/result.json
+- evidence/phase-4/SELF-V-P4-19/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-19/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-20/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-20/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-21/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-21/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-22/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-22/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-23/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-23/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-24/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-24/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-25/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-25/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-26/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-26/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-26/attempt-02/output.log
+- evidence/phase-4/SELF-V-P4-26/attempt-02/result.json
+- evidence/phase-4/SELF-V-P4-26/attempt-03/output.log
+- evidence/phase-4/SELF-V-P4-26/attempt-03/result.json
+- evidence/phase-4/SELF-V-P4-27/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-27/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-28/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-28/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-29/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-29/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-30/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-30/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-31/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-31/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-32/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-32/attempt-01/result.json
+- evidence/phase-4/SELF-V-P4-33/attempt-01/output.log
+- evidence/phase-4/SELF-V-P4-33/attempt-01/result.json
+- evidence/phase-4/manifest-inputs.yaml
+- migrations/sql/0012_phase4_secrets.sql
+- migrations/sql/0013_phase4_setup.sql
+- migrations/sql/0014_phase4_security.sql
+- migrations/sql/0015_phase4_admin.sql
+- migrations/versions/0012_phase4_secrets.py
+- migrations/versions/0013_phase4_setup.py
+- migrations/versions/0014_phase4_security.py
+- migrations/versions/0015_phase4_admin.py
+- policy/risk-rules.yaml
+- schemas/api/setup/bootstrap-state.v1.schema.json
+- schemas/events/catalog.v1.yaml
+- schemas/events/registry.v1.json
+- schemas/events/types/ACCOUNT_DELETION_REQUESTED.v1.schema.json
+- schemas/events/types/ACCOUNT_HARD_DELETED.v1.schema.json
+- schemas/events/types/ACCOUNT_REINSTATED.v1.schema.json
+- schemas/events/types/ACCOUNT_UPDATED.v1.schema.json
+- schemas/events/types/HARD_DELETE_REJECTED.v1.schema.json
+- server/agents/maintenance.py
+- server/api/setup.py
+- server/api/v1/accounts.py
+- server/api/v1/approvals.py
+- server/api/v1/approvals_queue.py
+- server/api/v1/audit.py
+- server/api/v1/breakglass.py
+- server/api/v1/hard_delete.py
+- server/api/v1/maintenance.py
+- server/api/v1/mfa.py
+- server/api/v1/ops.py
+- server/api/v1/secrets.py
+- server/api/v1/settings.py
+- server/api/v1/tasks.py
+- server/application/accounts.py
+- server/application/hard_delete.py
+- server/application/secrets.py
+- server/application/tasks.py
+- server/identity/external_commands.py
+- server/main.py
+- server/maintenance/__init__.py
+- server/maintenance/mode.py
+- server/ops/__init__.py
+- server/ops/audit_search.py
+- server/ops/dashboard.py
+- server/ops/probes.py
+- server/secrets/broker.py
+- server/secrets/canary.py
+- server/secrets/injection.py
+- server/secrets/leases.py
+- server/secrets/ledger.py
+- server/secrets/local_provider.py
+- server/secrets/provider.py
+- server/security/__init__.py
+- server/security/breakglass.py
+- server/security/csrf.py
+- server/security/headers.py
+- server/security/mfa.py
+- server/security/mfa_store.py
+- server/security/oidc.py
+- server/security/policy.py
+- server/security/ratelimit.py
+- server/security/reauth.py
+- server/security/reauth_verifier.py
+- server/security/session_policy.py
+- server/security/totp.py
+- server/settings/__init__.py
+- server/settings/preflight.py
+- server/settings/registry.py
+- server/settings/store.py
+- server/setup/bootstrap_store.py
+- server/setup/wizard.py
+- sidecar/Dockerfile
+- sidecar/README.md
+- sidecar/__init__.py
+- sidecar/agent_colab_sidecar/__init__.py
+- sidecar/agent_colab_sidecar/__main__.py
+- sidecar/agent_colab_sidecar/cli.py
+- sidecar/agent_colab_sidecar/client.py
+- sidecar/agent_colab_sidecar/config.py
+- sidecar/agent_colab_sidecar/errors.py
+- sidecar/agent_colab_sidecar/inject.py
+- sidecar/agent_colab_sidecar/safelog.py
+- sidecar/agent_colab_sidecar/store.py
+- sidecar/agent_colab_sidecar/watch.py
+- sidecar/pyproject.toml
+- sidecar/tests/__init__.py
+- sidecar/tests/child.py
+- sidecar/tests/fake_broker.py
+- sidecar/tests/test_sidecar.py
+- tests/e2e/mfa_helper.py
+- tests/e2e/test_admin_a11y.py
+- tests/e2e/test_admin_agents_ui.py
+- tests/e2e/test_admin_bridges_ui.py
+- tests/e2e/test_admin_parity_ui.py
+- tests/e2e/test_phase1_exit_gate.py
+- tests/integration/phase4_admin_seed.py
+- tests/integration/phase4_security_seed.py
+- tests/integration/secrets_seed.py
+- tests/integration/setup_harness.py
+- tests/integration/test_accounts_admin_db.py
+- tests/integration/test_admin_security.py
+- tests/integration/test_approvals_queue_db.py
+- tests/integration/test_audit_explorer_db.py
+- tests/integration/test_backup_key_separation.py
+- tests/integration/test_backup_restore_db.py
+- tests/integration/test_breakglass_db.py
+- tests/integration/test_hard_delete_db.py
+- tests/integration/test_maintenance_db.py
+- tests/integration/test_maintenance_mode.py
+- tests/integration/test_mfa_db.py
+- tests/integration/test_ops_dashboard_db.py
+- tests/integration/test_reconfiguration.py
+- tests/integration/test_secret_api.py
+- tests/integration/test_secret_broker_db.py
+- tests/integration/test_secret_canary_dlp.py
+- tests/integration/test_secret_injection.py
+- tests/integration/test_settings_db.py
+- tests/integration/test_setup_wizard_db.py
+- tests/unit/test_local_provider.py
+- tests/unit/test_totp.py
+- tools/backup.py
+- tools/restore.py
+- web-admin/package.json
+- web-admin/pnpm-lock.yaml
+- web-admin/src/api/client.ts
+- web-admin/src/app/App.tsx
+- web-admin/src/features/accounts/AccountsPage.tsx
+- web-admin/src/features/approvals/ApprovalsQueuePage.tsx
+- web-admin/src/features/audit/AuditPage.tsx
+- web-admin/src/features/maintenance/MaintenancePage.tsx
+- web-admin/src/features/mfa/MfaPage.tsx
+- web-admin/src/features/overview/OverviewPage.tsx
+- web-admin/src/features/secrets/SecretsPage.tsx
+- web-admin/src/features/settings/SettingsPage.tsx
+- web-admin/src/features/setup/SetupWizardPage.tsx
+- web-admin/src/lib/useList.ts
+- web-admin/tests/a11y.spec.ts
+- web-admin/tests/agents.spec.ts
+- web-admin/tests/bridges.spec.ts
+- web-admin/tests/mfa-helper.ts
+- web-admin/tests/parity.spec.ts
+migrations:
+- migrations/versions/0012_phase4_secrets.py
+- migrations/versions/0013_phase4_setup.py
+- migrations/versions/0014_phase4_security.py
+- migrations/versions/0015_phase4_admin.py
+tests_run:
+- id: SELF-V-P4-01
+  command: uv run pytest tests/integration/test_setup_wizard_db.py -k clean_web_setup
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-01/attempt-01
+- id: SELF-V-P4-02
+  command: uv run pytest tests/integration/test_setup_wizard_db.py tests/unit/test_setup_contract.py
+    -k token_rejections or token_is_256 -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-02/attempt-01
+- id: SELF-V-P4-03
+  command: uv run pytest tests/integration/test_setup_wizard_db.py -k clean_web_setup
+    or kill_after_each_step -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-03/attempt-01
+- id: SELF-V-P4-04
+  command: uv run pytest tests/integration/test_setup_wizard_db.py -k kill_after_each_step
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-04/attempt-01
+- id: SELF-V-P4-05
+  command: uv run pytest tests/integration/test_settings_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-05/attempt-01
+- id: SELF-V-P4-06
+  command: uv run pytest tests/integration/test_settings_db.py -k validation_diff_audit_rollback
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-06/attempt-01
+- id: SELF-V-P4-07
+  command: uv run pytest tests/integration/test_accounts_admin_db.py -q -k lifecycle
+    or credentials -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-07/attempt-02
+- id: SELF-V-P4-08
+  command: uv run pytest tests/e2e/test_admin_parity_ui.py tests/integration/test_admin_security.py
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-08/attempt-04
+- id: SELF-V-P4-09
+  command: uv run pytest tests/integration/test_admin_security.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-09/attempt-01
+- id: SELF-V-P4-10
+  command: uv run pytest tests/integration/test_backup_key_separation.py tests/integration/test_secret_broker_db.py
+    tests/unit/test_local_provider.py -k dump or master_key or register_grant or wrap
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-10/attempt-02
+- id: SELF-V-P4-11
+  command: uv run pytest tests/integration/test_secret_broker_db.py tests/integration/test_secret_injection.py
+    -k register_grant or scope_rules or sidecar_bound -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-11/attempt-02
+- id: SELF-V-P4-12
+  command: uv run pytest tests/integration/test_secret_broker_db.py -k register_grant_lease_resolve_once
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-12/attempt-01
+- id: SELF-V-P4-13
+  command: uv run pytest tests/integration/test_secret_broker_db.py tests/integration/test_secret_injection.py
+    tests/integration/test_secret_api.py -k revocation or wipes_on_revoke or sidecar_contract
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-13/attempt-02
+- id: SELF-V-P4-14
+  command: uv run pytest tests/integration/test_secret_canary_dlp.py tests/integration/test_secret_injection.py
+    -k canar or scrub or bot_adapter_refuses or wipes -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-14/attempt-01
+- id: SELF-V-P4-15
+  command: uv run pytest tests/integration/test_secret_broker_db.py -k llm_exposure
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-15/attempt-01
+- id: SELF-V-P4-16
+  command: uv run pytest tests/integration/test_ops_dashboard_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-16/attempt-01
+- id: SELF-V-P4-17
+  command: uv run pytest tests/integration/test_backup_key_separation.py tests/unit/test_local_provider.py
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-17/attempt-02
+- id: SELF-V-P4-18
+  command: uv run pytest tests/e2e/test_admin_a11y.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-18/attempt-02
+- id: SELF-V-P4-19
+  command: uv run pytest tests/integration/test_reconfiguration.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-19/attempt-01
+- id: SELF-V-P4-20
+  command: uv run pytest tests/unit/test_totp.py tests/integration/test_mfa_db.py
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-20/attempt-01
+- id: SELF-V-P4-21
+  command: uv run pytest tests/integration/test_breakglass_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-21/attempt-01
+- id: SELF-V-P4-22
+  command: uv run pytest tests/integration/test_hard_delete_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-22/attempt-01
+- id: SELF-V-P4-23
+  command: uv run pytest tests/integration/test_audit_explorer_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-23/attempt-01
+- id: SELF-V-P4-24
+  command: uv run pytest tests/integration/test_setup_wizard_db.py tests/unit/test_setup_contract.py
+    -k clean_web_setup or kill_after_each_step or store -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-24/attempt-01
+- id: SELF-V-P4-25
+  command: uv run pytest tests/integration/test_hard_delete_db.py -k immutability
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-25/attempt-01
+- id: SELF-V-P4-26
+  command: uv run pytest tests/integration/test_accounts_admin_db.py -q -k role_crud
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-26/attempt-03
+- id: SELF-V-P4-27
+  command: uv run pytest tests/integration/test_setup_wizard_db.py tests/unit/test_setup_contract.py
+    -k network_boundary or transport -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-27/attempt-01
+- id: SELF-V-P4-28
+  command: uv run pytest tests/integration/test_setup_wizard_db.py -k kill_after_each_step
+    or step_failure_reports -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-28/attempt-01
+- id: SELF-V-P4-29
+  command: uv run pytest tests/integration/test_backup_restore_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-29/attempt-01
+- id: SELF-V-P4-30
+  command: uv run pytest tests/integration/test_setup_wizard_db.py tests/integration/test_settings_db.py
+    -k clean_web_setup or preflight_failures_block or validation_diff_audit_rollback
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-30/attempt-01
+- id: SELF-V-P4-31
+  command: uv run pytest sidecar/tests -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-31/attempt-01
+- id: SELF-V-P4-32
+  command: uv run pytest tests/integration/test_maintenance_mode.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-32/attempt-01
+- id: SELF-V-P4-33
+  command: uv run pytest tests/integration/test_approvals_queue_db.py tests/integration/test_approval_core.py
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-4/SELF-V-P4-33/attempt-01
+known_gaps:
+- OIDC is an adapter interface with a fake provider in tests (development plan §9.2
+  optional); TOTP MFA is the enforced factor for System Owner/Administrator and is
+  mandatory for critical actions.
+- mTLS for /setup and the MCP transport is terminated at a reverse proxy (Phase 5
+  deployment); the server enforces the proxy-asserted client-certificate fingerprint
+  and refuses forged headers without the proxy secret. The V-P4-27 boundary matrix
+  is evaluated on request attributes (bind address, TLS/proxy headers, client-cert
+  assertion, allowlist, token).
+- The encrypted local provider is the only Secret provider implemented; an external
+  provider registers through the same contract (server/secrets/provider.py). Backups
+  exclude the master and ledger keys; V-P4-17 shows a dump plus runtime tokens cannot
+  decrypt secret versions.
+- The secret sidecar is verified against an in-process fake Broker implementing docs/protocol/secret-sidecar-api.md
+  and against the real HTTP contract over loopback; the OCI image is built from sidecar/Dockerfile
+  but not pushed to a registry in this environment.
+- Dependency probes for Telegram and SMTP report `unconfigured` rather than failures
+  when no endpoint is configured; Mattermost probes use the local Team Edition (scripts/dev/mattermost-local.sh).
+- Accessibility (V-P4-18) is measured with axe-core WCAG 2.1 A/AA rules on every console
+  route plus keyboard-only critical flows; manual contrast review is limited to the
+  default theme.
+- Hard delete for Artifacts/Documents unlinks blob files and shreds DEKs; rows stay
+  with a display-redaction tombstone (Events are never rewritten, V-P4-25).
+rollback: git checkout c324ba1c97a71d505fa4423858ff251eff215718 (merge-base with main);
+  drop test databases
+evidence_refs:
+- evidence/phase-4/SELF-V-P4-01/attempt-01
+- evidence/phase-4/SELF-V-P4-02/attempt-01
+- evidence/phase-4/SELF-V-P4-03/attempt-01
+- evidence/phase-4/SELF-V-P4-04/attempt-01
+- evidence/phase-4/SELF-V-P4-05/attempt-01
+- evidence/phase-4/SELF-V-P4-06/attempt-01
+- evidence/phase-4/SELF-V-P4-07/attempt-02
+- evidence/phase-4/SELF-V-P4-08/attempt-04
+- evidence/phase-4/SELF-V-P4-09/attempt-01
+- evidence/phase-4/SELF-V-P4-10/attempt-02
+- evidence/phase-4/SELF-V-P4-11/attempt-02
+- evidence/phase-4/SELF-V-P4-12/attempt-01
+- evidence/phase-4/SELF-V-P4-13/attempt-02
+- evidence/phase-4/SELF-V-P4-14/attempt-01
+- evidence/phase-4/SELF-V-P4-15/attempt-01
+- evidence/phase-4/SELF-V-P4-16/attempt-01
+- evidence/phase-4/SELF-V-P4-17/attempt-02
+- evidence/phase-4/SELF-V-P4-18/attempt-02
+- evidence/phase-4/SELF-V-P4-19/attempt-01
+- evidence/phase-4/SELF-V-P4-20/attempt-01
+- evidence/phase-4/SELF-V-P4-21/attempt-01
+- evidence/phase-4/SELF-V-P4-22/attempt-01
+- evidence/phase-4/SELF-V-P4-23/attempt-01
+- evidence/phase-4/SELF-V-P4-24/attempt-01
+- evidence/phase-4/SELF-V-P4-25/attempt-01
+- evidence/phase-4/SELF-V-P4-26/attempt-03
+- evidence/phase-4/SELF-V-P4-27/attempt-01
+- evidence/phase-4/SELF-V-P4-28/attempt-01
+- evidence/phase-4/SELF-V-P4-29/attempt-01
+- evidence/phase-4/SELF-V-P4-30/attempt-01
+- evidence/phase-4/SELF-V-P4-31/attempt-01
+- evidence/phase-4/SELF-V-P4-32/attempt-01
+- evidence/phase-4/SELF-V-P4-33/attempt-01
+reproduction:
+- git clone git@github.com:zzabisagent-lab/Agent-Colab.git && git checkout <target
+  commit>
+- export PATH=$HOME/.local/bin:$PATH; export AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test
+  (any empty PostgreSQL 16 maintenance DB; the test session creates and drops its
+  own database and runs migrations 0001-0015)
+- 'make bootstrap && make lint && make test && make check-docs && make build; sidecar:
+  uv run pytest sidecar/tests -q'
+- Every V-P4 Test has a SELF evidence attempt under evidence/phase-4/SELF-V-P4-NN/attempt-NN/result.json
+  listing the exact command; the latest attempt of each ID is PASS
+- 'Setup Wizard (V-P4-01..04/19/24/27/28/30): uv run pytest tests/integration/test_setup_wizard_db.py
+  tests/integration/test_reconfiguration.py -q; Settings/maintenance: tests/integration/test_settings_db.py
+  tests/integration/test_maintenance_mode.py'
+- 'Secrets (V-P4-10..15/17): uv run pytest tests/unit/test_local_provider.py tests/integration/test_secret_broker_db.py
+  tests/integration/test_secret_injection.py tests/integration/test_secret_canary_dlp.py
+  tests/integration/test_backup_key_separation.py tests/integration/test_secret_api.py
+  -q; sidecar (V-P4-31): uv run pytest sidecar/tests -q'
+- 'Admin security (V-P4-08/09/20/21/33): uv run pytest tests/integration/test_admin_security.py
+  tests/integration/test_mfa_db.py tests/integration/test_breakglass_db.py tests/integration/test_approvals_queue_db.py
+  -q; UI parity + a11y: cd web-admin && pnpm install && pnpm run build; PLAYWRIGHT_CHROMIUM_EXECUTABLE=<chromium>
+  uv run pytest tests/e2e/test_admin_parity_ui.py tests/e2e/test_admin_a11y.py -q'
+- 'Accounts/dashboard/hard delete (V-P4-07/16/22/23/25/26/29): uv run pytest tests/integration/test_accounts_admin_db.py
+  tests/integration/test_ops_dashboard_db.py tests/integration/test_audit_explorer_db.py
+  tests/integration/test_hard_delete_db.py tests/integration/test_backup_restore_db.py
+  -q (needs pg_dump/pg_restore from the user-space PostgreSQL 16)'

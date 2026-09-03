@@ -50,11 +50,17 @@ def _system_ctx(runtime: Any, session: Session, workspace_id: str, key: str) -> 
 
 def run_maintenance(runtime: Any) -> dict[str, int]:
     """One maintenance pass over every Workspace; returns counters for logging/tests."""
-    counters = {"rerouted": 0, "verifier_timeouts": 0, "marked_offline": 0, "errors": 0}
+    counters = {
+        "rerouted": 0,
+        "verifier_timeouts": 0,
+        "marked_offline": 0,
+        "breakglass_expired": 0,
+        "errors": 0,
+    }
     with session_scope(runtime.session_factory) as session:
         workspaces = workspace_ids(session)
     for ws in workspaces:
-        for step in (_sweep_work_items, _sweep_verifier_offers, _sweep_offline):
+        for step in (_sweep_work_items, _sweep_verifier_offers, _sweep_offline, _sweep_breakglass):
             try:
                 with session_scope(runtime.session_factory) as session:
                     step(runtime, session, ws, counters)
@@ -105,3 +111,21 @@ def _sweep_offline(runtime: Any, session: Session, ws: str, counters: dict[str, 
     ctx = _system_ctx(runtime, session, ws, "offline")
     result = bus.execute(agent_cmds.SweepOffline(), ctx)
     counters["marked_offline"] += len(result.data.get("marked_offline", []))
+
+
+def _sweep_breakglass(runtime: Any, session: Session, ws: str, counters: dict[str, int]) -> None:
+    from server.security.breakglass import expire_sessions, open_posthoc
+
+    ended = expire_sessions(session, runtime.store_for(session), clock=runtime.clock)
+    session.commit()  # the post-hoc Tasks open in their own transactions (independent audits)
+    for sid in ended:
+        with session_scope(runtime.session_factory) as own:
+            open_posthoc(
+                own,
+                runtime.store_for(own),
+                sid,
+                correlation_id=f"bg-expire:{sid}",
+                clock=runtime.clock,
+                runtime=runtime,
+            )
+    counters["breakglass_expired"] += len(ended)

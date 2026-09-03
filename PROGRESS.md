@@ -2,28 +2,47 @@
 
 Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENTS.md`, ADRs in `docs/adr/`.
 
-## Current phase: 4 (Admin, Setup, Secrets) — branch `phase-4`
+## Current phase: 5 (Scheduled Work) — branch `phase-5`
+
+### Phase 5 package status
+
+| ID | Work | Size | Prereq | Status | SELF evidence |
+|---|---|---|---|---|---|
+| P5-01 | Schedule schema/API | L | P0-08, P1-08, P1-09 | NOT_STARTED | — |
+| P5-02 | cron/timezone planner | M | P0-08 | NOT_STARTED | — |
+| P5-03 | durable Run/lease | L | P5-01, P5-02 | NOT_STARTED | — |
+| P5-04 | execution policy | M | P5-03, P1-08 | NOT_STARTED | — |
+| P5-05 | concurrency/missed run | M | P5-03 | NOT_STARTED | — |
+| P5-06 | retry/timeout/Run cancel | M | P5-03 | NOT_STARTED | — |
+| P5-07 | channel notification | S | P5-03, P2-11 | NOT_STARTED | — |
+| P5-08 | Schedule Admin UI | M | P5-01 | NOT_STARTED | — |
+| P5-09 | metrics/alerts | S | P5-03 | NOT_STARTED | — |
+| P5-10 | budget/latency targets | M | P1-14, P5-03 | NOT_STARTED | — |
+
+Phase 5 progress (size-weighted): 0 / 25
+
+## Phase 4 (PASSED) — branch `phase-4`, tag `phase-4-passed`
 
 ### Phase 4 package status
 
 | ID | Work | Size | Prereq | Status | SELF evidence |
 |---|---|---|---|---|---|
-| P4-01 | Account Admin | M | P1-05 | NOT_STARTED | — |
-| P4-02 | Operations/Audit dashboard | M | P1-07 | NOT_STARTED | — |
-| P4-03 | Setup Wizard | L | P0-09, P4-05 | NOT_STARTED | — |
-| P4-04 | Settings | M | P4-02 | NOT_STARTED | — |
-| P4-05 | local Secret provider | M | P1-01 | NOT_STARTED | — |
-| P4-06 | Grant/Lease/Broker | M | P4-05 | NOT_STARTED | — |
-| P4-07 | Adapter injection | M | P4-06, P3-03 | NOT_STARTED | — |
-| P4-08 | admin security | M | P4-02 | NOT_STARTED | — |
-| P4-09 | MFA/OIDC | M | P1-05 | NOT_STARTED | — |
-| P4-10 | break-glass | M | P4-09 | NOT_STARTED | — |
-| P4-11 | hard delete workflow | L | P4-05, P1-02 | NOT_STARTED | — |
-| P4-12 | Secret sidecar | L | P4-06, P4-07 | NOT_STARTED | — |
-| P4-13 | maintenance mode | S | P4-02 | NOT_STARTED | — |
-| P4-14 | Web Approvals queue and re-authentication | M | P1-08, P4-09 | NOT_STARTED | — |
+| P4-01 | Account Admin | M | P1-05 | IMPLEMENTED | SELF-V-P4-07/26 |
+| P4-02 | Operations/Audit dashboard | M | P1-07 | IMPLEMENTED | SELF-V-P4-16/23 |
+| P4-03 | Setup Wizard | L | P0-09, P4-05 | IMPLEMENTED | SELF-V-P4-01/02/03/04/19/24/27/28/30 |
+| P4-04 | Settings | M | P4-02 | IMPLEMENTED | SELF-V-P4-05/06 |
+| P4-05 | local Secret provider | M | P1-01 | IMPLEMENTED | SELF-V-P4-10/17 |
+| P4-06 | Grant/Lease/Broker | M | P4-05 | IMPLEMENTED | SELF-V-P4-11/12/15 |
+| P4-07 | Adapter injection | M | P4-06, P3-03 | IMPLEMENTED | SELF-V-P4-13/14 |
+| P4-08 | admin security | M | P4-02 | IMPLEMENTED | SELF-V-P4-08/09/18 |
+| P4-09 | MFA/OIDC | M | P1-05 | IMPLEMENTED | SELF-V-P4-20 |
+| P4-10 | break-glass | M | P4-09 | IMPLEMENTED | SELF-V-P4-21 |
+| P4-11 | hard delete workflow | L | P4-05, P1-02 | IMPLEMENTED | SELF-V-P4-22/25/29 |
+| P4-12 | Secret sidecar | L | P4-06, P4-07 | IMPLEMENTED | SELF-V-P4-31 |
+| P4-13 | maintenance mode | S | P4-02 | IMPLEMENTED | SELF-V-P4-32 |
+| P4-14 | Web Approvals queue and re-authentication | M | P1-08, P4-09 | IMPLEMENTED | SELF-V-P4-33 |
 
-Phase 4 progress (size-weighted): 0 / 33
+Phase 4 progress (size-weighted): 33 / 33 — Codex VR-P4-002 PASSED (33/33) after revision 1 FAILED on F-P4-001/002/003 (fixed in revision 2)
 
 ## Phase 3 (PASSED) — branch `phase-3`, tag `phase-3-passed`
 
@@ -137,12 +156,13 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 20.5 / 20.5
 
 ### Next step
 
-Phase 4 on branch `phase-4` (foundation: secret provider interface, re-auth seam, migration slots 0012-0015; forks: secrets/broker/injection, setup/settings/maintenance, MFA/admin security/break-glass/approvals queue, account admin/dashboard/hard delete, sidecar; console screens + a11y by the parent).
+Phase 5 on branch `phase-5` (foundation: migration slots 0016-0018, ownership note, ADR-0012; forks: schedule core, execution, metrics; Schedule Admin UI by the parent).
 
 ## Phase history
 
 | Phase | Result | Report | Tag |
 |---|---|---|---|
+| 4 | PASSED (revision 2; revision 1 FAILED F-P4-001/002/003) | verification/phase-4/VR-P4-002.yaml | phase-4-passed |
 | 3 | PASSED (revision 1) | verification/phase-3/VR-P3-001.yaml | phase-3-passed |
 | 2 | PASSED (revision 2; revision 1 FAILED F-P2-001/002/003) | verification/phase-2/VR-P2-002.yaml | phase-2-passed |
 | 0 | PASSED | verification/phase-0/VR-P0-003.yaml | phase-0-passed |

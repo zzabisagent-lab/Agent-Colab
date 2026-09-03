@@ -1,0 +1,391 @@
+Script started on 2026-09-03 01:57:39+00:00 [COMMAND="make ci" <not executed on terminal>]
+/home/master/.local/bin/uv run ruff check .
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+All checks passed!
+/home/master/.local/bin/uv run ruff format --check .
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+498 files already formatted
+/home/master/.local/bin/uv run mypy
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+[1m[32mSuccess: no issues found in 273 source files[m
+/home/master/.local/bin/uv run bandit -q -c pyproject.toml -r server sidecar
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+[manager]	WARNING	Test in comment: advertised is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: support is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: level is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: advertisement is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/agents/conformance/harness_push.py:190
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/agents/conformance/harness_push.py:191
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/agents/conformance/harness_push.py:196
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/agents/conformance/harness_push.py:197
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/agents/conformance/harness_push.py:203
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/agents/conformance/harness_push.py:204
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/agents/conformance/harness_push.py:190
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/agents/conformance/harness_push.py:198
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/agents/conformance/harness_push.py:199
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/agents/conformance/harness_push.py:201
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/agents/conformance/harness_push.py:200
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/agents/conformance/harness_push.py:201
+[manager]	WARNING	Test in comment: advertisement is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: environment is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: variable is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: name is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: header is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: name is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: error is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: code is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: error is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: code is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: error is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: code is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: error is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: code is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: error is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: code is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/api/setup.py:38
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/api/setup.py:39
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/api/setup.py:40
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/api/setup.py:41
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/api/setup.py:42
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/api/setup.py:43
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/api/setup.py:44
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/api/setup.py:45
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/api/setup.py:46
+[manager]	WARNING	Test in comment: empty is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: default is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: comes is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: from is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: the is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: environment is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: environment is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: variable is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: name is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: status is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: code is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: map is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: status is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: code is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: map is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: status is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: code is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: map is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: environment is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: variable is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: name is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: button is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: label is not a test name or id, ignoring
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/actions.py:43
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/actions.py:44
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/actions.py:45
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/actions.py:46
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/actions.py:48
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/actions.py:49
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/actions.py:43
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/actions.py:44
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/actions.py:45
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/actions.py:46
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/actions.py:47
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/actions.py:48
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/actions.py:49
+[manager]	WARNING	Test in comment: boolean is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret_configured is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:177
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:178
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:179
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:180
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:181
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:182
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:183
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:184
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:185
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:186
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:187
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:188
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:189
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:190
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:191
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:192
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:193
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:194
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:195
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/bridge_admin.py:187
+[manager]	WARNING	Test in comment: permission is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: name is not a test name or id, ignoring
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/renderer.py:154
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/renderer.py:155
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/renderer.py:156
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/renderer.py:157
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/renderer.py:159
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/renderer.py:160
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/renderer.py:154
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/renderer.py:155
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/renderer.py:156
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/renderer.py:157
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/renderer.py:158
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/renderer.py:159
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/channels/renderer.py:160
+[manager]	WARNING	Test in comment: SQL is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: fragments is not a test name or id, ignoring
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/secrets/broker.py:568
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/secrets/broker.py:569
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/secrets/broker.py:570
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/secrets/broker.py:568
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/secrets/broker.py:569
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/secrets/broker.py:570
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/secrets/broker.py:571
+[manager]	WARNING	Test in comment: environment is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: variable is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: name is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: environment is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: variable is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: name is not a test name or id, ignoring
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/secrets/ledger.py:28
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/secrets/ledger.py:29
+[manager]	WARNING	Test in comment: environment is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: variable is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: name is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: environment is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: variable is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: name is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: environment is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: variable is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: name is not a test name or id, ignoring
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/secrets/local_provider.py:38
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/secrets/local_provider.py:39
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/secrets/local_provider.py:40
+[manager]	WARNING	Test in comment: literal is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: literal is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/settings/store.py:174
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/settings/store.py:175
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/settings/store.py:178
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/settings/store.py:182
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/settings/store.py:183
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/settings/store.py:184
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: hash is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: placeholder is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: never is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: secret is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:95
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:96
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:97
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:102
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:103
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:104
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:105
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:106
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:107
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:113
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:114
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:115
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:120
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:121
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:122
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:123
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:124
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/bootstrap_store.py:125
+[manager]	WARNING	Test in comment: literal is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: literal is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: literal is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: literal is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: flag is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: not is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: a is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: value is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: error is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: code is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: provider is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: name is not a test name or id, ignoring
+[tester]	WARNING	nosec encountered (B105), but no failed test on file server/setup/wizard.py:402
+[manager]	WARNING	Test in comment: child is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: processes is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: are is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: the is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: injection is not a test name or id, ignoring
+[manager]	WARNING	Test in comment: target is not a test name or id, ignoring
+/home/master/.local/bin/uv run bandit -q -c pyproject.toml -ll -r tools
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+cd web-admin && pnpm run lint && pnpm exec tsc -b
+[2m$ oxlint[22m
+src/features/auth/session.tsx:38:17: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/features/agents/AgentsPage.tsx:41:26: warning react(set-state-in-effect): Calling setState synchronously within an effect can trigger cascading renders help: Effects should synchronize React with external systems. Calling setState synchronously inside an effect starts another render and is usually unnecessary. Derive the value during render, initialize state directly, or update it from the event that caused the change. Use an effect only when synchronizing with an external system.
+src/features/roles/RolesPage.tsx:38:26: warning react(set-state-in-effect): Calling setState synchronously within an effect can trigger cascading renders help: Effects should synchronize React with external systems. Calling setState synchronously inside an effect starts another render and is usually unnecessary. Derive the value during render, initialize state directly, or update it from the event that caused the change. Use an effect only when synchronizing with an external system.
+/home/master/.local/bin/uv run pytest
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+...........................................................s............ [  4%]
+........................................................................ [  9%]
+........................................................s............... [ 14%]
+........................................................................ [ 19%]
+........................................................................ [ 24%]
+........................................................................ [ 29%]
+........................................................................ [ 34%]
+........................................................................ [ 39%]
+........................................................................ [ 44%]
+........................................................................ [ 49%]
+........................................................................ [ 54%]
+........................................................................ [ 59%]
+........................................................................ [ 63%]
+........................................................................ [ 68%]
+........................................................................ [ 73%]
+........................................................................ [ 78%]
+........................................................................ [ 83%]
+........................................................................ [ 88%]
+........................................................................ [ 93%]
+........................................................................ [ 98%]
+........................                                                 [100%]
+=============================== warnings summary ===============================
+tests/integration/test_mcp_transport.py::test_inbox_resource_and_subscription[asyncio]
+  /home/master/.local/verify/phase-4-r002/tests/integration/test_mcp_transport.py:325: MCPDeprecationWarning: resources/subscribe is removed as of 2026-07-28; use Client.listen() instead.
+    await s.subscribe_resource(uri)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] tests/integration/test_bridge_live.py:85: TELEGRAM_BOT_TOKEN not configured in .env
+SKIPPED [1] tests/integration/test_telegram_provider.py:167: TELEGRAM_BOT_TOKEN not configured in .env
+1462 passed, 2 skipped, 1 warning in 160.59s (0:02:40)
+/home/master/.local/bin/uv run python -m tools.trace_matrix --check
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+trace_matrix: 111 REQ, 103 packages, 230 tests, 0 problems
+/home/master/.local/bin/uv run python -m tools.criteria_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+criteria_lint: 230 tests, 0 problems, 1 criteria contain a vague word but also a deterministic criterion
+/home/master/.local/bin/uv run python -m tools.phase_dag_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+phase_dag_lint: 333 items checked, 6 explicit stubs, 0 problems
+/home/master/.local/bin/uv run python -m tools.plan_baseline_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+plan_baseline_lint: 103 packages (weight 247), 230 tests, 19 risk rows, 22 dependency rows, 0 problems
+/home/master/.local/bin/uv run python -m tools.policy_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+policy_lint: permissions=53, minimum_permissions=33, action_classes=7, actions=168, baseline_tools=29, baseline_commands=45, unclassified=0, default_roles=9, fixture_roles=6, capabilities=32, problems=0
+/home/master/.local/bin/uv run python -m tools.name_role_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+name_role_lint: 0 problems
+/home/master/.local/bin/uv run python -m tools.threat_model_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+threat_model_lint: 5 mandatory boundaries, 0 problems
+/home/master/.local/bin/uv run python -m tools.gen_event_schemas --check
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+gen_event_schemas: 109 types, 0 drifted, 0 stale
+/home/master/.local/bin/uv run python -m tools.gen_event_fixtures --check
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+gen_event_fixtures: 25 fixtures, 0 drifted, 0 stale
+/home/master/.local/bin/uv build
+Building source distribution...
+Building wheel from source distribution...
+Successfully built dist/agent_colab-0.0.0.tar.gz
+Successfully built dist/agent_colab-0.0.0-py3-none-any.whl
+cd web-admin && pnpm run build
+[2m$ tsc -b && vite build[22m
+vite v8.2.2 building client environment for production...
+[2K✓ 41 modules transformed.
+[2Krendering chunks (1)...[2Kcomputing gzip size...
+[2Kdist/index.html                   0.48 kB │ gzip:  0.30 kB
+dist/assets/index-BxacJ5Or.css    0.81 kB │ gzip:  0.44 kB
+dist/assets/index-CYKebGbH.js   272.10 kB │ gzip: 82.38 kB
+
+✓ built in 283ms
+
+Script done on 2026-09-03 02:01:15+00:00 [COMMAND_EXIT_CODE="0"]

@@ -1,0 +1,8 @@
+Script started on 2026-09-03 01:42:42+00:00 [COMMAND="uv run pytest -s verification/phase-4/evidence-r001/repro_web_setup_contract.py -q" <not executed on terminal>]
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+UI-shaped preflight: 200 {"ok":false,"state":"UNINITIALIZED","steps":[{"step":"db","ok":false,"code":"SETUP_INPUT_MISSING","detail":"db_host,db_name,db_user","guidance":"Check host/port/database/user and the password entered in this session; the database user must be able to create tables (migrations)."},{"step":"secrets","ok":false,"code":"PREFLIGHT_KEY_PATH_NOT_WRITABLE","detail":"/var/lib/agent-colab/keys","guidance":"Create the key directory with owner-only permissions."},{"step":"mattermost","ok":false,"code":"PREFLIGHT_MATTERMOST_INCOMPLETE","detail":"url and bot token required","guidance":"Check the Mattermost base URL, that the bot token belongs to a bot account with the team, and that the server can reach Mattermost over the network."},{"step":"storage","ok":false,"code":"PREFLIGHT_STORAGE_NOT_WRITABLE","detail":"artifact_root","guidance":"Create the directory (or its parent) and grant the service user write permission; paths must be absolute."}]}
+UI-shaped diff: 405
+UI-shaped bootstrap: 422
+.
+
+Script done on 2026-09-03 01:42:44+00:00 [COMMAND_EXIT_CODE="0"]

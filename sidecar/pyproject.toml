@@ -1,0 +1,21 @@
+[project]
+name = "agent-colab-sidecar"
+version = "0.1.0"
+description = "Agent-Colab Secret sidecar: resolves one-time secret handles on the Agent host and injects them without touching disk or logs"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+dependencies = ["httpx>=0.27"]
+
+[project.scripts]
+agent-colab-sidecar = "agent_colab_sidecar.cli:main"
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["agent_colab_sidecar"]
+
+[tool.hatch.build.targets.sdist]
+include = ["agent_colab_sidecar", "README.md", "Dockerfile", "pyproject.toml"]

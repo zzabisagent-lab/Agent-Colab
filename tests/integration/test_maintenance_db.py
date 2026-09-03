@@ -25,7 +25,9 @@ def engine(database_url: str) -> Iterator[Engine]:
     eng = make_engine(database_url)
     with Session(eng) as s, s.begin():
         s.execute(
-            text("INSERT INTO workspaces (id, workspace_id, name) VALUES (:i, 'ws-maint', 'm')"),
+            text(
+                "INSERT INTO workspaces (id, workspace_id, name) VALUES (:i, 'ws-maint-tick', 'mt')"
+            ),
             {"i": WS},
         )
     yield eng
@@ -39,14 +41,14 @@ def test_maintenance_runs_every_workspace_and_tolerates_missing_system_account(
     with Session(engine) as s:
         assert str(WS) in workspace_ids(s)
     counters = run_maintenance(rt)
-    assert set(counters) == {"rerouted", "verifier_timeouts", "marked_offline", "errors"}
+    assert {"rerouted", "verifier_timeouts", "marked_offline", "errors"} <= set(counters)
     assert counters["errors"] == 0  # SYSTEM_ACCOUNT_MISSING in ws-maint is skipped, not an error
     # with a system service Account the sweeps execute (nothing to do → zero counters)
     with Session(engine) as s, s.begin():
         s.execute(
             text(
                 "INSERT INTO accounts (id, account_id, workspace_id, account_type, display_name) "
-                "VALUES (:i, 'acct-maint-system', :w, 'service', 'system')"
+                "VALUES (:i, 'acct-maint-tick-system', :w, 'service', 'system')"
             ),
             {"i": uuid.uuid4(), "w": WS},
         )

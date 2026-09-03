@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P4-26",
+  "evidence_id": "SELF-V-P4-26",
+  "attempt": 3,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_accounts_admin_db.py",
+    "-q",
+    "-k",
+    "role_crud",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "089cb5d14bff00e3e78bcd498a8f9cf2e4849a0f",
+  "started_at": "2026-09-03T00:56:50.453404+00:00",
+  "finished_at": "2026-09-03T00:56:55.584298+00:00",
+  "output_sha256": "423b1d0e014eb1eab96f4420f7b344c2615be505dd574b756ac884826ca74f2d"
+}

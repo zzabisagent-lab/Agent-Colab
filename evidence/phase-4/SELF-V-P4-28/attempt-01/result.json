@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P4-28",
+  "evidence_id": "SELF-V-P4-28",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_setup_wizard_db.py",
+    "-k",
+    "kill_after_each_step or step_failure_reports",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "089cb5d14bff00e3e78bcd498a8f9cf2e4849a0f",
+  "started_at": "2026-09-03T00:57:38.314528+00:00",
+  "finished_at": "2026-09-03T00:57:48.860431+00:00",
+  "output_sha256": "700bc0322b00f8e8db3ce495047983b54ab27ab59ed1fedac05f3aeba47dae24"
+}

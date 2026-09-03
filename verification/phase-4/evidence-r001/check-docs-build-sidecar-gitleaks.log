@@ -1,0 +1,51 @@
+Script started on 2026-09-03 01:39:48+00:00 [COMMAND="cd /tmp/agent-colab-vrp4-ui.CmmWaM && make check-docs && make build && uv run pytest sidecar/tests -q && gitleaks git --no-banner --redact ." <not executed on terminal>]
+/home/master/.local/bin/uv run python -m tools.trace_matrix --check
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+trace_matrix: 111 REQ, 103 packages, 230 tests, 0 problems
+/home/master/.local/bin/uv run python -m tools.criteria_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+criteria_lint: 230 tests, 0 problems, 1 criteria contain a vague word but also a deterministic criterion
+/home/master/.local/bin/uv run python -m tools.phase_dag_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+phase_dag_lint: 333 items checked, 6 explicit stubs, 0 problems
+/home/master/.local/bin/uv run python -m tools.plan_baseline_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+plan_baseline_lint: 103 packages (weight 247), 230 tests, 19 risk rows, 22 dependency rows, 0 problems
+/home/master/.local/bin/uv run python -m tools.policy_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+policy_lint: permissions=53, minimum_permissions=33, action_classes=7, actions=168, baseline_tools=29, baseline_commands=45, unclassified=0, default_roles=9, fixture_roles=6, capabilities=32, problems=0
+/home/master/.local/bin/uv run python -m tools.name_role_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+name_role_lint: 0 problems
+/home/master/.local/bin/uv run python -m tools.threat_model_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+threat_model_lint: 5 mandatory boundaries, 0 problems
+/home/master/.local/bin/uv run python -m tools.gen_event_schemas --check
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+gen_event_schemas: 109 types, 0 drifted, 0 stale
+/home/master/.local/bin/uv run python -m tools.gen_event_fixtures --check
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+gen_event_fixtures: 25 fixtures, 0 drifted, 0 stale
+/home/master/.local/bin/uv build
+Building source distribution...
+Building wheel from source distribution...
+Successfully built dist/agent_colab-0.0.0.tar.gz
+Successfully built dist/agent_colab-0.0.0-py3-none-any.whl
+cd web-admin && pnpm run build
+[2m$ tsc -b && vite build[22m
+vite v8.2.2 building client environment for production...
+[2K✓ 41 modules transformed.
+[2Krendering chunks (1)...[2Kcomputing gzip size...
+[2Kdist/index.html                   0.48 kB │ gzip:  0.30 kB
+dist/assets/index-BxacJ5Or.css    0.81 kB │ gzip:  0.44 kB
+dist/assets/index-DJBsP3hH.js   268.56 kB │ gzip: 81.50 kB
+
+✓ built in 289ms
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+.................                                                        [100%]
+1:40AM INF Unknown SCM platform. Use --platform to include links in findings. host=
+1:40AM INF 107 commits scanned.
+1:40AM INF scanned ~7427275 bytes (7.43 MB) in 1.27s
+1:40AM INF no leaks found
+
+Script done on 2026-09-03 01:40:08+00:00 [COMMAND_EXIT_CODE="0"]

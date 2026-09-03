@@ -35,7 +35,7 @@ class RequestBody(BaseModel):
 class DecideBody(BaseModel):
     decision: str = Field(pattern="^(APPROVE|REJECT)$")
     reason_code: str = "REJECTED_BY_APPROVER"
-    reauth_verified: bool = False
+    reauth_verified: bool = False  # deprecated: ignored since P4-14 (server-side proof)
 
 
 class ReasonBody(BaseModel):
@@ -56,7 +56,10 @@ def decide(
     cmd = a.DecideApproval(
         approval_id=approval_id, decision=body.decision, reason_code=body.reason_code
     )
-    return dispatch(request, principal, cmd, reauth_verified=body.reauth_verified)
+    # P4-14: re-authentication is proven server-side (recent MFA proof); the body flag is ignored
+    from server.api.v1.approvals_queue import reauth_verified
+
+    return dispatch(request, principal, cmd, reauth_verified=reauth_verified(request, principal))
 
 
 @router.post("/{approval_id}/cancel")

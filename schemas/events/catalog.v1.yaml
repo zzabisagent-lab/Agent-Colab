@@ -146,6 +146,11 @@ events:
   # Additive extensions (not in spec §9.3; needed by state machines fixed elsewhere in the baseline)
   WORKSPACE_CREATED:       {aggregate: workspace, phase: 1, required: [workspace_id, name], extension: "development plan §7H single Workspace created at Setup"}
   ACCOUNT_CREATED:         {aggregate: account, phase: 1, required: [account_id, account_type], extension: "spec §9.1 Account entity lifecycle"}
+  ACCOUNT_UPDATED:         {aggregate: account, phase: 4, required: [account_id], extension: "development plan §11.1 Accounts & Roles: profile changes are Events (P4-01)"}
+  ACCOUNT_REINSTATED:      {aggregate: account, phase: 4, required: [account_id, reason_code], extension: "development plan §11.1: suspension lifted (P4-01)"}
+  ACCOUNT_DELETION_REQUESTED: {aggregate: account, phase: 4, required: [account_id, request_id], extension: "spec §9 hard delete: deletion enters the dual-approval workflow (P4-01/P4-11)"}
+  ACCOUNT_HARD_DELETED:    {aggregate: account, phase: 4, required: [account_id, request_id], extension: "spec §9 hard delete executed: DEKs destroyed, display redacted (P4-11)"}
+  HARD_DELETE_REJECTED:    {aggregate: hard_delete, phase: 4, required: [request_id, reason_code], extension: "spec §9 hard delete: approval rejected or request cancelled (P4-11)"}
   ROLE_VERSION_CREATED:    {aggregate: role, phase: 1, required: [role_id, role_version, permissions_hash], extension: "spec §4.2 role changes are versioned policy"}
   IDENTITY_LINK_SUSPENDED: {aggregate: external_identity_link, phase: 1, required: [link_id, reason_code], extension: "development plan §6.5 suspend/revoke blocks commands"}
   IDENTITY_LINK_REVOKED:   {aggregate: external_identity_link, phase: 1, required: [link_id, reason_code], extension: "development plan §6.5 suspend/revoke blocks commands"}

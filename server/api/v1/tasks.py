@@ -199,7 +199,8 @@ def list_tasks(
             session.execute(
                 text(
                     "SELECT task_id, title, status, risk, domain FROM tasks_projection "
-                    "WHERE workspace_id = :ws AND (:status IS NULL OR status = :status) "
+                    "WHERE workspace_id = :ws AND (CAST(:status AS text) IS NULL "
+                    "OR status = CAST(:status AS text)) "
                     "AND task_id > :after ORDER BY task_id LIMIT :lim"
                 ),
                 {

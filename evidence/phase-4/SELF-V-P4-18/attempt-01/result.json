@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P4-18",
+  "evidence_id": "SELF-V-P4-18",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/e2e/test_admin_a11y.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "e6c859f6b97b896ad51edc0993d9eed00283c817",
+  "started_at": "2026-09-02T18:22:56.755096+00:00",
+  "finished_at": "2026-09-02T18:23:13.541389+00:00",
+  "output_sha256": "423b1d0e014eb1eab96f4420f7b344c2615be505dd574b756ac884826ca74f2d"
+}

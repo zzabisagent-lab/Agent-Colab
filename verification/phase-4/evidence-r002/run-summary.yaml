@@ -1,0 +1,30 @@
+target_commit: 4e774efd1500db7ba444679d684e92def376225e
+started_at: "2026-09-03T01:55:15Z"
+completed_at: "2026-09-03T02:03:59Z"
+environment: "linux-x86_64/6.8.0-138-generic; python=3.12.3; uv=0.12.9; node=22.23.2; pnpm=11.25.0; postgresql=16.15; chromium=playwright-1234"
+commands:
+  - evidence: setup-settings-maintenance.log
+    exit_code: 0
+    sha256: d10aea4dde38bc828737dafc100032322ab595e6f2d5910308870096da71e404
+  - evidence: secrets.log
+    exit_code: 0
+    sha256: c61d6e12a0f9931db155312ff25ba4b8813f1eaa9de8fb52a22ed8adbc1ac3c4
+  - evidence: admin-security.log
+    exit_code: 0
+    sha256: 47b70962f46bea566856eb44cd426537e5f3de1995a168f3222541a973905f63
+  - evidence: accounts-ops-delete.log
+    exit_code: 0
+    sha256: 1cd617039e700c114e065873a2889e12be7ab61ddbc1acba104ea662b8a1b0d1
+  - evidence: ui-build-e2e.log
+    exit_code: 0
+    sha256: d298b483d49a9148496c8050f009d33ce37ad6f0f1cf08241c78d07a632b3a87
+  - evidence: sidecar.log
+    exit_code: 0
+    sha256: 67ef8272845c3fe4762aff8eb0e85dc1731c039994121050bbb2e9118bd386df
+  - evidence: make-ci.log
+    exit_code: 0
+    sha256: 4258de1838c6205e94a7f35b3d4f793ea09213674467fc3facd3d9f108f27944
+  - evidence: gitleaks-verbose.log
+    exit_code: 1
+    note: "Seven redacted false-positive sourcegraph-access-token matches, all commit SHA text in the prior verifier event log."
+secret_redaction_check: "No credential environment assignments or credential-bearing PostgreSQL URLs matched in produced evidence."

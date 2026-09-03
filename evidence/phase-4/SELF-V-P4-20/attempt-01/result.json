@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P4-20",
+  "evidence_id": "SELF-V-P4-20",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_totp.py",
+    "tests/integration/test_mfa_db.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "089cb5d14bff00e3e78bcd498a8f9cf2e4849a0f",
+  "started_at": "2026-09-03T00:59:34.531095+00:00",
+  "finished_at": "2026-09-03T00:59:39.435701+00:00",
+  "output_sha256": "4d2df7a96ce4a667da3ccf295f2d16c728a65ed0e861a3baa919f7bb469b02b5"
+}

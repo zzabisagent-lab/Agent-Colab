@@ -1,0 +1,24 @@
+{
+  "test_id": "V-P4-13",
+  "evidence_id": "SELF-V-P4-13",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_secret_broker_db.py",
+    "tests/integration/test_secret_injection.py",
+    "tests/integration/test_secret_api.py",
+    "-k",
+    "revocation or wipes_on_revoke or sidecar_contract",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 1,
+  "result": "fail",
+  "commit_sha": "24716a90560737192ca5dfcae37b722e2b5a0f72",
+  "started_at": "2026-09-03T00:50:40.963214+00:00",
+  "finished_at": "2026-09-03T00:50:46.591519+00:00",
+  "output_sha256": "70dab13d9043f7f819657affbee412982065860dcbcf843155e7588a77eb88a1"
+}

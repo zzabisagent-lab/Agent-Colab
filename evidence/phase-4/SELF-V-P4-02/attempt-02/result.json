@@ -1,0 +1,23 @@
+{
+  "test_id": "V-P4-02",
+  "evidence_id": "SELF-V-P4-02",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_setup_rejection_audit.py",
+    "tests/integration/test_setup_wizard_db.py",
+    "-q",
+    "-k",
+    "rejection or token",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "a488dfe25ab39358e207307ecc394729ae8f403f",
+  "started_at": "2026-09-03T01:50:18.726875+00:00",
+  "finished_at": "2026-09-03T01:50:23.777635+00:00",
+  "output_sha256": "cf426ab35f3b06fccef8290fde5325d90af130a79da1d1752031518df77c4236"
+}

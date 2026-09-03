@@ -1,0 +1,42 @@
+Script started on 2026-09-03 01:42:30+00:00 [COMMAND="uv run pytest -s verification/phase-4/evidence-r001/repro_web_setup_contract.py -q" <not executed on terminal>]
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+UI-shaped preflight: 200 {"ok":false,"state":"UNINITIALIZED","steps":[{"step":"db","ok":false,"code":"SETUP_INPUT_MISSING","detail":"db_host,db_name,db_user","guidance":"Check host/port/database/user and the password entered in this session; the database user must be able to create tables (migrations)."},{"step":"secrets","ok":false,"code":"PREFLIGHT_KEY_PATH_NOT_WRITABLE","detail":"/var/lib/agent-colab/keys","guidance":"Create the key directory with owner-only permissions."},{"step":"mattermost","ok":false,"code":"PREFLIGHT_MATTERMOST_INCOMPLETE","detail":"url and bot token required","guidance":"Check the Mattermost base URL, that the bot token belongs to a bot account with the team, and that the server can reach Mattermost over the network."},{"step":"storage","ok":false,"code":"PREFLIGHT_STORAGE_NOT_WRITABLE","detail":"artifact_root","guidance":"Create the directory (or its parent) and grant the service user write permission; paths must be absolute."}]}
+UI-shaped diff: 405
+UI-shaped bootstrap: 422
+F
+=================================== FAILURES ===================================
+_____________ test_web_setup_requests_do_not_match_server_contract _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-master/pytest-615/test_web_setup_requests_do_not0')
+
+    def test_web_setup_requests_do_not_match_server_contract(tmp_path):
+        wizard = Wizard(tmp_path)
+        try:
+            token = wizard.token()
+            form_body = {
+                "database_url": "postgresql://redacted.invalid/db",
+                "master_key_b64": "REDACTED",
+                "owner": {"account_id": "acct-owner", "display_name": "System Owner"},
+                "integrations": {
+                    "mattermost": {"url": "http://mattermost.invalid", "bot_token": "REDACTED"},
+                    "storage": {"root": "/tmp/redacted"},
+                },
+            }
+            headers = {"X-Setup-Token": token}
+    
+            preflight = wizard.client.post("/setup/preflight", json=form_body, headers=headers)
+            diff = wizard.client.post("/setup/diff", json=form_body, headers=headers)
+            bootstrap = wizard.client.post("/setup/bootstrap", json=form_body, headers=headers)
+    
+            print("UI-shaped preflight:", preflight.status_code, preflight.text)
+            print("UI-shaped diff:", diff.status_code)
+            print("UI-shaped bootstrap:", bootstrap.status_code)
+>           assert preflight.status_code == 400
+E           assert 200 == 400
+E            +  where 200 = <Response [200 OK]>.status_code
+
+verification/phase-4/evidence-r001/repro_web_setup_contract.py:26: AssertionError
+=========================== short test summary info ============================
+FAILED verification/phase-4/evidence-r001/repro_web_setup_contract.py::test_web_setup_requests_do_not_match_server_contract
+
+Script done on 2026-09-03 01:42:33+00:00 [COMMAND_EXIT_CODE="1"]
