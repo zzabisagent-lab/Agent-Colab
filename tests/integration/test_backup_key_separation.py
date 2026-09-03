@@ -61,15 +61,29 @@ def test_dump_plus_runtime_tokens_cannot_decrypt(engine: Engine) -> None:
             {"r": ref},
         ).first()
         assert dump is not None
-        tokens = s.execute(text("SELECT token_hash FROM service_credentials")).all()
+        tokens = s.execute(
+            text(
+                "SELECT c.token_hash FROM service_credentials c JOIN accounts a ON a.id = "
+                "c.account_id WHERE a.workspace_id = :w"
+            ),
+            {"w": SEED.ws},
+        ).all()
         whole = s.execute(
             text("SELECT string_agg(coalesce(metadata::text,''), ' ') FROM secrets")
         ).scalar()
     dek_id, ciphertext, wrapped, mk_id = str(dump[0]), bytes(dump[1]), bytes(dump[2]), str(dump[3])
     assert value not in ciphertext and value not in wrapped and value.decode() not in str(whole)
     assert mk_id == MASTER.key_id  # only the key *id* is stored, never the key
+
     # every runtime credential in the dump (service token hashes) fails to unwrap the DEK
-    candidates = [bytes.fromhex(str(t[0]))[:32] for t in tokens if t[0]] + [
+    def _hex_key(text_value: str) -> bytes | None:
+        """Token hashes are stored in whatever form the issuer chose; only try hex ones."""
+        try:
+            return bytes.fromhex(text_value)[:32]
+        except ValueError:
+            return None
+
+    candidates = [k for t in tokens if t[0] and (k := _hex_key(str(t[0]))) is not None] + [
         hashlib.sha256(str(t[0]).encode()).digest() for t in tokens if t[0]
     ]
     assert candidates
