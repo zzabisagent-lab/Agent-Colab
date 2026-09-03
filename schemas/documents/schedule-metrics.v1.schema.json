@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/documents/schedule-metrics.v1.schema.json",
+  "title": "Schedule metrics snapshot v1 (P5-09)",
+  "type": "object",
+  "required": [
+    "schema_id", "generated_at", "window_s", "poll_s", "due", "running", "runs_in_window",
+    "lag_s", "start_delay_s", "failures", "skips_by_code", "policy_denials",
+    "backfill_warnings", "duplicates_prevented", "stuck_leases", "budget_alerts", "schedules"
+  ],
+  "properties": {
+    "schema_id": {"const": "colab.schedule-metrics.v1"},
+    "generated_at": {"type": "string"},
+    "window_s": {"type": "integer", "minimum": 1},
+    "poll_s": {"type": "integer", "minimum": 1},
+    "due": {"type": "integer", "minimum": 0},
+    "running": {"type": "integer", "minimum": 0},
+    "runs_in_window": {"type": "integer", "minimum": 0},
+    "by_status": {"type": "object", "additionalProperties": {"type": "integer"}},
+    "lag_s": {"$ref": "#/$defs/percentiles"},
+    "start_delay_s": {"$ref": "#/$defs/percentiles"},
+    "failures": {"type": "integer", "minimum": 0},
+    "timed_out": {"type": "integer", "minimum": 0},
+    "succeeded": {"type": "integer", "minimum": 0},
+    "failure_rate": {"type": "number", "minimum": 0, "maximum": 1},
+    "skips_by_code": {"type": "object", "additionalProperties": {"type": "integer"}},
+    "policy_denials": {"type": "integer", "minimum": 0},
+    "backfill_warnings": {"type": "integer", "minimum": 0},
+    "duplicates_prevented": {"type": "integer", "minimum": 0},
+    "stuck_leases": {"type": "integer", "minimum": 0},
+    "budget_alerts": {"type": "integer", "minimum": 0},
+    "schedules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["schedule_id", "next_run_at", "runs_in_window", "failures", "last_status"],
+        "properties": {
+          "schedule_id": {"type": "string"},
+          "name": {"type": ["string", "null"]},
+          "status": {"type": ["string", "null"]},
+          "next_run_at": {"type": ["string", "null"]},
+          "runs_in_window": {"type": "integer"},
+          "failures": {"type": "integer"},
+          "last_status": {"type": ["string", "null"]},
+          "last_error_code": {"type": ["string", "null"]},
+          "duplicates_prevented": {"type": "integer"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "percentiles": {
+      "type": "object",
+      "required": ["count", "p50", "p95", "max"],
+      "properties": {
+        "count": {"type": "integer", "minimum": 0},
+        "p50": {"type": "number", "minimum": 0},
+        "p95": {"type": "number", "minimum": 0},
+        "max": {"type": "number", "minimum": 0}
+      }
+    }
+  },
+  "additionalProperties": false
+}
