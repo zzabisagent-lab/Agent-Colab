@@ -1,5 +1,5 @@
-"""V-P5-21 / V-P5-22 (UI halves, P5-08): Schedule builder/preview/lifecycle/run-now/history in the
 """V-P5-21 / V-P5-22 (UI halves, P5-08): Schedule builder, preview, lifecycle, run-now and
+history in the console; an unauthorized account is denied (real server under /admin)."""
 
 from __future__ import annotations
 
