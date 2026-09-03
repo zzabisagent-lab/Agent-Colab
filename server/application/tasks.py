@@ -32,6 +32,7 @@ from server.domain.task import (
     fold,
     next_status,
 )
+from server.domain.task import TERMINAL as TERMINAL_STATUSES
 from server.events.canonical import canonical_json
 from server.events.store import AppendRequest, AppendResult, EventStoreError
 from server.projections.tasks import write_state
@@ -243,6 +244,14 @@ def _append(ctx: CommandContext, req: AppendRequest) -> AppendResult:
         raise CommandError(exc.code, exc.detail, status=status) from exc
 
 
+TERMINAL_HOOKS: list[Any] = []  # (ctx, task_id) callbacks after a terminal transition
+
+
+def register_terminal_hook(hook: Any) -> None:
+    if hook not in TERMINAL_HOOKS:
+        TERMINAL_HOOKS.append(hook)
+
+
 def _transition(
     ctx: CommandContext,
     cmd: Command,
@@ -298,6 +307,9 @@ def _transition(
 
     apply_event(state, event)
     state.status = new_status
+    if new_status in TERMINAL_STATUSES:
+        for hook in TERMINAL_HOOKS:  # P4-06: secret leases end with the Task
+            hook(ctx, state.task_id)
     write_state(ctx.session, state, event["occurred_at"])
     return res, state
 

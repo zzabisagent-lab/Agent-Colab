@@ -23,12 +23,30 @@ function idempotencyKey(): string {
   return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('')
 }
 
+let csrfToken: string | null = null
+
+/** Double-submit CSRF: cookie sessions must repeat the readable csrf cookie in a header. */
+async function csrfHeader(): Promise<Record<string, string>> {
+  const fromCookie = document.cookie.split('; ').find((c) => c.startsWith('agent_colab_csrf='))
+  if (fromCookie) csrfToken = decodeURIComponent(fromCookie.slice('agent_colab_csrf='.length))
+  if (!csrfToken) {
+    try {
+      const r = await fetch('/api/v1/auth/csrf', { credentials: 'same-origin' })
+      if (r.ok) csrfToken = ((await r.json()) as { csrf_token: string }).csrf_token
+    } catch {
+      csrfToken = null
+    }
+  }
+  return csrfToken ? { 'X-CSRF-Token': csrfToken } : {}
+}
+
 export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   const headers = new Headers(init.headers)
   headers.set('Accept', 'application/json')
   if (init.body !== undefined) headers.set('Content-Type', 'application/json')
   const method = (init.method ?? 'GET').toUpperCase()
   if (method !== 'GET' && !headers.has('Idempotency-Key')) headers.set('Idempotency-Key', idempotencyKey())
+  if (method !== 'GET') for (const [k, v] of Object.entries(await csrfHeader())) headers.set(k, v)
   const response = await fetch(path, { ...init, headers, credentials: 'same-origin' })
   if (response.status === 204) return undefined as T
   const text = await response.text()

@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P4-08",
+  "evidence_id": "SELF-V-P4-08",
+  "attempt": 3,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/e2e/test_admin_parity_ui.py",
+    "tests/integration/test_admin_security.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 1,
+  "result": "fail",
+  "commit_sha": "743a05e7b578b57d32661958a7410d5c27e8a378",
+  "started_at": "2026-09-03T01:08:33.473750+00:00",
+  "finished_at": "2026-09-03T01:08:39.256092+00:00",
+  "output_sha256": "a75cf66adeaa2231d2afeee2bd7c43d53026d06770728e6ae532df33fd7ab2bf"
+}

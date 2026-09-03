@@ -176,13 +176,13 @@ class SettingsStore:
                 if old is None
                 else {"version": old.version, "fingerprint": old.value_fingerprint},
                 "after": {"fingerprint": fingerprint(new_value)},
-                "secret": True,
+                "secret": True,  # nosec B105 - literal flag, not a value
             }
         return {
             "setting": spec.key,
             "before": None if old is None else {"version": old.version, "was": old.value},
             "after": {"is": new_value},
-            "secret": False,
+            "secret": False,  # nosec B105 - literal flag, not a value
         }
 
     def set(

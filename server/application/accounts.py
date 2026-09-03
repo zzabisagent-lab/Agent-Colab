@@ -281,7 +281,9 @@ def list_accounts(
     rows = session.execute(
         text(
             "SELECT account_id, account_type, status, display_name FROM accounts "
-            "WHERE workspace_id = :w AND (:t IS NULL OR account_type = :t) ORDER BY account_id"
+            "WHERE workspace_id = :w AND (CAST(:t AS text) IS NULL OR "
+            "account_type = CAST(:t AS text)) "
+            "ORDER BY account_id"
         ),
         {"w": workspace_id, "t": account_type},
     ).all()

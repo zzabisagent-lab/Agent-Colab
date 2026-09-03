@@ -5,6 +5,7 @@ import { ApprovalsQueuePage } from '../features/approvals/ApprovalsQueuePage'
 import { AuditPage } from '../features/audit/AuditPage'
 import { LoginPage } from '../features/auth/LoginPage'
 import { MaintenancePage } from '../features/maintenance/MaintenancePage'
+import { MfaPage } from '../features/mfa/MfaPage'
 import { OverviewPage } from '../features/overview/OverviewPage'
 import { SessionProvider, useSession } from '../features/auth/session'
 import { BridgesPage } from '../features/bridges/BridgesPage'
@@ -33,6 +34,7 @@ function Shell({ children }: { children: React.ReactNode }) {
           <Link to="/settings">Settings</Link>
           <Link to="/audit">Audit</Link>
           <Link to="/maintenance">Maintenance</Link>
+          <Link to="/mfa">MFA</Link>
         </nav>
         <span>{me.account_id}</span>
         <button onClick={() => void logout()}>Sign out</button>
@@ -60,6 +62,7 @@ export function App() {
           <Route path="/settings" element={<Shell><SettingsPage /></Shell>} />
           <Route path="/audit" element={<Shell><AuditPage /></Shell>} />
           <Route path="/maintenance" element={<Shell><MaintenancePage /></Shell>} />
+          <Route path="/mfa" element={<Shell><MfaPage /></Shell>} />
           <Route path="*" element={<Navigate to="/channels" replace />} />
         </Routes>
       </BrowserRouter>

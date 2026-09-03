@@ -13,20 +13,31 @@ from fastapi import FastAPI
 
 from server.api.dispatch import default_runtime
 from server.api.errors import ApiError, api_error_handler
+from server.api.setup import router as setup_router
+from server.api.v1.accounts import router as accounts_router
 from server.api.v1.agents import router as agents_router
 from server.api.v1.approvals import router as approvals_router
+from server.api.v1.approvals_queue import router as approvals_queue_router
+from server.api.v1.audit import router as audit_router
 from server.api.v1.auth import router as auth_router
+from server.api.v1.breakglass import router as breakglass_router
 from server.api.v1.bridges import router as bridges_router
 from server.api.v1.channel_members import router as channel_members_router
 from server.api.v1.channels import router as channels_router
 from server.api.v1.events import router as events_router
+from server.api.v1.hard_delete import router as hard_delete_router
 from server.api.v1.identity import router as identity_router
 from server.api.v1.identity_admin import router as identity_admin_router
+from server.api.v1.maintenance import router as maintenance_router
+from server.api.v1.mfa import router as mfa_router
 from server.api.v1.notifications import router as notifications_router
+from server.api.v1.ops import router as ops_router
 from server.api.v1.providers_mattermost import router as providers_mattermost_router
 from server.api.v1.providers_mattermost_actions import router as mattermost_actions_router
 from server.api.v1.providers_telegram import router as providers_telegram_router
 from server.api.v1.roles import router as roles_router
+from server.api.v1.secrets import router as secrets_router
+from server.api.v1.settings import router as settings_router
 from server.api.v1.tasks import router as tasks_router
 from server.api.v1.verification import router as verification_router
 from server.api.v1.work import router as work_router
@@ -74,6 +85,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(identity_router)
     app.include_router(events_router)
     app.include_router(tasks_router)
+    app.include_router(approvals_queue_router)  # P4-14: before /{approval_id} routes
     app.include_router(approvals_router)
     app.include_router(providers_telegram_router)
     app.include_router(providers_mattermost_router)
@@ -87,8 +99,37 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(work_router)  # P3-11: work item REST + signed webhook callbacks
     app.include_router(agents_router)
     app.include_router(roles_router)
+    app.include_router(setup_router)  # P4-03 Setup Wizard (/setup, transport-guarded)
+    app.include_router(settings_router)  # P4-04
+    app.include_router(maintenance_router)  # P4-13
+    app.include_router(mfa_router)  # P4-09 MFA / re-auth proofs, CSRF token
+    app.include_router(breakglass_router)  # P4-10
+    app.include_router(secrets_router)  # P4-06/P4-07: Secret Broker + sidecar API
+    app.include_router(accounts_router)  # P4-01 account admin
+    app.include_router(ops_router)  # P4-02 operations dashboard
+    app.include_router(audit_router)  # P4-02 audit explorer
+    app.include_router(hard_delete_router)  # P4-11 hard-delete workflow
+    _wire_secrets(app)
     mattermost_link.register()  # P2-13: `link start|confirm` slash handlers
     app.state.telegram_webhook_secret = None  # env AGENT_COLAB_TELEGRAM_WEBHOOK_SECRET by default
+    # P4-08 admin security: CSRF (innermost), session policy (idle/MFA gate/break-glass), headers
+    from server.security.csrf import CsrfMiddleware
+    from server.security.headers import SecurityHeadersMiddleware
+
+    app.add_middleware(CsrfMiddleware)
+    if app.state.session_factory is not None:
+        from server.security.reauth import set_verifier
+        from server.security.reauth_verifier import build_verifier
+        from server.security.session_policy import SessionPolicyMiddleware
+
+        app.add_middleware(SessionPolicyMiddleware, session_factory=app.state.session_factory)
+        set_verifier(build_verifier(app.state.session_factory, app))
+    app.add_middleware(
+        SecurityHeadersMiddleware, hsts=settings.base_url.lower().startswith("https://")
+    )
+    from server.maintenance.mode import MaintenanceMiddleware
+
+    app.add_middleware(MaintenanceMiddleware, state=app.state)  # P4-13: 503 + Retry-After
     app.state.gateway = None
     app.state.telegram_inbound_handler = None
     app.state.notification_provider = None
@@ -169,3 +210,19 @@ def cli(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":  # pragma: no cover
     raise SystemExit(cli())
+
+
+def _wire_secrets(app: FastAPI) -> None:
+    """P4-06: Task-end lease revocation hook, master key for the Broker, log scrubber."""
+    from server.application import secrets as secret_cmds
+    from server.application import tasks as task_cmds
+    from server.secrets import local_provider
+    from server.secrets.injection import install_log_filter
+    from server.secrets.provider import SecretError
+
+    task_cmds.register_terminal_hook(secret_cmds.revoke_for_task_hook)
+    try:
+        app.state.secret_master_key = local_provider.load_master_key()
+    except SecretError:
+        app.state.secret_master_key = None  # Setup (P4-03) configures it; Broker answers 503
+    install_log_filter()

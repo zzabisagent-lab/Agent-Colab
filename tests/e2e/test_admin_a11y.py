@@ -24,6 +24,7 @@ from server.db.engine import make_engine
 from server.identity.principals import token_hash
 from server.main import create_app
 from server.policy.repository import PostgresPolicyRepository
+from server.secrets.envelope import new_master_key
 
 pytestmark = pytest.mark.db
 ROOT = Path(__file__).resolve().parents[2]
@@ -78,7 +79,9 @@ def server(database_url: str, engine: Engine) -> Iterator[str]:
         port = sock.getsockname()[1]
     base = f"http://127.0.0.1:{port}"
     os.environ["AGENT_COLAB_GATEWAY_DRAIN"] = "0"
-    app = create_app(Settings(database_url=database_url, base_url=base))
+    app = create_app(
+        Settings(database_url=database_url, base_url=base, master_key_b64=new_master_key())
+    )
     srv = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=port, log_level="warning"))
     thread = threading.Thread(target=srv.run, daemon=True)
     thread.start()

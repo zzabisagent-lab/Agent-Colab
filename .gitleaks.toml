@@ -13,6 +13,8 @@ useDefault = true
 description = "Documented test canaries, baseline snippets, fixture hashes, and revoked spike material"
 regexTarget = "line"
 regexes = [
+  # RFC 6238 Appendix B published TOTP test vector (base32 of "12345678901234567890"), not a secret
+  '''GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ''',
   '''CANARY-NOT-A-SECRET-\d+''',
   '''token_hash: "[0-9a-f]{64}"''',
   '''"idempotency_key": "[a-z]+-\d{4}-[a-z]+-\d+"''',

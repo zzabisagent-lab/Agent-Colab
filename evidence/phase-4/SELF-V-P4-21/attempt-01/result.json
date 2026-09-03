@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P4-21",
+  "evidence_id": "SELF-V-P4-21",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_breakglass_db.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "eba1d0bd02396e27d0deabc9a36ad66db903cc3b",
+  "started_at": "2026-09-03T00:59:49.938249+00:00",
+  "finished_at": "2026-09-03T00:59:55.492821+00:00",
+  "output_sha256": "423b1d0e014eb1eab96f4420f7b344c2615be505dd574b756ac884826ca74f2d"
+}

@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P4-33",
+  "evidence_id": "SELF-V-P4-33",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_approvals_queue_db.py",
+    "tests/integration/test_approval_core.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "eba1d0bd02396e27d0deabc9a36ad66db903cc3b",
+  "started_at": "2026-09-03T00:59:55.602740+00:00",
+  "finished_at": "2026-09-03T01:00:02.118298+00:00",
+  "output_sha256": "700bc0322b00f8e8db3ce495047983b54ab27ab59ed1fedac05f3aeba47dae24"
+}

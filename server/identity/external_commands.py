@@ -77,7 +77,8 @@ def list_links(
             "FROM external_identity_links l "
             "JOIN provider_instances p ON p.id = l.provider_instance_id "
             "JOIN accounts a ON a.id = l.account_id WHERE p.workspace_id = :ws "
-            "AND (:st IS NULL OR l.status = :st) AND (:pi IS NULL OR p.provider_instance_id = :pi) "
+            "AND (CAST(:st AS text) IS NULL OR l.status = CAST(:st AS text)) "
+            "AND (CAST(:pi AS text) IS NULL OR p.provider_instance_id = CAST(:pi AS text)) "
             "ORDER BY l.created_at, l.link_id LIMIT :lim"
         ),
         {

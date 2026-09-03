@@ -140,7 +140,11 @@ def test_phase1_exit_gate_full_chain(database_url: str, engine: Engine, tmp_path
 
     os.environ["AGENT_COLAB_ARTIFACT_ROOT"] = str(tmp_path / "artifacts")
     os.environ["AGENT_COLAB_DOCUMENT_ROOT"] = str(tmp_path / "documents")
-    app = create_app(Settings(database_url=database_url, base_url="http://test"))
+    from server.secrets.envelope import new_master_key
+
+    app = create_app(
+        Settings(database_url=database_url, base_url="http://test", master_key_b64=new_master_key())
+    )
     with TestClient(app) as c:
         # 1. create with acceptance criteria (creator)
         r = c.post(
@@ -208,9 +212,42 @@ def test_phase1_exit_gate_full_chain(database_url: str, engine: Engine, tmp_path
             headers=_h("approver", "eg-noreauth"),
         )
         assert no_reauth.json()["code"] == "REAUTH_REQUIRED"
-        ok = c.post(
+        # a body claim is not a re-authentication (P4-14): the approver proves MFA for real
+        claim = c.post(
             f"/api/v1/approvals/{approval_id}/decide",
             json={"decision": "APPROVE", "reauth_verified": True},
+            headers=_h("approver", "eg-claim"),
+        )
+        assert claim.json()["code"] == "REAUTH_REQUIRED"
+        import urllib.parse
+
+        from server.security import totp as totp_mod
+
+        enrol = c.post("/api/v1/auth/mfa/enroll", headers=_h("approver", "eg-mfa-enroll"))
+        assert enrol.status_code == 201, enrol.text
+        secret = urllib.parse.parse_qs(urllib.parse.urlparse(enrol.json()["otpauth_uri"]).query)[
+            "secret"
+        ][0]
+        now = dt.datetime.now(dt.UTC)
+        assert (
+            c.post(
+                "/api/v1/auth/mfa/confirm",
+                json={"code": totp_mod.totp(secret, now)},
+                headers=_h("approver", "eg-mfa-confirm"),
+            ).status_code
+            == 200
+        )
+        assert (
+            c.post(
+                "/api/v1/auth/mfa/verify",
+                json={"code": totp_mod.totp(secret, now)},
+                headers=_h("approver", "eg-mfa-verify"),
+            ).status_code
+            == 200
+        )
+        ok = c.post(
+            f"/api/v1/approvals/{approval_id}/decide",
+            json={"decision": "APPROVE"},
             headers=_h("approver", "eg-approve"),
         )
         assert ok.status_code == 200, ok.text

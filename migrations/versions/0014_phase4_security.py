@@ -23,4 +23,13 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    pass  # tables created by this revision are dropped by the owning package's downgrade list
+    for table in (
+        "auth_rate_limits",
+        "breakglass_actions",
+        "breakglass_sessions",
+        "session_mfa",
+        "recovery_codes",
+        "mfa_enrollments",
+    ):
+        op.execute(f"DROP TABLE IF EXISTS {table}")
+    op.execute("ALTER TABLE account_sessions DROP COLUMN IF EXISTS last_seen_at")

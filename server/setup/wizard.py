@@ -258,10 +258,10 @@ class SetupService:
         else:
             doc.update(
                 {
-                    "token_hash": None,
-                    "token_fingerprint": None,
-                    "token_expires_at": None,
-                    "token_used": False,
+                    "token_hash": None,  # nosec B105 - literal flag, not a value
+                    "token_fingerprint": None,  # nosec B105 - literal flag, not a value
+                    "token_expires_at": None,  # nosec B105 - literal flag, not a value
+                    "token_used": False,  # nosec B105 - literal flag, not a value
                 }
             )
         return doc
@@ -278,7 +278,7 @@ class SetupService:
         client_cert_verified: bool,
         presented_token: str | None,
     ) -> TransportDecision:
-        token_check = "SETUP_TOKEN_MISSING"  # noqa: S105 - a code, not a value
+        token_check = "SETUP_TOKEN_MISSING"  # noqa: S105 - a code, not a value  # nosec B105 - error code
         if presented_token:
             try:
                 self.guard.verify(presented_token, remote_addr, consume=False)
@@ -368,7 +368,7 @@ class SetupService:
         elif section == "keys":
             self.pointers["secret_provider"] = str(values.get("secrets.provider", "local"))
             if self.pointers["secret_provider"] == "local":  # noqa: S105 - provider name
-                self.pointers["secret_provider"] = "local_encrypted"  # noqa: S105 - provider name
+                self.pointers["secret_provider"] = "local_encrypted"  # noqa: S105 - provider name  # nosec B105 - provider name
             path = str(
                 values.get("secrets.master_key_path", spec_for("secrets.master_key_path").default)
             )
