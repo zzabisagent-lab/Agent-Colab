@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test'
 // V-P4-18: WCAG 2.1 AA automated violations 0 on every console route; critical flows by keyboard.
 const AUTHORIZED = process.env.E2E_AUTHORIZED_TOKEN ?? ''
 const ROUTES = ['/admin/overview', '/admin/channels', '/admin/agents', '/admin/roles', '/admin/accounts',
-  '/admin/secrets', '/admin/approvals', '/admin/settings', '/admin/audit', '/admin/maintenance']
+  '/admin/secrets', '/admin/approvals', '/admin/settings', '/admin/audit', '/admin/maintenance', '/admin/schedules', '/admin/mfa']
 
 async function axeCheck(page: Page, name: string) {
   const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze()
