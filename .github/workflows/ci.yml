@@ -9,7 +9,8 @@ permissions:
   contents: read
 
 jobs:
-  ci:
+  gates:
+    name: lint, types, tests, docs
     runs-on: ubuntu-24.04
     services:
       postgres:
@@ -35,11 +36,56 @@ jobs:
           node-version: "22"
       - run: npm install -g pnpm
       - run: make bootstrap
-      - run: make lint
-      - run: make test
-      - run: make check-docs
-      - run: make build
+      - name: lint, format, types, bandit, web lint
+        run: make lint
+      - name: unit, integration and end-to-end tests
+        run: make test
+      - name: sidecar tests
+        run: uv run pytest sidecar/tests -q
+      - name: contract and documentation checks
+        run: make check-docs
+      - name: build the web console
+        run: make build
       - name: secret scan
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  security:
+    name: security scans
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: colab
+          POSTGRES_PASSWORD: colab
+          POSTGRES_DB: colab_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U colab" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      AGENT_COLAB_TEST_DATABASE_URL: postgresql://colab:colab@localhost:5432/colab_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install -g pnpm
+      - run: make bootstrap
+      # the container scan needs images, so build them first; the gate is zero high or critical
+      - name: build release images and SBOMs
+        run: uv run python -m tools.release_build --version ci-${{ github.sha }}
+      - name: SAST, dependency, container and dynamic scans
+        run: >-
+          uv run python -m tools.security_scan --all
+          --require sast dependency container dynamic
+      - name: upload scan reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-scans
+          path: evidence/phase-7/scans/

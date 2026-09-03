@@ -10,6 +10,7 @@ COPY server ./server
 COPY sidecar ./sidecar
 COPY schemas ./schemas
 COPY policy ./policy
+COPY i18n ./i18n
 COPY migrations ./migrations
 COPY alembic.ini ./
 RUN uv sync --frozen --no-dev --no-editable
@@ -24,11 +25,30 @@ RUN useradd --system --uid 10001 --create-home agentcolab \
  && mkdir -p /var/lib/agent-colab/bootstrap /var/lib/agent-colab/artifacts \
  && chown -R agentcolab:agentcolab /var/lib/agent-colab
 COPY --from=build /opt/venv /opt/venv
+# The code resolves its data roots next to the installed package (Path(__file__).parents[2]), so a
+# non-editable install must carry them inside site-packages; copying them to /app leaves the image
+# unable to start. Kept at /app too for operators who mount or inspect them.
+COPY --from=build /app/schemas /opt/venv/lib/python3.12/site-packages/schemas
+COPY --from=build /app/policy /opt/venv/lib/python3.12/site-packages/policy
+COPY --from=build /app/i18n /opt/venv/lib/python3.12/site-packages/i18n
 COPY --from=build /app/schemas /app/schemas
 COPY --from=build /app/policy /app/policy
 COPY --from=build /app/migrations /app/migrations
 COPY --from=build /app/alembic.ini /app/alembic.ini
+# Remove OS packages the runtime never uses. Their remaining advisories have no fix from the
+# distribution, and a released image must not ship known-vulnerable content it does not need
+# (V-P7-11). The image is verified to import and serve after the purge.
+ARG PURGE="perl-base perl-modules-5.40 ncurses-bin ncurses-base libncursesw6 libtinfo6 gzip libsystemd0 libudev1 libacl1 libsqlite3-0"
+RUN dpkg --purge --force-depends $PURGE 2>&1 | tail -5; \
+    for pkg in $PURGE; do \
+      if dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null | grep -q "install ok installed"; then \
+        echo "purge failed: $pkg is still installed" >&2; exit 1; \
+      fi; \
+    done; \
+    rm -rf /var/lib/apt/lists/* /var/cache/debconf/*
 WORKDIR /app
+# the data roots are read-only inputs; make them world-readable for the unprivileged user
+RUN chmod -R a+rX /opt/venv/lib/python3.12/site-packages/schemas /opt/venv/lib/python3.12/site-packages/policy /opt/venv/lib/python3.12/site-packages/i18n /app
 ENV PATH="/opt/venv/bin:$PATH" PYTHONUNBUFFERED=1
 USER agentcolab
 EXPOSE 8080
@@ -36,3 +56,6 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
   CMD ["python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8080/readyz', timeout=4).status == 200 else 1)"]
 ENTRYPOINT ["agent-colab"]
+# the process default is loopback (the Setup wizard binds locally); a container must publish on
+# its own interface or the image cannot serve at all
+CMD ["--host", "0.0.0.0", "--port", "8080"]

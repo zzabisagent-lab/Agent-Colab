@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P7-06",
+  "evidence_id": "SELF-V-P7-06",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_database_outage_db.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "7d817278ebe3ec417f518fe870d674838f199076",
+  "started_at": "2026-09-03T16:20:03.086768+00:00",
+  "finished_at": "2026-09-03T16:20:08.761228+00:00",
+  "output_sha256": "423b1d0e014eb1eab96f4420f7b344c2615be505dd574b756ac884826ca74f2d"
+}

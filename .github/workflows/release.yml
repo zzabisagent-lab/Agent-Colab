@@ -1,0 +1,51 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "release version"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: images, SBOM and manifest
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm install -g pnpm
+      - run: make bootstrap
+      - name: resolve the version
+        id: version
+        run: echo "value=${{ inputs.version || github.ref_name }}" >> "$GITHUB_OUTPUT"
+      # builds both production images, reads back their content-addressed digests and writes a
+      # CycloneDX SBOM for the Python and JavaScript trees into release/manifest.json
+      - name: build images, SBOMs and the release manifest
+        run: uv run python -m tools.release_build --version "${{ steps.version.outputs.value }}"
+      # a published digest must always name the same content; the check also reports whether the
+      # rebuild reproduced it, which container builds do not guarantee
+      - name: verify the recorded digests and SBOM hashes
+        run: uv run python -m tools.release_build --verify release/manifest.json
+      - name: scan the release images
+        run: uv run python -m tools.security_scan --scan container --require container
+      - name: upload the release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ steps.version.outputs.value }}
+          path: |
+            release/manifest.json
+            release/sbom-*.json
+            evidence/phase-7/scans/container.json

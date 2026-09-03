@@ -1,10 +1,10 @@
 {
-  "built_at": "2026-09-03T16:03:35+00:00",
+  "built_at": "2026-09-03T16:16:56+00:00",
   "images": [
     {
       "built": true,
       "dockerfile": "deploy/production/Dockerfile.server",
-      "image_id": "sha256:4b67a1ed8f8052b80369c46232a665bdaaccb08b1845851edce61cff4626b390",
+      "image_id": "sha256:24c44507df74836d22853b3fff8cebde4baf2905e190ab0e3c6771593b5eaf53",
       "name": "server",
       "tag": "agent-colab/server:8.0.0-test"
     },
@@ -31,11 +31,11 @@
       "format": "CycloneDX",
       "generated": true,
       "path": "release/sbom-python-8.0.0-test.json",
-      "sha256": "2c6f13aeed8435087ace2921ee5b768205640a989388d34da3380c6099b2ac8a",
+      "sha256": "5486039d9be4c63c2d0ef400a5a6e1cc1b9d096f02149e8368f3740d4708e825",
       "spec_version": "1.6"
     }
   },
   "schema_id": "colab.release-manifest.v1",
-  "source_revision": "8c491f19680d523dba06ad447eddc7e7582449ba",
+  "source_revision": "7d817278ebe3ec417f518fe870d674838f199076",
   "version": "8.0.0-test"
 }
