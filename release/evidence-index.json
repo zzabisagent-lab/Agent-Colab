@@ -1,0 +1,359 @@
+{
+  "schema_id": "colab.evidence-index.v1",
+  "phases": [
+    {
+      "phase": 0,
+      "reports": [
+        {
+          "file": "verification/phase-0/VR-P0-002.yaml",
+          "result": "FAILED",
+          "sha256": "da9518faf7b99d487bcb4a09eee085526a701c4a5732d166bd96ee8fae0756b7"
+        },
+        {
+          "file": "verification/phase-0/VR-P0-003.yaml",
+          "result": "PASSED",
+          "sha256": "b9a5e68623757155002fd77958e88e44a8e8a1698973b8c41db002a2750bb62d"
+        }
+      ],
+      "passed_report": "verification/phase-0/VR-P0-003.yaml",
+      "self_evidence_count": 20,
+      "self_evidence": {
+        "V-P0-01": "pass",
+        "V-P0-02": "pass",
+        "V-P0-03": "pass",
+        "V-P0-04": "pass",
+        "V-P0-05": "pass",
+        "V-P0-06": "pass",
+        "V-P0-07": "pass",
+        "V-P0-08": "pass",
+        "V-P0-09": "pass",
+        "V-P0-10": "pass",
+        "V-P0-11": "pass",
+        "V-P0-12": "pass",
+        "V-P0-13": "pass",
+        "V-P0-14": "pass",
+        "V-P0-15": "pass",
+        "V-P0-16": "pass",
+        "V-P0-17": "pass",
+        "V-P0-18": "pass",
+        "V-P0-19": "pass",
+        "V-P0-20": "pass"
+      }
+    },
+    {
+      "phase": 1,
+      "reports": [
+        {
+          "file": "verification/phase-1/VR-P1-001.yaml",
+          "result": "PASSED",
+          "sha256": "7b862d12939447f283a674b198c08288644d4ec623854f2b2617cff5cea36a73"
+        }
+      ],
+      "passed_report": "verification/phase-1/VR-P1-001.yaml",
+      "self_evidence_count": 32,
+      "self_evidence": {
+        "V-P1-01": "pass",
+        "V-P1-02": "pass",
+        "V-P1-03": "pass",
+        "V-P1-04": "pass",
+        "V-P1-05": "pass",
+        "V-P1-06": "pass",
+        "V-P1-07": "pass",
+        "V-P1-08": "pass",
+        "V-P1-09": "pass",
+        "V-P1-10": "pass",
+        "V-P1-11": "pass",
+        "V-P1-12": "pass",
+        "V-P1-13": "pass",
+        "V-P1-14": "pass",
+        "V-P1-15": "pass",
+        "V-P1-16": "pass",
+        "V-P1-17": "pass",
+        "V-P1-18": "pass",
+        "V-P1-19": "pass",
+        "V-P1-20": "pass",
+        "V-P1-21": "pass",
+        "V-P1-22": "pass",
+        "V-P1-23": "pass",
+        "V-P1-24": "pass",
+        "V-P1-25": "pass",
+        "V-P1-26": "pass",
+        "V-P1-27": "pass",
+        "V-P1-28": "pass",
+        "V-P1-29": "pass",
+        "V-P1-30": "pass",
+        "V-P1-31": "pass",
+        "V-P1-32": "pass"
+      }
+    },
+    {
+      "phase": 2,
+      "reports": [
+        {
+          "file": "verification/phase-2/VR-P2-001.yaml",
+          "result": "FAILED",
+          "sha256": "08c36ffc093840a3909e52e2f0248d9efeb244c40ecbc9042e2ea2e4ac273731"
+        },
+        {
+          "file": "verification/phase-2/VR-P2-002.yaml",
+          "result": "PASSED",
+          "sha256": "f47a2bc9f40d47360194d363a235a2e67ed07f0eeac9a1a14953b799ebf2e518"
+        }
+      ],
+      "passed_report": "verification/phase-2/VR-P2-002.yaml",
+      "self_evidence_count": 31,
+      "self_evidence": {
+        "V-P2-01": "pass",
+        "V-P2-02": "pass",
+        "V-P2-03": "pass",
+        "V-P2-04": "pass",
+        "V-P2-05": "pass",
+        "V-P2-06": "pass",
+        "V-P2-07": "pass",
+        "V-P2-08": "pass",
+        "V-P2-09": "pass",
+        "V-P2-10": "pass",
+        "V-P2-11": "pass",
+        "V-P2-12": "pass",
+        "V-P2-13": "pass",
+        "V-P2-14": "pass",
+        "V-P2-15": "pass",
+        "V-P2-16": "pass",
+        "V-P2-17": "pass",
+        "V-P2-18": "pass",
+        "V-P2-19": "pass",
+        "V-P2-20": "pass",
+        "V-P2-21": "pass",
+        "V-P2-22": "pass",
+        "V-P2-23": "pass",
+        "V-P2-24": "pass",
+        "V-P2-25": "pass",
+        "V-P2-26": "pass",
+        "V-P2-27": "pass",
+        "V-P2-28": "pass",
+        "V-P2-29": "pass",
+        "V-P2-30": "pass",
+        "V-P2-31": "pass"
+      }
+    },
+    {
+      "phase": 3,
+      "reports": [
+        {
+          "file": "verification/phase-3/VR-P3-001.yaml",
+          "result": "PASSED",
+          "sha256": "a94aa5147891618553c69dc41645737a8cf8e51c924b99ac84c4947a3f64f9ca"
+        }
+      ],
+      "passed_report": "verification/phase-3/VR-P3-001.yaml",
+      "self_evidence_count": 26,
+      "self_evidence": {
+        "V-P3-01": "pass",
+        "V-P3-02": "pass",
+        "V-P3-03": "pass",
+        "V-P3-04": "pass",
+        "V-P3-05": "pass",
+        "V-P3-06": "pass",
+        "V-P3-07": "pass",
+        "V-P3-08": "pass",
+        "V-P3-09": "pass",
+        "V-P3-10": "pass",
+        "V-P3-11": "pass",
+        "V-P3-12": "pass",
+        "V-P3-13": "pass",
+        "V-P3-14": "pass",
+        "V-P3-15": "pass",
+        "V-P3-16": "pass",
+        "V-P3-17": "pass",
+        "V-P3-18": "pass",
+        "V-P3-19": "pass",
+        "V-P3-20": "pass",
+        "V-P3-21": "pass",
+        "V-P3-22": "pass",
+        "V-P3-23": "pass",
+        "V-P3-24": "pass",
+        "V-P3-25": "pass",
+        "V-P3-26": "pass"
+      }
+    },
+    {
+      "phase": 4,
+      "reports": [
+        {
+          "file": "verification/phase-4/VR-P4-001.yaml",
+          "result": "FAILED",
+          "sha256": "bcd26c2ddfa646e3a456dac645c6d3652e682b9307c14b0a4a86ca28af67eaac"
+        },
+        {
+          "file": "verification/phase-4/VR-P4-002.yaml",
+          "result": "PASSED",
+          "sha256": "6b67efdb0c072c76304a35f8aa0a712a7d4d9d895bcdf094f610dbb5136be74c"
+        }
+      ],
+      "passed_report": "verification/phase-4/VR-P4-002.yaml",
+      "self_evidence_count": 33,
+      "self_evidence": {
+        "V-P4-01": "pass",
+        "V-P4-02": "pass",
+        "V-P4-03": "pass",
+        "V-P4-04": "pass",
+        "V-P4-05": "pass",
+        "V-P4-06": "pass",
+        "V-P4-07": "pass",
+        "V-P4-08": "pass",
+        "V-P4-09": "pass",
+        "V-P4-10": "pass",
+        "V-P4-11": "pass",
+        "V-P4-12": "pass",
+        "V-P4-13": "pass",
+        "V-P4-14": "pass",
+        "V-P4-15": "pass",
+        "V-P4-16": "pass",
+        "V-P4-17": "pass",
+        "V-P4-18": "pass",
+        "V-P4-19": "pass",
+        "V-P4-20": "pass",
+        "V-P4-21": "pass",
+        "V-P4-22": "pass",
+        "V-P4-23": "pass",
+        "V-P4-24": "pass",
+        "V-P4-25": "pass",
+        "V-P4-26": "pass",
+        "V-P4-27": "pass",
+        "V-P4-28": "pass",
+        "V-P4-29": "pass",
+        "V-P4-30": "pass",
+        "V-P4-31": "pass",
+        "V-P4-32": "pass",
+        "V-P4-33": "pass"
+      }
+    },
+    {
+      "phase": 5,
+      "reports": [
+        {
+          "file": "verification/phase-5/VR-P5-001.yaml",
+          "result": "FAILED",
+          "sha256": "5a2f28007a86be561ad1fe70bd1a8071ecc61b8ce43542005b77a491dc8d3b45"
+        },
+        {
+          "file": "verification/phase-5/VR-P5-002.yaml",
+          "result": "PASSED",
+          "sha256": "f21d6d442e6802adc0fa6309543302dd239f6e72c5680e3c06c2799d20138c58"
+        }
+      ],
+      "passed_report": "verification/phase-5/VR-P5-002.yaml",
+      "self_evidence_count": 37,
+      "self_evidence": {
+        "V-P5-01": "pass",
+        "V-P5-02": "pass",
+        "V-P5-03": "pass",
+        "V-P5-04": "pass",
+        "V-P5-05": "pass",
+        "V-P5-06": "pass",
+        "V-P5-07": "pass",
+        "V-P5-08": "pass",
+        "V-P5-09": "pass",
+        "V-P5-10": "pass",
+        "V-P5-11": "pass",
+        "V-P5-12": "pass",
+        "V-P5-13": "pass",
+        "V-P5-14": "pass",
+        "V-P5-15": "pass",
+        "V-P5-16": "pass",
+        "V-P5-17": "pass",
+        "V-P5-18": "pass",
+        "V-P5-19": "pass",
+        "V-P5-20": "pass",
+        "V-P5-21": "pass",
+        "V-P5-22": "pass",
+        "V-P5-23": "pass",
+        "V-P5-24": "pass",
+        "V-P5-25": "pass",
+        "V-P5-26": "pass",
+        "V-P5-27": "pass",
+        "V-P5-28": "pass",
+        "V-P5-29": "pass",
+        "V-P5-30": "pass",
+        "V-P5-31": "pass",
+        "V-P5-32": "pass",
+        "V-P5-33": "pass",
+        "V-P5-34": "pass",
+        "V-P5-35": "pass",
+        "V-P5-36": "pass",
+        "V-P5-37": "pass"
+      }
+    },
+    {
+      "phase": 6,
+      "reports": [
+        {
+          "file": "verification/phase-6/VR-P6-001.yaml",
+          "result": "FAILED",
+          "sha256": "fcc4a87ee9035e823fca16a15a36bd1bda4142f0a3d5268ea040459d7e305643"
+        },
+        {
+          "file": "verification/phase-6/VR-P6-002.yaml",
+          "result": "PASSED",
+          "sha256": "8fdbc7ddda1efabd90be04e120538880add1888c26b72779c0f93b0a5097b1c9"
+        }
+      ],
+      "passed_report": "verification/phase-6/VR-P6-002.yaml",
+      "self_evidence_count": 29,
+      "self_evidence": {
+        "V-P6-01": "pass",
+        "V-P6-02": "pass",
+        "V-P6-03": "pass",
+        "V-P6-04": "pass",
+        "V-P6-05": "pass",
+        "V-P6-06": "pass",
+        "V-P6-07": "pass",
+        "V-P6-08": "pass",
+        "V-P6-09": "pass",
+        "V-P6-10": "pass",
+        "V-P6-11": "pass",
+        "V-P6-12": "pass",
+        "V-P6-13": "pass",
+        "V-P6-14": "pass",
+        "V-P6-15": "pass",
+        "V-P6-16": "pass",
+        "V-P6-17": "pass",
+        "V-P6-18": "pass",
+        "V-P6-19": "pass",
+        "V-P6-20": "pass",
+        "V-P6-21": "pass",
+        "V-P6-22": "pass",
+        "V-P6-23": "pass",
+        "V-P6-24": "pass",
+        "V-P6-25": "pass",
+        "V-P6-26": "pass",
+        "V-P6-27": "pass",
+        "V-P6-28": "pass",
+        "V-P6-29": "pass"
+      }
+    }
+  ],
+  "residual_risks": [
+    {
+      "finding": "Container rebuilds are not bit-reproducible",
+      "severity": "Informational",
+      "owner": "agent-claude-code",
+      "deadline": "Phase 8"
+    },
+    {
+      "finding": "Image signing is not performed",
+      "severity": "Low",
+      "owner": "agent-claude-code",
+      "deadline": "first deployment"
+    },
+    {
+      "finding": "The dynamic scan runs in-process by default",
+      "severity": "Low",
+      "owner": "agent-claude-code",
+      "deadline": "first deployment"
+    }
+  ],
+  "secret_scan_clean": true,
+  "problems": [],
+  "ok": true
+}

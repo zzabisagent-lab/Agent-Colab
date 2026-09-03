@@ -1,0 +1,43 @@
+{
+  "ok": true,
+  "seconds": 20.4,
+  "deadline_seconds": 1800,
+  "state": "LOCKED",
+  "steps": [
+    {
+      "step": "db",
+      "ok": true,
+      "code": "OK",
+      "detail": "",
+      "guidance": "",
+      "existing_tables": 0,
+      "migration": "dry-run ok"
+    },
+    {
+      "step": "secrets",
+      "ok": true,
+      "code": "OK",
+      "detail": "",
+      "guidance": "",
+      "provider": "local_encrypted",
+      "local_provider_health": "PREFLIGHT_SECRET_PROVIDER_UNAVAILABLE"
+    },
+    {
+      "step": "mattermost",
+      "ok": true,
+      "code": "OK",
+      "detail": "",
+      "guidance": "",
+      "bot_user_id": "wrchmujfujf5xnpgeksu6kzwmh",
+      "username": "agent-colab"
+    },
+    {
+      "step": "storage",
+      "ok": true,
+      "code": "OK",
+      "detail": "",
+      "guidance": ""
+    }
+  ],
+  "detail": "owner material received; bootstrap sealed: True"
+}

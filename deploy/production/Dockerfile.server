@@ -31,6 +31,10 @@ COPY --from=build /opt/venv /opt/venv
 COPY --from=build /app/schemas /opt/venv/lib/python3.12/site-packages/schemas
 COPY --from=build /app/policy /opt/venv/lib/python3.12/site-packages/policy
 COPY --from=build /app/i18n /opt/venv/lib/python3.12/site-packages/i18n
+# run_migrations resolves the Alembic scripts next to the installed package, so they ship with it:
+# without this a clean install fails at DB_MIGRATION with "Path doesn't exist".
+COPY --from=build /app/migrations /opt/venv/lib/python3.12/site-packages/migrations
+COPY --from=build /app/alembic.ini /opt/venv/lib/python3.12/site-packages/alembic.ini
 COPY --from=build /app/schemas /app/schemas
 COPY --from=build /app/policy /app/policy
 COPY --from=build /app/migrations /app/migrations
@@ -48,7 +52,8 @@ RUN dpkg --purge --force-depends $PURGE 2>&1 | tail -5; \
     rm -rf /var/lib/apt/lists/* /var/cache/debconf/*
 WORKDIR /app
 # the data roots are read-only inputs; make them world-readable for the unprivileged user
-RUN chmod -R a+rX /opt/venv/lib/python3.12/site-packages/schemas /opt/venv/lib/python3.12/site-packages/policy /opt/venv/lib/python3.12/site-packages/i18n /app
+RUN chmod -R a+rX /opt/venv/lib/python3.12/site-packages/schemas /opt/venv/lib/python3.12/site-packages/policy /opt/venv/lib/python3.12/site-packages/i18n \
+    /opt/venv/lib/python3.12/site-packages/migrations /opt/venv/lib/python3.12/site-packages/alembic.ini /app
 ENV PATH="/opt/venv/bin:$PATH" PYTHONUNBUFFERED=1
 USER agentcolab
 EXPOSE 8080
