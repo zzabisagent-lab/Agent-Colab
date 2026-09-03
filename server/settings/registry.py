@@ -224,6 +224,35 @@ REGISTRY: Mapping[str, SettingSpec] = {
             minimum=1,
             maximum=86400,
         ),
+        # Backup retention (P7-03): a backup kept by any window is kept. The RPO of 24 h means
+        # the daily window must stay at 1 or more.
+        _spec(
+            "backup.retention_daily",
+            "ops",
+            SettingType.INTEGER,
+            7,
+            "Daily backups to keep (newest per day)",
+            minimum=1,
+            maximum=365,
+        ),
+        _spec(
+            "backup.retention_weekly",
+            "ops",
+            SettingType.INTEGER,
+            4,
+            "Weekly backups to keep (newest per ISO week)",
+            minimum=0,
+            maximum=260,
+        ),
+        _spec(
+            "backup.retention_monthly",
+            "ops",
+            SettingType.INTEGER,
+            6,
+            "Monthly backups to keep (newest per month)",
+            minimum=0,
+            maximum=120,
+        ),
         _spec(
             "scheduler.poll_interval_s",
             "scheduler",

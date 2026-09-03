@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P7-10",
+  "evidence_id": "SELF-V-P7-10",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_upgrade_rollback.py",
+    "-q",
+    "-k",
+    "rollback_is_safe or forward_fix or cli_reports",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "0ef29a584d6ce13a61f30458f73875f00dc498e1",
+  "started_at": "2026-09-03T15:47:13.252937+00:00",
+  "finished_at": "2026-09-03T15:47:17.750661+00:00",
+  "output_sha256": "cf426ab35f3b06fccef8290fde5325d90af130a79da1d1752031518df77c4236"
+}
