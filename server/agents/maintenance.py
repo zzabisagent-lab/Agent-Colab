@@ -55,12 +55,20 @@ def run_maintenance(runtime: Any) -> dict[str, int]:
         "verifier_timeouts": 0,
         "marked_offline": 0,
         "breakglass_expired": 0,
+        "schedule_runs_started": 0,
+        "schedule_runs_recovered": 0,
         "errors": 0,
     }
     with session_scope(runtime.session_factory) as session:
         workspaces = workspace_ids(session)
     for ws in workspaces:
-        for step in (_sweep_work_items, _sweep_verifier_offers, _sweep_offline, _sweep_breakglass):
+        for step in (
+            _sweep_work_items,
+            _sweep_verifier_offers,
+            _sweep_offline,
+            _sweep_breakglass,
+            _sweep_schedules,
+        ):
             try:
                 with session_scope(runtime.session_factory) as session:
                     step(runtime, session, ws, counters)
@@ -78,7 +86,11 @@ def _sweep_work_items(runtime: Any, session: Session, ws: str, counters: dict[st
     actor = rerouting.system_principal(session, ws)
     store = runtime.store_for(session)
     report = timeouts.sweep(
-        session, store, clock=runtime.clock, actor_account_id=actor.account_uuid
+        session,
+        store,
+        clock=runtime.clock,
+        actor_account_id=actor.account_uuid,
+        workspace_id=ws,  # the actor may only expire its own Workspace's items
     )
     outcomes = rerouting.process_sweep(
         session,
@@ -129,3 +141,12 @@ def _sweep_breakglass(runtime: Any, session: Session, ws: str, counters: dict[st
                 runtime=runtime,
             )
     counters["breakglass_expired"] += len(ended)
+
+
+def _sweep_schedules(runtime: Any, session: Session, ws: str, counters: dict[str, int]) -> None:
+    """P5: one scheduler tick per Workspace (claiming pauses in maintenance mode)."""
+    from server.application.schedule_runs import tick
+
+    report = tick(runtime, workspace_id=ws, session=session)
+    counters["schedule_runs_started"] += report.started
+    counters["schedule_runs_recovered"] += report.recovery.total

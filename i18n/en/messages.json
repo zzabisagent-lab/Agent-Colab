@@ -74,5 +74,11 @@
   "reply.approval_decided": "Approval {approval_id}: {decision}",
   "reply.verification_assigned": "Verification {verification_id} assigned to {verifier} for {task_id}",
   "reply.verdict": "Verification {verification_id}: {verdict}",
-  "reply.notify": "Notification preferences updated: {setting}"
+  "reply.notify": "Notification preferences updated: {setting}",
+  "schedule.notice.start": "⏱ Scheduled run `{run_id}` of `{schedule_id}` started (Task `{task_id}`, planned {scheduled_for})",
+  "schedule.notice.result": "✅ Scheduled run `{run_id}` of `{schedule_id}` finished: {status} (Task `{task_id}`)",
+  "schedule.notice.failure": "❌ Scheduled run `{run_id}` of `{schedule_id}` ended with {status} ({error_code}): {detail}",
+  "schedule.notice.skip": "⏭ Scheduled run `{run_id}` of `{schedule_id}` skipped ({error_code}): {detail}",
+  "schedule.notice.late": "⚠️ Scheduled run `{run_id}` of `{schedule_id}` started {delay_s} s late (planned {scheduled_for})",
+  "schedule.notice.backfill_warning": "⚠️ Schedule `{schedule_id}`: missed occurrences were limited ({detail})"
 }

@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P5-21",
+  "evidence_id": "SELF-V-P5-21",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/e2e/test_admin_schedules_ui.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "fbcb8ee59652fb873a1a7df7d3310ac39711185e",
+  "started_at": "2026-09-03T09:37:39.675708+00:00",
+  "finished_at": "2026-09-03T09:37:49.957538+00:00",
+  "output_sha256": "423b1d0e014eb1eab96f4420f7b344c2615be505dd574b756ac884826ca74f2d"
+}

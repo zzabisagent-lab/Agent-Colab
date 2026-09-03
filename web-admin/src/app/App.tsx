@@ -11,6 +11,7 @@ import { SessionProvider, useSession } from '../features/auth/session'
 import { BridgesPage } from '../features/bridges/BridgesPage'
 import { ChannelsPage } from '../features/channels/ChannelsPage'
 import { RolesPage } from '../features/roles/RolesPage'
+import { SchedulesPage } from '../features/schedules/SchedulesPage'
 import { SecretsPage } from '../features/secrets/SecretsPage'
 import { SettingsPage } from '../features/settings/SettingsPage'
 import { SetupWizardPage } from '../features/setup/SetupWizardPage'
@@ -31,6 +32,7 @@ function Shell({ children }: { children: React.ReactNode }) {
           <Link to="/accounts">Accounts</Link>
           <Link to="/secrets">Secrets</Link>
           <Link to="/approvals">Approvals</Link>
+          <Link to="/schedules">Schedules</Link>
           <Link to="/settings">Settings</Link>
           <Link to="/audit">Audit</Link>
           <Link to="/maintenance">Maintenance</Link>
@@ -59,6 +61,7 @@ export function App() {
           <Route path="/accounts" element={<Shell><AccountsPage /></Shell>} />
           <Route path="/secrets" element={<Shell><SecretsPage /></Shell>} />
           <Route path="/approvals" element={<Shell><ApprovalsQueuePage /></Shell>} />
+          <Route path="/schedules" element={<Shell><SchedulesPage /></Shell>} />
           <Route path="/settings" element={<Shell><SettingsPage /></Shell>} />
           <Route path="/audit" element={<Shell><AuditPage /></Shell>} />
           <Route path="/maintenance" element={<Shell><MaintenancePage /></Shell>} />

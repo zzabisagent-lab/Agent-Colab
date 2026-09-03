@@ -1,0 +1,63 @@
+tests/e2e/test_admin_schedules_ui.py:158:    # API half of V-P5-21: the Member's run-now is rejected; the Administrator's creates a Run
+tests/e2e/test_admin_schedules_ui.py:1:"""V-P5-21 / V-P5-22 (UI halves, P5-08): Schedule builder, preview, lifecycle, run-now and
+tests/fixtures/schedule/next-run-cases.yaml:1:# V-P5-02: 50 normative cron expressions x their next 10 occurrences after 2026-03-01T00:00Z.
+tests/fixtures/usage/budget-cases.yaml:1:# P1-14 usage/budget cases (V-P1-30, V-P5-28 arithmetic). Hand-computed from policy/pricing.yaml
+tests/fixtures/usage/budget-cases.yaml:34:reservation_cases:   # limit 100, used 0, reserved 0 (V-P5-28: 99/100 allowed, 101 rejected)
+tests/integration/test_approval_core.py:238:    # schedule/run subjects are active from Phase 5: unknown ids are missing subjects (V-P5-36)
+tests/integration/test_schedule_budget_db.py:1:"""Per-Run and daily cost_units budgets for Schedule Runs (P5-10; V-P5-28, V-P5-37)."""
+tests/integration/test_schedule_budget_db.py:43:    """V-P5-28: with a per-Run limit of 100 and an estimate of 99/100 the Run proceeds; an
+tests/integration/test_schedule_budget_db.py:73:    """V-P5-37: the Run's usage_records aggregation matches, settlement records the overrun and
+tests/integration/test_schedule_execution_db.py:117:    """V-P5-16: a fixed Agent that is suspended skips with SKIPPED_AGENT_UNAVAILABLE; with
+tests/integration/test_schedule_execution_db.py:148:    """V-P5-17: a template Secret reference without a grant skips; with a grant the Run gets a
+tests/integration/test_schedule_execution_db.py:243:    """V-P5-18: a Run needing approval does not execute without one; a bounded Schedule Approval
+tests/integration/test_schedule_execution_db.py:271:    """V-P5-30: two runners race on a max-use=1 Schedule Approval → 1 consumption, 1 execution."""
+tests/integration/test_schedule_execution_db.py:2:Approvals (P5-04/P5-05; V-P5-09, V-P5-10, V-P5-11, V-P5-15, V-P5-16, V-P5-17, V-P5-18, V-P5-30)."""
+tests/integration/test_schedule_execution_db.py:42:    """V-P5-09: FORBID → the new Run is SKIPPED with SKIPPED_CONCURRENCY and creates no Task."""
+tests/integration/test_schedule_execution_db.py:56:    """V-P5-10: ALLOW → the second Run executes and tracks its own Task."""
+tests/integration/test_schedule_execution_db.py:70:    """V-P5-11: REPLACE cancels the previous Run first; an unresponsive cancel skips the new Run
+tests/integration/test_schedule_execution_db.py:99:    """V-P5-15: the execution principal lost its permission/status → SKIPPED_POLICY, zero Tasks."""
+tests/integration/test_schedule_latency.py:114:    """V-P5-27 (alert half): a Run whose start exceeds the p95 target alerts and posts a notice."""
+tests/integration/test_schedule_latency.py:1:"""Start-delay target for Schedule Runs under normal load (P5-10; V-P5-27).
+tests/integration/test_schedule_latency.py:51:    """V-P5-27: p95 of (task created minus scheduled_for) ≤ 60 s at 20 due Runs per minute."""
+tests/integration/test_schedule_metrics_db.py:169:    # the dashboard shows the same numbers (V-P5-25)
+tests/integration/test_schedule_metrics_db.py:1:"""V-P5-25 (metrics/history) and the alert half of V-P5-27: the dashboard values equal the Run
+tests/integration/test_schedule_metrics_db.py:207:    # the start-delay alert (V-P5-27 alert half) exists exactly because p95 = 90 s > 60 s
+tests/integration/test_schedule_notices_db.py:104:    """V-P5-23: a skipped Run posts one skip notice naming the untranslated code."""
+tests/integration/test_schedule_notices_db.py:117:    """V-P5-23 with §7H: the channel's language selects the bundle; ids/codes stay untranslated."""
+tests/integration/test_schedule_notices_db.py:129:    """V-P5-23 (Bridge half): notices are system events, so a Bridge relays them only when its
+tests/integration/test_schedule_notices_db.py:1:"""Channel notices for Schedule Runs (P5-07; V-P5-23): success, failure, skip and late notices
+tests/integration/test_schedule_notices_db.py:77:    """V-P5-23: start + result on success, start + failure on failure, one post per kind."""
+tests/integration/test_schedule_planner_db.py:147:    """V-P5-04 / V-P5-05 in the planner: no Run for the gap, one Run for the folded minute."""
+tests/integration/test_schedule_planner_db.py:187:    """V-P5-12/13/14: the policy decides which missed occurrences are materialized."""
+tests/integration/test_schedule_planner_db.py:3:V-P5-06 two planners materialize one Run per occurrence key, V-P5-04/05 DST gap and fold,
+tests/integration/test_schedule_planner_db.py:4:V-P5-12/13/14 missed-run materialization (SKIP / RUN_ONCE / BACKFILL_LIMITED) after downtime.
+tests/integration/test_schedule_planner_db.py:99:    """V-P5-06: concurrent planners racing on the same occurrence produce a single row."""
+tests/integration/test_schedule_recovery_db.py:101:    """V-P5-19: at most 3 attempts with 1/5/25 s backoff (+0-20 % jitter); a permanent error is
+tests/integration/test_schedule_recovery_db.py:138:    """V-P5-19 (permanent half): a non-transient error fails the Run immediately."""
+tests/integration/test_schedule_recovery_db.py:161:    """V-P5-20: a Run past max_duration is asked to cancel (ack ≤ 10 s, cleanup ≤ 60 s); without
+tests/integration/test_schedule_recovery_db.py:194:    """V-P5-20 (clean half): once the Task is gone the Run becomes CANCELLED, not TIMED_OUT."""
+tests/integration/test_schedule_recovery_db.py:211:    """V-P5-21 (execution half): a MANUAL Run has no occurrence key and runs on its own."""
+tests/integration/test_schedule_recovery_db.py:2:(P5-05/P5-06; V-P5-12, V-P5-13, V-P5-14, V-P5-19, V-P5-20, V-P5-21)."""
+tests/integration/test_schedule_recovery_db.py:53:    """V-P5-12/13/14: SKIP executes nothing; RUN_ONCE executes only the most recent occurrence
+tests/integration/test_schedule_runner_db.py:128:    """V-P5-07: concurrent claims are disjoint; each Run has exactly one owner."""
+tests/integration/test_schedule_runner_db.py:171:    """V-P5-24: a kill right after the claim is recovered inside lease + 2 poll intervals."""
+tests/integration/test_schedule_runner_db.py:239:    """V-P5-08: a crash between Task creation and the Run update cannot duplicate the Task."""
+tests/integration/test_schedule_runner_db.py:3:V-P5-07 two runners claim disjoint Runs, V-P5-08 a crash after Task creation never duplicates the
+tests/integration/test_schedule_runner_db.py:4:Task, V-P5-24 a kill right after the claim is recovered by exactly one runner within the lease
+tests/integration/test_schedules_api_db.py:167:    """V-P5-04 / V-P5-05: the gap is skipped with a reason, the fold runs once."""
+tests/integration/test_schedules_api_db.py:196:    """V-P5-22 / V-P5-33: legal transitions only; existing Runs keep their pinned version."""
+tests/integration/test_schedules_api_db.py:285:    """V-P5-31/32/34/35: manual Run isolation, idempotent retry, cancel rules."""
+tests/integration/test_schedules_api_db.py:297:    # a scheduled occurrence in the same minute stays a separate Run (V-P5-35)
+tests/integration/test_schedules_api_db.py:315:    # cancel: pending immediately, terminal is a conflict (V-P5-31/32)
+tests/integration/test_schedules_api_db.py:324:    # retry of a terminal Run: exactly one new RETRY Run, idempotent per request key (V-P5-34)
+tests/integration/test_schedules_api_db.py:344:    """V-P5-36: Approval `schedule`/`run` subjects and the ScheduleRun ArtifactLink handler."""
+tests/integration/test_schedules_api_db.py:3:V-P5-01 cron validation, V-P5-03 timezones, V-P5-04/05 DST previews, V-P5-22 lifecycle and
+tests/integration/test_schedules_api_db.py:4:version changes, V-P5-26 shell rejection, V-P5-31/32 Run cancel, V-P5-33 version pinning,
+tests/integration/test_schedules_api_db.py:5:V-P5-34 manual retry, V-P5-35 manual/scheduled isolation, V-P5-36 Approval/Artifact subjects.
+tests/integration/test_schedules_api_db.py:73:    """V-P5-01 / V-P5-26: only the normative grammar and shell-free templates are stored."""
+tests/unit/test_artifact_links.py:103:    registry.require_active("schedule_run")  # activated with Phase 5 (V-P5-36)
+tests/unit/test_baseline_tools.py:25:    assert phase_of("V-P5-31") == 5
+tests/unit/test_schedule_api_models.py:117:    """V-P5-29: with both day fields restricted the union fires (Vixie OR)."""
+tests/unit/test_schedule_api_models.py:133:    """V-P5-03: the same wall-clock rule maps to different UTC instants per IANA timezone."""
+tests/unit/test_schedule_api_models.py:2:fixtures (V-P5-02), DOM/DOW OR semantics (V-P5-29) and timezone handling (V-P5-03)."""
+tests/unit/test_schedule_api_models.py:97:    """V-P5-02: 50 expressions x next 10 against the reference computation (UTC)."""

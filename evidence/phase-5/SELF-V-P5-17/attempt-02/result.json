@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P5-17",
+  "evidence_id": "SELF-V-P5-17",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_schedule_secret_canary.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "88c72b2fc06eff9685de95cad0a487e3de145ba2",
+  "started_at": "2026-09-03T10:13:58.914429+00:00",
+  "finished_at": "2026-09-03T10:14:00.558990+00:00",
+  "output_sha256": "8b29f285c32f365e49b5eb96e8c025cc0f6f5ae6c77abceb0a63e0e7682c0208"
+}

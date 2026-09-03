@@ -1,0 +1,10 @@
+Verification completed and schema-validated.
+
+- 33 mandatory tests: PASS
+- 4 mandatory tests: FAIL (`V-P5-08`, `V-P5-17`, `V-P5-24`, `V-P5-27`)
+- Findings: 1 High, 3 Medium
+- Full CI: 1,518 passed, 2 unrelated skips
+- Report: [VR-P5-001.yaml](/home/master/.local/verify/phase-5-r001/verification/phase-5/VR-P5-001.yaml)
+- Raw evidence: [evidence-r001](/home/master/.local/verify/phase-5-r001/verification/phase-5/evidence-r001)
+
+result: FAILED

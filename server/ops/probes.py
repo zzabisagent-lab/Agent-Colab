@@ -152,7 +152,10 @@ def run_probes(
     out: list[ProbeResult] = []
     for name in names:
         previous = known.get(name)
-        fresh = previous is not None and (now - previous.checked_at).total_seconds() < STALE_S
+        # a cache entry stamped in the future (clock skew, or another caller's clock) is not
+        # trustworthy and is re-probed rather than served (V-P4-16)
+        age = None if previous is None else (now - previous.checked_at).total_seconds()
+        fresh = age is not None and 0 <= age < STALE_S
         if fresh and not refresh and previous is not None:
             out.append(previous)
             continue

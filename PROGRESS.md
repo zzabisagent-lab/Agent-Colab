@@ -2,24 +2,43 @@
 
 Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENTS.md`, ADRs in `docs/adr/`.
 
-## Current phase: 5 (Scheduled Work) — branch `phase-5`
+## Current phase: 6 (Collaboration and Documentation) — branch `phase-6`
+
+### Phase 6 package status
+
+| ID | Work | Size | Prereq | Status | SELF evidence |
+|---|---|---|---|---|---|
+| P6-01 | Approval collaboration UX | M | P1-08, P2-12, P4-14 | NOT_STARTED | — |
+| P6-02 | Brainstorm turn engine | L | P1-12, P2-10, P2-11 | NOT_STARTED | — |
+| P6-03 | Artifact extension | M | P1-09, P0-04 | NOT_STARTED | — |
+| P6-04 | Document finalizer | M | P1-10 | NOT_STARTED | — |
+| P6-05 | redaction/provenance | M | P6-04 | NOT_STARTED | — |
+| P6-06 | Publisher | M | P6-04 | NOT_STARTED | — |
+| P6-07 | publish review | S | P6-06 | NOT_STARTED | — |
+| P6-08 | recurring summaries | S | P6-04, P5-03 | NOT_STARTED | — |
+| P6-09 | Brainstorm summary/decision/taskify | M | P6-02, P1-11 | NOT_STARTED | — |
+| P6-10 | Documentation narrative layer | M | P6-04, P1-14 | NOT_STARTED | — |
+
+Phase 6 progress (size-weighted): 0 / 27
+
+## Phase 5 (PASSED) — branch `phase-5`, tag `phase-5-passed`
 
 ### Phase 5 package status
 
 | ID | Work | Size | Prereq | Status | SELF evidence |
 |---|---|---|---|---|---|
-| P5-01 | Schedule schema/API | L | P0-08, P1-08, P1-09 | NOT_STARTED | — |
-| P5-02 | cron/timezone planner | M | P0-08 | NOT_STARTED | — |
-| P5-03 | durable Run/lease | L | P5-01, P5-02 | NOT_STARTED | — |
-| P5-04 | execution policy | M | P5-03, P1-08 | NOT_STARTED | — |
-| P5-05 | concurrency/missed run | M | P5-03 | NOT_STARTED | — |
-| P5-06 | retry/timeout/Run cancel | M | P5-03 | NOT_STARTED | — |
-| P5-07 | channel notification | S | P5-03, P2-11 | NOT_STARTED | — |
-| P5-08 | Schedule Admin UI | M | P5-01 | NOT_STARTED | — |
-| P5-09 | metrics/alerts | S | P5-03 | NOT_STARTED | — |
-| P5-10 | budget/latency targets | M | P1-14, P5-03 | NOT_STARTED | — |
+| P5-01 | Schedule schema/API | L | P0-08, P1-08, P1-09 | IMPLEMENTED | SELF-V-P5-01/22/26/31..36 |
+| P5-02 | cron/timezone planner | M | P0-08 | IMPLEMENTED | SELF-V-P5-02/03/04/05/29 |
+| P5-03 | durable Run/lease | L | P5-01, P5-02 | IMPLEMENTED | SELF-V-P5-06/07/08/24 |
+| P5-04 | execution policy | M | P5-03, P1-08 | IMPLEMENTED | SELF-V-P5-15/16/17/18/30 |
+| P5-05 | concurrency/missed run | M | P5-03 | IMPLEMENTED | SELF-V-P5-09..14 |
+| P5-06 | retry/timeout/Run cancel | M | P5-03 | IMPLEMENTED | SELF-V-P5-19/20 |
+| P5-07 | channel notification | S | P5-03, P2-11 | IMPLEMENTED | SELF-V-P5-23 |
+| P5-08 | Schedule Admin UI | M | P5-01 | IMPLEMENTED | SELF-V-P5-21/22 |
+| P5-09 | metrics/alerts | S | P5-03 | IMPLEMENTED | SELF-V-P5-25 |
+| P5-10 | budget/latency targets | M | P1-14, P5-03 | IMPLEMENTED | SELF-V-P5-27/28/37 |
 
-Phase 5 progress (size-weighted): 0 / 25
+Phase 5 progress (size-weighted): 25 / 25 — Codex VR-P5-002 PASSED (37/37) after revision 1 FAILED on F-P5-001..004 (test method; fixed in revision 2)
 
 ## Phase 4 (PASSED) — branch `phase-4`, tag `phase-4-passed`
 
@@ -156,12 +175,13 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 20.5 / 20.5
 
 ### Next step
 
-Phase 5 on branch `phase-5` (foundation: migration slots 0016-0018, ownership note, ADR-0012; forks: schedule core, execution, metrics; Schedule Admin UI by the parent).
+Phase 6 on branch `phase-6` (foundation: migration slots 0019-0021, ownership note; forks: brainstorm P6-02/09, documents P6-04/05/08/10, artifacts+publishers P6-03/06/07; approval collaboration UX P6-01 by the parent).
 
 ## Phase history
 
 | Phase | Result | Report | Tag |
 |---|---|---|---|
+| 5 | PASSED (revision 2; revision 1 FAILED F-P5-001..004) | verification/phase-5/VR-P5-002.yaml | phase-5-passed |
 | 4 | PASSED (revision 2; revision 1 FAILED F-P4-001/002/003) | verification/phase-4/VR-P4-002.yaml | phase-4-passed |
 | 3 | PASSED (revision 1) | verification/phase-3/VR-P3-001.yaml | phase-3-passed |
 | 2 | PASSED (revision 2; revision 1 FAILED F-P2-001/002/003) | verification/phase-2/VR-P2-002.yaml | phase-2-passed |

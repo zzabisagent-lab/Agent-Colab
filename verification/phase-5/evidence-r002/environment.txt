@@ -1,0 +1,15 @@
+command: git rev-parse HEAD; tool and database version checks; git status --short
+exit_code: 0
+target_commit: 22022013dbbe1d186f5bec10be73d6dd772f1779
+tracked_worktree: clean before verifier writes
+untracked_input: evidence/phase-5/manifest.yaml
+os: Linux 6.8.0-138-generic x86_64
+uv: 0.12.9
+python: 3.12.3
+node: v22.23.2
+pnpm: 11.25.0
+postgresql: 16.15
+database_endpoint: postgresql://colab@127.0.0.1:54329/colab_verify
+environment_fingerprint_input_hash: sha256:c590c5f454cd81ef26c719e214f1bbf5609a6b648dde2f31a01758277793ecb0
+commit_author: zzabisagent-lab (not verifier identity)
+

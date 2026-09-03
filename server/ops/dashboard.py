@@ -120,4 +120,15 @@ def overview(
         "last_backup": last_backup(session),
         "maintenance": maintenance_state(session),
         "hard_delete_requests_pending": pending_hard_deletes,
+        "schedules": _schedules_block(session, workspace_id, clock),
     }
+
+
+def _schedules_block(session: Session, workspace_id: uuid.UUID, clock: Clock) -> dict[str, Any]:
+    """Scheduler numbers from Run history (P5-09); absent tables yield an empty block."""
+    try:
+        from server.schedules.metrics import overview_block
+
+        return overview_block(session, workspace_id, clock.now())
+    except Exception:  # metrics must never take the whole overview down
+        return {}

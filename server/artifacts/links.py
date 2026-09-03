@@ -123,7 +123,9 @@ class SubjectRegistry:
 def default_registry() -> SubjectRegistry:
     registry = SubjectRegistry()
     registry.register(TaskSubjectHandler())
-    registry.register(InactiveSubjectHandler("schedule_run", 5))
+    from server.schedules.links import ScheduleRunSubjectHandler  # Phase 5 activation (§6.8)
+
+    registry.register(ScheduleRunSubjectHandler())
     registry.register(InactiveSubjectHandler("brainstorm", 6))
     registry.register(InactiveSubjectHandler("decision", 6))
     return registry

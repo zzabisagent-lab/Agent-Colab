@@ -1,0 +1,23 @@
+{
+  "test_id": "V-P5-08",
+  "evidence_id": "SELF-V-P5-08",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/e2e/test_schedule_worker_processes.py",
+    "-q",
+    "-s",
+    "-k",
+    "crash",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "88c72b2fc06eff9685de95cad0a487e3de145ba2",
+  "started_at": "2026-09-03T10:16:43.152222+00:00",
+  "finished_at": "2026-09-03T10:16:57.787592+00:00",
+  "output_sha256": "0ffa0108bcac591bb268164fe769121690defd4650f4260255860f2dc5a8f2ec"
+}

@@ -51,13 +51,14 @@ def sweep(
     clock: Clock,
     actor_account_id: str,
     agent_id: str | None = None,
+    workspace_id: str | None = None,
     reroute_counts: dict[str, int] | None = None,
 ) -> SweepReport:
     """Apply timeouts to open items (optionally one Agent's). Deterministic for a given clock."""
     now = clock.now()
     report = SweepReport()
     counts = reroute_counts or {}
-    for item in inbox.open_items(session, agent_id=agent_id):
+    for item in inbox.open_items(session, agent_id=agent_id, workspace_id=workspace_id):
         try:
             decision = next_action(
                 item.status,

@@ -1,0 +1,7 @@
+command: uv run python -c <YAML load, Draft202012Validator validation, exact V-P5-01..37 sequence and PASS assertions>
+exit_code: 0
+schema: PASS
+test_entries: 37 unique sequential entries
+test_results: 37 PASS
+report_result: PASSED
+secret-pattern scan: zero matches

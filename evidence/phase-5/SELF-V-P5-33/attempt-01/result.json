@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P5-33",
+  "evidence_id": "SELF-V-P5-33",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_schedules_api_db.py",
+    "-k",
+    "lifecycle",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "75696b579c7fe433d4b03f8c0e3cad9281c6346a",
+  "started_at": "2026-09-03T09:26:34.820881+00:00",
+  "finished_at": "2026-09-03T09:26:36.910520+00:00",
+  "output_sha256": "423b1d0e014eb1eab96f4420f7b344c2615be505dd574b756ac884826ca74f2d"
+}

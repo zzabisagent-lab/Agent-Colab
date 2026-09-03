@@ -1,0 +1,3 @@
+s                                                                        [100%]
+=========================== short test summary info ============================
+SKIPPED [1] tests/integration/test_schedule_secret_canary.py: AGENT_COLAB_TEST_DATABASE_URL not set

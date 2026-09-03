@@ -1,0 +1,23 @@
+{
+  "test_id": "V-P5-27",
+  "evidence_id": "SELF-V-P5-27",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_schedule_metrics.py",
+    "tests/integration/test_schedule_metrics_db.py",
+    "-q",
+    "-k",
+    "alert",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 1,
+  "result": "fail",
+  "commit_sha": "db6aface176c6edd20ea6f12c4373e939ea91212",
+  "started_at": "2026-09-03T02:16:07.915148+00:00",
+  "finished_at": "2026-09-03T02:16:10.877904+00:00",
+  "output_sha256": "87fee8fd5fcae57ee220dc8108529b5a7338723b784309554a02defe9c41d085"
+}

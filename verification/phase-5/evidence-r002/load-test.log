@@ -1,0 +1,20 @@
+command: uv run pytest tests/e2e/test_schedule_load.py -q -s
+exit_code: 0
+result: 2 passed
+measurement:
+  schedules: 100
+  due_per_minute: 20
+  runners: 2 real worker processes
+  window_seconds: 300
+  runs_started: 100
+  start_delay_p50_seconds: 7.7
+  start_delay_p95_seconds: 14.1
+  start_delay_max_seconds: 14.5
+  db_cpu_mean_percent: 0.1
+  db_cpu_peak_percent: 0.6
+  db_cpu_samples: 60
+  metrics_snapshot_start_delay_p95_seconds: 14.095881
+  duplicate_occurrence_rows: 0
+  run_statuses: PENDING=300, TASK_CREATED=100
+alert_boundary: exactly 60.0 seconds does not alert; 60.5 seconds emits one warning
+

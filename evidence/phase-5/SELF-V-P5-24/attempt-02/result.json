@@ -1,0 +1,23 @@
+{
+  "test_id": "V-P5-24",
+  "evidence_id": "SELF-V-P5-24",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/e2e/test_schedule_worker_processes.py",
+    "-q",
+    "-s",
+    "-k",
+    "restart",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "88c72b2fc06eff9685de95cad0a487e3de145ba2",
+  "started_at": "2026-09-03T10:17:04.464263+00:00",
+  "finished_at": "2026-09-03T10:17:26.431631+00:00",
+  "output_sha256": "087d0409a73a28c9dcd61c227a791484fe72a3263a227c1e9dfc4de2b12bc148"
+}

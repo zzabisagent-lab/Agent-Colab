@@ -1,0 +1,220 @@
+verification_id: VR-P5-001
+criteria_version: v8.0
+implementer_agent_id: agent-claude-code
+verifier_agent_id: agent-codex
+implementer_account_id: account-implementer-claude
+verifier_account_id: account-verifier-codex
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+verifier_credential_fingerprint: sha256:ecbd74ce21cb00f0e36136b78a0fe57c8241013e4125100e2871351c90b530b9
+identity_graph_version: identity-v8-001
+effective_policy_hash: sha256:09bc05c62439be1f12e83601046e38e70b3369ac2ce66060910a6af97dce9bfb
+target_commit: 88c72b2fc06eff9685de95cad0a487e3de145ba2
+environment_fingerprint: sha256:3ccb8a71e448423e80ec1577d53b01e20635289ee2287e38fa54152c55931f53
+started_at: '2026-09-03T09:56:23Z'
+completed_at: '2026-09-03T10:03:20Z'
+tests:
+  - id: V-P5-01
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Normative and invalid cron fixtures passed with stable codes against PostgreSQL.
+  - id: V-P5-02
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: 50 expressions times 10 reference occurrences matched.
+  - id: V-P5-03
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/timezone-variants.log
+    note: IANA timezone test passed with server TZ set independently to Honolulu and Berlin.
+  - id: V-P5-04
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: DST gap preview/history and zero materialized Runs passed.
+  - id: V-P5-05
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: DST fold used the first UTC instant and materialized one occurrence.
+  - id: V-P5-06
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Concurrent planner threads produced one row per occurrence key.
+  - id: V-P5-07
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Concurrent runners claimed disjoint Runs in PostgreSQL.
+  - id: V-P5-08
+    result: FAIL
+    evidence_ref: verification/phase-5/evidence-r001/method-audit.txt
+    note: The labeled test replans Runs but never creates a Task, injects a post-creation crash, retries execution, or counts Task side effects.
+  - id: V-P5-09
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: FORBID produced SKIPPED_CONCURRENCY and no Task.
+  - id: V-P5-10
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: ALLOW executed and tracked independent Runs.
+  - id: V-P5-11
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Normal REPLACE cleanup and 60-second unconfirmed cancellation skip paths passed.
+  - id: V-P5-12
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: SKIP materialized no missed Runs after simulated downtime.
+  - id: V-P5-13
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: RUN_ONCE selected only the latest miss and retained scheduled_for.
+  - id: V-P5-14
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Limited backfill selected oldest in-window occurrences up to the limit and warned.
+  - id: V-P5-15
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Revoked principal produced SKIPPED_POLICY and zero Tasks.
+  - id: V-P5-16
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Suspended fixed Agent skipped and capability fallback selected only an eligible Agent.
+  - id: V-P5-17
+    result: FAIL
+    evidence_ref: verification/phase-5/evidence-r001/method-audit.txt
+    note: Lease metadata and revocation passed, but no synthetic secret value was stored, accessed, injected, or scanned across runtime outputs, so zero leakage was not demonstrated.
+  - id: V-P5-18
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Missing and exhausted approvals blocked execution; bounded approval consumption passed.
+  - id: V-P5-19
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Three transient attempts used bounded backoff; permanent failure stopped after one.
+  - id: V-P5-20
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Cancel acknowledgement/cleanup windows, timeout events, alerts, and clean cancellation passed.
+  - id: V-P5-21
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/admin-ui-e2e.log
+    note: Browser UI plus API checks rejected the unauthorized account and created one authorized manual Run.
+  - id: V-P5-22
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/admin-ui-e2e.log
+    note: API lifecycle/version pinning and browser lifecycle flows passed.
+  - id: V-P5-23
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Success/failure/skip/late outbox destinations, payloads, language, and Bridge system-event policy passed.
+  - id: V-P5-24
+    result: FAIL
+    evidence_ref: verification/phase-5/evidence-r001/method-audit.txt
+    note: Lease expiry logic passed with a FixedClock, but the required process kill immediately after claim was not executed.
+  - id: V-P5-25
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/schedule-metrics.log
+    note: Metrics API and dashboard matched database history, including lag/error values.
+  - id: V-P5-26
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Shell command and secret-valued template attempts were rejected with zero schedule side effects.
+  - id: V-P5-27
+    result: FAIL
+    evidence_ref: verification/phase-5/evidence-r001/method-audit.txt
+    note: Alert behavior passed, but p95 was calculated from a virtual-clock simulation with manual SQL claims; actual start delay and DB CPU below 70 percent under normal load were not measured.
+  - id: V-P5-28
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Limits 99 and 100 ran; 101 skipped before Task creation with BUDGET_EXCEEDED and alert.
+  - id: V-P5-29
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Restricted DOM/DOW reference fixtures matched Vixie OR semantics.
+  - id: V-P5-30
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Concurrent max-use-one approval race yielded one consumption and one execution.
+  - id: V-P5-31
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Pending cancellation was immediate and running cancellation followed REQUESTED to CANCELLED with events.
+  - id: V-P5-32
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Terminal cancellation returned conflict without changing the original Run.
+  - id: V-P5-33
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Materialized Run version hash stayed pinned while new Runs used the new version.
+  - id: V-P5-34
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Repeated retry key created exactly one linked RETRY Run and left the original unchanged.
+  - id: V-P5-35
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Scheduled and manual Runs remained distinct and their idempotent retries did not duplicate.
+  - id: V-P5-36
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Phase 5 subject handlers/FKs, workspace rejection, and bounded approval consumption passed.
+  - id: V-P5-37
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r001/phase5-verbose.log
+    note: Usage aggregation and settlement matched; daily overrun skipped the next Run and alerted.
+findings:
+  - id: F-P5-001
+    severity: High
+    affected: [REQ-SCHD-001, V-P5-08]
+    summary: Post-Task-creation crash idempotency criterion is not exercised.
+    reproduction:
+      - Run the focused Phase 5 suite recorded in phase5-verbose.log.
+      - Inspect tests/integration/test_schedule_runner_db.py lines 238-270.
+      - Observe that the test creates/plans ScheduleRuns and replans them, but never creates a Task, injects a crash after Task creation, retries execution, or checks duplicate Tasks/side effects.
+    expected: A crash/retry after Task creation produces zero duplicate Tasks and zero duplicate side effects.
+    actual: The green test only proves deterministic Run idempotency keys and duplicate-free replanning; the mandatory crash boundary remains unverified.
+    evidence_ref: verification/phase-5/evidence-r001/method-audit.txt
+    impact: Duplicate execution is an explicit High/immediate-fail Phase 5 risk, so absence of evidence at the required crash boundary blocks PASS.
+    fix_condition: Add and independently pass a failpoint or killed-worker test after committed Task creation, then retry/recover and query exactly one Task and one set of side effects.
+  - id: F-P5-002
+    severity: Medium
+    affected: [REQ-SCHD-014, V-P5-17]
+    summary: Secret leakage criterion is tested without any synthetic secret value.
+    reproduction:
+      - Run the focused Phase 5 suite recorded in phase5-verbose.log.
+      - Inspect tests/integration/test_schedule_execution_db.py lines 148-242.
+      - Observe that only a secret reference and metadata row are created; no value is stored/accessed/injected and no runtime evidence surfaces are scanned for a canary.
+    expected: Per-Run secret use has a short revoked lease and a synthetic secret canary appears in none of Events, Tasks, logs, notices, outbox payloads, or persisted Run data.
+    actual: Lease TTL/single-use/revocation are proven, but the zero-leakage criterion is not exercised.
+    evidence_ref: verification/phase-5/evidence-r001/method-audit.txt
+    impact: The execution-path secret boundary lacks Phase 5 evidence; explicit risk acceptance would be required and is unavailable.
+    fix_condition: Exercise a synthetic canary through the Run broker/injection path, revoke it at completion, and record negative scans of every persisted and emitted surface.
+  - id: F-P5-003
+    severity: Medium
+    affected: [REQ-SCHD-012, V-P5-24]
+    summary: Restart recovery substitutes a virtual lease transition for the required process kill.
+    reproduction:
+      - Run the focused Phase 5 suite recorded in phase5-verbose.log.
+      - Inspect tests/integration/test_schedule_runner_db.py lines 171-219.
+      - Observe that the runner is represented by a completed claim call and a FixedClock jump; no scheduler process is killed.
+    expected: Killing a runner process immediately after claim is followed by recovery within lease expiry plus two poll intervals with one recovering runner and zero duplicate Tasks.
+    actual: The lease-expiry functions pass in-process, but process-death recovery and timing are not executed.
+    evidence_ref: verification/phase-5/evidence-r001/method-audit.txt
+    impact: Recovery across an actual worker failure remains unverified and requires risk acceptance unavailable in this run.
+    fix_condition: Run two scheduler processes, kill the claimant immediately after claim, measure wall-clock recovery, and query one Task with no duplicate side effects.
+  - id: F-P5-004
+    severity: Medium
+    affected: [REQ-SCHD-006, REQ-OPS-007, V-P5-27]
+    summary: Mandatory actual normal-load latency measurement is replaced by a virtual-clock simulation.
+    reproduction:
+      - Run tests/integration/test_schedule_latency.py as recorded in phase5-verbose.log.
+      - Inspect lines 31-110 in method-audit.txt.
+      - Observe FixedClock time advances, direct SQL transition to CLAIMED, sequential execution, and no DB CPU measurement.
+    expected: Actual start-versus-scheduled_for measurements at Human 50, Agents 20, Channels 100, 100 active Schedules, at most 20 due/minute, two runners, and DB CPU below 70 percent yield p95 at most 60 seconds; alert fires above.
+    actual: The alert threshold passes, but the reported p95 is constructed by virtual clock/manual batching and DB CPU and the full normal-load population are not measured.
+    evidence_ref: verification/phase-5/evidence-r001/method-audit.txt
+    impact: The Phase 5 performance gate has no qualifying measurement and cannot be risk-accepted autonomously.
+    fix_condition: Run a wall-clock load test with the complete fixed population and two real runners, record start-delay samples and DB CPU, prove p95 at most 60 seconds, and retain the above-threshold alert test.
+result: FAILED
+residual_risks:
+  - Delivery to a live Mattermost server was not repeated; V-P5-23 was verified at the persisted provider outbox and Bridge-policy boundary, consistent with its package contract.
+  - Concurrent planner/runner races used separate PostgreSQL sessions in threads rather than separate operating-system processes; database locking invariants passed, but process isolation was not separately stressed.

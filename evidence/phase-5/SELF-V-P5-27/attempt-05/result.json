@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P5-27",
+  "evidence_id": "SELF-V-P5-27",
+  "attempt": 5,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/e2e/test_schedule_load.py",
+    "-q",
+    "-s",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "566dbdaa30107f0816172f3151bcfdb611c9c9c3",
+  "started_at": "2026-09-03T10:26:09.656125+00:00",
+  "finished_at": "2026-09-03T10:31:14.708441+00:00",
+  "output_sha256": "dc67006d29f45e75058f9959f7276d0e302cecf9e4ef57e42a773f369f0f75b1"
+}

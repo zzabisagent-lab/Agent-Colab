@@ -1,0 +1,20 @@
+command: make ci
+exit_code: 0
+ruff_check: PASS
+ruff_format_check: PASS (542 files)
+mypy: PASS (290 source files)
+bandit_server_sidecar_tools: PASS
+web_admin_lint_and_tsc: PASS (three non-fatal oxlint warnings)
+pytest: PASS (1523 passed, 2 skipped, 1 warning, 533.24s)
+pytest_skips: live Telegram tests only; not Phase 5 mandatory methods
+trace_matrix: 111 REQ, 103 packages, 230 tests, 0 problems
+criteria_lint: 230 tests, 0 problems
+phase_dag_lint: 333 items, 6 explicit stubs, 0 problems
+plan_baseline_lint: 103 packages, 230 tests, 0 problems
+policy_lint: permissions=53, actions=169, unclassified=0, problems=0
+name_role_lint: 0 problems
+threat_model_lint: 0 problems
+event_schema_and_fixture_drift: 0
+python_build: PASS (sdist and wheel)
+web_admin_build: PASS (42 modules, vite build)
+

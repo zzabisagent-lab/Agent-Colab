@@ -1,0 +1,8 @@
+command: TZ=Pacific/Honolulu uv run pytest tests/unit/test_schedule_api_models.py::test_timezones_are_independent_of_the_server_zone -q
+exit_code: 0
+result: 1 passed
+
+command: TZ=Europe/Berlin uv run pytest tests/unit/test_schedule_api_models.py::test_timezones_are_independent_of_the_server_zone -q
+exit_code: 0
+result: 1 passed
+

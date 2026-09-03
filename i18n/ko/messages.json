@@ -74,5 +74,11 @@
   "reply.approval_decided": "승인 {approval_id}: {decision}",
   "reply.verification_assigned": "검증 {verification_id}가 {verifier}에게 배정됨 ({task_id})",
   "reply.verdict": "검증 {verification_id}: {verdict}",
-  "reply.notify": "알림 설정 변경: {setting}"
+  "reply.notify": "알림 설정 변경: {setting}",
+  "schedule.notice.start": "⏱ 스케줄 `{schedule_id}`의 실행 `{run_id}` 시작 (Task `{task_id}`, 예정 {scheduled_for})",
+  "schedule.notice.result": "✅ 스케줄 `{schedule_id}`의 실행 `{run_id}` 종료: {status} (Task `{task_id}`)",
+  "schedule.notice.failure": "❌ 스케줄 `{schedule_id}`의 실행 `{run_id}` 종료 상태 {status} ({error_code}): {detail}",
+  "schedule.notice.skip": "⏭ 스케줄 `{schedule_id}`의 실행 `{run_id}` 건너뜀 ({error_code}): {detail}",
+  "schedule.notice.late": "⚠️ 스케줄 `{schedule_id}`의 실행 `{run_id}`이(가) {delay_s}초 늦게 시작됨 (예정 {scheduled_for})",
+  "schedule.notice.backfill_warning": "⚠️ 스케줄 `{schedule_id}`: 놓친 실행이 제한되었습니다 ({detail})"
 }

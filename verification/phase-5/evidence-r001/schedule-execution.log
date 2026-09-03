@@ -1,0 +1,5 @@
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+.......................                                                  [100%]
+
+command: uv run pytest tests/integration/test_schedule_execution_db.py tests/integration/test_schedule_recovery_db.py tests/integration/test_schedule_notices_db.py tests/integration/test_schedule_budget_db.py tests/integration/test_schedule_latency.py -q -p no:cacheprovider
+exit_code: 0

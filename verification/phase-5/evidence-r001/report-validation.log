@@ -1,0 +1,5 @@
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+schema_validation: PASS
+mandatory_test_ids: 37 unique, ordered V-P5-01..V-P5-37
+result: FAILED
+exit_code: 0
