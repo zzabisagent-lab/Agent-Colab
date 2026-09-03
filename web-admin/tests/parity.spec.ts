@@ -1,33 +1,6 @@
-import { createHmac } from 'node:crypto'
 import { expect, test, type Page } from '@playwright/test'
+import { reauthIfConfigured } from './mfa-helper'
 
-const TOTP_SECRET = process.env.E2E_TOTP_SECRET_B32 ?? ''
-function base32Decode(s: string): Buffer {
-  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
-  let bits = ''
-  for (const ch of s.replace(/=+$/, '').toUpperCase()) bits += alphabet.indexOf(ch).toString(2).padStart(5, '0')
-  const bytes: number[] = []
-  for (let i = 0; i + 8 <= bits.length; i += 8) bytes.push(parseInt(bits.slice(i, i + 8), 2))
-  return Buffer.from(bytes)
-}
-function totp(secretB32: string, at = Date.now()): string {
-  const counter = Math.floor(at / 1000 / 30)
-  const msg = Buffer.alloc(8)
-  msg.writeBigUInt64BE(BigInt(counter))
-  const digest = createHmac('sha1', base32Decode(secretB32)).update(msg).digest()
-  const offset = digest[digest.length - 1] & 0x0f
-  const code = ((digest[offset] & 0x7f) << 24 | (digest[offset + 1] & 0xff) << 16 | (digest[offset + 2] & 0xff) << 8 | (digest[offset + 3] & 0xff)) % 1_000_000
-  return code.toString().padStart(6, '0')
-}
-async function reauth(page: Page) {
-  await page.goto('/admin/mfa')
-  await page.getByLabel('Authenticator code').fill(totp(TOTP_SECRET))
-  await page.getByRole('button', { name: 'Verify' }).click()
-  await expect(page.getByRole('status')).toHaveText('MFA_VERIFIED')
-}
-
-// V-P4-08 (UI half): a Member cannot escalate through the console; every admin screen shows the
-// same denial code the API returns, and admin actions leave the same audit trail as API calls.
 const AUTHORIZED = process.env.E2E_AUTHORIZED_TOKEN ?? ''
 const MEMBER = process.env.E2E_UNAUTHORIZED_TOKEN ?? ''
 
@@ -55,7 +28,7 @@ test('member sees normalized denials on admin screens and cannot act', async ({ 
 
 test('administrator creates and suspends an Account from the console', async ({ page }) => {
   await login(page, AUTHORIZED)
-  await reauth(page)  // administrators act only with a confirmed and recently verified MFA
+  await reauthIfConfigured(page)
   await page.goto('/admin/accounts')
   await page.getByLabel('Account id').fill('acct-ui-parity')
   await page.getByLabel('Display name').fill('UI Parity')

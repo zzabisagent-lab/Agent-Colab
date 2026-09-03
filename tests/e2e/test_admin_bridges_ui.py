@@ -25,6 +25,8 @@ from server.db.engine import make_engine
 from server.identity.principals import token_hash
 from server.main import create_app
 from server.policy.repository import PostgresPolicyRepository
+from server.secrets.envelope import new_master_key
+from tests.e2e.mfa_helper import enroll_totp
 
 pytestmark = pytest.mark.db
 ROOT = Path(__file__).resolve().parents[2]
@@ -109,7 +111,9 @@ def server(database_url: str, engine: Engine) -> Iterator[str]:
         port = sock.getsockname()[1]
     base = f"http://127.0.0.1:{port}"
     os.environ["AGENT_COLAB_GATEWAY_DRAIN"] = "0"
-    app = create_app(Settings(database_url=database_url, base_url=base))
+    app = create_app(
+        Settings(database_url=database_url, base_url=base, master_key_b64=new_master_key())
+    )
     srv = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=port, log_level="warning"))
     thread = threading.Thread(target=srv.run, daemon=True)
     thread.start()
@@ -127,9 +131,11 @@ def test_bridge_admin_ui_authorization(server: str) -> None:
     if shutil.which("pnpm") is None:
         pytest.skip("pnpm not available")
     wrapper = Path.home() / ".local" / "bin" / "chrome-headless-shell-wrapped"
+    secret = enroll_totp(server, TOK_ADMIN, "ui-mfa")
     env = {
         **os.environ,
         "WEB_ADMIN_URL": f"{server}/admin",
+        "E2E_TOTP_SECRET_B32": secret,
         "E2E_AUTHORIZED_TOKEN": TOK_ADMIN,
         "E2E_UNAUTHORIZED_TOKEN": TOK_MEMBER,
         "E2E_CHANNEL_ID": "chan-ui",

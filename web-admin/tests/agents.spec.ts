@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { reauthIfConfigured } from './mfa-helper'
 
 // Driven by tests/e2e/test_admin_agents_ui.py (V-P3-13): seeded tokens, real server under /admin.
 const AUTHORIZED = process.env.E2E_AUTHORIZED_TOKEN ?? ''
@@ -32,6 +33,7 @@ test('unauthorized account cannot register or suspend Agents from the console', 
 
 test('administrator registers, edits limits, suspends and revokes an Agent', async ({ page }) => {
   await login(page, AUTHORIZED)
+  await reauthIfConfigured(page)
   await page.goto('/admin/agents')
   await fillAgent(page, AGENT_ID)
   await page.getByRole('button', { name: 'Register' }).click()
@@ -52,6 +54,7 @@ test('administrator registers, edits limits, suspends and revokes an Agent', asy
 
 test('administrator commits a Role version and previews effective permissions', async ({ page }) => {
   await login(page, AUTHORIZED)
+  await reauthIfConfigured(page)
   await page.goto('/admin/roles')
   await page.getByLabel('Role id', { exact: true }).fill('role-ui-reviewer')
   await page.getByLabel('Display name').fill('UI Reviewer')

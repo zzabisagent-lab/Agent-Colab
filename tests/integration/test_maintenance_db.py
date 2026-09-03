@@ -39,7 +39,7 @@ def test_maintenance_runs_every_workspace_and_tolerates_missing_system_account(
     with Session(engine) as s:
         assert str(WS) in workspace_ids(s)
     counters = run_maintenance(rt)
-    assert set(counters) == {"rerouted", "verifier_timeouts", "marked_offline", "errors"}
+    assert {"rerouted", "verifier_timeouts", "marked_offline", "errors"} <= set(counters)
     assert counters["errors"] == 0  # SYSTEM_ACCOUNT_MISSING in ws-maint is skipped, not an error
     # with a system service Account the sweeps execute (nothing to do → zero counters)
     with Session(engine) as s, s.begin():

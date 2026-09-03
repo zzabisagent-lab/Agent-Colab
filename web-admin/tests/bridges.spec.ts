@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { reauthIfConfigured } from './mfa-helper'
 
 // Driven by tests/e2e/test_admin_bridges_ui.py: the server seeds accounts and exports tokens.
 const AUTHORIZED = process.env.E2E_AUTHORIZED_TOKEN ?? ''
@@ -28,6 +29,7 @@ test('unauthorized account cannot change Bridges from the UI', async ({ page }) 
 
 test('authorized administrator creates, disables and re-enables a Bridge', async ({ page }) => {
   await login(page, AUTHORIZED)
+  await reauthIfConfigured(page)
   await page.goto(`/admin/channels/${CHANNEL}/bridges`)
   await page.getByLabel('Telegram provider instance id').fill(INSTANCE)
   await page.getByLabel('Telegram chat id').fill(CHAT)

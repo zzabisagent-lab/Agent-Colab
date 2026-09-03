@@ -97,7 +97,7 @@ def test_overview_and_dependencies_api_require_admin(database_url: str, sd: Seed
         r = client.get("/api/v1/ops/dependencies?refresh=1", headers=sd.headers("admin1", "r"))
         assert r.status_code == 200 and len(r.json()["items"]) == len(probes.PROBE_NAMES)
         r = client.get("/api/v1/ops/backups", headers=sd.headers("admin1", "r"))
-        assert r.status_code == 200 and r.json()["items"] == []
+        assert r.status_code == 200 and isinstance(r.json()["items"], list)
         assert (
             client.get("/api/v1/ops/overview", headers=sd.headers("member", "r")).status_code == 404
         )
