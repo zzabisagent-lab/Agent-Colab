@@ -8,18 +8,18 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 
 | ID | Work | Size | Prereq | Status | SELF evidence |
 |---|---|---|---|---|---|
-| P5-01 | Schedule schema/API | L | P0-08, P1-08, P1-09 | IN_PROGRESS (fork) | — |
-| P5-02 | cron/timezone planner | M | P0-08 | IN_PROGRESS (fork) | — |
-| P5-03 | durable Run/lease | L | P5-01, P5-02 | IN_PROGRESS (fork) | — |
-| P5-04 | execution policy | M | P5-03, P1-08 | IN_PROGRESS (fork) | — |
-| P5-05 | concurrency/missed run | M | P5-03 | IN_PROGRESS (fork) | — |
-| P5-06 | retry/timeout/Run cancel | M | P5-03 | IN_PROGRESS (fork) | — |
-| P5-07 | channel notification | S | P5-03, P2-11 | IN_PROGRESS (fork) | — |
-| P5-08 | Schedule Admin UI | M | P5-01 | IMPLEMENTED (evidence pending API) | console page + e2e spec/driver |
-| P5-09 | metrics/alerts | S | P5-03 | IN_PROGRESS (fork) | — |
-| P5-10 | budget/latency targets | M | P1-14, P5-03 | IN_PROGRESS (fork) | — |
+| P5-01 | Schedule schema/API | L | P0-08, P1-08, P1-09 | IMPLEMENTED | SELF-V-P5-01/22/26/31..36 |
+| P5-02 | cron/timezone planner | M | P0-08 | IMPLEMENTED | SELF-V-P5-02/03/04/05/29 |
+| P5-03 | durable Run/lease | L | P5-01, P5-02 | IMPLEMENTED | SELF-V-P5-06/07/08/24 |
+| P5-04 | execution policy | M | P5-03, P1-08 | IMPLEMENTED | SELF-V-P5-15/16/17/18/30 |
+| P5-05 | concurrency/missed run | M | P5-03 | IMPLEMENTED | SELF-V-P5-09..14 |
+| P5-06 | retry/timeout/Run cancel | M | P5-03 | IMPLEMENTED | SELF-V-P5-19/20 |
+| P5-07 | channel notification | S | P5-03, P2-11 | IMPLEMENTED | SELF-V-P5-23 |
+| P5-08 | Schedule Admin UI | M | P5-01 | IMPLEMENTED | SELF-V-P5-21/22 |
+| P5-09 | metrics/alerts | S | P5-03 | IMPLEMENTED | SELF-V-P5-25 |
+| P5-10 | budget/latency targets | M | P1-14, P5-03 | IMPLEMENTED | SELF-V-P5-27/28/37 |
 
-Phase 5 progress (size-weighted): 0 / 25
+Phase 5 progress (size-weighted): 25 / 25 — all packages implemented; Codex verification pending (see Next step)
 
 ## Phase 4 (PASSED) — branch `phase-4`, tag `phase-4-passed`
 
@@ -156,7 +156,7 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 20.5 / 20.5
 
 ### Next step
 
-Phase 5 on branch `phase-5` (foundation: migration slots 0016-0018, ownership note, ADR-0012; forks: schedule core, execution, metrics; Schedule Admin UI by the parent).
+Phase 5: run Codex verification revision 1 on branch `phase-5` (`tools/run_verification.py --phase 5 --revision 1 --commit <sha> --no-sandbox --secret-env .env --secret-env ~/.local/opt/mattermost/.spike-credentials`); on PASSED merge to `main`, tag `phase-5-passed`, start Phase 6 (foundation drafted: migration slots 0019-0021, ownership note).
 
 ## Phase history
 

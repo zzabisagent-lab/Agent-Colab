@@ -1,0 +1,17 @@
+# Inputs for the Phase 5 Evidence Manifest (validation plan §6.1); the manifest itself is generated
+# by tools/run_verification.py at verification time for the exact target commit.
+known_gaps:
+  - "The cron next-run reference (V-P5-02) cross-checks 50 expressions × next 10 against croniter as a development-only reference (ADR-0002/ADR-0006); croniter is never imported at runtime. The normative implementation is server/schedules/cron.py."
+  - "Start-delay p95 (V-P5-27) is a virtual-clock simulation: 100 active Schedules, 20 due per minute, 2 runners, 4 ticks per minute; p95 and max stay at or below 60 s. No wall-clock load generator runs in this environment; Phase 7 (P7-04) covers sustained load."
+  - "Dual-planner and dual-runner concurrency (V-P5-06/07) run as concurrent threads against the same PostgreSQL instance, relying on the unique occurrence key and FOR UPDATE SKIP LOCKED rather than two operating-system processes."
+  - "Channel notices are asserted on the delivery outbox rows and rendered payloads; a live Mattermost instance is exercised separately by the Phase 2 provider tests."
+  - "Secret leases for Runs use the Phase 4 local Broker; per-Run leases are revoked at Run end (V-P5-17) and the canary scan from Phase 4 covers leakage paths."
+reproduction:
+  - "git clone git@github.com:zzabisagent-lab/Agent-Colab.git && git checkout <target commit>"
+  - "export PATH=$HOME/.local/bin:$PATH; export AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test (any empty PostgreSQL 16 maintenance DB; the test session creates and drops its own database and runs migrations 0001-0018)"
+  - "make ci   # lint, tests, doc checks, build; sidecar: uv run pytest sidecar/tests -q"
+  - "Every V-P5 Test has a SELF evidence attempt under evidence/phase-5/SELF-V-P5-NN/attempt-NN/result.json listing the exact command; the latest attempt of each ID is PASS"
+  - "Schedule core (V-P5-01..08, 22, 24, 26, 29, 31..36): uv run pytest tests/unit/test_schedule_api_models.py tests/integration/test_schedules_api_db.py tests/integration/test_schedule_planner_db.py tests/integration/test_schedule_runner_db.py -q"
+  - "Execution (V-P5-09..21, 23, 27, 28, 30, 37): uv run pytest tests/integration/test_schedule_execution_db.py tests/integration/test_schedule_recovery_db.py tests/integration/test_schedule_notices_db.py tests/integration/test_schedule_budget_db.py tests/integration/test_schedule_latency.py -q"
+  - "Metrics (V-P5-25): uv run pytest tests/unit/test_schedule_metrics.py tests/integration/test_schedule_metrics_db.py -q"
+  - "Schedule Admin UI (V-P5-21/22 UI halves): cd web-admin && pnpm install && pnpm run build; PLAYWRIGHT_CHROMIUM_EXECUTABLE=<chromium> uv run pytest tests/e2e/test_admin_schedules_ui.py -q"
