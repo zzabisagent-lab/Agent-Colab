@@ -9,7 +9,7 @@ useDefault = true
 # Exceptions documented in docs/security/secret-scan.md: test canaries, baseline example snippets,
 # fixture hashes/keys of fake data, and the two pre-remediation commits of Finding F-P0-002-02
 # (revoked local test-instance callback material; later commits carry redacted copies only).
-[allowlist]
+[[allowlists]]
 description = "Documented test canaries, baseline snippets, fixture hashes, and revoked spike material"
 regexTarget = "line"
 regexes = [
@@ -42,3 +42,15 @@ commits = [
 id = "agent-colab-mattermost-callback-material"
 description = "Mattermost slash-command token / trigger_id / response_url hook id in evidence or fixtures"
 regex = '''(?i)"(token|trigger_id)"\s*:\s*"[A-Za-z0-9+/=_-]{20,}"|/hooks/commands/[A-Za-z0-9]{20,}'''
+
+# Verifier transcripts and evidence (stored unmodified) quote commit SHAs; the default Sourcegraph
+# rule mistakes bare 40-hex strings for tokens. Scoped to that rule, those paths and that shape only
+# (Finding F-P4-002-01).
+[[allowlists]]
+description = "commit SHAs inside verifier transcripts/evidence are not Sourcegraph tokens"
+targetRules = ["sourcegraph-access-token"]
+regexTarget = "match"
+regexes = ['''^[0-9a-f]{40}$''']
+paths = [
+  '''^verification/phase-\d+/(run-r\d+/events\.jsonl|evidence-r\d+/[^/]+|VR-P\d-\d{3}\.yaml)$''',
+]
