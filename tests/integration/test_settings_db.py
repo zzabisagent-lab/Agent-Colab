@@ -144,9 +144,9 @@ def test_settings_api_validation_diff_audit_rollback(
     history = client.get(
         "/api/v1/settings/scheduler.poll_interval_s", headers=_h(TOK_ADMIN)
     ).json()["history"]
-    assert [h["version"] for h in history] == [1, 2, 3] and history[2][
-        "reason"
-    ] == "rollback to version 1"
+    versions = [h["version"] for h in history]
+    assert versions[-3:] == [v0, v0 + 1, v0 + 2] and versions == sorted(versions)
+    assert history[-1]["reason"] == f"rollback to version {v0}"
     with Session(engine) as s:
         rows = s.execute(
             text(
