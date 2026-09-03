@@ -76,6 +76,7 @@ def test_web_wizard_configures_clean_environment(server: tuple[str, Path], empty
         "E2E_DB_PORT": str(parts["db_port"]),
         "E2E_DB_NAME": str(parts["db_name"]),
         "E2E_DB_USER": str(parts["db_user"]),
+        "E2E_DB_PASSWORD": str(parts["db_password"]),
         "E2E_KEY_PATH": str(tmp / "keys" / "master.key"),
         "E2E_ARTIFACT_ROOT": str(tmp / "artifacts"),
         "E2E_DOCUMENT_ROOT": str(tmp / "documents"),
