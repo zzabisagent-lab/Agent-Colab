@@ -154,10 +154,11 @@ def test_settings_api_validation_diff_audit_rollback(
                 "'settings.change' AND target_id = 'scheduler.poll_interval_s' ORDER BY id"
             )
         ).all()
+    rows = rows[-3:]  # this test's three changes (earlier modules may have changed the key)
     diffs = [r[0]["diff"] for r in rows]
-    assert diffs[1]["before"] == {"version": 1, "was": 10} and diffs[1]["after"] == {"is": 20}
-    assert [r[0]["previous_version"] for r in rows] == [None, 1, 2]
-    assert [r[0]["version"] for r in rows] == [1, 2, 3]
+    assert diffs[1]["before"] == {"version": v0, "was": 10} and diffs[1]["after"] == {"is": 20}
+    assert [r[0]["previous_version"] for r in rows][1:] == [v0, v0 + 1]
+    assert [r[0]["version"] for r in rows] == [v0, v0 + 1, v0 + 2]
     # a secret setting: encrypted, redacted everywhere, only fingerprints in the diff
     r = client.put(
         "/api/v1/settings/notifications.smtp_password",
