@@ -454,11 +454,16 @@ def after_command(
     session: Session, *, workspace_id: str, actor_uuid: str, event_id: str, now: dt.datetime
 ) -> list[str]:
     """Dispatch hook: render the Event a command just appended (same transaction)."""
+    from server.channels import approval_cards
     from server.events.postgres_store import PostgresEventStore
 
     event = PostgresEventStore(session).get(event_id)
     if event is None:
         return []
+    if event["type"] in approval_cards.APPROVAL_EVENT_TYPES:  # P6-01: approval cards and buttons
+        return approval_cards.render_approval_event(
+            session, workspace_id=workspace_id, actor_uuid=actor_uuid, event=event, now=now
+        )
     return render_task_event(
         session, workspace_id=workspace_id, actor_uuid=actor_uuid, event=event, now=now
     )
