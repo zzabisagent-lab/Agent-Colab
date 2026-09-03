@@ -13,6 +13,7 @@ from sqlalchemy import Engine, text
 from sqlalchemy.orm import Session
 
 from server.api.dispatch import Runtime, execute_command
+from server.api.errors import ApiError
 from server.application import tasks as t
 from server.application.authz import BusAuthorizer
 from server.db.engine import make_engine, make_session_factory
@@ -75,6 +76,25 @@ def engine(database_url: str) -> Iterator[Engine]:
 def _principal(key: str) -> Principal:
     acct, acc_uuid, typ = ACCOUNTS[key]
     return Principal(acct, str(acc_uuid), typ, f"sha256:{acct}")
+
+
+def test_unknown_or_malformed_channel_is_a_stable_client_error(engine: Engine) -> None:
+    """An unknown or malformed channel reference is a 404, not a 500: it used to reach the
+    projection, where casting it to a UUID raised."""
+    from server.application import bus
+
+    rt = Runtime(make_session_factory(engine), BusAuthorizer(), None, CLOCK, str(WS))
+    for reference in ("not-a-uuid", "chan-does-not-exist", str(uuid.uuid4())):
+        with pytest.raises((bus.CommandError, ApiError)) as exc:
+            execute_command(
+                rt,
+                _principal("creator"),
+                t.CreateTask("bad channel", reference, "research", "LOW", criteria=CRITERIA),
+                idempotency_key=f"nd2-bad-{reference[:8]}",
+                correlation_id="corr-nd2",
+            )
+        # denied membership or unknown channel: a stable client error, never a 500
+        assert exc.value.status in (403, 404), (reference, exc.value.code, exc.value.status)
 
 
 def test_a_command_plans_its_notifications(engine: Engine) -> None:

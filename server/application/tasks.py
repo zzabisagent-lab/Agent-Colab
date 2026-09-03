@@ -399,9 +399,28 @@ def _create(
     return res, state
 
 
+def resolve_channel(ctx: CommandContext, channel_ref: str) -> str:
+    """The workspace channel's UUID for a public id or a UUID; a stable 404 otherwise.
+
+    Without this an unknown or malformed reference reached the projection, where casting it to a
+    UUID raised and surfaced as a 500 instead of a stable client error.
+    """
+    row = ctx.session.execute(
+        text(
+            "SELECT id::text FROM channels WHERE workspace_id = :w "
+            "AND (channel_id = :c OR id::text = :c)"
+        ),
+        {"w": uuid.UUID(ctx.workspace_id), "c": channel_ref},
+    ).first()
+    if row is None:
+        raise CommandError("CHANNEL_NOT_FOUND", channel_ref, status=404)
+    return str(row[0])
+
+
 @handles(CreateTask)
 def create_task(cmd: CreateTask, ctx: CommandContext) -> Any:
     require_permission(ctx, "task.create", channel_id=cmd.channel_id, domain=cmd.domain)
+    channel_uuid = resolve_channel(ctx, cmd.channel_id)
     if cmd.risk not in ("LOW", "MEDIUM", "HIGH", "CRITICAL"):
         raise CommandError("TASK_RISK_INVALID", cmd.risk, status=400)
     if not cmd.title.strip():
@@ -411,7 +430,7 @@ def create_task(cmd: CreateTask, ctx: CommandContext) -> Any:
     payload = {
         "task_id": task_id,
         "root_task_id": task_id,
-        "channel_id": cmd.channel_id,
+        "channel_id": channel_uuid,
         "title": cmd.title,
         "domain": cmd.domain,
         "risk": cmd.risk,
