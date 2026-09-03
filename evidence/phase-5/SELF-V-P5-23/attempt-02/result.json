@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P5-23",
+  "evidence_id": "SELF-V-P5-23",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_schedule_notices_db.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "6a99c261817f3a04dc351f6003ff54c9d6e99303",
+  "started_at": "2026-09-03T13:10:17.362465+00:00",
+  "finished_at": "2026-09-03T13:10:20.525730+00:00",
+  "output_sha256": "c4b808d34f4db00b333696dec1f3a43a2887d8bfe0cb7af07a3cb98ff43a7830"
+}

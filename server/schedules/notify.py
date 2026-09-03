@@ -129,8 +129,12 @@ def late(ctx: ExecutionContext, run: RunLike, version: VersionLike, delay_s: flo
 def notices(session: Any, run_id: str) -> list[dict[str, Any]]:
     rows = session.execute(
         text(
+            # a virtual clock can stamp several notices in the same instant, so the lifecycle
+            # order is the tiebreaker and the listing stays deterministic
             "SELECT kind, dedupe_key, outbox_id FROM schedule_notices "
-            "WHERE run_id = :r ORDER BY created_at"
+            "WHERE run_id = :r ORDER BY created_at, "
+            "CASE kind WHEN 'start' THEN 0 WHEN 'late' THEN 1 WHEN 'backfill_warning' THEN 2 "
+            "WHEN 'skip' THEN 3 WHEN 'result' THEN 4 ELSE 5 END, kind"
         ),
         {"r": run_id},
     ).all()

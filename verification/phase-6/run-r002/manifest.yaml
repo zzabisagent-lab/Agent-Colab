@@ -1,0 +1,429 @@
+implementation_id: P6-IMPLEMENT-001
+phase: 6
+implementer_agent_id: agent-claude-code
+implementer_account_id: account-implementer-claude
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+identity_graph_version: identity-v8-001
+commit_sha: 6a99c261817f3a04dc351f6003ff54c9d6e99303
+image_digests: []
+requirements:
+- REQ-APRV-001
+- REQ-APRV-002
+- REQ-APRV-003
+- REQ-ARTF-001
+- REQ-BRST-001
+- REQ-BRST-002
+- REQ-BRST-003
+- REQ-DOCS-001
+- REQ-DOCS-002
+- REQ-DOCS-003
+- REQ-DOCS-004
+- REQ-DOCS-005
+- REQ-DOCS-006
+- REQ-DOCS-007
+- REQ-DOCS-008
+- REQ-QGAT-006
+changed_files:
+- PROGRESS.md
+- docs/adr/ADR-0013-phase6-collaboration-decisions.md
+- docs/architecture/artifact-safety.md
+- docs/architecture/brainstorm-engine.md
+- docs/architecture/document-pipeline.md
+- docs/architecture/phase6-collaboration.md
+- docs/protocol/publisher-contract.md
+- evidence/phase-5/SELF-V-P5-18/attempt-03/output.log
+- evidence/phase-5/SELF-V-P5-18/attempt-03/result.json
+- evidence/phase-6/SELF-V-P6-01/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-01/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-02/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-02/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-03/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-03/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-04/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-04/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-05/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-05/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-06/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-06/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-07/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-07/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-08/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-08/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-08/attempt-02/output.log
+- evidence/phase-6/SELF-V-P6-08/attempt-02/result.json
+- evidence/phase-6/SELF-V-P6-08/attempt-03/output.log
+- evidence/phase-6/SELF-V-P6-08/attempt-03/result.json
+- evidence/phase-6/SELF-V-P6-09/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-09/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-10/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-10/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-11/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-11/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-12/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-12/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-13/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-13/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-14/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-14/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-15/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-15/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-16/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-16/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-17/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-17/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-18/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-18/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-19/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-19/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-19/attempt-02/output.log
+- evidence/phase-6/SELF-V-P6-19/attempt-02/result.json
+- evidence/phase-6/SELF-V-P6-19/attempt-03/output.log
+- evidence/phase-6/SELF-V-P6-19/attempt-03/result.json
+- evidence/phase-6/SELF-V-P6-20/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-20/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-20/attempt-02/output.log
+- evidence/phase-6/SELF-V-P6-20/attempt-02/result.json
+- evidence/phase-6/SELF-V-P6-20/attempt-03/output.log
+- evidence/phase-6/SELF-V-P6-20/attempt-03/result.json
+- evidence/phase-6/SELF-V-P6-20/attempt-04/output.log
+- evidence/phase-6/SELF-V-P6-20/attempt-04/result.json
+- evidence/phase-6/SELF-V-P6-20/attempt-05/output.log
+- evidence/phase-6/SELF-V-P6-20/attempt-05/result.json
+- evidence/phase-6/SELF-V-P6-21/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-21/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-22/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-22/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-23/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-23/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-24/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-24/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-25/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-25/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-26/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-26/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-27/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-27/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-28/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-28/attempt-01/result.json
+- evidence/phase-6/SELF-V-P6-28/attempt-02/output.log
+- evidence/phase-6/SELF-V-P6-28/attempt-02/result.json
+- evidence/phase-6/SELF-V-P6-29/attempt-01/output.log
+- evidence/phase-6/SELF-V-P6-29/attempt-01/result.json
+- evidence/phase-6/manifest-inputs.yaml
+- i18n/en/messages.json
+- i18n/ko/messages.json
+- migrations/sql/0019_phase6_brainstorm.sql
+- migrations/sql/0020_phase6_documents.sql
+- migrations/sql/0021_phase6_publish.sql
+- migrations/versions/0019_phase6_brainstorm.py
+- migrations/versions/0020_phase6_documents.py
+- migrations/versions/0021_phase6_publish.py
+- schemas/documents/document-manifest.v1.schema.json
+- server/agents/mcp_server.py
+- server/api/v1/artifacts_upload.py
+- server/api/v1/brainstorm.py
+- server/api/v1/publishing.py
+- server/application/brainstorm.py
+- server/application/documents.py
+- server/application/publishing.py
+- server/application/tasks.py
+- server/artifacts/links.py
+- server/artifacts/quarantine.py
+- server/artifacts/scan.py
+- server/artifacts/subjects_phase6.py
+- server/artifacts/upload.py
+- server/brainstorm/decisions.py
+- server/brainstorm/engine.py
+- server/brainstorm/limits.py
+- server/brainstorm/router_handlers.py
+- server/brainstorm/summary.py
+- server/brainstorm/taskify.py
+- server/brainstorm/turns.py
+- server/channels/approval_cards.py
+- server/channels/router.py
+- server/channels/task_cards.py
+- server/documents/builder.py
+- server/documents/citations.py
+- server/documents/finalizer.py
+- server/documents/lifecycle.py
+- server/documents/narrative.py
+- server/documents/provenance.py
+- server/documents/publishers/__init__.py
+- server/documents/publishers/base.py
+- server/documents/publishers/bookstack.py
+- server/documents/publishers/filesystem.py
+- server/documents/publishers/git.py
+- server/documents/redaction.py
+- server/documents/sources.py
+- server/documents/summaries.py
+- server/main.py
+- server/schedules/router_handlers.py
+- tests/e2e/test_phase1_exit_gate.py
+- tests/fixtures/mattermost/router-cases.yaml
+- tests/integration/brainstorm_seed.py
+- tests/integration/document_seed.py
+- tests/integration/phase6_publish_seed.py
+- tests/integration/test_approval_collaboration_db.py
+- tests/integration/test_artifact_core.py
+- tests/integration/test_artifact_links_phase6_db.py
+- tests/integration/test_artifact_quarantine_db.py
+- tests/integration/test_artifact_upload_db.py
+- tests/integration/test_brainstorm_decisions_db.py
+- tests/integration/test_brainstorm_documents_db.py
+- tests/integration/test_brainstorm_engine_db.py
+- tests/integration/test_document_finalizer_db.py
+- tests/integration/test_document_lifecycle.py
+- tests/integration/test_document_provenance_db.py
+- tests/integration/test_document_rate_db.py
+- tests/integration/test_document_redaction_db.py
+- tests/integration/test_publisher_connector.py
+- tests/integration/test_publisher_filesystem_git_db.py
+- tests/integration/test_schedule_period_summary_db.py
+- tests/integration/test_schedule_slash_db.py
+- tests/integration/test_task_projection.py
+- tests/integration/test_usage_db.py
+- tests/integration/test_verification_core.py
+- tests/unit/test_artifact_links.py
+- tests/unit/test_artifact_malicious_fixtures.py
+- tests/unit/test_brainstorm_limits.py
+- tests/unit/test_command_router.py
+- tests/unit/test_narrative_citations.py
+- verification/phase-6/VR-P6-001.yaml
+- verification/phase-6/VR-P6-001.yaml.sha256
+- verification/phase-6/evidence-r001/approvals.junit.xml
+- verification/phase-6/evidence-r001/artifacts-publishers.junit.xml
+- verification/phase-6/evidence-r001/brainstorm.junit.xml
+- verification/phase-6/evidence-r001/ci-summary.txt
+- verification/phase-6/evidence-r001/documents.junit.xml
+- verification/phase-6/evidence-r001/evidence-inventory.txt
+- verification/phase-6/evidence-r001/report-validation.txt
+- verification/phase-6/evidence-r001/run-metadata.txt
+- verification/phase-6/evidence-r001/test_v_p6_08_20_automatic.py
+- verification/phase-6/evidence-r001/test_v_p6_19_exact.py
+- verification/phase-6/evidence-r001/test_v_p6_24_blocked.py
+- verification/phase-6/evidence-r001/v-p6-08-20-automatic.junit.xml
+- verification/phase-6/evidence-r001/v-p6-19-exact.junit.xml
+- verification/phase-6/evidence-r001/v-p6-24-blocked.junit.xml
+- verification/phase-6/run-r001/events.jsonl
+- verification/phase-6/run-r001/last-message.txt
+- verification/phase-6/run-r001/manifest.yaml
+- verification/phase-6/run-r001/prompt.md
+- verification/phase-6/run-r001/run.json
+- verification/phase-6/run-r001/stderr.log
+migrations:
+- migrations/versions/0019_phase6_brainstorm.py
+- migrations/versions/0020_phase6_documents.py
+- migrations/versions/0021_phase6_publish.py
+tests_run:
+- id: SELF-V-P6-01
+  command: uv run pytest tests/integration/test_approval_collaboration_db.py -q -p
+    no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-01/attempt-01
+- id: SELF-V-P6-02
+  command: uv run pytest tests/integration/test_approval_collaboration_db.py -q -p
+    no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-02/attempt-01
+- id: SELF-V-P6-03
+  command: uv run pytest tests/unit/test_brainstorm_limits.py tests/integration/test_brainstorm_engine_db.py
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-03/attempt-01
+- id: SELF-V-P6-04
+  command: uv run pytest tests/integration/test_brainstorm_decisions_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-04/attempt-01
+- id: SELF-V-P6-05
+  command: uv run pytest tests/integration/test_artifact_upload_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-05/attempt-01
+- id: SELF-V-P6-06
+  command: uv run pytest tests/unit/test_artifact_malicious_fixtures.py tests/integration/test_artifact_quarantine_db.py
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-06/attempt-01
+- id: SELF-V-P6-07
+  command: uv run pytest tests/integration/test_document_finalizer_db.py -k mandatory_section
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-07/attempt-01
+- id: SELF-V-P6-08
+  command: uv run pytest tests/integration/test_brainstorm_documents_db.py -q -k drafts_its_document
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-08/attempt-03
+- id: SELF-V-P6-09
+  command: uv run pytest tests/integration/test_schedule_period_summary_db.py -q -p
+    no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-09/attempt-01
+- id: SELF-V-P6-10
+  command: uv run pytest tests/integration/test_document_provenance_db.py -k process_section
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-10/attempt-01
+- id: SELF-V-P6-11
+  command: uv run pytest tests/integration/test_document_provenance_db.py -k resource_field
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-11/attempt-01
+- id: SELF-V-P6-12
+  command: uv run pytest tests/integration/test_document_finalizer_db.py -k mandatory_section
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-12/attempt-01
+- id: SELF-V-P6-13
+  command: uv run pytest tests/integration/test_document_redaction_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-13/attempt-01
+- id: SELF-V-P6-14
+  command: uv run pytest tests/integration/test_document_provenance_db.py -k provenance_links
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-14/attempt-01
+- id: SELF-V-P6-15
+  command: uv run pytest tests/integration/test_publisher_filesystem_git_db.py -k
+    git_publish -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-15/attempt-01
+- id: SELF-V-P6-16
+  command: uv run pytest tests/integration/test_publisher_filesystem_git_db.py -k
+    outage -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-16/attempt-01
+- id: SELF-V-P6-17
+  command: uv run pytest tests/integration/test_publisher_filesystem_git_db.py -k
+    correction -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-17/attempt-01
+- id: SELF-V-P6-18
+  command: uv run pytest tests/integration/test_publisher_filesystem_git_db.py -k
+    authority -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-18/attempt-01
+- id: SELF-V-P6-19
+  command: uv run pytest tests/integration/test_document_finalizer_db.py -q -k gate
+    or closure or prerequisite -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-19/attempt-03
+- id: SELF-V-P6-20
+  command: uv run pytest tests/integration/test_brainstorm_documents_db.py tests/integration/test_document_rate_db.py
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-20/attempt-05
+- id: SELF-V-P6-21
+  command: uv run pytest tests/integration/test_publisher_connector.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-21/attempt-01
+- id: SELF-V-P6-22
+  command: uv run pytest tests/integration/test_approval_collaboration_db.py -q -p
+    no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-22/attempt-01
+- id: SELF-V-P6-23
+  command: uv run pytest tests/integration/test_document_finalizer_db.py -k immutable
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-23/attempt-01
+- id: SELF-V-P6-24
+  command: uv run pytest tests/integration/test_document_finalizer_db.py -k failed_then_passed
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-24/attempt-01
+- id: SELF-V-P6-25
+  command: uv run pytest tests/integration/test_artifact_links_phase6_db.py -q -p
+    no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-25/attempt-01
+- id: SELF-V-P6-26
+  command: uv run pytest tests/integration/test_brainstorm_engine_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-26/attempt-01
+- id: SELF-V-P6-27
+  command: uv run pytest tests/integration/test_brainstorm_decisions_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-27/attempt-01
+- id: SELF-V-P6-28
+  command: uv run pytest tests/unit/test_narrative_citations.py tests/integration/test_document_rate_db.py
+    -q -k citation or narrative -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-28/attempt-02
+- id: SELF-V-P6-29
+  command: uv run pytest tests/integration/test_approval_collaboration_db.py -q -p
+    no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-6/SELF-V-P6-29/attempt-01
+known_gaps:
+- 'Only Task documents reach FINALIZED: the DOCUMENT_FINALIZED Event requires a verification_id
+  and only Tasks have a VerificationRun, so Brainstorm, Schedule Run and period documents
+  stay drafts gated by the publish review rather than weakening the Phase 1 Event
+  contract.'
+- The reference wiki connector (V-P6-21) is BookStack, exercised against its HTTP
+  API through an injectable transport so the contract tests run offline; Wiki.js keeps
+  the same adapter contract but is not implemented.
+- Malware scanning uses a signature scanner in tests and a ClamAV client when a socket
+  is configured; a scan that cannot run quarantines the artifact rather than passing
+  it (ARTIFACT_SCAN_UNAVAILABLE).
+- The Git publisher pushes into a local bare repository in the tests; Gitea or another
+  remote is a configuration change, not a code path.
+- Narrative paragraphs come from a Documentation Agent with the document.narrate capability;
+  when none is available or it declines, the skeleton-only document is a valid draft
+  and the reason code is recorded.
+- V-P6-13 canary redaction covers canonical and published documents plus captured
+  logs; the raw fixture that carries the canary is excluded by design.
+rollback: git checkout 0429a52f083325af44adc5c5f121ed69ada4f05c (merge-base with main);
+  drop test databases
+evidence_refs:
+- evidence/phase-6/SELF-V-P6-01/attempt-01
+- evidence/phase-6/SELF-V-P6-02/attempt-01
+- evidence/phase-6/SELF-V-P6-03/attempt-01
+- evidence/phase-6/SELF-V-P6-04/attempt-01
+- evidence/phase-6/SELF-V-P6-05/attempt-01
+- evidence/phase-6/SELF-V-P6-06/attempt-01
+- evidence/phase-6/SELF-V-P6-07/attempt-01
+- evidence/phase-6/SELF-V-P6-08/attempt-03
+- evidence/phase-6/SELF-V-P6-09/attempt-01
+- evidence/phase-6/SELF-V-P6-10/attempt-01
+- evidence/phase-6/SELF-V-P6-11/attempt-01
+- evidence/phase-6/SELF-V-P6-12/attempt-01
+- evidence/phase-6/SELF-V-P6-13/attempt-01
+- evidence/phase-6/SELF-V-P6-14/attempt-01
+- evidence/phase-6/SELF-V-P6-15/attempt-01
+- evidence/phase-6/SELF-V-P6-16/attempt-01
+- evidence/phase-6/SELF-V-P6-17/attempt-01
+- evidence/phase-6/SELF-V-P6-18/attempt-01
+- evidence/phase-6/SELF-V-P6-19/attempt-03
+- evidence/phase-6/SELF-V-P6-20/attempt-05
+- evidence/phase-6/SELF-V-P6-21/attempt-01
+- evidence/phase-6/SELF-V-P6-22/attempt-01
+- evidence/phase-6/SELF-V-P6-23/attempt-01
+- evidence/phase-6/SELF-V-P6-24/attempt-01
+- evidence/phase-6/SELF-V-P6-25/attempt-01
+- evidence/phase-6/SELF-V-P6-26/attempt-01
+- evidence/phase-6/SELF-V-P6-27/attempt-01
+- evidence/phase-6/SELF-V-P6-28/attempt-02
+- evidence/phase-6/SELF-V-P6-29/attempt-01
+reproduction:
+- git clone git@github.com:zzabisagent-lab/Agent-Colab.git && git checkout <target
+  commit>
+- export PATH=$HOME/.local/bin:$PATH; export AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test
+  (any empty PostgreSQL 16 maintenance DB; the test session creates and drops its
+  own database and runs migrations 0001-0021)
+- 'make ci   # lint, tests, doc checks, build; sidecar: uv run pytest sidecar/tests
+  -q'
+- Every V-P6 Test has a SELF evidence attempt under evidence/phase-6/SELF-V-P6-NN/attempt-NN/result.json
+  listing the exact command; the latest attempt of each ID is PASS
+- 'Approvals (V-P6-01/02/22/29): uv run pytest tests/integration/test_approval_collaboration_db.py
+  -q'
+- 'Brainstorm (V-P6-03/04/26/27): uv run pytest tests/unit/test_brainstorm_limits.py
+  tests/integration/test_brainstorm_engine_db.py tests/integration/test_brainstorm_decisions_db.py
+  -q'
+- 'Documents (V-P6-07..14, 19, 20, 23, 24, 28): uv run pytest tests/integration/test_document_finalizer_db.py
+  tests/integration/test_document_provenance_db.py tests/integration/test_document_redaction_db.py
+  tests/integration/test_document_rate_db.py tests/integration/test_schedule_period_summary_db.py
+  tests/unit/test_narrative_citations.py -q'
+- 'Artifacts and publishers (V-P6-05/06/15/16/17/18/21/25): uv run pytest tests/unit/test_artifact_malicious_fixtures.py
+  tests/integration/test_artifact_upload_db.py tests/integration/test_artifact_quarantine_db.py
+  tests/integration/test_artifact_links_phase6_db.py tests/integration/test_publisher_filesystem_git_db.py
+  tests/integration/test_publisher_connector.py -q'
