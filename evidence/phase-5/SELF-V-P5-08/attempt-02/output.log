@@ -1,0 +1,24 @@
+.
+
+--- stderr ---
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Phase 0 verification harness: workspaces, accounts, credentials, agents, verification_runs.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 0002, Phase 1 core schema: append-only Event/Audit/Verification authority, projections, roles.
+INFO  [alembic.runtime.migration] Running upgrade 0002 -> 0003, Phase 2 channels: provider instance display/config, channel templates, thread bindings,
+command token hashes, provider nonces.
+INFO  [alembic.runtime.migration] Running upgrade 0003 -> 0004, Phase 2 (P2-04): Telegram update receipts for webhook replay protection.
+INFO  [alembic.runtime.migration] Running upgrade 0004 -> 0005, Phase 2 renderer delivery records (channel_posts).
+INFO  [alembic.runtime.migration] Running upgrade 0005 -> 0006, Phase 2 message ingestion and retention (conversations, messages, policies, tombstones).
+INFO  [alembic.runtime.migration] Running upgrade 0006 -> 0007, Phase 2 (P2-05/P2-06): Telegram Bridges, message mappings, dead letters.
+INFO  [alembic.runtime.migration] Running upgrade 0007 -> 0008, Phase 3 (P3-01/P3-06/P3-08): Agent registry runtime state, heartbeats, rate windows.
+INFO  [alembic.runtime.migration] Running upgrade 0008 -> 0009, Phase 3 (P3-10/P3-11/P3-12): work delivery transports (owned by the delivery package).
+INFO  [alembic.runtime.migration] Running upgrade 0009 -> 0010, Phase 3 (P3-06/P3-09/P3-13/P3-14): routing, task graph, verifier assignment.
+INFO  [alembic.runtime.migration] Running upgrade 0010 -> 0011, Phase 3 (P3-01/P3-02/P3-08 extras): registry, roles preview, limits.
+INFO  [alembic.runtime.migration] Running upgrade 0011 -> 0012, Phase 4 (P4-05/P4-06/P4-07): secret provider, grants, leases, handles, tombstone ledger (o.
+INFO  [alembic.runtime.migration] Running upgrade 0012 -> 0013, Phase 4 (P4-03/P4-04/P4-13): setup state, settings versions, maintenance mode (owned by th.
+INFO  [alembic.runtime.migration] Running upgrade 0013 -> 0014, Phase 4 (P4-08/P4-09/P4-10/P4-14): MFA enrollments, re-auth proofs, break-glass sessions, .
+INFO  [alembic.runtime.migration] Running upgrade 0014 -> 0015, Phase 4 (P4-01/P4-02/P4-11): account admin, dependency probes, hard-delete workflow (owned.
+INFO  [alembic.runtime.migration] Running upgrade 0015 -> 0016, Phase 5 (P5-01/P5-02/P5-03): schedules, versions, runs, attempts, occurrence keys, leases .
+INFO  [alembic.runtime.migration] Running upgrade 0016 -> 0017, Phase 5 (P5-04/P5-05/P5-06/P5-07/P5-10): execution policy checks, notifications, budget se.
+INFO  [alembic.runtime.migration] Running upgrade 0017 -> 0018, Phase 5 (P5-09): scheduler metrics and alerts (owned by the metrics package).
