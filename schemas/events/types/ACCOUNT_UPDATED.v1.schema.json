@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/ACCOUNT_UPDATED.v1.schema.json",
+  "title": "ACCOUNT_UPDATED payload v1",
+  "description": "Non-sensitive payload of ACCOUNT_UPDATED (account aggregate, Phase 4). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "account_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "account_id"
+  ],
+  "additionalProperties": true,
+  "x-extension": "development plan §11.1 Accounts & Roles: profile changes are Events (P4-01)"
+}

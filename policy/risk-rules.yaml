@@ -114,6 +114,16 @@ actions:
   api:account_create:               {class: production_change,  permission: admin.accounts}
   api:account_suspend:              {class: destructive,        permission: admin.accounts}
   api:account_delete_request:       {class: destructive,        permission: admin.accounts}
+  api:account_update:               {class: production_change,  permission: admin.accounts}
+  api:account_reinstate:            {class: production_change,  permission: admin.accounts}
+  api:hard_delete_request:          {class: destructive,        permission: admin.hard_delete}
+  api:hard_delete_approve:          {class: destructive,        permission: admin.hard_delete}
+  api:hard_delete_execute:          {class: destructive,        permission: admin.hard_delete}
+  api:hard_delete_cancel:           {class: destructive,        permission: admin.hard_delete}
+  api:audit_search:                 {class: read_query,         permission: admin.audit}
+  api:audit_export:                 {class: read_query,         permission: admin.audit}
+  api:breakglass_activate:          {class: destructive,        permission: admin.break_glass}
+  api:ops_read:                     {class: read_query,         permission: admin.settings}
   api:role_create:                  {class: production_change,  permission: admin.accounts}
   api:role_update:                  {class: production_change,  permission: admin.accounts}
   api:role_assign:                  {class: production_change,  permission: admin.accounts}

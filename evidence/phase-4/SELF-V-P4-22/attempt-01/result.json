@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P4-22",
+  "evidence_id": "SELF-V-P4-22",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_hard_delete_db.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "089cb5d14bff00e3e78bcd498a8f9cf2e4849a0f",
+  "started_at": "2026-09-03T00:55:28.174668+00:00",
+  "finished_at": "2026-09-03T00:55:33.200556+00:00",
+  "output_sha256": "cf426ab35f3b06fccef8290fde5325d90af130a79da1d1752031518df77c4236"
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/HARD_DELETE_REJECTED.v1.schema.json",
+  "title": "HARD_DELETE_REJECTED payload v1",
+  "description": "Non-sensitive payload of HARD_DELETE_REJECTED (hard_delete aggregate, Phase 4). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "request_id",
+    "reason_code"
+  ],
+  "additionalProperties": true,
+  "x-extension": "spec §9 hard delete: approval rejected or request cancelled (P4-11)"
+}

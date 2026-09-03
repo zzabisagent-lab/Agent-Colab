@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P4-07",
+  "evidence_id": "SELF-V-P4-07",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_accounts_admin_db.py",
+    "-q",
+    "-k",
+    "lifecycle or credentials",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "089cb5d14bff00e3e78bcd498a8f9cf2e4849a0f",
+  "started_at": "2026-09-03T00:56:10.409233+00:00",
+  "finished_at": "2026-09-03T00:56:15.692115+00:00",
+  "output_sha256": "99db33d5c94c6f7da021687c7391181685cc33299c5435b1c861e2db3be3ec87"
+}

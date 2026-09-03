@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-colab.dev/schemas/events/types/ACCOUNT_HARD_DELETED.v1.schema.json",
+  "title": "ACCOUNT_HARD_DELETED payload v1",
+  "description": "Non-sensitive payload of ACCOUNT_HARD_DELETED (account aggregate, Phase 4). Sensitive content goes to the encrypted envelope.",
+  "type": "object",
+  "properties": {
+    "account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "account_id",
+    "request_id"
+  ],
+  "additionalProperties": true,
+  "x-extension": "spec §9 hard delete executed: DEKs destroyed, display redacted (P4-11)"
+}
