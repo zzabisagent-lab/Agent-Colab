@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import uuid
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
@@ -27,6 +28,9 @@ from server.documents.builder import (
 )
 from server.documents.store import DocumentStore, DocumentStoreError
 from server.events.store import AppendRequest, AppendResult, EventStore, EventStoreError
+
+# (built skeleton, document_id, version, workspace_id) -> linted layer-2 prose or None
+NarrativeHook = Callable[[BuiltDocument, str, int, str], str | None]
 
 
 class DocumentLifecycleError(ValueError):
@@ -224,6 +228,21 @@ def _replay(
     return None
 
 
+def accepted_narrative(session: Session, document_id: str, version: int) -> str | None:
+    """The layer-2 prose stored with a version, when one was accepted (P6-10)."""
+    exists = session.execute(text("SELECT to_regclass('public.document_narratives')")).scalar_one()
+    if not exists:
+        return None
+    row = session.execute(
+        text(
+            "SELECT body FROM document_narratives WHERE document_id = :d AND version = :v "
+            "AND accepted"
+        ),
+        {"d": document_id, "v": version},
+    ).first()
+    return None if row is None else str(row[0])
+
+
 def draft_document(
     session: Session,
     store: EventStore,
@@ -232,8 +251,14 @@ def draft_document(
     task_id: str,
     actor: DocumentActor,
     policy_version: str = "policy-v1",
+    narrative_hook: NarrativeHook | None = None,
 ) -> DocumentVersion:
-    """Create a DRAFT_PRE_VERIFICATION version from a fresh source freeze (idempotent per key)."""
+    """Create a DRAFT_PRE_VERIFICATION version from a fresh source freeze (idempotent per key).
+
+    ``narrative_hook`` (P6-10) is offered the built skeleton and may return linted layer-2 prose;
+    the version is then rebuilt with it. Returning ``None`` keeps the skeleton-only draft, which
+    is always a valid document.
+    """
     freeze = freeze_for_task(session, task_id)
     try:
         sources = collect_task_sources(session, task_id, freeze)
@@ -256,6 +281,9 @@ def draft_document(
             "DRAFT_PRE_VERIFICATION",
             document_id=document_id,
             version=int(latest["version"]),
+            # an accepted narrative is part of the stored bytes, so the identity probe must
+            # include it or every redraft would write a new, identical-in-substance version
+            narrative=accepted_narrative(session, document_id, int(latest["version"])),
         )
         if probe.sha256 == str(latest["sha256"]):
             # byte-identical to the current draft (same sources): nothing new to record
@@ -275,6 +303,16 @@ def draft_document(
     built = build_skeleton(
         sources, "DRAFT_PRE_VERIFICATION", document_id=document_id, version=version
     )
+    if narrative_hook is not None:
+        prose = narrative_hook(built, document_id, version, workspace_id)
+        if prose:
+            built = build_skeleton(
+                sources,
+                "DRAFT_PRE_VERIFICATION",
+                document_id=document_id,
+                version=version,
+                narrative=prose,
+            )
     res = _append(
         store,
         AppendRequest(

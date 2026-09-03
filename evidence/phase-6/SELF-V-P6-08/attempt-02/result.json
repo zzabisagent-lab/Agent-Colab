@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P6-08",
+  "evidence_id": "SELF-V-P6-08",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_document_rate_db.py",
+    "tests/integration/test_brainstorm_decisions_db.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "ccf900efa67cd46aee085c36dbf6515db406ea47",
+  "started_at": "2026-09-03T12:34:17.062936+00:00",
+  "finished_at": "2026-09-03T12:34:23.475791+00:00",
+  "output_sha256": "585ba42829657b9e2d56f8614be6c3365a8405474eed008559511ab50f2ffcfb"
+}

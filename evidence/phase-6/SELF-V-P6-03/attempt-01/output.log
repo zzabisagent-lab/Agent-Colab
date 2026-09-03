@@ -1,0 +1,22 @@
+...........                                                              [100%]
+
+--- stderr ---
+ERROR [sqlalchemy.pool.impl.QueuePool] Exception during reset or similar
+Traceback (most recent call last):
+  File "/home/master/work/agent-colab/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 986, in _finalize_fairy
+    fairy._reset(
+  File "/home/master/work/agent-colab/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1441, in _reset
+    pool._dialect.do_rollback(self)
+  File "/home/master/work/agent-colab/.venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 712, in do_rollback
+    dbapi_connection.rollback()
+  File "/home/master/work/agent-colab/.venv/lib/python3.12/site-packages/psycopg/connection.py", line 310, in rollback
+    self.wait(self._rollback_gen())
+  File "/home/master/work/agent-colab/.venv/lib/python3.12/site-packages/psycopg/connection.py", line 484, in wait
+    return waiting.wait(gen, self.pgconn.socket, interval=interval)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "psycopg_binary/_psycopg/waiting.pyx", line 241, in psycopg_binary._psycopg.wait_c
+  File "/home/master/work/agent-colab/.venv/lib/python3.12/site-packages/psycopg/_connection_base.py", line 619, in _rollback_gen
+    yield from self._exec_command(b"ROLLBACK")
+  File "/home/master/work/agent-colab/.venv/lib/python3.12/site-packages/psycopg/_connection_base.py", line 489, in _exec_command
+    raise e.error_from_result(result, encoding=self.pgconn._encoding)
+psycopg.errors.AdminShutdown: terminating connection due to administrator command

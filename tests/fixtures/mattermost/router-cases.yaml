@@ -117,7 +117,7 @@ cases:
     user: linked
     text: "/colab doc show ${task}"
     expect: {type: ephemeral, code: OK, events: 0, contains: "FINALIZED"}
-  - name: schedule commands are a later phase
+  - name: schedule commands need their resource handlers mounted
     user: linked
     text: "/colab schedule list"
     expect: {type: ephemeral, code: COMMAND_NOT_AVAILABLE, events: 0}

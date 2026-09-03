@@ -708,8 +708,16 @@ def complete_task(cmd: CompleteTask, ctx: CommandContext) -> Any:
             if expected is None or cmd.document_id != expected:
                 missing = ["COMPLETION_PREREQUISITE_MISSING"]
         if missing:
+            # V-P6-19: a missing PASSED Verification or FINALIZED Document both answer with the
+            # one stable closure code, reasons in `extra.missing`. Other registered checks (for
+            # example the P3-09 join gate) keep their own codes.
+            code = (
+                "COMPLETION_PREREQUISITE_MISSING"
+                if missing[0] in ("VERIFICATION_REQUIRED", "COMPLETION_PREREQUISITE_MISSING")
+                else missing[0]
+            )
             raise CommandError(
-                missing[0],
+                code,
                 "completion prerequisites not met: " + ", ".join(missing),
                 status=409,
                 extra={"missing": missing},

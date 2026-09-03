@@ -1,0 +1,165 @@
+verification_id: VR-P6-001
+criteria_version: v8.0
+implementer_agent_id: agent-claude-code
+verifier_agent_id: agent-codex
+implementer_account_id: account-implementer-claude
+verifier_account_id: account-verifier-codex
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+verifier_credential_fingerprint: sha256:ecbd74ce21cb00f0e36136b78a0fe57c8241013e4125100e2871351c90b530b9
+identity_graph_version: identity-v8-001
+effective_policy_hash: sha256:09bc05c62439be1f12e83601046e38e70b3369ac2ce66060910a6af97dce9bfb
+target_commit: ccf900efa67cd46aee085c36dbf6515db406ea47
+environment_fingerprint: sha256:5af5cc10b59d737016e75fe495794a7a86017e2cd38d649969f6952563298319
+started_at: '2026-09-03T12:15:38Z'
+completed_at: '2026-09-03T12:30:39Z'
+tests:
+  - id: V-P6-01
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/approvals.junit.xml
+    note: Cross-subject reuse rejected with zero consumption rows; P6-01 spot recheck.
+  - id: V-P6-02
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/approvals.junit.xml
+    note: Missing approval rejected and Event count remained unchanged.
+  - id: V-P6-03
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/brainstorm.junit.xml
+    note: Consecutive, per-Agent, total-turn, budget, and time limits reproduced; P6-02 spot recheck.
+  - id: V-P6-04
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/brainstorm.junit.xml
+    note: Decision-to-Task and Task-to-Decision provenance and mandatory criteria reproduced; P6-09 spot recheck.
+  - id: V-P6-05
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/artifacts-publishers.junit.xml
+    note: Upload/readback SHA-256 and subject ACL checks passed; P6-03 spot recheck.
+  - id: V-P6-06
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/artifacts-publishers.junit.xml
+    note: Path, MIME, size, executable, tamper, and malware negative fixtures were rejected with redacted audit.
+  - id: V-P6-07
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/documents.junit.xml
+    note: Completed Task document contained every canonical mandatory heading; P6-04 spot recheck.
+  - id: V-P6-08
+    result: FAIL
+    evidence_ref: verification/phase-6/evidence-r001/v-p6-08-20-automatic.junit.xml
+    note: Closing Brainstorms through the production command path created no automatic draft.
+  - id: V-P6-09
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/documents.junit.xml
+    note: Terminal Run and period summaries included status, Tasks, Artifacts, windows, and limitations; P6-08 spot recheck.
+  - id: V-P6-10
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/documents.junit.xml
+    note: Frozen Event sequence and rendered citations matched without omissions or inventions; P6-05 spot recheck.
+  - id: V-P6-11
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/documents.junit.xml
+    note: All required resource fields had values or standard UNAVAILABLE reason codes.
+  - id: V-P6-12
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/documents.junit.xml
+    note: Finalized verification result, test result, finding/risk content, and report reference were consistent.
+  - id: V-P6-13
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/documents.junit.xml
+    note: Isolated canary remained only in the raw source and was absent from canonical bytes, stored files, manifests, and captured logs.
+  - id: V-P6-14
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/documents.junit.xml
+    note: Every stored provenance reference resolved and checksum forgery was detected.
+  - id: V-P6-15
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/artifacts-publishers.junit.xml
+    note: Git publish, update, destination re-read verification, checksum, and archive passed; P6-06 spot recheck.
+  - id: V-P6-16
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/artifacts-publishers.junit.xml
+    note: Outage retained canonical data and recovery published exactly once.
+  - id: V-P6-17
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/artifacts-publishers.junit.xml
+    note: Correction created a new version while retaining original content and reason; P6-07 spot recheck.
+  - id: V-P6-18
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/artifacts-publishers.junit.xml
+    note: Unauthorized and unreviewed publish attempts were rejected.
+  - id: V-P6-19
+    result: FAIL
+    evidence_ref: verification/phase-6/evidence-r001/v-p6-19-exact.junit.xml
+    note: State stayed unchanged, but missing latest PASSED verification returned VERIFICATION_REQUIRED rather than the exact mandated code.
+  - id: V-P6-20
+    result: FAIL
+    evidence_ref: verification/phase-6/evidence-r001/v-p6-08-20-automatic.junit.xml
+    note: The independent 20-Brainstorm method produced 0/20 drafts, below the required 19/20; Task and Run paths passed their suite checks.
+  - id: V-P6-21
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/artifacts-publishers.junit.xml
+    note: BookStack reference connector contract publish/update/verify/archive and canonical-content checks passed.
+  - id: V-P6-22
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/approvals.junit.xml
+    note: Expired approval became EXPIRED, appended no execution Event, and remained non-reusable.
+  - id: V-P6-23
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/documents.junit.xml
+    note: Draft omitted verdict, finalized version was new, and append-only enforcement preserved draft bytes.
+  - id: V-P6-24
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/v-p6-24-blocked.junit.xml
+    note: Both FAILED suite path and independent BLOCKED probe preserved ATTEMPT_FINALIZED and kept publishing closed until PASSED.
+  - id: V-P6-25
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/artifacts-publishers.junit.xml
+    note: All four subject types linked with ACL; wrong type, ID, and Workspace produced stable errors and no side effects.
+  - id: V-P6-26
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/brainstorm.junit.xml
+    note: Three-Agent order, same-Agent rejection, pause/guidance, limit overruns, and facilitator resume were reproduced.
+  - id: V-P6-27
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/brainstorm.junit.xml
+    note: Non-participant preference, pre-approval no-post, voting, taskify criteria, provenance, and idempotency passed.
+  - id: V-P6-28
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/documents.junit.xml
+    note: Missing citations, unknown IDs, and contradictory figures were rejected; skeleton-only remained valid; P6-10 spot recheck.
+  - id: V-P6-29
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r001/approvals.junit.xml
+    note: MEDIUM button approved, HIGH produced web/MFA guidance without approval, and self-approval was rejected and audited.
+findings:
+  - id: F-P6-001
+    severity: Medium
+    affected: [REQ-DOCS-001, REQ-DOCS-002, V-P6-08, V-P6-20, P6-04, P6-08, P6-09]
+    summary: Closing a Brainstorm does not invoke automatic document generation.
+    target_commit: ccf900efa67cd46aee085c36dbf6515db406ea47
+    environment: Linux x86_64, Python 3.12.3, PostgreSQL 16.15, migrations 0001-0021
+    reproduction:
+      - Run uv run pytest verification/phase-6/evidence-r001/test_v_p6_08_20_automatic.py -q -p tests.conftest -p no:cacheprovider.
+      - Start and close 20 Brainstorms through StartBrainstorm and CloseBrainstorm.
+      - Count document_freezes rows for those Brainstorm IDs.
+    expected: At least 19 of 20 closed Brainstorms automatically create drafts; one closed session has arguments, alternatives, decisions, and limitations in its draft.
+    actual: All 20 sessions closed but the automatic-draft count was 0; CloseBrainstorm returns after changing session state without calling on_brainstorm_closed.
+    evidence_ref: verification/phase-6/evidence-r001/v-p6-08-20-automatic.junit.xml
+    impact: Closed collaboration sessions have no automatic canonical record, and the per-type document-generation SLO is 0 percent for Brainstorms.
+    fix_condition: Wire the committed Brainstorm-close path to idempotent automatic drafting, then independently reproduce content requirements and at least 19/20 drafts.
+  - id: F-P6-002
+    severity: Low
+    affected: [REQ-DOCS-005, V-P6-19, P6-04]
+    summary: Task closure without a latest PASSED verification returns the wrong stable error code.
+    target_commit: ccf900efa67cd46aee085c36dbf6515db406ea47
+    environment: Linux x86_64, Python 3.12.3, PostgreSQL 16.15, migrations 0001-0021
+    reproduction:
+      - Run uv run pytest verification/phase-6/evidence-r001/test_v_p6_19_exact.py -q -p tests.conftest -p no:cacheprovider.
+      - Create a Task draft, record a FAILED verification, and attempt CompleteTask.
+    expected: COMPLETION_PREREQUISITE_MISSING and unchanged Task state.
+    actual: VERIFICATION_REQUIRED with missing details containing both VERIFICATION_REQUIRED and COMPLETION_PREREQUISITE_MISSING; Task state remains unchanged.
+    evidence_ref: verification/phase-6/evidence-r001/v-p6-19-exact.junit.xml
+    impact: Clients cannot rely on the Phase 6 closure-gate error contract, although the unsafe transition remains blocked.
+    fix_condition: Return COMPLETION_PREREQUISITE_MISSING for each V-P6-19 missing-prerequisite case and tighten the repository test to require that exact code.
+result: FAILED
+residual_risks:
+  - Full CI skipped two live Telegram tests because pytest did not load deployment secrets; neither is a Phase 6 mandatory method.
+  - Mattermost approval-button behavior was reproduced through the production action handler and database, not against an external live Mattermost tenant.

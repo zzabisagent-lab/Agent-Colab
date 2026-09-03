@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P6-02",
+  "evidence_id": "SELF-V-P6-02",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_approval_collaboration_db.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "0ffe3a5dbb739f6f557118a2eaee71f99ca01f75",
+  "started_at": "2026-09-03T11:28:33.958022+00:00",
+  "finished_at": "2026-09-03T11:28:36.782639+00:00",
+  "output_sha256": "c4b808d34f4db00b333696dec1f3a43a2887d8bfe0cb7af07a3cb98ff43a7830"
+}

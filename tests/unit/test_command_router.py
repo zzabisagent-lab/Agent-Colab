@@ -102,15 +102,19 @@ FAKE = FakeMattermostClient(
 
 @pytest.fixture(autouse=True, scope="module")
 def _no_link_handlers() -> Iterator[None]:
-    """The grammar cases assume no P2-13 link handler is mounted (LINK_PENDING guidance);
-    create_app() in other modules registers them globally, so isolate the registry here."""
-    from server.channels.router import LINK_HANDLERS
+    """The grammar cases assume no P2-13 link handler and no resource extension is mounted;
+    create_app() in other modules registers both globally, so isolate the registries here."""
+    from server.channels.router import LINK_HANDLERS, RESOURCE_HANDLERS
 
     saved = dict(LINK_HANDLERS)
+    saved_resources = dict(RESOURCE_HANDLERS)
     LINK_HANDLERS.clear()
+    RESOURCE_HANDLERS.clear()  # the grammar cases describe the router with no resource extension
     yield
     LINK_HANDLERS.clear()
     LINK_HANDLERS.update(saved)
+    RESOURCE_HANDLERS.clear()
+    RESOURCE_HANDLERS.update(saved_resources)
 
 
 @pytest.fixture(scope="module")

@@ -98,14 +98,11 @@ def test_registry_activation_states() -> None:
     assert set(registry.status()) == set(SUBJECT_TYPES)
     assert registry.status()["task"] == {"active": True, "activating_phase": 1}
     assert registry.status()["schedule_run"] == {"active": True, "activating_phase": 5}
-    assert registry.status()["brainstorm"]["activating_phase"] == 6
-    assert registry.status()["decision"]["activating_phase"] == 6
+    assert registry.status()["brainstorm"] == {"active": True, "activating_phase": 6}
+    assert registry.status()["decision"] == {"active": True, "activating_phase": 6}
     registry.require_active("schedule_run")  # activated with Phase 5 (V-P5-36)
-    for subject in ("brainstorm", "decision"):
-        with pytest.raises(ArtifactLinkError) as exc:
-            registry.require_active(subject)
-        assert exc.value.code == "SUBJECT_TYPE_NOT_ACTIVE"
-        assert f"Phase {registry.status()[subject]['activating_phase']}" in exc.value.detail
+    for subject in ("brainstorm", "decision"):  # activated with Phase 6 (V-P6-25)
+        registry.require_active(subject)
     with pytest.raises(ArtifactLinkError) as unknown:
         registry.get("workspace")
     assert unknown.value.code == "SUBJECT_TYPE_UNKNOWN"

@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P6-27",
+  "evidence_id": "SELF-V-P6-27",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_brainstorm_decisions_db.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "12af00fb31f5c246043e37cef11c120cc2f88c3e",
+  "started_at": "2026-09-03T11:43:53.860855+00:00",
+  "finished_at": "2026-09-03T11:43:56.808664+00:00",
+  "output_sha256": "c4b808d34f4db00b333696dec1f3a43a2887d8bfe0cb7af07a3cb98ff43a7830"
+}

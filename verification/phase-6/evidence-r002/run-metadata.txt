@@ -1,0 +1,11 @@
+verification_id: VR-P6-002
+target_commit: 6a99c261817f3a04dc351f6003ff54c9d6e99303
+started_at: 2026-09-03T13:08:00Z
+environment: Linux 6.8.0-138-generic x86_64; Python 3.12.3; uv 0.12.9; PostgreSQL 16.15; Docker 29.1.3; migrations 0001-0021
+environment_fingerprint_input: commit=6a99c261817f3a04dc351f6003ff54c9d6e99303;os=Linux-6.8.0-138-generic-x86_64;python=3.12.3;uv=0.12.9;postgresql=16.15;docker=29.1.3;migrations=0001-0021
+environment_fingerprint: sha256:e4f185bde362e7465ef29b2bd8c008fb557dd96272a6d5afcd5943b38d9dd155
+baseline_validation_sha256: 9131d0f8948bf0af70f594dae102b654b96950fb09216cffdab8750e648f0bc3
+baseline_spec_sha256: 2fe485e3e4868a8e1e2a38d9f7daecbf6d626c5af4f1d29e868e259e9869ab24
+baseline_development_sha256: 0f6440a0c9ca7a0732ce704b3b2b2c00954608da493d201aed81e479c5d75a90
+report_schema_sha256: 1b227e1c0d6c9f97307e7f7d2133a8a47aa4cb3f93a25cb9d760116521b1d7c5
+

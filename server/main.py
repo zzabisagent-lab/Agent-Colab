@@ -18,8 +18,10 @@ from server.api.v1.accounts import router as accounts_router
 from server.api.v1.agents import router as agents_router
 from server.api.v1.approvals import router as approvals_router
 from server.api.v1.approvals_queue import router as approvals_queue_router
+from server.api.v1.artifacts_upload import router as artifacts_router
 from server.api.v1.audit import router as audit_router
 from server.api.v1.auth import router as auth_router
+from server.api.v1.brainstorm import router as brainstorm_router
 from server.api.v1.breakglass import router as breakglass_router
 from server.api.v1.bridges import router as bridges_router
 from server.api.v1.channel_members import router as channel_members_router
@@ -35,6 +37,7 @@ from server.api.v1.ops import router as ops_router
 from server.api.v1.providers_mattermost import router as providers_mattermost_router
 from server.api.v1.providers_mattermost_actions import router as mattermost_actions_router
 from server.api.v1.providers_telegram import router as providers_telegram_router
+from server.api.v1.publishing import router as publishing_router
 from server.api.v1.roles import router as roles_router
 from server.api.v1.schedule_metrics import router as schedule_metrics_router
 from server.api.v1.schedules import router as schedules_router
@@ -44,10 +47,12 @@ from server.api.v1.tasks import router as tasks_router
 from server.api.v1.verification import router as verification_router
 from server.api.v1.work import router as work_router
 from server.application import schedule_runs
+from server.brainstorm import router_handlers as brainstorm_handlers
 from server.config import PRODUCT_NAME, Settings, get_settings
 from server.db.engine import make_engine, make_session_factory
 from server.identity import mattermost_link
 from server.observability.health import router as health_router
+from server.schedules import router_handlers as schedule_router_handlers
 
 API_VERSION = "v1"
 
@@ -97,6 +102,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(bridges_router)
     app.include_router(mattermost_actions_router)
     app.include_router(notifications_router)
+    app.include_router(brainstorm_router)  # P6-02/P6-09
     app.include_router(channel_members_router)
     app.include_router(identity_admin_router)
     app.include_router(work_router)  # P3-11: work item REST + signed webhook callbacks
@@ -114,9 +120,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(ops_router)  # P4-02 operations dashboard
     app.include_router(audit_router)  # P4-02 audit explorer
     app.include_router(hard_delete_router)  # P4-11 hard-delete workflow
+    app.include_router(artifacts_router)  # P6-03 safe upload, readback, quarantine
+    app.include_router(publishing_router)  # P6-06/P6-07 destinations, review, publish
     _wire_secrets(app)
     schedule_runs.register_hooks()  # P5: Schedule Run closes with its Task
-    mattermost_link.register()  # P2-13: `link start|confirm` slash handlers
+    mattermost_link.register()
+    schedule_router_handlers.register()  # P5 schedule verbs on the /colab grammar
+    brainstorm_handlers.register()  # P6-02: `/colab brainstorm ...` slash handlers
     app.state.telegram_webhook_secret = None  # env AGENT_COLAB_TELEGRAM_WEBHOOK_SECRET by default
     # P4-08 admin security: CSRF (innermost), session policy (idle/MFA gate/break-glass), headers
     from server.security.csrf import CsrfMiddleware

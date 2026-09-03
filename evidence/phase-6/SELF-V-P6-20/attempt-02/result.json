@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P6-20",
+  "evidence_id": "SELF-V-P6-20",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_document_rate_db.py",
+    "-q",
+    "-k",
+    "generation_rate or unknown_subject",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "12af00fb31f5c246043e37cef11c120cc2f88c3e",
+  "started_at": "2026-09-03T11:46:00.636010+00:00",
+  "finished_at": "2026-09-03T11:46:05.365314+00:00",
+  "output_sha256": "99db33d5c94c6f7da021687c7391181685cc33299c5435b1c861e2db3be3ec87"
+}

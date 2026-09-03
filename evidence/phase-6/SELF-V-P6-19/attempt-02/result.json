@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P6-19",
+  "evidence_id": "SELF-V-P6-19",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_document_finalizer_db.py",
+    "-q",
+    "-k",
+    "gate or closure or prerequisite",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "ccf900efa67cd46aee085c36dbf6515db406ea47",
+  "started_at": "2026-09-03T12:34:14.104453+00:00",
+  "finished_at": "2026-09-03T12:34:16.954265+00:00",
+  "output_sha256": "99db33d5c94c6f7da021687c7391181685cc33299c5435b1c861e2db3be3ec87"
+}

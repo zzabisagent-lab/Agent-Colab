@@ -1,0 +1,9 @@
+command=uv run python with Draft202012Validator against schemas/documents/verifier-report.v1.schema.json
+exit_code=0
+schema_validation=PASS
+mandatory_test_entries=29_unique_ordered
+pass_count=26
+fail_count=3
+not_run_count=0
+not_applicable_count=0
+report_result=FAILED

@@ -2,24 +2,42 @@
 
 Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENTS.md`, ADRs in `docs/adr/`.
 
-## Current phase: 6 (Collaboration and Documentation) — branch `phase-6`
+## Current phase: 7 (Release Hardening) — branch `phase-7`
+
+### Phase 7 package status
+
+| ID | Work | Size | Prereq | Status | SELF evidence |
+|---|---|---|---|---|---|
+| P7-01 | CI/CD | M | P0-01 | NOT_STARTED | — |
+| P7-02 | observability | M | P4-02 | NOT_STARTED | — |
+| P7-03 | backup/restore | L | P4-11, P5-03 | NOT_STARTED | — |
+| P7-04 | load/soak | M | P5-10 | NOT_STARTED | — |
+| P7-05 | security hardening | M | P7-01 | NOT_STARTED | — |
+| P7-06 | upgrade/rollback | M | P7-03 | NOT_STARTED | — |
+| P7-07 | release package | S | P7-01 | NOT_STARTED | — |
+| P7-08 | runbooks | M | P7-02 | NOT_STARTED | — |
+| P7-09 | Human-path acceptance automation | M | P2-11, P6-01, P6-04 | NOT_STARTED | — |
+
+Phase 7 progress (size-weighted): 0 / 26
+
+## Phase 6 (PASSED) — branch `phase-6`, tag `phase-6-passed`
 
 ### Phase 6 package status
 
 | ID | Work | Size | Prereq | Status | SELF evidence |
 |---|---|---|---|---|---|
-| P6-01 | Approval collaboration UX | M | P1-08, P2-12, P4-14 | NOT_STARTED | — |
-| P6-02 | Brainstorm turn engine | L | P1-12, P2-10, P2-11 | NOT_STARTED | — |
-| P6-03 | Artifact extension | M | P1-09, P0-04 | NOT_STARTED | — |
-| P6-04 | Document finalizer | M | P1-10 | NOT_STARTED | — |
-| P6-05 | redaction/provenance | M | P6-04 | NOT_STARTED | — |
-| P6-06 | Publisher | M | P6-04 | NOT_STARTED | — |
-| P6-07 | publish review | S | P6-06 | NOT_STARTED | — |
-| P6-08 | recurring summaries | S | P6-04, P5-03 | NOT_STARTED | — |
-| P6-09 | Brainstorm summary/decision/taskify | M | P6-02, P1-11 | NOT_STARTED | — |
-| P6-10 | Documentation narrative layer | M | P6-04, P1-14 | NOT_STARTED | — |
+| P6-01 | Approval collaboration UX | M | P1-08, P2-12, P4-14 | IMPLEMENTED | SELF-V-P6-01/02/22/29 |
+| P6-02 | Brainstorm turn engine | L | P1-12, P2-10, P2-11 | IMPLEMENTED | SELF-V-P6-03/26 |
+| P6-03 | Artifact extension | M | P1-09, P0-04 | IMPLEMENTED | SELF-V-P6-05/06/25 |
+| P6-04 | Document finalizer | M | P1-10 | IMPLEMENTED | SELF-V-P6-07/12/19/23/24 |
+| P6-05 | redaction/provenance | M | P6-04 | IMPLEMENTED | SELF-V-P6-10/11/13/14 |
+| P6-06 | Publisher | M | P6-04 | IMPLEMENTED | SELF-V-P6-15/16/21 |
+| P6-07 | publish review | S | P6-06 | IMPLEMENTED | SELF-V-P6-17/18 |
+| P6-08 | recurring summaries | S | P6-04, P5-03 | IMPLEMENTED | SELF-V-P6-09/20 |
+| P6-09 | Brainstorm summary/decision/taskify | M | P6-02, P1-11 | IMPLEMENTED | SELF-V-P6-04/08/27 |
+| P6-10 | Documentation narrative layer | M | P6-04, P1-14 | IMPLEMENTED | SELF-V-P6-28 |
 
-Phase 6 progress (size-weighted): 0 / 27
+Phase 6 progress (size-weighted): 27 / 27 — Codex VR-P6-002 PASSED (29/29) after revision 1 FAILED on F-P6-001/002
 
 ## Phase 5 (PASSED) — branch `phase-5`, tag `phase-5-passed`
 
@@ -175,12 +193,13 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 20.5 / 20.5
 
 ### Next step
 
-Phase 6 on branch `phase-6` (foundation: migration slots 0019-0021, ownership note; forks: brainstorm P6-02/09, documents P6-04/05/08/10, artifacts+publishers P6-03/06/07; approval collaboration UX P6-01 by the parent).
+Phase 7 on branch `phase-7`: CI/CD and security hardening, backup/restore and upgrade/rollback, observability and load/soak, runbooks and Human-path acceptance; then REPORT.md per development plan §27A, push, and the single deployment question.
 
 ## Phase history
 
 | Phase | Result | Report | Tag |
 |---|---|---|---|
+| 6 | PASSED (revision 2; revision 1 FAILED F-P6-001/002) | verification/phase-6/VR-P6-002.yaml | phase-6-passed |
 | 5 | PASSED (revision 2; revision 1 FAILED F-P5-001..004) | verification/phase-5/VR-P5-002.yaml | phase-5-passed |
 | 4 | PASSED (revision 2; revision 1 FAILED F-P4-001/002/003) | verification/phase-4/VR-P4-002.yaml | phase-4-passed |
 | 3 | PASSED (revision 1) | verification/phase-3/VR-P3-001.yaml | phase-3-passed |
