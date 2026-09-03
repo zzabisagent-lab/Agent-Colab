@@ -14,6 +14,7 @@ import json
 import uuid
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -149,6 +150,22 @@ def _parse_rule(raw: dict[str, Any]) -> Rule:
 
 
 def load_rules(path: Path = DEFAULT_RULES) -> list[Rule]:
+    """Parsed rule set, memoized on (path, mtime, size) so an edited file still reloads.
+
+    Every command dispatch builds a NotificationEngine, so an uncached load parsed and
+    JSON-Schema-validated this file on each request: 30 ms of a 70 ms command, which capped write
+    throughput near 14/s (found by the P7-04 load run, development plan §21.1).
+    """
+    stat = path.stat()
+    return list(_load_rules_cached(str(path), stat.st_mtime_ns, stat.st_size))
+
+
+@lru_cache(maxsize=8)
+def _load_rules_cached(path_str: str, _mtime_ns: int, _size: int) -> tuple[Rule, ...]:
+    return tuple(_read_rules(Path(path_str)))
+
+
+def _read_rules(path: Path) -> list[Rule]:
     raw = yaml.safe_load(path.read_text(encoding="utf-8"))
     schema = json.loads(RULES_SCHEMA.read_text(encoding="utf-8"))
     errors = sorted(Draft202012Validator(schema).iter_errors(raw), key=str)

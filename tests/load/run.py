@@ -74,7 +74,10 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="tests.load.run", description=__doc__)
     parser.add_argument("--profile", choices=sorted(PROFILES), default="peak")
     parser.add_argument("--minutes", type=float, default=30.0)
-    parser.add_argument("--workers", type=int, default=2)
+    parser.add_argument("--workers", type=int, default=2, help="scheduler workers")
+    parser.add_argument(
+        "--api-workers", type=int, default=harness.API_WORKERS, help="API processes"
+    )
     parser.add_argument("--database-url", default=None, help="maintenance URL; else the test URL")
     parser.add_argument("--json", type=Path, default=None, help="write the report as JSON")
     args = parser.parse_args(argv)
@@ -96,6 +99,7 @@ def main(argv: list[str] | None = None) -> int:
                 profile,
                 seconds=args.minutes * 60.0,
                 workers=args.workers,
+                api_workers=args.api_workers,
             )
         finally:
             engine.dispose()

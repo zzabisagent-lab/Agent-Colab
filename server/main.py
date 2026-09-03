@@ -222,19 +222,30 @@ def cli(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="agent-colab", description=f"{PRODUCT_NAME} server")
     parser.add_argument("--host", default=None)
     parser.add_argument("--port", type=int, default=None)
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=int(os.environ.get("AGENT_COLAB_WORKERS", "1")),
+        help="server processes; >1 needs the app factory, one interpreter cannot use more "
+        "than one core (development plan §21.1 peak profile)",
+    )
     args = parser.parse_args(argv)
     settings = get_settings()
-    uvicorn.run(
-        create_app(settings),
-        host=args.host or settings.bind_host,
-        port=args.port or settings.bind_port,
-        log_config=None,
-    )
+    host = args.host or settings.bind_host
+    port = args.port or settings.bind_port
+    if args.workers > 1:
+        # uvicorn only forks workers for an import string, never for an app instance.
+        uvicorn.run(
+            "server.main:create_app",
+            factory=True,
+            host=host,
+            port=port,
+            workers=args.workers,
+            log_config=None,
+        )
+        return 0
+    uvicorn.run(create_app(settings), host=host, port=port, log_config=None)
     return 0
-
-
-if __name__ == "__main__":  # pragma: no cover
-    raise SystemExit(cli())
 
 
 def _wire_secrets(app: FastAPI) -> None:
@@ -251,3 +262,7 @@ def _wire_secrets(app: FastAPI) -> None:
     except SecretError:
         app.state.secret_master_key = None  # Setup (P4-03) configures it; Broker answers 503
     install_log_filter()
+
+
+if __name__ == "__main__":  # pragma: no cover
+    raise SystemExit(cli())

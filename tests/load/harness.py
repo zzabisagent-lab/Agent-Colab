@@ -10,12 +10,12 @@ from __future__ import annotations
 
 import contextlib
 import datetime as dt
-import itertools
+import json
 import os
 import socket
 import subprocess
 import sys
-import threading
+import tempfile
 import time
 import uuid
 from collections.abc import Iterator
@@ -24,12 +24,9 @@ from pathlib import Path
 from typing import Any
 
 import httpx
-import uvicorn
 from sqlalchemy import Engine, text
 from sqlalchemy.orm import Session
 
-from server.config import Settings
-from server.main import create_app
 from server.secrets.envelope import new_master_key
 from tests.load.population import Population
 from tests.load.profile import Profile
@@ -146,6 +143,7 @@ class Report:
             "reads": self.reads,
             "messages": self.messages,
             "write_rps": round(self.writes / self.seconds, 2) if self.seconds else 0.0,
+            "read_rps": round(self.reads / self.seconds, 2) if self.seconds else 0.0,
             "write_p50_ms": round(percentile(self.write_latency_ms, 50), 1),
             "write_p95_ms": round(percentile(self.write_latency_ms, 95), 1),
             "write_max_ms": round(max(self.write_latency_ms, default=0.0), 1),
@@ -166,42 +164,93 @@ class Report:
 # ---------------------------------------------------------------- processes
 
 
+#: Child processes write to files, never to a pipe. An undrained ``subprocess.PIPE`` fills at the
+#: 64 KiB kernel buffer and then blocks the child mid-request: the server froze with open
+#: transactions and every request timed out, which looked exactly like a database bottleneck.
+#: API server processes. One interpreter is GIL-bound at ~25 requests/s on a 24-core host, which is
+#: below the §21.1 peak profile; the peak run therefore drives a multi-process server, as a
+#: deployment does. Peak offers 90 requests/s, and a four-process server measured ~72: a 30-minute
+#: run settled at 47 writes/s against the 60 it was offered, so the default carries real headroom.
+API_WORKERS = int(os.environ.get("AGENT_COLAB_API_WORKERS", "8"))
+_LOG_ROOT = os.environ.get("AGENT_COLAB_LOAD_LOG_DIR", tempfile.gettempdir())
+LOG_DIR = Path(_LOG_ROOT) / "agent-colab-load"
+
+
+def _child_log(name: str) -> Any:
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    return open(LOG_DIR / f"{name}.log", "wb")  # closed by the caller's finally
+
+
 @contextlib.contextmanager
-def running_server(database_url: str) -> Iterator[str]:
-    """A real API process on a loopback port, with the gateway drain disabled."""
+def running_server(database_url: str, *, workers: int = 1) -> Iterator[str]:
+    """The real server process (the ``agent-colab`` entry point), not an in-process thread.
+
+    Measuring through a server that shares an interpreter with the measurer would blend the two;
+    this is the same process a deployment runs.
+    """
     with socket.socket() as sock:
         sock.bind(("127.0.0.1", 0))
         port = sock.getsockname()[1]
     base = f"http://127.0.0.1:{port}"
-    os.environ["AGENT_COLAB_GATEWAY_DRAIN"] = "0"
-    app = create_app(
-        Settings(database_url=database_url, base_url=base, master_key_b64=new_master_key())
+    env = {
+        **os.environ,
+        "AGENT_COLAB_DATABASE_URL": database_url,
+        "AGENT_COLAB_BASE_URL": base,
+        "AGENT_COLAB_BIND_HOST": "127.0.0.1",
+        "AGENT_COLAB_BIND_PORT": str(port),
+        "AGENT_COLAB_MASTER_KEY_B64": new_master_key(),
+        "AGENT_COLAB_GATEWAY_DRAIN": "0",
+    }
+    log = _child_log(f"server-{port}")
+    proc = subprocess.Popen(
+        [
+            sys.executable,
+            "-m",
+            "server.main",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            str(port),
+            "--workers",
+            str(workers),
+        ],
+        cwd=ROOT,
+        env=env,
+        stdout=log,
+        stderr=log,
     )
-    server = uvicorn.Server(
-        uvicorn.Config(app, host="127.0.0.1", port=port, log_level="warning", access_log=False)
-    )
-    thread = threading.Thread(target=server.run, daemon=True)
-    thread.start()
-    for _ in range(200):
-        if server.started:
-            break
-        time.sleep(0.1)
-    if not server.started:  # pragma: no cover - defensive
-        raise RuntimeError("load server did not start")
     try:
+        deadline = time.monotonic() + 60
+        with httpx.Client(base_url=base, timeout=5.0) as client:
+            while time.monotonic() < deadline:
+                if proc.poll() is not None:  # pragma: no cover - startup failure
+                    raise RuntimeError(f"server exited with {proc.returncode}")
+                try:
+                    if client.get("/healthz").status_code < 500:
+                        break
+                except httpx.HTTPError:
+                    time.sleep(0.2)
+            else:  # pragma: no cover - defensive
+                raise RuntimeError("server did not become healthy")
         yield base
     finally:
-        server.should_exit = True
-        thread.join(timeout=15)
+        proc.terminate()
+        try:
+            proc.wait(timeout=15)
+        except subprocess.TimeoutExpired:  # pragma: no cover - defensive
+            proc.kill()
+        log.close()
 
 
 @contextlib.contextmanager
 def running_workers(database_url: str, workspace: str, count: int) -> Iterator[list[Any]]:
     """Real scheduler worker processes, so Runs are claimed the way production claims them."""
     procs: list[subprocess.Popen[bytes]] = []
+    logs: list[Any] = []
     env = {**os.environ, "AGENT_COLAB_DATABASE_URL": database_url}
     try:
         for i in range(count):
+            logs.append(_child_log(f"worker-{i}"))
             procs.append(
                 subprocess.Popen(
                     [
@@ -217,8 +266,8 @@ def running_workers(database_url: str, workspace: str, count: int) -> Iterator[l
                     ],
                     cwd=ROOT,
                     env=env,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
+                    stdout=logs[-1],
+                    stderr=logs[-1],
                 )
             )
         yield procs
@@ -229,82 +278,81 @@ def running_workers(database_url: str, workspace: str, count: int) -> Iterator[l
                 proc.wait(timeout=10)
             except subprocess.TimeoutExpired:  # pragma: no cover - defensive
                 proc.kill()
+        for handle in logs:
+            handle.close()
 
 
 # ---------------------------------------------------------------- traffic
 
 
-class _Driver(threading.Thread):
-    """Issues one kind of request at a fixed rate until the deadline."""
-
-    def __init__(
-        self,
-        base: str,
-        token: str,
-        rate_per_s: float,
-        deadline: float,
-        report: Report,
-        lock: threading.Lock,
-        kind: str,
-        population: Population,
-    ) -> None:
-        super().__init__(daemon=True)
-        self.base, self.token, self.rate = base, token, rate_per_s
-        self.deadline, self.report, self.lock, self.kind = deadline, report, lock, kind
-        self.population = population
-        self.counter = itertools.count()
-
-    def _request(self, client: httpx.Client, n: int) -> tuple[float, int]:
-        # the Task API takes the channel row id, not the public channel_id text
-        channel = str(self.population.channel_uuids[n % len(self.population.channel_uuids)])
-        started = time.perf_counter()
-        if self.kind == "write":
-            response = client.post(
-                "/api/v1/tasks",
-                json={
-                    "title": f"load {self.kind} {n}",
-                    "channel_id": channel,
-                    "domain": "research",
-                    "risk": "LOW",
-                    "criteria": [{"statement": "load", "check_type": "evidence", "required": True}],
-                },
-                headers={
-                    "Authorization": f"Bearer {self.token}",
-                    "Idempotency-Key": f"load-{self.kind}-{uuid.uuid4().hex}",
-                },
+def _spawn_generators(
+    base: str,
+    population: Population,
+    profile: Profile,
+    seconds: float,
+    out_dir: Path,
+) -> list[tuple[subprocess.Popen[bytes], Path]]:
+    """One generator process per share of each rate, so the client never becomes the bottleneck."""
+    channels = ",".join(str(c) for c in population.channel_uuids[:50])
+    spawned: list[tuple[subprocess.Popen[bytes], Path]] = []
+    for kind, token, rate in (
+        ("write", population.owner_token, profile.api_writes_per_s),
+        ("read", population.ops_token, profile.messages_per_s),
+    ):
+        procs = _fan_out(rate)
+        for index in range(procs):
+            out = out_dir / f"{kind}-{index}.json"
+            spawned.append(
+                (
+                    subprocess.Popen(
+                        [
+                            sys.executable,
+                            "-m",
+                            "tests.load.generator",
+                            "--base",
+                            base,
+                            "--token",
+                            token,
+                            "--kind",
+                            kind,
+                            "--rate",
+                            str(rate / procs),
+                            "--seconds",
+                            str(seconds),
+                            "--channels",
+                            channels,
+                            "--out",
+                            str(out),
+                        ],
+                        cwd=ROOT,
+                        env=os.environ.copy(),
+                        stdout=_child_log(f"gen-{kind}-{index}"),
+                        stderr=subprocess.STDOUT,
+                    ),
+                    out,
+                )
             )
+    return spawned
+
+
+def _collect(spawned: list[tuple[subprocess.Popen[bytes], Path]], report: Report) -> None:
+    for proc, out in spawned:
+        try:
+            proc.wait(timeout=120)
+        except subprocess.TimeoutExpired:  # pragma: no cover - defensive
+            proc.kill()
+        if not out.exists():
+            continue
+        data = json.loads(out.read_text(encoding="utf-8"))
+        latencies = [float(v) for v in data["latency_ms"]]
+        if data["kind"] == "write":
+            report.writes += len(latencies)
+            report.write_latency_ms.extend(latencies)
         else:
-            response = client.get(
-                "/api/v1/tasks?limit=20", headers={"Authorization": f"Bearer {self.token}"}
-            )
-        return (time.perf_counter() - started) * 1000.0, response.status_code
-
-    def run(self) -> None:
-        interval = 1.0 / self.rate if self.rate > 0 else 0.0
-        if interval == 0.0:
-            return
-        with httpx.Client(base_url=self.base, timeout=30.0) as client:
-            next_at = time.monotonic()
-            while time.monotonic() < self.deadline:
-                n = next(self.counter)
-                try:
-                    latency, status = self._request(client, n)
-                except httpx.HTTPError:
-                    latency, status = 0.0, 599  # transport failure counts as a server error
-                with self.lock:
-                    self.report.statuses[status] = self.report.statuses.get(status, 0) + 1
-                    if self.kind == "write":
-                        self.report.writes += 1
-                        self.report.write_latency_ms.append(latency)
-                    else:
-                        self.report.reads += 1
-                        self.report.read_latency_ms.append(latency)
-                next_at += interval
-                sleep = next_at - time.monotonic()
-                if sleep > 0:
-                    time.sleep(sleep)
-                else:  # fell behind: resynchronise rather than burst
-                    next_at = time.monotonic()
+            report.reads += len(latencies)
+            report.read_latency_ms.extend(latencies)
+        for status, count in data["statuses"].items():
+            report.statuses[int(status)] = report.statuses.get(int(status), 0) + int(count)
 
 
 def _counts(engine: Engine, ws: uuid.UUID) -> tuple[int, int]:
@@ -352,6 +400,16 @@ def _duplicates(engine: Engine, ws: uuid.UUID) -> tuple[int, int]:
     return occurrences, events
 
 
+#: A driver thread issues at most this many requests per second, so the per-thread interval stays
+#: well above the service time we measure (~70 ms for a write). Rates above it are split.
+PER_THREAD_RPS = 5.0
+
+
+def _fan_out(rate_per_s: float) -> int:
+    """How many threads a rate needs to be issued without falling behind."""
+    return max(1, int(-(-rate_per_s // PER_THREAD_RPS)))
+
+
 def run_load(
     engine: Engine,
     database_url: str,
@@ -360,52 +418,30 @@ def run_load(
     *,
     seconds: float,
     workers: int = 2,
+    api_workers: int = API_WORKERS,
     sample_interval_s: float = 5.0,
     worker_watch: Any = None,
 ) -> Report:
     """Drive the profile for ``seconds`` of wall clock and return the measured report."""
     report = Report(profile=profile.name, seconds=seconds)
     report.events_before, report.runs_before = _counts(engine, population.ws)
-    lock = threading.Lock()
     cpu = DbCpu()
-    with (
-        running_server(database_url) as base,
-        running_workers(database_url, str(population.ws), workers) as procs,
-    ):
-        deadline = time.monotonic() + seconds
-        drivers = [
-            _Driver(
-                base,
-                population.owner_token,
-                profile.api_writes_per_s,
-                deadline,
-                report,
-                lock,
-                "write",
-                population,
-            ),
-            _Driver(
-                base,
-                population.ops_token,
-                profile.messages_per_s,
-                deadline,
-                report,
-                lock,
-                "read",
-                population,
-            ),
-        ]
-        started = time.monotonic()
-        for driver in drivers:
-            driver.start()
-        while time.monotonic() < deadline:
-            time.sleep(min(sample_interval_s, max(0.1, deadline - time.monotonic())))
-            cpu.sample()
-            if worker_watch is not None:
-                worker_watch([p.pid for p in procs if p.poll() is None])
-        for driver in drivers:
-            driver.join(timeout=60)
-        report.seconds = time.monotonic() - started
+    with tempfile.TemporaryDirectory(prefix="agent-colab-load-") as tmp:
+        out_dir = Path(tmp)
+        with (
+            running_server(database_url, workers=api_workers) as base,
+            running_workers(database_url, str(population.ws), workers) as procs,
+        ):
+            started = time.monotonic()
+            spawned = _spawn_generators(base, population, profile, seconds, out_dir)
+            deadline = started + seconds
+            while time.monotonic() < deadline:
+                time.sleep(min(sample_interval_s, max(0.1, deadline - time.monotonic())))
+                cpu.sample()
+                if worker_watch is not None:
+                    worker_watch([p.pid for p in procs if p.poll() is None])
+            _collect(spawned, report)
+            report.seconds = time.monotonic() - started
     report.events_after, report.runs_after = _counts(engine, population.ws)
     report.duplicate_occurrences, report.duplicate_events = _duplicates(engine, population.ws)
     report.db_cpu_mean, report.db_cpu_peak = cpu.mean, cpu.peak
@@ -530,6 +566,7 @@ def run_soak(
     *,
     minutes: float,
     workers: int = 2,
+    api_workers: int = API_WORKERS,
 ) -> SoakReport:
     """A bounded soak: the same traffic, plus growth checks on memory, connections and queues."""
     database = database_url.rsplit("/", 1)[-1]
@@ -550,6 +587,7 @@ def run_soak(
         profile,
         seconds=minutes * 60.0,
         workers=workers,
+        api_workers=api_workers,
         worker_watch=watch,
     )
     report.connections_last = _connection_count(engine, database)

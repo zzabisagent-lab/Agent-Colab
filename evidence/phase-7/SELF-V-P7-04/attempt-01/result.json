@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P7-04",
+  "evidence_id": "SELF-V-P7-04",
+  "attempt": 1,
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/e2e/test_soak.py",
+    "-q",
+    "-s",
+    "--no-header"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "a93937ce5ed5baa1cedd6a164af637d14b3e0cba",
+  "started_at": "2026-09-03T18:45:01.421172+00:00",
+  "finished_at": "2026-09-03T19:15:10.767826+00:00",
+  "output_sha256": "eff7be0cba174a692f0272a581506b7f5e19f611af4b7ad70738d8ee2ddff44a"
+}

@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P7-03",
+  "evidence_id": "SELF-V-P7-03",
+  "attempt": 4,
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/e2e/test_load_peak.py",
+    "-q",
+    "-s",
+    "--no-header"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "a93937ce5ed5baa1cedd6a164af637d14b3e0cba",
+  "started_at": "2026-09-03T18:14:38.213927+00:00",
+  "finished_at": "2026-09-03T18:44:47.854755+00:00",
+  "output_sha256": "26580965097da2fcdaf015b66a5bfcd118b520ed881fa4bf0050f60d50480932"
+}

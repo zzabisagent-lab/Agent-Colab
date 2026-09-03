@@ -1,0 +1,19 @@
+{
+  "test_id": "V-P7-14",
+  "evidence_id": "SELF-V-P7-14",
+  "attempt": 3,
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/integration/test_observability_alerts_db.py",
+    "-q",
+    "--no-header"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "a93937ce5ed5baa1cedd6a164af637d14b3e0cba",
+  "started_at": "2026-09-03T17:43:41.893635+00:00",
+  "finished_at": "2026-09-03T17:43:45.106711+00:00",
+  "output_sha256": "700bc0322b00f8e8db3ce495047983b54ab27ab59ed1fedac05f3aeba47dae24"
+}

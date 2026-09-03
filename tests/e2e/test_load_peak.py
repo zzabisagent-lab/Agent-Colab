@@ -52,6 +52,10 @@ def test_peak_load_meets_the_latency_and_loss_criteria(
     summary = report.summary()
     print("peak load:", json.dumps(summary, indent=2))
 
+    # the load must actually have been applied: the criterion is about 3x the normal profile,
+    # so a run that quietly under-drove the server would prove nothing
+    assert summary["write_rps"] >= PEAK.api_writes_per_s * 0.9, summary
+    assert summary["read_rps"] >= PEAK.messages_per_s * 0.9, summary
     assert not check(summary), summary
     assert summary["write_p95_ms"] <= WRITE_P95_MS
     assert summary["read_p95_ms"] <= READ_P95_MS

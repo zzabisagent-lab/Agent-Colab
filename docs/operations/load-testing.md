@@ -37,6 +37,39 @@ AGENT_COLAB_LOAD_MINUTES=2  uv run pytest tests/e2e/test_load_peak.py -q -s
 AGENT_COLAB_SOAK_MINUTES=5  uv run pytest tests/e2e/test_soak.py -q -s
 ```
 
+## Server processes
+
+One Python interpreter serves roughly 25 writes per second on a 24-core host and then saturates a
+single core, because the request path is CPU-bound rather than database-bound. That ceiling is
+below the peak profile, so the server must be run with more than one process:
+
+| API processes | Throughput | p50 | p95 |
+|---|---|---|---|
+| 1 | 25 req/s | 1583 ms | 1912 ms |
+| 4 | 72 req/s | 274 ms | 2822 ms |
+| 8 | 181 req/s | 108 ms | 955 ms |
+
+Measured at 40 concurrent writers, which is why the p95 column is far above the p95 seen at the
+peak profile's offered rate. `agent-colab --workers N` (or `AGENT_COLAB_WORKERS`) forks N worker
+processes; the harness defaults to eight and takes `--api-workers`.
+
+Peak offers 90 requests per second, so capacity has to sit above that with room to spare. Four
+processes are not enough: a full 30-minute run held every latency and integrity criterion but
+settled at 47 writes/s against the 60 it was offered, because ~72 req/s is the whole four-process
+budget. Size a deployment from the offered rate, not from the p95 of a short run.
+
+The notification rule set is parsed once per file version rather than once per command. Re-reading
+and re-validating `policy/notification-rules.yaml` on every dispatch cost 30 ms of a 70 ms command,
+which is the single largest saving the load run found.
+
+`AGENT_COLAB_DB_POOL_SIZE` and `AGENT_COLAB_DB_MAX_OVERFLOW` size the SQLAlchemy pool per process;
+the defaults (20 + 20) leave room for the sync-endpoint threadpool.
+
+Every child process writes its output to `AGENT_COLAB_LOAD_LOG_DIR` (a temporary directory by
+default) rather than to a pipe. This is not a convenience: an undrained pipe fills at 64 KiB and
+then blocks the child mid-request, which is indistinguishable from a server that has stopped
+responding.
+
 ## What the traffic is
 
 Writes are `POST /api/v1/tasks` — a real command through the bus, with acceptance criteria, that

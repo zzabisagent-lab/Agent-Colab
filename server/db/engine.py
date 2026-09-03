@@ -25,11 +25,21 @@ def normalize_url(url: str) -> str:
 CONNECT_TIMEOUT_S = int(os.environ.get("AGENT_COLAB_DB_CONNECT_TIMEOUT_S", "5"))
 
 
+#: Connection pool sizing. SQLAlchemy's defaults (5 + 10 overflow) sit well below the request
+#: concurrency the ASGI server allows, so at the development plan §21.1 peak profile requests
+#: queued on the pool and timed out instead of being served (found by the P7-04 load run).
+#: The default here matches the sync-endpoint threadpool; both are configurable per deployment.
+POOL_SIZE = int(os.environ.get("AGENT_COLAB_DB_POOL_SIZE", "20"))
+POOL_MAX_OVERFLOW = int(os.environ.get("AGENT_COLAB_DB_MAX_OVERFLOW", "20"))
+
+
 def make_engine(url: str) -> Engine:
     return create_engine(
         normalize_url(url),
         future=True,
         pool_pre_ping=True,
+        pool_size=POOL_SIZE,
+        max_overflow=POOL_MAX_OVERFLOW,
         connect_args={"connect_timeout": CONNECT_TIMEOUT_S},
     )
 
