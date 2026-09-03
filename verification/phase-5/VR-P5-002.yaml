@@ -1,0 +1,168 @@
+verification_id: VR-P5-002
+criteria_version: v8.0
+implementer_agent_id: agent-claude-code
+verifier_agent_id: agent-codex
+implementer_account_id: account-implementer-claude
+verifier_account_id: account-verifier-codex
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+verifier_credential_fingerprint: sha256:ecbd74ce21cb00f0e36136b78a0fe57c8241013e4125100e2871351c90b530b9
+identity_graph_version: identity-v8-001
+effective_policy_hash: sha256:09bc05c62439be1f12e83601046e38e70b3369ac2ce66060910a6af97dce9bfb
+target_commit: 22022013dbbe1d186f5bec10be73d6dd772f1779
+environment_fingerprint: sha256:c590c5f454cd81ef26c719e214f1bbf5609a6b648dde2f31a01758277793ecb0
+started_at: '2026-09-03T11:04:00Z'
+completed_at: '2026-09-03T11:18:20Z'
+tests:
+  - id: V-P5-01
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Numeric five-field grammar and all required invalid forms/boundaries produced the stable contract errors.
+  - id: V-P5-02
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Fifty cron expressions times ten occurrences matched the independent reference fixture.
+  - id: V-P5-03
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/timezone-variants.log
+    note: IANA computations passed with the server process independently set to Honolulu and Berlin.
+  - id: V-P5-04
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: The DST gap produced no Run or Task and recorded the preview/history reason.
+  - id: V-P5-05
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Folded instants shared an occurrence key and produced one Run at the first instant, matching preview.
+  - id: V-P5-06
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Concurrent planners produced one row for each schedule and occurrence key.
+  - id: V-P5-07
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Concurrent runners claimed disjoint work and only one runner created each Task.
+  - id: V-P5-08
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/high-risk-negative-paths.log
+    note: A real worker died immediately after committed Task creation; recovery retained exactly one Task and one set of Events, Attempt, and notice.
+  - id: V-P5-09
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: FORBID created a SKIPPED Run with SKIPPED_CONCURRENCY and no Task.
+  - id: V-P5-10
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: ALLOW executed and tracked two Runs independently.
+  - id: V-P5-11
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: REPLACE waited for normal cleanup and used SKIPPED_REPLACE_CANCEL_TIMEOUT after the bounded unconfirmed path.
+  - id: V-P5-12
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: SKIP did not execute missed occurrences after simulated downtime.
+  - id: V-P5-13
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: RUN_ONCE selected the most recent missed occurrence once and retained its original scheduled_for.
+  - id: V-P5-14
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Limited backfill selected only in-window occurrences, oldest first up to the limit, and warned.
+  - id: V-P5-15
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/high-risk-negative-paths.log
+    note: Revoked execution permission produced SKIPPED_POLICY with zero Tasks.
+  - id: V-P5-16
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: A suspended fixed Agent skipped with SKIPPED_AGENT_UNAVAILABLE and fallback selected only an eligible substitute.
+  - id: V-P5-17
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/high-risk-negative-paths.log
+    note: A real synthetic canary flowed through a short single-use lease, was revoked and wiped at completion, and produced zero leakage hits with a working positive control.
+  - id: V-P5-18
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/high-risk-negative-paths.log
+    note: Missing and exhausted approvals blocked execution; bounded Schedule approval consumption remained atomic.
+  - id: V-P5-19
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Transient failure attempts and 1/5/25-second backoff were bounded at three; permanent failure stopped after one.
+  - id: V-P5-20
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Timeout/cancel acknowledgement, cleanup deadlines, terminal Events, and lease cleanup matched the contract.
+  - id: V-P5-21
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Browser and API checks rejected the unauthorized account and created one separate authorized manual Run.
+  - id: V-P5-22
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Lifecycle and browser flows rejected invalid transitions; immutable Run versions remained pinned across updates.
+  - id: V-P5-23
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Success, failure, skip, and late notices matched designated channel and Bridge system-event policy.
+  - id: V-P5-24
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/high-risk-negative-paths.log
+    note: Of two real workers, the claimant died after its committed claim and the peer recovered within the prescribed lease/poll bound with one Task.
+  - id: V-P5-25
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Database history, metrics API, and dashboard due/run/lag/error values agreed.
+  - id: V-P5-26
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/high-risk-negative-paths.log
+    note: Command and script template attempts were rejected before Schedule side effects.
+  - id: V-P5-27
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/load-test.log
+    note: Actual five-minute normal load with 100 schedules and two workers measured p95 14.1 seconds and mean DB CPU 0.1 percent; the above-threshold alert fired.
+  - id: V-P5-28
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Cost limits 99 and 100 ran; 101 stopped before Task creation with BUDGET_EXCEEDED and an alert.
+  - id: V-P5-29
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Restricted DOM and DOW reference cases matched Vixie OR semantics in previews and Runs.
+  - id: V-P5-30
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/high-risk-negative-paths.log
+    note: Two concurrent consumers of max-use-one approval produced one ledger consumption and one execution.
+  - id: V-P5-31
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Pending cancellation was immediate and safe running cancellation followed requested to cancelled with cleanup Events.
+  - id: V-P5-32
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/high-risk-negative-paths.log
+    note: Cancelling succeeded, failed, and timed-out Runs returned conflict without state, Event, or history mutation.
+  - id: V-P5-33
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: A materialized Run retained its action/budget/channel snapshot while new Runs used the new version.
+  - id: V-P5-34
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Repeated terminal retry with one idempotency key created one linked RETRY Run and left the original unchanged.
+  - id: V-P5-35
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Concurrent scheduled and manual Runs stayed distinct and idempotent retries duplicated neither.
+  - id: V-P5-36
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Schedule/run Approval and Artifact handlers were active; wrong workspace/target attempts failed and bounded consumption stayed atomic.
+  - id: V-P5-37
+    result: PASS
+    evidence_ref: verification/phase-5/evidence-r002/focused-suites.log
+    note: Run usage aggregation and settlement matched; daily overrun skipped the next Run with BUDGET_EXCEEDED and alerted.
+findings: []
+result: PASSED
+residual_risks:
+  - Live Mattermost delivery was not repeated; V-P5-23 was reproduced through the persisted provider outbox and Bridge-policy boundary with destination and payload assertions.
+  - The supplied implementer manifest was untracked at the pinned commit and was treated only as non-authoritative input evidence.

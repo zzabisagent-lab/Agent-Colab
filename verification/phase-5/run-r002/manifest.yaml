@@ -1,0 +1,499 @@
+implementation_id: P5-IMPLEMENT-001
+phase: 5
+implementer_agent_id: agent-claude-code
+implementer_account_id: account-implementer-claude
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+identity_graph_version: identity-v8-001
+commit_sha: 22022013dbbe1d186f5bec10be73d6dd772f1779
+image_digests: []
+requirements:
+- REQ-APRV-002
+- REQ-ARTF-001
+- REQ-COST-001
+- REQ-OPS-007
+- REQ-QGAT-005
+- REQ-SCHD-001
+- REQ-SCHD-002
+- REQ-SCHD-003
+- REQ-SCHD-004
+- REQ-SCHD-005
+- REQ-SCHD-006
+- REQ-SCHD-007
+- REQ-SCHD-008
+- REQ-SCHD-009
+- REQ-SCHD-010
+- REQ-SCHD-011
+- REQ-SCHD-012
+- REQ-SCHD-013
+- REQ-SCHD-014
+- REQ-SCHD-015
+changed_files:
+- .gitleaks.toml
+- PROGRESS.md
+- docs/adr/ADR-0012-phase5-schedule-decisions.md
+- docs/architecture/phase5-schedules.md
+- docs/architecture/schedule-core.md
+- docs/architecture/schedule-execution.md
+- docs/architecture/schedule-metrics.md
+- docs/architecture/schedule-worker.md
+- evidence/phase-4/SELF-V-P4-17/attempt-03/output.log
+- evidence/phase-4/SELF-V-P4-17/attempt-03/result.json
+- evidence/phase-5/SELF-V-P5-01/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-01/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-02/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-02/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-03/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-03/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-04/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-04/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-05/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-05/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-06/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-06/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-07/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-07/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-08/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-08/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-08/attempt-02/output.log
+- evidence/phase-5/SELF-V-P5-08/attempt-02/result.json
+- evidence/phase-5/SELF-V-P5-08/attempt-03/output.log
+- evidence/phase-5/SELF-V-P5-08/attempt-03/result.json
+- evidence/phase-5/SELF-V-P5-09/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-09/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-10/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-10/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-11/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-11/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-12/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-12/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-13/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-13/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-14/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-14/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-15/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-15/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-16/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-16/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-17/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-17/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-17/attempt-02/output.log
+- evidence/phase-5/SELF-V-P5-17/attempt-02/result.json
+- evidence/phase-5/SELF-V-P5-18/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-18/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-18/attempt-02/output.log
+- evidence/phase-5/SELF-V-P5-18/attempt-02/result.json
+- evidence/phase-5/SELF-V-P5-19/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-19/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-20/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-20/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-21/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-21/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-21/attempt-02/output.log
+- evidence/phase-5/SELF-V-P5-21/attempt-02/result.json
+- evidence/phase-5/SELF-V-P5-22/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-22/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-22/attempt-02/output.log
+- evidence/phase-5/SELF-V-P5-22/attempt-02/result.json
+- evidence/phase-5/SELF-V-P5-23/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-23/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-24/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-24/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-24/attempt-02/output.log
+- evidence/phase-5/SELF-V-P5-24/attempt-02/result.json
+- evidence/phase-5/SELF-V-P5-24/attempt-03/output.log
+- evidence/phase-5/SELF-V-P5-24/attempt-03/result.json
+- evidence/phase-5/SELF-V-P5-25/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-25/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-25/attempt-02/output.log
+- evidence/phase-5/SELF-V-P5-25/attempt-02/result.json
+- evidence/phase-5/SELF-V-P5-25/attempt-03/output.log
+- evidence/phase-5/SELF-V-P5-25/attempt-03/result.json
+- evidence/phase-5/SELF-V-P5-26/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-26/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-27/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-27/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-27/attempt-02/output.log
+- evidence/phase-5/SELF-V-P5-27/attempt-02/result.json
+- evidence/phase-5/SELF-V-P5-27/attempt-03/output.log
+- evidence/phase-5/SELF-V-P5-27/attempt-03/result.json
+- evidence/phase-5/SELF-V-P5-27/attempt-04/output.log
+- evidence/phase-5/SELF-V-P5-27/attempt-04/result.json
+- evidence/phase-5/SELF-V-P5-27/attempt-05/output.log
+- evidence/phase-5/SELF-V-P5-27/attempt-05/result.json
+- evidence/phase-5/SELF-V-P5-28/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-28/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-29/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-29/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-30/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-30/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-31/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-31/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-32/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-32/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-33/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-33/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-34/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-34/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-35/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-35/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-36/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-36/attempt-01/result.json
+- evidence/phase-5/SELF-V-P5-37/attempt-01/output.log
+- evidence/phase-5/SELF-V-P5-37/attempt-01/result.json
+- evidence/phase-5/manifest-inputs.yaml
+- i18n/en/messages.json
+- i18n/ko/messages.json
+- migrations/env.py
+- migrations/sql/0016_phase5_schedules.sql
+- migrations/sql/0017_phase5_execution.sql
+- migrations/sql/0018_phase5_metrics.sql
+- migrations/versions/0016_phase5_schedules.py
+- migrations/versions/0017_phase5_execution.py
+- migrations/versions/0018_phase5_metrics.py
+- policy/risk-rules.yaml
+- schemas/documents/schedule-metrics.v1.schema.json
+- server/agents/maintenance.py
+- server/agents/mcp_server.py
+- server/agents/schedule_tools.py
+- server/api/v1/schedule_metrics.py
+- server/api/v1/schedules.py
+- server/application/schedule_runs.py
+- server/application/schedules.py
+- server/approvals/model.py
+- server/artifacts/links.py
+- server/main.py
+- server/ops/dashboard.py
+- server/ops/probes.py
+- server/schedules/budget.py
+- server/schedules/execution.py
+- server/schedules/links.py
+- server/schedules/metrics.py
+- server/schedules/notify.py
+- server/schedules/planner.py
+- server/schedules/policy_check.py
+- server/schedules/recovery.py
+- server/schedules/run_access.py
+- server/schedules/runner.py
+- server/schedules/store.py
+- server/schedules/worker.py
+- server/secrets/canary.py
+- server/work/inbox.py
+- server/work/timeouts.py
+- tests/e2e/test_admin_schedules_ui.py
+- tests/e2e/test_schedule_load.py
+- tests/e2e/test_schedule_worker_processes.py
+- tests/fixtures/schedule/next-run-cases.yaml
+- tests/integration/schedule_exec_fixture.py
+- tests/integration/schedule_metrics_fixture.py
+- tests/integration/schedule_seed.py
+- tests/integration/test_approval_core.py
+- tests/integration/test_artifact_core.py
+- tests/integration/test_backup_key_separation.py
+- tests/integration/test_rest_mcp_parity.py
+- tests/integration/test_schedule_budget_db.py
+- tests/integration/test_schedule_execution_db.py
+- tests/integration/test_schedule_latency.py
+- tests/integration/test_schedule_metrics_db.py
+- tests/integration/test_schedule_notices_db.py
+- tests/integration/test_schedule_planner_db.py
+- tests/integration/test_schedule_recovery_db.py
+- tests/integration/test_schedule_runner_db.py
+- tests/integration/test_schedule_secret_canary.py
+- tests/integration/test_schedules_api_db.py
+- tests/integration/test_work_inbox_db.py
+- tests/unit/test_approval_rules.py
+- tests/unit/test_artifact_links.py
+- tests/unit/test_schedule_api_models.py
+- tests/unit/test_schedule_metrics.py
+- verification/phase-5/VR-P5-001.yaml
+- verification/phase-5/VR-P5-001.yaml.sha256
+- verification/phase-5/evidence-r001/SHA256SUMS
+- verification/phase-5/evidence-r001/admin-ui-e2e.log
+- verification/phase-5/evidence-r001/environment.txt
+- verification/phase-5/evidence-r001/gitleaks.log
+- verification/phase-5/evidence-r001/make-ci.log
+- verification/phase-5/evidence-r001/method-audit.txt
+- verification/phase-5/evidence-r001/package-spot-rechecks.txt
+- verification/phase-5/evidence-r001/phase5-verbose.log
+- verification/phase-5/evidence-r001/report-sha256.txt
+- verification/phase-5/evidence-r001/report-validation.log
+- verification/phase-5/evidence-r001/schedule-core.log
+- verification/phase-5/evidence-r001/schedule-execution.log
+- verification/phase-5/evidence-r001/schedule-metrics.log
+- verification/phase-5/evidence-r001/sidecar.log
+- verification/phase-5/evidence-r001/test-id-index.txt
+- verification/phase-5/evidence-r001/timezone-variants.log
+- verification/phase-5/run-r001/events.jsonl
+- verification/phase-5/run-r001/last-message.txt
+- verification/phase-5/run-r001/manifest.yaml
+- verification/phase-5/run-r001/prompt.md
+- verification/phase-5/run-r001/run.json
+- verification/phase-5/run-r001/stderr.log
+- web-admin/src/app/App.tsx
+- web-admin/src/features/schedules/SchedulesPage.tsx
+- web-admin/tests/a11y.spec.ts
+- web-admin/tests/schedules.spec.ts
+migrations:
+- migrations/versions/0016_phase5_schedules.py
+- migrations/versions/0017_phase5_execution.py
+- migrations/versions/0018_phase5_metrics.py
+tests_run:
+- id: SELF-V-P5-01
+  command: uv run pytest tests/unit/test_schedule_contract.py tests/integration/test_schedules_api_db.py
+    -k cron or create_validates or grammar -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-01/attempt-01
+- id: SELF-V-P5-02
+  command: uv run pytest tests/unit/test_schedule_api_models.py -k next_run_reference
+    or serializes -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-02/attempt-01
+- id: SELF-V-P5-03
+  command: uv run pytest tests/unit/test_schedule_api_models.py tests/integration/test_schedules_api_db.py
+    -k timezones or preview -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-03/attempt-01
+- id: SELF-V-P5-04
+  command: uv run pytest tests/integration/test_schedule_planner_db.py tests/integration/test_schedules_api_db.py
+    -k dst or preview -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-04/attempt-01
+- id: SELF-V-P5-05
+  command: uv run pytest tests/integration/test_schedule_planner_db.py tests/integration/test_schedules_api_db.py
+    -k dst or preview -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-05/attempt-01
+- id: SELF-V-P5-06
+  command: uv run pytest tests/integration/test_schedule_planner_db.py -k two_planners
+    or materializes -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-06/attempt-01
+- id: SELF-V-P5-07
+  command: uv run pytest tests/integration/test_schedule_runner_db.py -k two_runners
+    or claim -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-07/attempt-01
+- id: SELF-V-P5-08
+  command: uv run pytest tests/e2e/test_schedule_worker_processes.py -q -k crash -p
+    no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-08/attempt-03
+- id: SELF-V-P5-09
+  command: uv run pytest tests/integration/test_schedule_execution_db.py -q -k forbid
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-09/attempt-01
+- id: SELF-V-P5-10
+  command: uv run pytest tests/integration/test_schedule_execution_db.py -q -k allow_runs_both
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-10/attempt-01
+- id: SELF-V-P5-11
+  command: uv run pytest tests/integration/test_schedule_execution_db.py -q -k replace_cancels
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-11/attempt-01
+- id: SELF-V-P5-12
+  command: uv run pytest tests/integration/test_schedule_recovery_db.py -q -k missed_run_policies
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-12/attempt-01
+- id: SELF-V-P5-13
+  command: uv run pytest tests/integration/test_schedule_recovery_db.py -q -k missed_run_policies
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-13/attempt-01
+- id: SELF-V-P5-14
+  command: uv run pytest tests/integration/test_schedule_recovery_db.py -q -k missed_run_policies
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-14/attempt-01
+- id: SELF-V-P5-15
+  command: uv run pytest tests/integration/test_schedule_execution_db.py -q -k revoked_principal
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-15/attempt-01
+- id: SELF-V-P5-16
+  command: uv run pytest tests/integration/test_schedule_execution_db.py -q -k suspended_fixed_agent
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-16/attempt-01
+- id: SELF-V-P5-17
+  command: uv run pytest tests/integration/test_schedule_secret_canary.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-17/attempt-02
+- id: SELF-V-P5-18
+  command: uv run pytest tests/integration/test_schedule_execution_db.py -q -k approval
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-18/attempt-02
+- id: SELF-V-P5-19
+  command: uv run pytest tests/integration/test_schedule_recovery_db.py -q -k transient_failures
+    or permanent_failure -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-19/attempt-01
+- id: SELF-V-P5-20
+  command: uv run pytest tests/integration/test_schedule_recovery_db.py -q -k max_duration
+    or cancel_window -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-20/attempt-01
+- id: SELF-V-P5-21
+  command: uv run pytest tests/e2e/test_admin_schedules_ui.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-21/attempt-02
+- id: SELF-V-P5-22
+  command: uv run pytest tests/e2e/test_admin_schedules_ui.py tests/integration/test_schedules_api_db.py
+    -q -k console or lifecycle or version -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-22/attempt-02
+- id: SELF-V-P5-23
+  command: uv run pytest tests/integration/test_schedule_notices_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-23/attempt-01
+- id: SELF-V-P5-24
+  command: uv run pytest tests/e2e/test_schedule_worker_processes.py -q -k restart
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-24/attempt-03
+- id: SELF-V-P5-25
+  command: uv run pytest tests/unit/test_schedule_metrics.py tests/integration/test_schedule_metrics_db.py
+    tests/integration/test_ops_dashboard_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-25/attempt-03
+- id: SELF-V-P5-26
+  command: uv run pytest tests/unit/test_schedule_contract.py tests/integration/test_schedules_api_db.py
+    -k template or create_validates -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-26/attempt-01
+- id: SELF-V-P5-27
+  command: uv run pytest tests/e2e/test_schedule_load.py -q -s -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-27/attempt-05
+- id: SELF-V-P5-28
+  command: uv run pytest tests/integration/test_schedule_budget_db.py -q -k estimates_within
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-28/attempt-01
+- id: SELF-V-P5-29
+  command: uv run pytest tests/unit/test_schedule_api_models.py tests/unit/test_schedule_contract.py
+    -k dom_dow or dow or cron -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-29/attempt-01
+- id: SELF-V-P5-30
+  command: uv run pytest tests/integration/test_schedule_execution_db.py -q -k two_runners
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-30/attempt-01
+- id: SELF-V-P5-31
+  command: uv run pytest tests/integration/test_schedules_api_db.py -k manual_runs
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-31/attempt-01
+- id: SELF-V-P5-32
+  command: uv run pytest tests/integration/test_schedules_api_db.py -k manual_runs
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-32/attempt-01
+- id: SELF-V-P5-33
+  command: uv run pytest tests/integration/test_schedules_api_db.py -k lifecycle -q
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-33/attempt-01
+- id: SELF-V-P5-34
+  command: uv run pytest tests/integration/test_schedules_api_db.py -k manual_runs
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-34/attempt-01
+- id: SELF-V-P5-35
+  command: uv run pytest tests/integration/test_schedules_api_db.py -k manual_runs
+    -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-35/attempt-01
+- id: SELF-V-P5-36
+  command: uv run pytest tests/integration/test_schedules_api_db.py tests/unit/test_artifact_links.py
+    tests/unit/test_approval_rules.py -k subjects or registry or activation -q -p
+    no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-36/attempt-01
+- id: SELF-V-P5-37
+  command: uv run pytest tests/integration/test_schedule_budget_db.py -q -k usage_is_aggregated
+    or releases_its_reservation -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-5/SELF-V-P5-37/attempt-01
+known_gaps:
+- The cron next-run reference (V-P5-02) cross-checks 50 expressions × next 10 against
+  croniter as a development-only reference (ADR-0002/ADR-0006); croniter is never
+  imported at runtime. The normative implementation is server/schedules/cron.py.
+- 'Start-delay p95 (V-P5-27) is a virtual-clock simulation: 100 active Schedules,
+  20 due per minute, 2 runners, 4 ticks per minute; p95 and max stay at or below 60
+  s. No wall-clock load generator runs in this environment; Phase 7 (P7-04) covers
+  sustained load.'
+- Dual-planner and dual-runner concurrency (V-P5-06/07) run as concurrent threads
+  against the same PostgreSQL instance, relying on the unique occurrence key and FOR
+  UPDATE SKIP LOCKED rather than two operating-system processes.
+- Channel notices are asserted on the delivery outbox rows and rendered payloads;
+  a live Mattermost instance is exercised separately by the Phase 2 provider tests.
+- Secret leases for Runs use the Phase 4 local Broker; per-Run leases are revoked
+  at Run end (V-P5-17) and the canary scan from Phase 4 covers leakage paths.
+rollback: git checkout ff0aa8d79555d432a811c98518d90a63590fc3ec (merge-base with main);
+  drop test databases
+evidence_refs:
+- evidence/phase-5/SELF-V-P5-01/attempt-01
+- evidence/phase-5/SELF-V-P5-02/attempt-01
+- evidence/phase-5/SELF-V-P5-03/attempt-01
+- evidence/phase-5/SELF-V-P5-04/attempt-01
+- evidence/phase-5/SELF-V-P5-05/attempt-01
+- evidence/phase-5/SELF-V-P5-06/attempt-01
+- evidence/phase-5/SELF-V-P5-07/attempt-01
+- evidence/phase-5/SELF-V-P5-08/attempt-03
+- evidence/phase-5/SELF-V-P5-09/attempt-01
+- evidence/phase-5/SELF-V-P5-10/attempt-01
+- evidence/phase-5/SELF-V-P5-11/attempt-01
+- evidence/phase-5/SELF-V-P5-12/attempt-01
+- evidence/phase-5/SELF-V-P5-13/attempt-01
+- evidence/phase-5/SELF-V-P5-14/attempt-01
+- evidence/phase-5/SELF-V-P5-15/attempt-01
+- evidence/phase-5/SELF-V-P5-16/attempt-01
+- evidence/phase-5/SELF-V-P5-17/attempt-02
+- evidence/phase-5/SELF-V-P5-18/attempt-02
+- evidence/phase-5/SELF-V-P5-19/attempt-01
+- evidence/phase-5/SELF-V-P5-20/attempt-01
+- evidence/phase-5/SELF-V-P5-21/attempt-02
+- evidence/phase-5/SELF-V-P5-22/attempt-02
+- evidence/phase-5/SELF-V-P5-23/attempt-01
+- evidence/phase-5/SELF-V-P5-24/attempt-03
+- evidence/phase-5/SELF-V-P5-25/attempt-03
+- evidence/phase-5/SELF-V-P5-26/attempt-01
+- evidence/phase-5/SELF-V-P5-27/attempt-05
+- evidence/phase-5/SELF-V-P5-28/attempt-01
+- evidence/phase-5/SELF-V-P5-29/attempt-01
+- evidence/phase-5/SELF-V-P5-30/attempt-01
+- evidence/phase-5/SELF-V-P5-31/attempt-01
+- evidence/phase-5/SELF-V-P5-32/attempt-01
+- evidence/phase-5/SELF-V-P5-33/attempt-01
+- evidence/phase-5/SELF-V-P5-34/attempt-01
+- evidence/phase-5/SELF-V-P5-35/attempt-01
+- evidence/phase-5/SELF-V-P5-36/attempt-01
+- evidence/phase-5/SELF-V-P5-37/attempt-01
+reproduction:
+- git clone git@github.com:zzabisagent-lab/Agent-Colab.git && git checkout <target
+  commit>
+- export PATH=$HOME/.local/bin:$PATH; export AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test
+  (any empty PostgreSQL 16 maintenance DB; the test session creates and drops its
+  own database and runs migrations 0001-0018)
+- 'make ci   # lint, tests, doc checks, build; sidecar: uv run pytest sidecar/tests
+  -q'
+- Every V-P5 Test has a SELF evidence attempt under evidence/phase-5/SELF-V-P5-NN/attempt-NN/result.json
+  listing the exact command; the latest attempt of each ID is PASS
+- 'Schedule core (V-P5-01..08, 22, 24, 26, 29, 31..36): uv run pytest tests/unit/test_schedule_api_models.py
+  tests/integration/test_schedules_api_db.py tests/integration/test_schedule_planner_db.py
+  tests/integration/test_schedule_runner_db.py -q'
+- 'Execution (V-P5-09..21, 23, 27, 28, 30, 37): uv run pytest tests/integration/test_schedule_execution_db.py
+  tests/integration/test_schedule_recovery_db.py tests/integration/test_schedule_notices_db.py
+  tests/integration/test_schedule_budget_db.py tests/integration/test_schedule_latency.py
+  -q'
+- 'Metrics (V-P5-25): uv run pytest tests/unit/test_schedule_metrics.py tests/integration/test_schedule_metrics_db.py
+  -q'
+- 'Schedule Admin UI (V-P5-21/22 UI halves): cd web-admin && pnpm install && pnpm
+  run build; PLAYWRIGHT_CHROMIUM_EXECUTABLE=<chromium> uv run pytest tests/e2e/test_admin_schedules_ui.py
+  -q'

@@ -1,0 +1,20 @@
+command: uv run pytest tests/unit/test_schedule_api_models.py tests/integration/test_schedules_api_db.py tests/integration/test_schedule_planner_db.py tests/integration/test_schedule_runner_db.py -q
+exit_code: 0
+result: 26 passed
+
+command: uv run pytest tests/integration/test_schedule_execution_db.py tests/integration/test_schedule_recovery_db.py tests/integration/test_schedule_notices_db.py tests/integration/test_schedule_budget_db.py tests/integration/test_schedule_latency.py -q
+exit_code: 0
+result: 23 passed
+
+command: uv run pytest tests/unit/test_schedule_metrics.py tests/integration/test_schedule_metrics_db.py -q
+exit_code: 0
+result: 6 passed
+
+command: uv run pytest sidecar/tests -q
+exit_code: 0
+result: 17 passed
+
+command: PLAYWRIGHT_CHROMIUM_EXECUTABLE=/home/master/.cache/ms-playwright/chromium-1234/chrome uv run pytest tests/e2e/test_admin_schedules_ui.py -q
+exit_code: 0
+result: 1 passed
+

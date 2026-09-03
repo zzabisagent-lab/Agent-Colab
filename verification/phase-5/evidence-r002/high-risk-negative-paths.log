@@ -1,0 +1,27 @@
+command: uv run pytest tests/e2e/test_schedule_worker_processes.py -q
+exit_code: 0
+result: 2 passed
+observed_methods:
+  - Worker terminated at committed task_created failpoint; one Task, one Run, one task-created Event, one run-started Event, one Attempt, and one start notice after peer recovery.
+  - Two real workers; claimant terminated at committed claimed failpoint; peer recovered within lease expiry plus two poll intervals; one Run and one Task.
+
+command: uv run pytest tests/integration/test_schedule_secret_canary.py -q
+exit_code: 0
+result: 1 passed
+observed_methods:
+  - Synthetic canary stored encrypted, resolved once through a scoped short lease, terminal cleanup revoked all leases and wiped buffers.
+  - Positive control detected a planted canary; scans found zero hits in persisted/emitted surfaces, artifacts, documents, and captured logs.
+
+command: gitleaks detect --no-banner --redact --source . --no-git --exit-code 1
+exit_code: 0
+result: no leaks found (approximately 16.67 MB scanned)
+
+negative_paths_covered_by_focused_suites:
+  - invalid cron grammar and boundaries return stable errors
+  - shell/script action templates rejected with zero Schedule side effects
+  - unauthorized Run now rejected while authorized Run creates one manual Run
+  - terminal cancellation conflicts without Event/history mutation
+  - revoked permission, suspended Agent, absent/exhausted Approval, budget overrun all prevent Task creation
+  - concurrent max-use-one Approval yields one consumption and one execution
+  - duplicate planner/runner/manual-retry paths preserve unique Runs and Tasks
+
