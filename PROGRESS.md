@@ -8,16 +8,16 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 
 | ID | Work | Size | Prereq | Status | SELF evidence |
 |---|---|---|---|---|---|
-| P5-01 | Schedule schema/API | L | P0-08, P1-08, P1-09 | NOT_STARTED | — |
-| P5-02 | cron/timezone planner | M | P0-08 | NOT_STARTED | — |
-| P5-03 | durable Run/lease | L | P5-01, P5-02 | NOT_STARTED | — |
-| P5-04 | execution policy | M | P5-03, P1-08 | NOT_STARTED | — |
-| P5-05 | concurrency/missed run | M | P5-03 | NOT_STARTED | — |
-| P5-06 | retry/timeout/Run cancel | M | P5-03 | NOT_STARTED | — |
-| P5-07 | channel notification | S | P5-03, P2-11 | NOT_STARTED | — |
-| P5-08 | Schedule Admin UI | M | P5-01 | NOT_STARTED | — |
-| P5-09 | metrics/alerts | S | P5-03 | NOT_STARTED | — |
-| P5-10 | budget/latency targets | M | P1-14, P5-03 | NOT_STARTED | — |
+| P5-01 | Schedule schema/API | L | P0-08, P1-08, P1-09 | IN_PROGRESS (fork) | — |
+| P5-02 | cron/timezone planner | M | P0-08 | IN_PROGRESS (fork) | — |
+| P5-03 | durable Run/lease | L | P5-01, P5-02 | IN_PROGRESS (fork) | — |
+| P5-04 | execution policy | M | P5-03, P1-08 | IN_PROGRESS (fork) | — |
+| P5-05 | concurrency/missed run | M | P5-03 | IN_PROGRESS (fork) | — |
+| P5-06 | retry/timeout/Run cancel | M | P5-03 | IN_PROGRESS (fork) | — |
+| P5-07 | channel notification | S | P5-03, P2-11 | IN_PROGRESS (fork) | — |
+| P5-08 | Schedule Admin UI | M | P5-01 | IMPLEMENTED (evidence pending API) | console page + e2e spec/driver |
+| P5-09 | metrics/alerts | S | P5-03 | IN_PROGRESS (fork) | — |
+| P5-10 | budget/latency targets | M | P1-14, P5-03 | IN_PROGRESS (fork) | — |
 
 Phase 5 progress (size-weighted): 0 / 25
 
