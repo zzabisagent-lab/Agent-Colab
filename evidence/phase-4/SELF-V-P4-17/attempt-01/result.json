@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P4-17",
+  "evidence_id": "SELF-V-P4-17",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_backup_key_separation.py",
+    "tests/unit/test_local_provider.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 1,
+  "result": "fail",
+  "commit_sha": "24716a90560737192ca5dfcae37b722e2b5a0f72",
+  "started_at": "2026-09-03T00:50:52.591196+00:00",
+  "finished_at": "2026-09-03T00:50:55.818154+00:00",
+  "output_sha256": "e3208b12cb6206e7c75c88beb068973a82adc1043ca31cf67d8359f2e8fa2923"
+}

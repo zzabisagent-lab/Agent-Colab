@@ -23,4 +23,8 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    pass  # tables created by this revision are dropped by the owning package's downgrade list
+    tables = ("secret_revocations", "secret_leases", "secret_grants", "secret_versions", "secrets")
+    for table in tables:
+        op.execute(f"DROP TABLE IF EXISTS {table}")
+    op.execute("ALTER TABLE key_tombstones DROP COLUMN IF EXISTS signature")
+    op.execute("ALTER TABLE key_tombstones DROP COLUMN IF EXISTS ledger_key_id")

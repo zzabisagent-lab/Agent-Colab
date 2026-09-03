@@ -1,0 +1,16 @@
+..F                                                                      [100%]
+=================================== FAILURES ===================================
+________ test_sidecar_bound_handle_cannot_be_resolved_from_another_host ________
+
+engine = Engine(postgresql+psycopg://colab@127.0.0.1:54329/colab_t_59931f1a7cc4)
+
+    def test_sidecar_bound_handle_cannot_be_resolved_from_another_host(engine: Engine) -> None:
+        clock = FixedClock(T0 + dt.timedelta(minutes=5))
+        rt = SEED.runtime(engine, clock)
+>       agent = SEED.agents["agent-inj-1"]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'agent-inj-1'
+
+tests/integration/test_secret_injection.py:83: KeyError
+=========================== short test summary info ============================
+FAILED tests/integration/test_secret_injection.py::test_sidecar_bound_handle_cannot_be_resolved_from_another_host

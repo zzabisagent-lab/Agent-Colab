@@ -1,0 +1,24 @@
+{
+  "test_id": "V-P4-10",
+  "evidence_id": "SELF-V-P4-10",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_backup_key_separation.py",
+    "tests/integration/test_secret_broker_db.py",
+    "tests/unit/test_local_provider.py",
+    "-k",
+    "dump or master_key or register_grant or wrap",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "24716a90560737192ca5dfcae37b722e2b5a0f72",
+  "started_at": "2026-09-03T00:51:25.436097+00:00",
+  "finished_at": "2026-09-03T00:51:29.100462+00:00",
+  "output_sha256": "700bc0322b00f8e8db3ce495047983b54ab27ab59ed1fedac05f3aeba47dae24"
+}

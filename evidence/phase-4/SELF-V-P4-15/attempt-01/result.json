@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P4-15",
+  "evidence_id": "SELF-V-P4-15",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_secret_broker_db.py",
+    "-k",
+    "llm_exposure",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "24716a90560737192ca5dfcae37b722e2b5a0f72",
+  "started_at": "2026-09-03T00:50:49.815415+00:00",
+  "finished_at": "2026-09-03T00:50:52.484222+00:00",
+  "output_sha256": "423b1d0e014eb1eab96f4420f7b344c2615be505dd574b756ac884826ca74f2d"
+}
