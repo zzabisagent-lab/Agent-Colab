@@ -46,7 +46,7 @@ def test_maintenance_runs_every_workspace_and_tolerates_missing_system_account(
         s.execute(
             text(
                 "INSERT INTO accounts (id, account_id, workspace_id, account_type, display_name) "
-                "VALUES (:i, 'acct-maint-system', :w, 'service', 'system')"
+                "VALUES (:i, 'acct-maint-tick-system', :w, 'service', 'system')"
             ),
             {"i": uuid.uuid4(), "w": WS},
         )

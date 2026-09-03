@@ -150,7 +150,7 @@ def test_agent_admin_console_paths(server: str, engine: Engine) -> None:
     verify_totp(server, TOK_ADMIN, secret, "ui-api-mfa")
     h = {"Authorization": f"Bearer {TOK_ADMIN}"}
     body = {
-        "agent_id": "agent-api-1",
+        "agent_id": "agent-ui-api-1",
         "display_name": "API Agent",
         "adapter_type": "webhook",
         "endpoint": {"url": "https://agent.example.test/hook"},
@@ -163,13 +163,13 @@ def test_agent_admin_console_paths(server: str, engine: Engine) -> None:
     assert r.status_code in (200, 201), r.text
     for action in ("suspend", "revoke"):
         r = httpx.post(
-            f"{server}/api/v1/agents/agent-api-1/{action}",
+            f"{server}/api/v1/agents/agent-ui-api-1/{action}",
             json={},
             headers={**h, "Idempotency-Key": f"ui-api-{action}"},
         )
         assert r.status_code == 200, r.text
     ui_trail = [a for a, _ in _audit_actions(engine, "agent-ui-1")]
-    api_trail = [a for a, _ in _audit_actions(engine, "agent-api-1")]
+    api_trail = [a for a, _ in _audit_actions(engine, "agent-ui-api-1")]
     assert ui_trail and api_trail
     assert [a for a in ui_trail if a in api_trail] == [a for a in api_trail if a in ui_trail]
     # an unauthorized API caller is rejected the same way the console was
