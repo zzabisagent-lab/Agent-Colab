@@ -1,0 +1,23 @@
+{
+  "test_id": "V-P4-27",
+  "evidence_id": "SELF-V-P4-27",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_setup_wizard_db.py",
+    "tests/unit/test_setup_contract.py",
+    "-k",
+    "network_boundary or transport",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "089cb5d14bff00e3e78bcd498a8f9cf2e4849a0f",
+  "started_at": "2026-09-03T00:57:34.630278+00:00",
+  "finished_at": "2026-09-03T00:57:38.207269+00:00",
+  "output_sha256": "12784721e0280443291002b595b03384e8588476665647b621a862f07297e08f"
+}

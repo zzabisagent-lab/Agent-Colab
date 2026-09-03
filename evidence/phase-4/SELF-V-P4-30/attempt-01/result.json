@@ -1,0 +1,23 @@
+{
+  "test_id": "V-P4-30",
+  "evidence_id": "SELF-V-P4-30",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_setup_wizard_db.py",
+    "tests/integration/test_settings_db.py",
+    "-k",
+    "clean_web_setup or preflight_failures_block or validation_diff_audit_rollback",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "089cb5d14bff00e3e78bcd498a8f9cf2e4849a0f",
+  "started_at": "2026-09-03T00:57:48.971708+00:00",
+  "finished_at": "2026-09-03T00:57:56.334573+00:00",
+  "output_sha256": "cf426ab35f3b06fccef8290fde5325d90af130a79da1d1752031518df77c4236"
+}

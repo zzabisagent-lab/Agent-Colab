@@ -23,4 +23,12 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    pass  # tables created by this revision are dropped by the owning package's downgrade list
+    for table in (
+        "maintenance_mode",
+        "recovery_codes",
+        "mfa_enrollments",
+        "settings_versions",
+        "setup_reconfiguration_sessions",
+        "setup_state",
+    ):
+        op.execute(f"DROP TABLE IF EXISTS {table}")

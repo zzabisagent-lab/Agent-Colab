@@ -56,6 +56,8 @@ def looks_like_secret(value: str) -> bool:
     """Heuristic used by the denylist; hex-64 hashes are excluded by the caller."""
     if _DSN_WITH_CREDENTIALS.search(value) or _PEM_BLOCK.search(value):
         return True
+    if value.startswith("/") and "=" not in value:
+        return False  # an absolute filesystem pointer (allowed config pointer), not key material
     return bool(_BASE64ISH.match(value)) and _shannon_entropy(value) >= 4.0
 
 
