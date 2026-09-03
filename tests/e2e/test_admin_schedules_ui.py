@@ -1,5 +1,5 @@
 """V-P5-21 / V-P5-22 (UI halves, P5-08): Schedule builder/preview/lifecycle/run-now/history in the
-console; an unauthorized account is denied. The real server serves the built console under /admin."""
+"""V-P5-21 / V-P5-22 (UI halves, P5-08): Schedule builder, preview, lifecycle, run-now and
 
 from __future__ import annotations
 
