@@ -8,22 +8,22 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 
 | ID | Work | Size | Prereq | Status | SELF evidence |
 |---|---|---|---|---|---|
-| P4-01 | Account Admin | M | P1-05 | IN_PROGRESS (fork) | — |
-| P4-02 | Operations/Audit dashboard | M | P1-07 | IN_PROGRESS (fork) | — |
-| P4-03 | Setup Wizard | L | P0-09, P4-05 | IN_PROGRESS (fork) | — |
-| P4-04 | Settings | M | P4-02 | IN_PROGRESS (fork) | — |
-| P4-05 | local Secret provider | M | P1-01 | IN_PROGRESS (fork) | — |
-| P4-06 | Grant/Lease/Broker | M | P4-05 | IN_PROGRESS (fork) | — |
-| P4-07 | Adapter injection | M | P4-06, P3-03 | IN_PROGRESS (fork) | — |
-| P4-08 | admin security | M | P4-02 | IN_PROGRESS (fork) | — |
-| P4-09 | MFA/OIDC | M | P1-05 | IN_PROGRESS (fork) | — |
-| P4-10 | break-glass | M | P4-09 | IN_PROGRESS (fork) | — |
-| P4-11 | hard delete workflow | L | P4-05, P1-02 | IN_PROGRESS (fork) | — |
-| P4-12 | Secret sidecar | L | P4-06, P4-07 | IN_PROGRESS (fork) | — |
-| P4-13 | maintenance mode | S | P4-02 | IN_PROGRESS (fork) | — |
-| P4-14 | Web Approvals queue and re-authentication | M | P1-08, P4-09 | IN_PROGRESS (fork) | — |
+| P4-01 | Account Admin | M | P1-05 | IMPLEMENTED | SELF-V-P4-07/26 |
+| P4-02 | Operations/Audit dashboard | M | P1-07 | IMPLEMENTED | SELF-V-P4-16/23 |
+| P4-03 | Setup Wizard | L | P0-09, P4-05 | IMPLEMENTED | SELF-V-P4-01/02/03/04/19/24/27/28/30 |
+| P4-04 | Settings | M | P4-02 | IMPLEMENTED | SELF-V-P4-05/06 |
+| P4-05 | local Secret provider | M | P1-01 | IMPLEMENTED | SELF-V-P4-10/17 |
+| P4-06 | Grant/Lease/Broker | M | P4-05 | IMPLEMENTED | SELF-V-P4-11/12/15 |
+| P4-07 | Adapter injection | M | P4-06, P3-03 | IMPLEMENTED | SELF-V-P4-13/14 |
+| P4-08 | admin security | M | P4-02 | IMPLEMENTED | SELF-V-P4-08/09/18 |
+| P4-09 | MFA/OIDC | M | P1-05 | IMPLEMENTED | SELF-V-P4-20 |
+| P4-10 | break-glass | M | P4-09 | IMPLEMENTED | SELF-V-P4-21 |
+| P4-11 | hard delete workflow | L | P4-05, P1-02 | IMPLEMENTED | SELF-V-P4-22/25/29 |
+| P4-12 | Secret sidecar | L | P4-06, P4-07 | IMPLEMENTED | SELF-V-P4-31 |
+| P4-13 | maintenance mode | S | P4-02 | IMPLEMENTED | SELF-V-P4-32 |
+| P4-14 | Web Approvals queue and re-authentication | M | P1-08, P4-09 | IMPLEMENTED | SELF-V-P4-33 |
 
-Phase 4 progress (size-weighted): 0 / 33
+Phase 4 progress (size-weighted): 33 / 33 — all packages implemented; lint + check-docs green; Codex verification pending (see Next step)
 
 ## Phase 3 (PASSED) — branch `phase-3`, tag `phase-3-passed`
 
@@ -137,7 +137,7 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 20.5 / 20.5
 
 ### Next step
 
-Phase 4 on branch `phase-4` (foundation: secret provider interface, re-auth seam, migration slots 0012-0015; forks: secrets/broker/injection, setup/settings/maintenance, MFA/admin security/break-glass/approvals queue, account admin/dashboard/hard delete, sidecar; console screens + a11y by the parent).
+Phase 4: run Codex verification revision 1 on branch `phase-4` (`tools/run_verification.py --phase 4 --revision 1 --commit <sha> --no-sandbox --secret-env .env --secret-env ~/.local/opt/mattermost/.spike-credentials`); on PASSED merge to `main`, tag `phase-4-passed`, start Phase 5.
 
 ## Phase history
 

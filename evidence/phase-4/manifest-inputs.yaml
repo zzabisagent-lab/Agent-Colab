@@ -1,0 +1,19 @@
+# Inputs for the Phase 4 Evidence Manifest (validation plan §6.1); the manifest itself is generated
+# by tools/run_verification.py at verification time for the exact target commit.
+known_gaps:
+  - "OIDC is an adapter interface with a fake provider in tests (development plan §9.2 optional); TOTP MFA is the enforced factor for System Owner/Administrator and is mandatory for critical actions."
+  - "mTLS for /setup and the MCP transport is terminated at a reverse proxy (Phase 5 deployment); the server enforces the proxy-asserted client-certificate fingerprint and refuses forged headers without the proxy secret. The V-P4-27 boundary matrix is evaluated on request attributes (bind address, TLS/proxy headers, client-cert assertion, allowlist, token)."
+  - "The encrypted local provider is the only Secret provider implemented; an external provider registers through the same contract (server/secrets/provider.py). Backups exclude the master and ledger keys; V-P4-17 shows a dump plus runtime tokens cannot decrypt secret versions."
+  - "The secret sidecar is verified against an in-process fake Broker implementing docs/protocol/secret-sidecar-api.md and against the real HTTP contract over loopback; the OCI image is built from sidecar/Dockerfile but not pushed to a registry in this environment."
+  - "Dependency probes for Telegram and SMTP report `unconfigured` rather than failures when no endpoint is configured; Mattermost probes use the local Team Edition (scripts/dev/mattermost-local.sh)."
+  - "Accessibility (V-P4-18) is measured with axe-core WCAG 2.1 A/AA rules on every console route plus keyboard-only critical flows; manual contrast review is limited to the default theme."
+  - "Hard delete for Artifacts/Documents unlinks blob files and shreds DEKs; rows stay with a display-redaction tombstone (Events are never rewritten, V-P4-25)."
+reproduction:
+  - "git clone git@github.com:zzabisagent-lab/Agent-Colab.git && git checkout <target commit>"
+  - "export PATH=$HOME/.local/bin:$PATH; export AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test (any empty PostgreSQL 16 maintenance DB; the test session creates and drops its own database and runs migrations 0001-0015)"
+  - "make bootstrap && make lint && make test && make check-docs && make build; sidecar: uv run pytest sidecar/tests -q"
+  - "Every V-P4 Test has a SELF evidence attempt under evidence/phase-4/SELF-V-P4-NN/attempt-NN/result.json listing the exact command; the latest attempt of each ID is PASS"
+  - "Setup Wizard (V-P4-01..04/19/24/27/28/30): uv run pytest tests/integration/test_setup_wizard_db.py tests/integration/test_reconfiguration.py -q; Settings/maintenance: tests/integration/test_settings_db.py tests/integration/test_maintenance_mode.py"
+  - "Secrets (V-P4-10..15/17): uv run pytest tests/unit/test_local_provider.py tests/integration/test_secret_broker_db.py tests/integration/test_secret_injection.py tests/integration/test_secret_canary_dlp.py tests/integration/test_backup_key_separation.py tests/integration/test_secret_api.py -q; sidecar (V-P4-31): uv run pytest sidecar/tests -q"
+  - "Admin security (V-P4-08/09/20/21/33): uv run pytest tests/integration/test_admin_security.py tests/integration/test_mfa_db.py tests/integration/test_breakglass_db.py tests/integration/test_approvals_queue_db.py -q; UI parity + a11y: cd web-admin && pnpm install && pnpm run build; PLAYWRIGHT_CHROMIUM_EXECUTABLE=<chromium> uv run pytest tests/e2e/test_admin_parity_ui.py tests/e2e/test_admin_a11y.py -q"
+  - "Accounts/dashboard/hard delete (V-P4-07/16/22/23/25/26/29): uv run pytest tests/integration/test_accounts_admin_db.py tests/integration/test_ops_dashboard_db.py tests/integration/test_audit_explorer_db.py tests/integration/test_hard_delete_db.py tests/integration/test_backup_restore_db.py -q (needs pg_dump/pg_restore from the user-space PostgreSQL 16)"
