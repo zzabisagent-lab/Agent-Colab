@@ -8,18 +8,18 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 
 | ID | Work | Size | Prereq | Status | SELF evidence |
 |---|---|---|---|---|---|
-| P6-01 | Approval collaboration UX | M | P1-08, P2-12, P4-14 | NOT_STARTED | — |
-| P6-02 | Brainstorm turn engine | L | P1-12, P2-10, P2-11 | NOT_STARTED | — |
-| P6-03 | Artifact extension | M | P1-09, P0-04 | NOT_STARTED | — |
-| P6-04 | Document finalizer | M | P1-10 | NOT_STARTED | — |
-| P6-05 | redaction/provenance | M | P6-04 | NOT_STARTED | — |
-| P6-06 | Publisher | M | P6-04 | NOT_STARTED | — |
-| P6-07 | publish review | S | P6-06 | NOT_STARTED | — |
-| P6-08 | recurring summaries | S | P6-04, P5-03 | NOT_STARTED | — |
-| P6-09 | Brainstorm summary/decision/taskify | M | P6-02, P1-11 | NOT_STARTED | — |
-| P6-10 | Documentation narrative layer | M | P6-04, P1-14 | NOT_STARTED | — |
+| P6-01 | Approval collaboration UX | M | P1-08, P2-12, P4-14 | IMPLEMENTED | SELF-V-P6-01/02/22/29 |
+| P6-02 | Brainstorm turn engine | L | P1-12, P2-10, P2-11 | IMPLEMENTED | SELF-V-P6-03/26 |
+| P6-03 | Artifact extension | M | P1-09, P0-04 | IMPLEMENTED | SELF-V-P6-05/06/25 |
+| P6-04 | Document finalizer | M | P1-10 | IMPLEMENTED | SELF-V-P6-07/12/19/23/24 |
+| P6-05 | redaction/provenance | M | P6-04 | IMPLEMENTED | SELF-V-P6-10/11/13/14 |
+| P6-06 | Publisher | M | P6-04 | IMPLEMENTED | SELF-V-P6-15/16/21 |
+| P6-07 | publish review | S | P6-06 | IMPLEMENTED | SELF-V-P6-17/18 |
+| P6-08 | recurring summaries | S | P6-04, P5-03 | IMPLEMENTED | SELF-V-P6-09/20 |
+| P6-09 | Brainstorm summary/decision/taskify | M | P6-02, P1-11 | IMPLEMENTED | SELF-V-P6-04/08/27 |
+| P6-10 | Documentation narrative layer | M | P6-04, P1-14 | IMPLEMENTED | SELF-V-P6-28 |
 
-Phase 6 progress (size-weighted): 0 / 27
+Phase 6 progress (size-weighted): 27 / 27 — all packages implemented; Codex verification pending (see Next step)
 
 ## Phase 5 (PASSED) — branch `phase-5`, tag `phase-5-passed`
 
@@ -175,7 +175,7 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 20.5 / 20.5
 
 ### Next step
 
-Phase 6 on branch `phase-6` (foundation: migration slots 0019-0021, ownership note; forks: brainstorm P6-02/09, documents P6-04/05/08/10, artifacts+publishers P6-03/06/07; approval collaboration UX P6-01 by the parent).
+Phase 6: run Codex verification revision 1 on branch `phase-6` (`tools/run_verification.py --phase 6 --revision 1 --commit <sha> --no-sandbox --secret-env .env --secret-env ~/.local/opt/mattermost/.spike-credentials`); on PASSED merge to `main`, tag `phase-6-passed`, start Phase 7 (release hardening).
 
 ## Phase history
 
