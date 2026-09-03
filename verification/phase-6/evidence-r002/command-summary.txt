@@ -1,0 +1,26 @@
+make ci
+exit_code: 0
+result: ruff check and format passed; mypy passed; bandit completed; web lint/typecheck passed; pytest 1605 passed, 2 skipped, 1 warning in 554.99s; trace/criteria/DAG/baseline/policy/name/threat/event checks passed; Python and web builds passed.
+skips: two live Telegram tests skipped because pytest did not load deployment secrets; neither is a Phase 6 mandatory method.
+
+uv run pytest sidecar/tests -q
+exit_code: 0
+result: 17 passed.
+
+Focused Phase 6 suites (machine-readable details are in the adjacent JUnit files):
+- approvals: 4 passed, exit 0
+- brainstorm: 15 passed, exit 0
+- documents including production Brainstorm-close drafting: 30 passed, exit 0
+- artifacts and publishers: 32 passed, exit 0
+- V-P6-08/20 production-close probe: 1 passed, exit 0
+- V-P6-19 exact-code probe: 1 passed, exit 0
+- V-P6-24 BLOCKED-attempt probe: 1 passed, exit 0
+- V-P6-25 valid ScheduleRun-link probe: 1 passed, exit 0
+- V-P6-29 independent LOW-risk button probe: 1 passed, exit 0
+
+An earlier combined regression-probe command produced three fixture-setup errors because the external evidence tests did not inherit tests/conftest.py in that collection layout. Each probe was rerun separately with the required fixture plugin and passed. The failed harness attempt did not execute the affected product assertions and is retained as regression-probes.junit.xml.
+
+gitleaks detect --no-banner --redact --source . --log-opts=<target-parent>..<target>
+exit_code: 0
+result: one target commit scanned; no leaks found.
+

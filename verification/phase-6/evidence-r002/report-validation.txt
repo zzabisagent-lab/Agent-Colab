@@ -1,0 +1,14 @@
+command: uv run python (YAML load; Draft202012Validator against schemas/documents/verifier-report.v1.schema.json; exact V-P6-01..29 uniqueness/order assertion)
+exit_code: 0
+schema_validation: PASS
+mandatory_test_ids: 29/29 unique and ordered
+reported_result: PASSED
+
+secret-value scan scope: verification/phase-6/evidence-r002
+method: compare evidence bytes in-process against exported credential values; print variable names and CLEAR/HIT only
+ADMIN_PASSWORD: CLEAR
+ADMIN_TOKEN: CLEAR
+BOT_TOKEN: CLEAR
+TELEGRAM_BOT_TOKEN: CLEAR
+TELEGRAM_TEST_CHAT_A: CLEAR
+TELEGRAM_TEST_CHAT_B: CLEAR

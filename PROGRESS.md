@@ -2,7 +2,25 @@
 
 Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENTS.md`, ADRs in `docs/adr/`.
 
-## Current phase: 6 (Collaboration and Documentation) — branch `phase-6`
+## Current phase: 7 (Release Hardening) — branch `phase-7`
+
+### Phase 7 package status
+
+| ID | Work | Size | Prereq | Status | SELF evidence |
+|---|---|---|---|---|---|
+| P7-01 | CI/CD | M | P0-01 | NOT_STARTED | — |
+| P7-02 | observability | M | P4-02 | NOT_STARTED | — |
+| P7-03 | backup/restore | L | P4-11, P5-03 | NOT_STARTED | — |
+| P7-04 | load/soak | M | P5-10 | NOT_STARTED | — |
+| P7-05 | security hardening | M | P7-01 | NOT_STARTED | — |
+| P7-06 | upgrade/rollback | M | P7-03 | NOT_STARTED | — |
+| P7-07 | release package | S | P7-01 | NOT_STARTED | — |
+| P7-08 | runbooks | M | P7-02 | NOT_STARTED | — |
+| P7-09 | Human-path acceptance automation | M | P2-11, P6-01, P6-04 | NOT_STARTED | — |
+
+Phase 7 progress (size-weighted): 0 / 26
+
+## Phase 6 (PASSED) — branch `phase-6`, tag `phase-6-passed`
 
 ### Phase 6 package status
 
@@ -19,7 +37,7 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 | P6-09 | Brainstorm summary/decision/taskify | M | P6-02, P1-11 | IMPLEMENTED | SELF-V-P6-04/08/27 |
 | P6-10 | Documentation narrative layer | M | P6-04, P1-14 | IMPLEMENTED | SELF-V-P6-28 |
 
-Phase 6 progress (size-weighted): 27 / 27 — all packages implemented; Codex verification pending (see Next step)
+Phase 6 progress (size-weighted): 27 / 27 — Codex VR-P6-002 PASSED (29/29) after revision 1 FAILED on F-P6-001/002
 
 ## Phase 5 (PASSED) — branch `phase-5`, tag `phase-5-passed`
 
@@ -175,12 +193,13 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 20.5 / 20.5
 
 ### Next step
 
-Phase 6: run Codex verification revision 1 on branch `phase-6` (`tools/run_verification.py --phase 6 --revision 1 --commit <sha> --no-sandbox --secret-env .env --secret-env ~/.local/opt/mattermost/.spike-credentials`); on PASSED merge to `main`, tag `phase-6-passed`, start Phase 7 (release hardening).
+Phase 7 on branch `phase-7`: CI/CD and security hardening, backup/restore and upgrade/rollback, observability and load/soak, runbooks and Human-path acceptance; then REPORT.md per development plan §27A, push, and the single deployment question.
 
 ## Phase history
 
 | Phase | Result | Report | Tag |
 |---|---|---|---|
+| 6 | PASSED (revision 2; revision 1 FAILED F-P6-001/002) | verification/phase-6/VR-P6-002.yaml | phase-6-passed |
 | 5 | PASSED (revision 2; revision 1 FAILED F-P5-001..004) | verification/phase-5/VR-P5-002.yaml | phase-5-passed |
 | 4 | PASSED (revision 2; revision 1 FAILED F-P4-001/002/003) | verification/phase-4/VR-P4-002.yaml | phase-4-passed |
 | 3 | PASSED (revision 1) | verification/phase-3/VR-P3-001.yaml | phase-3-passed |

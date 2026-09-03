@@ -1,0 +1,137 @@
+verification_id: VR-P6-002
+criteria_version: v8.0
+implementer_agent_id: agent-claude-code
+verifier_agent_id: agent-codex
+implementer_account_id: account-implementer-claude
+verifier_account_id: account-verifier-codex
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+verifier_credential_fingerprint: sha256:ecbd74ce21cb00f0e36136b78a0fe57c8241013e4125100e2871351c90b530b9
+identity_graph_version: identity-v8-001
+effective_policy_hash: sha256:09bc05c62439be1f12e83601046e38e70b3369ac2ce66060910a6af97dce9bfb
+target_commit: 6a99c261817f3a04dc351f6003ff54c9d6e99303
+environment_fingerprint: sha256:e4f185bde362e7465ef29b2bd8c008fb557dd96272a6d5afcd5943b38d9dd155
+started_at: '2026-09-03T13:08:00Z'
+completed_at: '2026-09-03T13:24:00Z'
+tests:
+  - id: V-P6-01
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/approvals.junit.xml
+    note: Cross-subject approval reuse was rejected with zero consumption rows; P6-01 spot recheck.
+  - id: V-P6-02
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/approvals.junit.xml
+    note: Missing approval rejected the high-risk execution path with no Event side effect.
+  - id: V-P6-03
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/brainstorm.junit.xml
+    note: Consecutive, per-Agent, total-turn, budget, and time limits paused with guidance; P6-02 spot recheck.
+  - id: V-P6-04
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/brainstorm.junit.xml
+    note: Decision-to-Task and Task-to-Decision provenance and mandatory criteria reproduced; P6-09 spot recheck.
+  - id: V-P6-05
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/artifacts-publishers.junit.xml
+    note: Upload/readback SHA-256, tamper detection, and inherited subject ACL passed; P6-03 spot recheck.
+  - id: V-P6-06
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/artifacts-publishers.junit.xml
+    note: Path, MIME, size, executable, malware, and quarantine fixtures were blocked with redacted audit metadata.
+  - id: V-P6-07
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/documents.junit.xml
+    note: Automatically generated completed-Task document contained every mandatory canonical section; P6-04 spot recheck.
+  - id: V-P6-08
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/v-p6-08-20-automatic.junit.xml
+    note: Production Brainstorm close generated a draft containing arguments, alternatives, decisions, and limitations.
+  - id: V-P6-09
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/documents.junit.xml
+    note: Run and period drafts included statuses, Tasks, Artifacts/provenance, failures, and limitations; P6-08 spot recheck.
+  - id: V-P6-10
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/documents.junit.xml
+    note: Frozen Event sequence and rendered citations matched with no omitted, invented, or reordered important Events; P6-05 spot recheck.
+  - id: V-P6-11
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/documents.junit.xml
+    note: Agent, model, tool, token, time, cost, artifact, and source fields had values or standard UNAVAILABLE reason codes; P6-10 spot recheck.
+  - id: V-P6-12
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/documents.junit.xml
+    note: Finalized result, Test result, findings content, residual risk, and Verification reference matched the source report.
+  - id: V-P6-13
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/documents.junit.xml
+    note: Isolated canary was absent from canonical bytes, manifests, stored files, and captured logs; publishers use those canonical bytes.
+  - id: V-P6-14
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/documents.junit.xml
+    note: All stored provenance references resolved with source checksums and a forged checksum was detected.
+  - id: V-P6-15
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/artifacts-publishers.junit.xml
+    note: Git publish, update, destination re-read verification, version/checksum, and archive passed; P6-06 spot recheck.
+  - id: V-P6-16
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/artifacts-publishers.junit.xml
+    note: Destination outage preserved canonical content and recovery published exactly once.
+  - id: V-P6-17
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/artifacts-publishers.junit.xml
+    note: Factual correction created a new version while retaining the original and correction reason; P6-07 spot recheck.
+  - id: V-P6-18
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/artifacts-publishers.junit.xml
+    note: Unauthorized, unreviewed, and review-rejected publish attempts were rejected without publication.
+  - id: V-P6-19
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/v-p6-19-exact.junit.xml
+    note: Each missing prerequisite returned exactly COMPLETION_PREREQUISITE_MISSING and left Task state unchanged.
+  - id: V-P6-20
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/documents.junit.xml + verification/phase-6/evidence-r002/v-p6-08-20-automatic.junit.xml
+    note: Independent production-close probe produced 20 of 20 Brainstorm drafts; focused rate tests produced at least 19 of 20 Task and Run drafts with stable failure codes.
+  - id: V-P6-21
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/artifacts-publishers.junit.xml
+    note: BookStack connector contract publish/update/verify/archive passed and destination content matched canonical Markdown.
+  - id: V-P6-22
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/approvals.junit.xml
+    note: Expired approval became EXPIRED, produced no execution Event or consumption, and could not be reused.
+  - id: V-P6-23
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/documents.junit.xml
+    note: Draft had no verdict, PASSED created a new FINALIZED version with result and risk, and the draft remained immutable.
+  - id: V-P6-24
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/documents.junit.xml + verification/phase-6/evidence-r002/v-p6-24-blocked.junit.xml
+    note: FAILED and BLOCKED attempts remained ATTEMPT_FINALIZED and non-publishable; only the later PASSED revision finalized and opened completion.
+  - id: V-P6-25
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/artifacts-publishers.junit.xml + verification/phase-6/evidence-r002/v-p6-25-schedule-run.junit.xml
+    note: Task, ScheduleRun, Brainstorm, and Decision links were reproduced with ACL; wrong type, ID, and Workspace had stable errors and zero rejected-link side effects.
+  - id: V-P6-26
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/brainstorm.junit.xml
+    note: Three-Agent order, same-Agent rejection, pause/guidance, all overruns, and facilitator resume were reproducible.
+  - id: V-P6-27
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/brainstorm.junit.xml
+    note: Non-participant summarizer preference, pre-approval no-post, vote/decision, criteria-bearing taskify, and bidirectional provenance passed.
+  - id: V-P6-28
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/documents.junit.xml
+    note: Missing citations, unknown IDs, and contradictory figures were rejected; skeleton-only stayed valid and narrative did not overwrite skeleton facts.
+  - id: V-P6-29
+    result: PASS
+    evidence_ref: verification/phase-6/evidence-r002/approvals.junit.xml + verification/phase-6/evidence-r002/v-p6-29-low.junit.xml
+    note: Independent LOW and focused-suite MEDIUM buttons approved; HIGH showed web/MFA guidance without approval; self-approval was rejected and audited.
+findings: []
+result: PASSED
+residual_risks:
+  - Full CI skipped two live Telegram tests because pytest did not load deployment secrets; neither is a Phase 6 mandatory method.
+  - Mattermost approval behavior was reproduced through the production action handler and PostgreSQL outbox rather than a live external Mattermost tenant.
+  - The BookStack connector used its real HTTP contract against an injectable offline transport, and Git publishing used a local bare remote.
