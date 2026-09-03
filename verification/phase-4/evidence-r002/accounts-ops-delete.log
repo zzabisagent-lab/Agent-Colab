@@ -1,0 +1,5 @@
+Script started on 2026-09-03 01:56:14+00:00 [COMMAND="uv run pytest tests/integration/test_accounts_admin_db.py tests/integration/test_ops_dashboard_db.py tests/integration/test_audit_explorer_db.py tests/integration/test_hard_delete_db.py tests/integration/test_backup_restore_db.py -q -p no:cacheprovider" <not executed on terminal>]
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+...........                                                              [100%]
+
+Script done on 2026-09-03 01:56:27+00:00 [COMMAND_EXIT_CODE="0"]

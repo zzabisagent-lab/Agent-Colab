@@ -1,0 +1,17 @@
+Script started on 2026-09-03 02:04:17+00:00 [COMMAND="uv run python -c "import json,yaml; from jsonschema import Draft202012Validator; p=\"verification/phase-4/VR-P4-002.yaml\"; d=yaml.safe_load(open(p)); s=json.load(open(\"schemas/documents/verifier-report.v1.schema.json\")); Draft202012Validator(s).validate(d); ids=[x[\"id\"] for x in d[\"tests\"]]; exp=[f\"V-P4-{i:02d}\" for i in range(1,34)]; assert ids==exp and len(set(ids))==33 and all(x[\"result\"]==\"PASS\" for x in d[\"tests\"]); print(\"schema=PASS tests=33 unique=33 all_PASS=true result=\"+d[\"result\"])" && git diff --check -- verification/phase-4/VR-P4-002.yaml verification/phase-4/evidence-r002/run-summary.yaml && sha256sum verification/phase-4/VR-P4-002.yaml verification/phase-4/evidence-r002/*.log verification/phase-4/evidence-r002/run-summary.yaml" <not executed on terminal>]
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+schema=PASS tests=33 unique=33 all_PASS=true result=PASSED
+6b67efdb0c072c76304a35f8aa0a712a7d4d9d895bcdf094f610dbb5136be74c  verification/phase-4/VR-P4-002.yaml
+1cd617039e700c114e065873a2889e12be7ab61ddbc1acba104ea662b8a1b0d1  verification/phase-4/evidence-r002/accounts-ops-delete.log
+47b70962f46bea566856eb44cd426537e5f3de1995a168f3222541a973905f63  verification/phase-4/evidence-r002/admin-security.log
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  verification/phase-4/evidence-r002/final-validation.log
+b39fcb8922991f45e92821696f4529acdf17aa8dfdcf23a74dcfa20574927f0c  verification/phase-4/evidence-r002/gitleaks-verbose.log
+ee5714f2fb80ef9e56f2f1c9539302c794f0edbfc6d276d7286598e8681a2792  verification/phase-4/evidence-r002/gitleaks.log
+4258de1838c6205e94a7f35b3d4f793ea09213674467fc3facd3d9f108f27944  verification/phase-4/evidence-r002/make-ci.log
+c61d6e12a0f9931db155312ff25ba4b8813f1eaa9de8fb52a22ed8adbc1ac3c4  verification/phase-4/evidence-r002/secrets.log
+d10aea4dde38bc828737dafc100032322ab595e6f2d5910308870096da71e404  verification/phase-4/evidence-r002/setup-settings-maintenance.log
+67ef8272845c3fe4762aff8eb0e85dc1731c039994121050bbb2e9118bd386df  verification/phase-4/evidence-r002/sidecar.log
+d298b483d49a9148496c8050f009d33ce37ad6f0f1cf08241c78d07a632b3a87  verification/phase-4/evidence-r002/ui-build-e2e.log
+d08fa8a058312670b8cbcd48db661eee2afb51d0b68831369a57a21213340e95  verification/phase-4/evidence-r002/run-summary.yaml
+
+Script done on 2026-09-03 02:04:17+00:00 [COMMAND_EXIT_CODE="0"]

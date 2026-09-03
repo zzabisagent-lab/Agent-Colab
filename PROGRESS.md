@@ -2,7 +2,26 @@
 
 Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENTS.md`, ADRs in `docs/adr/`.
 
-## Current phase: 4 (Admin, Setup, Secrets) — branch `phase-4`
+## Current phase: 5 (Scheduled Work) — branch `phase-5`
+
+### Phase 5 package status
+
+| ID | Work | Size | Prereq | Status | SELF evidence |
+|---|---|---|---|---|---|
+| P5-01 | Schedule schema/API | L | P0-08, P1-08, P1-09 | NOT_STARTED | — |
+| P5-02 | cron/timezone planner | M | P0-08 | NOT_STARTED | — |
+| P5-03 | durable Run/lease | L | P5-01, P5-02 | NOT_STARTED | — |
+| P5-04 | execution policy | M | P5-03, P1-08 | NOT_STARTED | — |
+| P5-05 | concurrency/missed run | M | P5-03 | NOT_STARTED | — |
+| P5-06 | retry/timeout/Run cancel | M | P5-03 | NOT_STARTED | — |
+| P5-07 | channel notification | S | P5-03, P2-11 | NOT_STARTED | — |
+| P5-08 | Schedule Admin UI | M | P5-01 | NOT_STARTED | — |
+| P5-09 | metrics/alerts | S | P5-03 | NOT_STARTED | — |
+| P5-10 | budget/latency targets | M | P1-14, P5-03 | NOT_STARTED | — |
+
+Phase 5 progress (size-weighted): 0 / 25
+
+## Phase 4 (PASSED) — branch `phase-4`, tag `phase-4-passed`
 
 ### Phase 4 package status
 
@@ -23,7 +42,7 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 | P4-13 | maintenance mode | S | P4-02 | IMPLEMENTED | SELF-V-P4-32 |
 | P4-14 | Web Approvals queue and re-authentication | M | P1-08, P4-09 | IMPLEMENTED | SELF-V-P4-33 |
 
-Phase 4 progress (size-weighted): 33 / 33 — all packages implemented; lint + check-docs green; Codex verification pending (see Next step)
+Phase 4 progress (size-weighted): 33 / 33 — Codex VR-P4-002 PASSED (33/33) after revision 1 FAILED on F-P4-001/002/003 (fixed in revision 2)
 
 ## Phase 3 (PASSED) — branch `phase-3`, tag `phase-3-passed`
 
@@ -137,12 +156,13 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 20.5 / 20.5
 
 ### Next step
 
-Phase 4: run Codex verification revision 1 on branch `phase-4` (`tools/run_verification.py --phase 4 --revision 1 --commit <sha> --no-sandbox --secret-env .env --secret-env ~/.local/opt/mattermost/.spike-credentials`); on PASSED merge to `main`, tag `phase-4-passed`, start Phase 5.
+Phase 5 on branch `phase-5` (foundation: migration slots 0016-0018, ownership note, ADR-0012; forks: schedule core, execution, metrics; Schedule Admin UI by the parent).
 
 ## Phase history
 
 | Phase | Result | Report | Tag |
 |---|---|---|---|
+| 4 | PASSED (revision 2; revision 1 FAILED F-P4-001/002/003) | verification/phase-4/VR-P4-002.yaml | phase-4-passed |
 | 3 | PASSED (revision 1) | verification/phase-3/VR-P3-001.yaml | phase-3-passed |
 | 2 | PASSED (revision 2; revision 1 FAILED F-P2-001/002/003) | verification/phase-2/VR-P2-002.yaml | phase-2-passed |
 | 0 | PASSED | verification/phase-0/VR-P0-003.yaml | phase-0-passed |
