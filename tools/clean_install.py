@@ -125,7 +125,7 @@ def _host_refused(base: str, path: str) -> bool:
         request = urllib.request.Request(  # noqa: S310 - fixed loopback base
             f"{base}{path}", data=b"{}", headers={"Content-Type": "application/json"}, method="POST"
         )
-        with urllib.request.urlopen(request, timeout=30):  # noqa: S310
+        with urllib.request.urlopen(request, timeout=30):  # noqa: S310  # nosec B310 - fixed http loopback URL built above
             return False
     except urllib.error.HTTPError as exc:
         return exc.code in (403, 404)

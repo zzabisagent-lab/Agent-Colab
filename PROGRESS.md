@@ -8,17 +8,17 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 
 | ID | Work | Size | Prereq | Status | SELF evidence |
 |---|---|---|---|---|---|
-| P7-01 | CI/CD | M | P0-01 | NOT_STARTED | — |
-| P7-02 | observability | M | P4-02 | NOT_STARTED | — |
-| P7-03 | backup/restore | L | P4-11, P5-03 | NOT_STARTED | — |
-| P7-04 | load/soak | M | P5-10 | NOT_STARTED | — |
-| P7-05 | security hardening | M | P7-01 | NOT_STARTED | — |
-| P7-06 | upgrade/rollback | M | P7-03 | NOT_STARTED | — |
-| P7-07 | release package | S | P7-01 | NOT_STARTED | — |
-| P7-08 | runbooks | M | P7-02 | NOT_STARTED | — |
-| P7-09 | Human-path acceptance automation | M | P2-11, P6-01, P6-04 | NOT_STARTED | — |
+| P7-01 | CI/CD | M | P0-01 | IMPLEMENTED | SELF-V-P7-11/15 |
+| P7-02 | observability | M | P4-02 | IMPLEMENTED | SELF-V-P7-14 |
+| P7-03 | backup/restore | L | P4-11, P5-03 | IMPLEMENTED | SELF-V-P7-07/08/19/20 |
+| P7-04 | load/soak | M | P5-10 | IMPLEMENTED | SELF-V-P7-03/04 |
+| P7-05 | security hardening | M | P7-01 | IMPLEMENTED | SELF-V-P7-05/06/11/12 |
+| P7-06 | upgrade/rollback | M | P7-03 | IMPLEMENTED | SELF-V-P7-09/10 |
+| P7-07 | release package | S | P7-01 | IMPLEMENTED | SELF-V-P7-01/16/17 |
+| P7-08 | runbooks | M | P7-02 | IMPLEMENTED | SELF-V-P7-13/21 |
+| P7-09 | Human-path acceptance automation | M | P2-11, P6-01, P6-04 | IMPLEMENTED | SELF-V-P7-02/22 |
 
-Phase 7 progress (size-weighted): 0 / 26
+Phase 7 progress (size-weighted): 26 / 26 — all packages implemented; V-P7-18 is the deployment decision, which only the user can give; Codex verification pending
 
 ## Phase 6 (PASSED) — branch `phase-6`, tag `phase-6-passed`
 
@@ -193,7 +193,7 @@ Phase progress (size-weighted, S=1 M=2.5 L=5): 20.5 / 20.5
 
 ### Next step
 
-Phase 7 on branch `phase-7`: CI/CD and security hardening, backup/restore and upgrade/rollback, observability and load/soak, runbooks and Human-path acceptance; then REPORT.md per development plan §27A, push, and the single deployment question.
+Phase 7: run Codex verification revision 1 on branch `phase-7`; on PASSED merge to `main`, tag `phase-7-passed`, write REPORT.md per development plan §27A, push, and ask the single deployment question.
 
 ## Phase history
 
