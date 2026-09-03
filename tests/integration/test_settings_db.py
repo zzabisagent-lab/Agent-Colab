@@ -94,6 +94,18 @@ def test_registry_validates_types_before_apply() -> None:
     assert unknown.value.code == "SETTING_UNKNOWN"
 
 
+def _version_rows(engine: Engine) -> int:
+    with Session(engine) as s:
+        return int(
+            s.execute(
+                text(
+                    "SELECT count(*) FROM settings_versions WHERE setting_key IN "
+                    "('scheduler.poll_interval_s','mattermost.url')"
+                )
+            ).scalar_one()
+        )
+
+
 def test_settings_api_validation_diff_audit_rollback(
     client: TestClient, engine: Engine, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -102,6 +114,7 @@ def test_settings_api_validation_diff_audit_rollback(
         "/api/v1/settings/scheduler.poll_interval_s", json={"value": "fast"}, headers=_h(TOK_ADMIN)
     )
     assert r.status_code == 400 and r.json()["code"] == "SETTING_TYPE_INVALID"
+    before = _version_rows(engine)  # settings are instance-level: compare, do not assume 0
     r = client.put(
         "/api/v1/settings/mattermost.url", json={"value": "not a url"}, headers=_h(TOK_ADMIN)
     )
@@ -111,16 +124,7 @@ def test_settings_api_validation_diff_audit_rollback(
     )
     assert r.status_code == 404  # normalized denial
     assert client.get("/api/v1/settings", headers=_h(TOK_MEMBER)).status_code == 404
-    with Session(engine) as s:
-        assert (
-            s.execute(
-                text(
-                    "SELECT count(*) FROM settings_versions WHERE setting_key IN "
-                    "('scheduler.poll_interval_s','mattermost.url')"
-                )
-            ).scalar_one()
-            == 0
-        )
+    assert _version_rows(engine) == before  # rejected writes created no version
     # V-P4-06: change twice, redacted diff in audit linked by version, rollback → new version
     r = client.put(
         "/api/v1/settings/scheduler.poll_interval_s",
