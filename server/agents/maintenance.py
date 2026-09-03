@@ -57,6 +57,7 @@ def run_maintenance(runtime: Any) -> dict[str, int]:
         "breakglass_expired": 0,
         "schedule_runs_started": 0,
         "schedule_runs_recovered": 0,
+        "outbox_requeued": 0,
         "errors": 0,
     }
     with session_scope(runtime.session_factory) as session:
@@ -68,6 +69,7 @@ def run_maintenance(runtime: Any) -> dict[str, int]:
             _sweep_offline,
             _sweep_breakglass,
             _sweep_schedules,
+            _requeue_recovered_outbox,
         ):
             try:
                 with session_scope(runtime.session_factory) as session:
@@ -80,6 +82,27 @@ def run_maintenance(runtime: Any) -> dict[str, int]:
                 counters["errors"] += 1
                 log.exception("maintenance step %s failed in %s", step.__name__, ws)
     return counters
+
+
+def _requeue_recovered_outbox(
+    runtime: Any, session: Session, ws: str, counters: dict[str, int]
+) -> None:
+    """Revive channel deliveries dead-lettered during a provider outage (V-P7-05).
+
+    Only when every channel-carrying dependency probes healthy again: an outage longer than the
+    outbox backoff budget exhausts a row's attempts, and the messages must still be delivered
+    exactly once after recovery rather than silently dropped.
+    """
+    from server.channels.outbox import requeue_dead
+    from server.ops import probes
+
+    results = probes.run_probes(session, clock=runtime.clock, names=("mattermost", "telegram"))
+    carriers = {r.name: r for r in results if r.name in ("mattermost", "telegram")}
+    if not carriers or any(r.ok is False for r in carriers.values()):
+        return
+    counters["outbox_requeued"] += requeue_dead(
+        session, ws, runtime.clock, reason="dependency probe recovered"
+    )
 
 
 def _sweep_work_items(runtime: Any, session: Session, ws: str, counters: dict[str, int]) -> None:

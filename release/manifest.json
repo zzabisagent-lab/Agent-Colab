@@ -1,0 +1,41 @@
+{
+  "built_at": "2026-09-03T16:03:35+00:00",
+  "images": [
+    {
+      "built": true,
+      "dockerfile": "deploy/production/Dockerfile.server",
+      "image_id": "sha256:4b67a1ed8f8052b80369c46232a665bdaaccb08b1845851edce61cff4626b390",
+      "name": "server",
+      "tag": "agent-colab/server:8.0.0-test"
+    },
+    {
+      "built": true,
+      "dockerfile": "deploy/production/Dockerfile.web-admin",
+      "image_id": "sha256:4886e45a54746e1cf0574f17c83bf284b94fc61f986aa9331b5e540913fe6b7d",
+      "name": "web-admin",
+      "tag": "agent-colab/web-admin:8.0.0-test"
+    }
+  ],
+  "sbom": {
+    "javascript": {
+      "components": 12,
+      "format": "CycloneDX",
+      "generated": true,
+      "lock_sha256": "b739a301fe43e0d728b20025d0abd875bb32e125a1b28909077482ee8a7af927",
+      "path": "release/sbom-javascript-8.0.0-test.json",
+      "sha256": "7f42f73a849571fa783a30109439b00e1f641d7ee800e72a7fd516d327e5614f",
+      "spec_version": "1.5"
+    },
+    "python": {
+      "components": 97,
+      "format": "CycloneDX",
+      "generated": true,
+      "path": "release/sbom-python-8.0.0-test.json",
+      "sha256": "2c6f13aeed8435087ace2921ee5b768205640a989388d34da3380c6099b2ac8a",
+      "spec_version": "1.6"
+    }
+  },
+  "schema_id": "colab.release-manifest.v1",
+  "source_revision": "8c491f19680d523dba06ad447eddc7e7582449ba",
+  "version": "8.0.0-test"
+}

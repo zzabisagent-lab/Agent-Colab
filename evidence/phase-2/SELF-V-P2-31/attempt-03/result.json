@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P2-31",
+  "evidence_id": "SELF-V-P2-31",
+  "attempt": 3,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_notification_dispatch_db.py",
+    "tests/unit/test_notification_providers.py",
+    "tests/integration/test_notification_delivery.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "8c491f19680d523dba06ad447eddc7e7582449ba",
+  "started_at": "2026-09-03T16:05:18.074792+00:00",
+  "finished_at": "2026-09-03T16:05:21.646380+00:00",
+  "output_sha256": "511fb971caf59261241ec2a3919d9d10c7dcb9ec044ee07d50b2db465184f057"
+}

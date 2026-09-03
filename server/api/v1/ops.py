@@ -6,13 +6,14 @@ import uuid
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, Query, Request
+from fastapi.responses import PlainTextResponse
 
 from server.api.deps import current_principal
 from server.api.dispatch import Runtime, command_error_to_api, to_bus_principal
 from server.application.bus import CommandContext, CommandError, require_permission
 from server.db.engine import session_scope
 from server.identity.principals import Principal
-from server.ops import dashboard, probes
+from server.ops import dashboard, metrics, probes
 
 router = APIRouter(prefix="/api/v1/ops", tags=["ops"])
 PrincipalDep = Annotated[Principal, Depends(current_principal)]
@@ -66,3 +67,17 @@ def backups(request: Request, principal: PrincipalDep) -> dict[str, Any]:
     with session_scope(runtime.session_factory) as session:
         _ctx(request, principal, session)
         return {"items": dashboard.list_backups(session)}
+
+
+@router.get("/metrics", response_class=PlainTextResponse)
+def prometheus_metrics(
+    request: Request,
+    principal: PrincipalDep,
+    refresh: Annotated[bool, Query()] = False,
+) -> PlainTextResponse:
+    """Prometheus-style exposition of the same numbers the overview reports (P7-02)."""
+    runtime: Runtime = request.app.state.runtime
+    with session_scope(runtime.session_factory) as session:
+        ctx = _ctx(request, principal, session)
+        body = metrics.render(session, uuid.UUID(ctx.workspace_id), runtime.clock, refresh=refresh)
+    return PlainTextResponse(body, media_type=metrics.CONTENT_TYPE)

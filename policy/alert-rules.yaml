@@ -1,0 +1,123 @@
+# Operational alert rules (P7-02, development plan §20 "metrics/logs/alerts/runbook links").
+#
+# Every rule names the signal it watches, the comparison that raises it, and the runbook an
+# operator opens. Critical alerts MUST carry a runbook id; V-P7-21 checks that every id here
+# resolves to a runbook under docs/operations/runbooks/.
+#
+# Signals are computed by server/ops/alerts.py::signals from real tables — a rule whose signal is
+# unavailable in this deployment is skipped rather than guessed at.
+version: 1
+
+runbooks:
+  - secret-leak
+  - nas-full
+  - bridge-loop
+  - scheduler-storm
+  - db-restore
+  - credential-rotation
+  - hard-delete-restore
+
+rules:
+  - key: DEPENDENCY_DOWN_POSTGRES
+    signal: dependency_down.postgres
+    comparison: gte
+    threshold: 1
+    severity: critical
+    runbook: db-restore
+    detail: "PostgreSQL probe is failing; core writes are refused."
+
+  - key: DEPENDENCY_DOWN_STORAGE
+    signal: dependency_down.storage
+    comparison: gte
+    threshold: 1
+    severity: critical
+    runbook: nas-full
+    detail: "Artifact or document storage is not writable."
+
+  - key: DEPENDENCY_DOWN_SECRET_PROVIDER
+    signal: dependency_down.secret_provider
+    comparison: gte
+    threshold: 1
+    severity: critical
+    runbook: credential-rotation
+    detail: "The Secret provider is unhealthy; leases and resolves will fail."
+
+  - key: DEPENDENCY_DOWN_MATTERMOST
+    signal: dependency_down.mattermost
+    comparison: gte
+    threshold: 1
+    severity: warning
+    runbook: bridge-loop
+    detail: "Mattermost is unreachable; channel delivery is queued in the outbox."
+
+  - key: OUTBOX_BACKLOG
+    signal: outbox_pending
+    comparison: gt
+    threshold: 500
+    severity: warning
+    runbook: bridge-loop
+    detail: "Delivery outbox backlog is growing; a provider is slow or down."
+
+  - key: OUTBOX_DEAD_LETTERS
+    signal: outbox_dead
+    comparison: gte
+    threshold: 1
+    severity: critical
+    runbook: bridge-loop
+    detail: "Delivery outbox rows exhausted their retries and were dead-lettered."
+
+  - key: BRIDGE_DEAD_LETTERS
+    signal: bridge_dead_letters
+    comparison: gte
+    threshold: 1
+    severity: critical
+    runbook: bridge-loop
+    detail: "Bridge relays were dead-lettered; a chat may be missing messages."
+
+  - key: SCHEDULER_LAG
+    signal: schedule_start_delay_p95
+    comparison: gt
+    threshold: 60
+    severity: warning
+    runbook: scheduler-storm
+    detail: "Schedule Run start delay p95 is above the 60 s target."
+
+  - key: SCHEDULER_STUCK_LEASES
+    signal: schedule_stuck_leases
+    comparison: gte
+    threshold: 1
+    severity: critical
+    runbook: scheduler-storm
+    detail: "Claimed Runs hold expired leases and no runner recovered them."
+
+  - key: SCHEDULE_BUDGET_EXCEEDED
+    signal: schedule_budget_alerts
+    comparison: gte
+    threshold: 1
+    severity: warning
+    runbook: scheduler-storm
+    detail: "Schedule Runs were skipped because a cost_units budget was exhausted."
+
+  - key: SECRET_CANARY_DETECTED
+    signal: secret_canary_findings
+    comparison: gte
+    threshold: 1
+    severity: critical
+    runbook: secret-leak
+    detail: "A secret canary was found outside the Broker boundary."
+
+  - key: AUTH_RATE_LIMITED
+    signal: auth_rate_limited
+    comparison: gte
+    threshold: 10
+    severity: warning
+    runbook: credential-rotation
+    detail: "Repeated authentication rejections; a credential may be stale or under attack."
+
+  - key: HARD_DELETE_BACKLOG
+    signal: hard_delete_pending
+    comparison: gte
+    threshold: 5
+    severity: warning
+    runbook: hard-delete-restore
+    detail: "Hard-delete requests are waiting; confirm approvals and the waiting period."

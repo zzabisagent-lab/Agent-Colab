@@ -1,0 +1,38 @@
+# syntax=docker/dockerfile:1.7
+FROM python:3.12.11-slim AS build
+RUN apt-get update && apt-get upgrade -y --no-install-recommends \
+ && rm -rf /var/lib/apt/lists/*
+COPY --from=ghcr.io/astral-sh/uv:0.12.9 /uv /uvx /bin/
+WORKDIR /app
+ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PROJECT_ENVIRONMENT=/opt/venv
+COPY pyproject.toml uv.lock README.md LICENSE ./
+COPY server ./server
+COPY sidecar ./sidecar
+COPY schemas ./schemas
+COPY policy ./policy
+COPY migrations ./migrations
+COPY alembic.ini ./
+RUN uv sync --frozen --no-dev --no-editable
+
+FROM python:3.12.11-slim
+RUN apt-get update && apt-get upgrade -y --no-install-recommends \
+ && rm -rf /var/lib/apt/lists/*
+LABEL org.opencontainers.image.title="Agent-Colab server" \
+      org.opencontainers.image.source="https://github.com/zzabisagent-lab/Agent-Colab" \
+      org.opencontainers.image.licenses="Apache-2.0"
+RUN useradd --system --uid 10001 --create-home agentcolab \
+ && mkdir -p /var/lib/agent-colab/bootstrap /var/lib/agent-colab/artifacts \
+ && chown -R agentcolab:agentcolab /var/lib/agent-colab
+COPY --from=build /opt/venv /opt/venv
+COPY --from=build /app/schemas /app/schemas
+COPY --from=build /app/policy /app/policy
+COPY --from=build /app/migrations /app/migrations
+COPY --from=build /app/alembic.ini /app/alembic.ini
+WORKDIR /app
+ENV PATH="/opt/venv/bin:$PATH" PYTHONUNBUFFERED=1
+USER agentcolab
+EXPOSE 8080
+# the readiness endpoint probes the database, so an unhealthy container is one that cannot serve
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD ["python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8080/readyz', timeout=4).status == 200 else 1)"]
+ENTRYPOINT ["agent-colab"]

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
@@ -19,8 +20,18 @@ def normalize_url(url: str) -> str:
     return url.replace("postgresql://", "postgresql+psycopg://", 1)
 
 
+# A database outage must surface as a fast failure, not a hung request: readiness has to fail and
+# writes have to answer 503 within 30 s (V-P7-06). Overridable for slow or loaded environments.
+CONNECT_TIMEOUT_S = int(os.environ.get("AGENT_COLAB_DB_CONNECT_TIMEOUT_S", "5"))
+
+
 def make_engine(url: str) -> Engine:
-    return create_engine(normalize_url(url), future=True, pool_pre_ping=True)
+    return create_engine(
+        normalize_url(url),
+        future=True,
+        pool_pre_ping=True,
+        connect_args={"connect_timeout": CONNECT_TIMEOUT_S},
+    )
 
 
 RUNTIME_ROLE = "agent_colab_runtime"

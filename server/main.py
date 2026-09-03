@@ -10,9 +10,10 @@ from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI
+from sqlalchemy.exc import DBAPIError, InterfaceError, OperationalError
 
 from server.api.dispatch import default_runtime
-from server.api.errors import ApiError, api_error_handler
+from server.api.errors import ApiError, api_error_handler, database_unavailable_handler
 from server.api.setup import router as setup_router
 from server.api.v1.accounts import router as accounts_router
 from server.api.v1.agents import router as agents_router
@@ -52,6 +53,7 @@ from server.config import PRODUCT_NAME, Settings, get_settings
 from server.db.engine import make_engine, make_session_factory
 from server.identity import mattermost_link
 from server.observability.health import router as health_router
+from server.observability.logs import RequestLogMiddleware, install_json_logging
 from server.schedules import router_handlers as schedule_router_handlers
 
 API_VERSION = "v1"
@@ -88,6 +90,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         default_runtime(app.state.session_factory, settings) if app.state.session_factory else None
     )
     app.add_exception_handler(ApiError, api_error_handler)
+    # a database outage answers 503, never a 500 (V-P7-06)
+    app.add_exception_handler(OperationalError, database_unavailable_handler)
+    app.add_exception_handler(InterfaceError, database_unavailable_handler)
+    app.add_exception_handler(DBAPIError, database_unavailable_handler)
     app.include_router(health_router)
     app.include_router(verification_router)
     app.include_router(identity_router)
@@ -146,6 +152,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     from server.maintenance.mode import MaintenanceMiddleware
 
     app.add_middleware(MaintenanceMiddleware, state=app.state)  # P4-13: 503 + Retry-After
+    # P7-02: outermost, so every request carries a correlation id and one access-log line
+    install_json_logging()
+    app.add_middleware(RequestLogMiddleware)
     app.state.gateway = None
     app.state.telegram_inbound_handler = None
     app.state.notification_provider = None

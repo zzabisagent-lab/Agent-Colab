@@ -1,0 +1,147 @@
+{
+  "blocking": 18,
+  "counts": {
+    "CRITICAL": 3,
+    "HIGH": 15,
+    "LOW": 0,
+    "MEDIUM": 0,
+    "UNKNOWN": 0
+  },
+  "findings": [
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-41992",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "gzip 1.13-1"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-54369",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libacl1 2.3.2-2+b1"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2025-69720",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libncursesw6 6.5+20250216-2"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-11822",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libsqlite3-0 3.46.1-7+deb13u1"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-11824",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libsqlite3-0 3.46.1-7+deb13u1"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-16742",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libsystemd0 257.13-1~deb13u1"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2025-69720",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libtinfo6 6.5+20250216-2"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-16742",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libudev1 257.13-1~deb13u1"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2025-69720",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "ncurses-base 6.5+20250216-2"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2025-69720",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "ncurses-bin 6.5+20250216-2"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-13221",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "CRITICAL",
+      "title": "perl-base 5.40.1-6"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-42496",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "CRITICAL",
+      "title": "perl-base 5.40.1-6"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-8376",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "CRITICAL",
+      "title": "perl-base 5.40.1-6"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-42497",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "perl-base 5.40.1-6"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-48962",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "perl-base 5.40.1-6"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-57432",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "perl-base 5.40.1-6"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-57433",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "perl-base 5.40.1-6"
+    },
+    {
+      "fixed_version": null,
+      "id": "CVE-2026-9538",
+      "image": "agent-colab/server:8.0.0-test",
+      "severity": "HIGH",
+      "title": "perl-base 5.40.1-6"
+    }
+  ],
+  "images": [
+    "agent-colab/server:8.0.0-test",
+    "agent-colab/web-admin:8.0.0-test"
+  ],
+  "ran": true,
+  "ran_at": "2026-09-03T16:04:32+00:00",
+  "scan": "container",
+  "schema_id": "colab.security-scan.v1",
+  "tool": "trivy"
+}

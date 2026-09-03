@@ -8,6 +8,8 @@ response returns the resource ID, Event ID, and aggregate sequence.
 
 from __future__ import annotations
 
+import logging
+import time
 import uuid
 from dataclasses import dataclass
 from typing import Any
@@ -23,7 +25,10 @@ from server.domain.clock import Clock, SystemClock
 from server.events.postgres_store import PostgresEventStore
 from server.events.store import EventStore, EventStoreError
 from server.identity.principals import Principal as CredentialPrincipal
+from server.observability.logs import log_command
 from server.secrets.envelope import EnvelopeCrypto
+
+log = logging.getLogger(__name__)
 
 
 @dataclass
@@ -92,6 +97,42 @@ def command_error_to_api(exc: bus.CommandError) -> ApiError:
     return ApiError(status, exc.code, exc.detail, exc.extra)
 
 
+_RULES_SYNCED: set[str] = set()
+
+
+def _sync_rules_once(session: Session, workspace_id: str, engine: Any) -> None:
+    """`notifications.rule_id` references `notification_rules`, so the definitions must exist
+    before the first notice of a process. Upserting is idempotent; the per-process guard keeps it
+    off the hot path."""
+    from server.notifications.rules import sync_rules
+
+    if workspace_id in _RULES_SYNCED:
+        return
+    sync_rules(session, workspace_id, engine.rules)
+    _RULES_SYNCED.add(workspace_id)
+
+
+def _notify(runtime: Runtime, session: Session, event_id: str) -> None:
+    """Plan notifications for the Event a command just appended (development plan §7G).
+
+    The rules engine runs in the caller's transaction so a notification is never planned for an
+    Event that rolls back. A rules or preference problem is logged and never fails the command:
+    the Event and its side effects are already correct without the notice.
+    """
+    from server.events.postgres_store import PostgresEventStore
+    from server.notifications.rules import NotificationEngine
+
+    event = PostgresEventStore(session).get(event_id)
+    if event is None:
+        return
+    try:
+        engine = NotificationEngine(clock=runtime.clock)
+        _sync_rules_once(session, event["workspace_id"], engine)
+        engine.on_event(session, event)
+    except Exception:
+        log.exception("notification planning failed for event %s", event_id)
+
+
 def execute_command(
     runtime: Runtime,
     principal: CredentialPrincipal,
@@ -115,9 +156,19 @@ def execute_command(
             expected_seq=expected_seq,
             extras=extras or {},
         )
+        started = time.perf_counter()
         try:
             result = bus.execute(command, ctx)
         except bus.CommandError as exc:
+            log_command(  # P7-02: one structured line per command, with the request's id
+                command=type(command).__name__,
+                outcome="error",
+                duration_ms=int((time.perf_counter() - started) * 1000),
+                principal_kind=principal.account_type,
+                principal=principal.account_id,
+                workspace=ctx.workspace_id,
+                error_code=exc.code,
+            )
             raise command_error_to_api(exc) from exc
         except EventStoreError as exc:
             raise ApiError(409, exc.code, exc.detail) from exc
@@ -132,6 +183,17 @@ def execute_command(
                 event_id=result.event_id,
                 now=runtime.clock.now(),
             )
+            _notify(runtime, session, result.event_id)
+        log_command(
+            command=type(command).__name__,
+            outcome="replayed" if result.replayed else "ok",
+            duration_ms=int((time.perf_counter() - started) * 1000),
+            principal_kind=principal.account_type,
+            principal=principal.account_id,
+            workspace=ctx.workspace_id,
+            resource_id=result.resource_id or None,
+            event_id=result.event_id or None,
+        )
         return result
 
 

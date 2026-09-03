@@ -122,6 +122,48 @@ class ChannelDrainResult:
     latencies_ms: list[int] = field(default_factory=list)
 
 
+def requeue_dead(
+    session: Session,
+    workspace_id: str,
+    clock: Clock,
+    *,
+    reason: str,
+    kinds_prefix: tuple[str, ...] = ("mattermost.", "telegram."),
+    limit: int = 500,
+) -> int:
+    """Return dead-lettered deliveries to `pending` after the destination recovers (V-P7-05).
+
+    A dependency outage longer than the backoff budget (1/5/25/125/625 s over five attempts)
+    exhausts a row's attempts, so without this a ten-minute outage would drop messages the
+    criterion requires to be preserved and delivered exactly once after recovery. The dedupe key
+    still makes redelivery exactly-once, and a genuinely undeliverable payload simply dies again;
+    `last_error` keeps the requeue reason so repeated revivals are visible to an operator.
+    """
+    prefixes = [f"{p}%" for p in kinds_prefix]
+    rows = session.execute(
+        text(
+            "UPDATE delivery_outbox SET status = 'pending', attempts = 0, next_attempt_at = :now, "
+            "last_error = :reason WHERE outbox_id IN (SELECT outbox_id FROM delivery_outbox "
+            "WHERE workspace_id = :ws AND status = 'dead' AND kind LIKE ANY(:pfx) "
+            "ORDER BY id LIMIT :lim) RETURNING dedupe_key"
+        ),
+        {
+            "now": clock.now(),
+            "reason": f"requeued after {reason}"[:500],
+            "ws": uuid.UUID(workspace_id),
+            "pfx": prefixes,
+            "lim": limit,
+        },
+    ).all()
+    keys = [str(r[0]) for r in rows]
+    if keys:
+        session.execute(
+            text("UPDATE channel_posts SET status = 'pending' WHERE dedupe_key = ANY(:k)"),
+            {"k": keys},
+        )
+    return len(keys)
+
+
 def drain_channels(
     session: Session,
     providers: dict[str, ChannelProvider],
