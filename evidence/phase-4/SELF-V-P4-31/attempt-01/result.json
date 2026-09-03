@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P4-31",
+  "evidence_id": "SELF-V-P4-31",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "sidecar/tests",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "24716a90560737192ca5dfcae37b722e2b5a0f72",
+  "started_at": "2026-09-03T00:51:24.821913+00:00",
+  "finished_at": "2026-09-03T00:51:34.476735+00:00",
+  "output_sha256": "f44919a3367dc52929a8af8f8919d5f9536d2eb90b5c6c6d38b1e58904be21bc"
+}
