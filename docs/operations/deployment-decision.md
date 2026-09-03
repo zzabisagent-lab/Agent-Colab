@@ -9,7 +9,7 @@ which is what the V-P7-18 evidence runs.
 state: PENDING_USER_DECISION
 report: REPORT.md
 report_delivered_at: null
-target: none recorded
+target: env:deploy-server
 decision: none
 decided_at: null
 decided_by: null
@@ -30,10 +30,15 @@ Phase 7 passes and the source is pushed.
 
 ## Target
 
-The repository's `.env` names **no deployment target**: it carries channel credentials only, no
-host and no method. Until a target is supplied, `APPROVED` cannot be recorded, because the
-decision would not name what it approves. Secret values are never copied into this file, into the
-report, or into any evidence; only the presence or absence of a target key is reported.
+`.env` records one deployment server under the heading "Deploy Server Information": a server name,
+an IP address, a login id and a password. Those are credentials, so the target is referred to here
+by the symbolic name `env:deploy-server` and never by its values. The same rule holds for the
+report, for evidence, for commit messages and for logs; `.env` is in `.gitignore`. Read the values
+from `.env` at deployment time.
+
+The record does not say the target is ready. It says where to look. Whether the host has Docker, a
+database, a reverse proxy and TLS is established by the preflight in the report's deployment plan,
+not by this file.
 
 ## Deployment ledger
 

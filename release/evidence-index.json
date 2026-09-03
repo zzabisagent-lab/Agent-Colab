@@ -342,7 +342,7 @@
         }
       ],
       "passed_report": null,
-      "self_evidence_count": 21,
+      "self_evidence_count": 22,
       "self_evidence": {
         "V-P7-01": "pass",
         "V-P7-02": "pass",
@@ -361,6 +361,7 @@
         "V-P7-15": "pass",
         "V-P7-16": "pass",
         "V-P7-17": "pass",
+        "V-P7-18": "pass",
         "V-P7-19": "pass",
         "V-P7-20": "pass",
         "V-P7-21": "pass",

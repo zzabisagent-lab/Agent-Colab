@@ -14,11 +14,28 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 | P7-04 | load/soak | M | P5-10 | IMPLEMENTED | SELF-V-P7-03/04 |
 | P7-05 | security hardening | M | P7-01 | IMPLEMENTED | SELF-V-P7-05/06/11/12 |
 | P7-06 | upgrade/rollback | M | P7-03 | IMPLEMENTED | SELF-V-P7-09/10 |
-| P7-07 | release package | S | P7-01 | IMPLEMENTED | SELF-V-P7-01/16/17 |
+| P7-07 | release package | S | P7-01 | IMPLEMENTED | SELF-V-P7-01/16/17/18 |
 | P7-08 | runbooks | M | P7-02 | IMPLEMENTED | SELF-V-P7-13/21 |
 | P7-09 | Human-path acceptance automation | M | P2-11, P6-01, P6-04 | IMPLEMENTED | SELF-V-P7-02/22 |
 
-Phase 7 progress (size-weighted): 26 / 26 — all packages implemented; V-P7-18 is the deployment decision, which only the user can give; Codex verification pending
+Phase 7 progress (size-weighted): 26 / 26 — all packages implemented.
+
+Verification revision 1 (`verification/phase-7/VR-P7-001.yaml`) FAILED with 13 PASS and 8 FAIL.
+Revision 2 repairs, on commit dedd2a1:
+
+- V-P7-11/15: nine util-linux packages purged, both images scan zero High and zero Critical; the
+  container scan gates instead of skipping; the manifest is Ed25519-signed and pinned to HEAD.
+- V-P7-01/02/22: the clean install provisions its own image, Mattermost and team (LOCKED in
+  31.6 s); acceptance runs 20/20 and 10/10 through a real Mattermost, no fake client.
+- V-P7-16/17/18: REPORT.md written per development plan §27A, the deployment decision record and
+  its checker added, residual risks carry an acceptor, the archive exempts only the verdict of the
+  phase under verification.
+- V-P7-04: the full 24-hour soak is running, started 2026-09-03 22:04:53 UTC, ending about
+  22:05 UTC on 2026-09-04. Revision 2 cannot be submitted before it finishes.
+
+Next step: when the soak completes, record its evidence, run `make ci`, push `phase-7`, and launch
+Codex Phase 7 revision 2. V-P7-18's remaining half is the user's deployment answer; the record
+stays PENDING_USER_DECISION and nothing is deployed without it.
 
 ## Phase 6 (PASSED) — branch `phase-6`, tag `phase-6-passed`
 
