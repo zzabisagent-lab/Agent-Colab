@@ -172,7 +172,9 @@ def test_schedule_admin_console(server: str, engine: Engine) -> None:
     assert denied.status_code in (403, 404)
     with Session(engine) as s:
         manual = s.execute(
-            text("SELECT count(*) FROM schedule_runs WHERE schedule_id = :s AND run_kind = 'MANUAL'"),
+            text(
+                "SELECT count(*) FROM schedule_runs WHERE schedule_id = :s AND run_kind = 'MANUAL'"
+            ),
             {"s": sid},
         ).scalar_one()
     assert manual == 1
