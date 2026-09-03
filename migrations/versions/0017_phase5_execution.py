@@ -23,4 +23,10 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    pass  # tables created by this revision are dropped by the owning package's downgrade list
+    for table in (
+        "schedule_notices",
+        "budget_alerts",
+        "schedule_run_budgets",
+        "schedule_run_retries",
+    ):
+        op.execute(f"DROP TABLE IF EXISTS {table}")

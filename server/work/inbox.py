@@ -669,9 +669,14 @@ def _duplicate(
     )
 
 
-def open_items(session: Session, *, agent_id: str | None = None) -> list[WorkItem]:
+def open_items(
+    session: Session, *, agent_id: str | None = None, workspace_id: str | None = None
+) -> list[WorkItem]:
     where = "WHERE status IN ('QUEUED','DELIVERED','ACKED','IN_PROGRESS')"
     params: dict[str, Any] = {}
+    if workspace_id is not None:  # a sweep actor may only touch its own Workspace
+        where += " AND workspace_id = CAST(:ws AS uuid)"
+        params["ws"] = workspace_id
     if agent_id is not None:
         where += " AND agent_id = :a"
         params["a"] = agent_id

@@ -151,11 +151,23 @@ def test_three_redeliveries_after_ack_timeouts_then_expired(engine: Engine) -> N
             )
         clock.advance(dt.timedelta(seconds=59))
         with Session(engine) as s, s.begin():
-            report = timeouts.sweep(s, _store(s, clock), clock=clock, actor_account_id=str(SERVICE))
+            report = timeouts.sweep(
+                s,
+                _store(s, clock),
+                clock=clock,
+                actor_account_id=str(SERVICE),
+                workspace_id=str(WS),
+            )
             assert report.outcomes == []  # 59 s: still awaiting ack
         clock.advance(dt.timedelta(seconds=1))
         with Session(engine) as s, s.begin():
-            report = timeouts.sweep(s, _store(s, clock), clock=clock, actor_account_id=str(SERVICE))
+            report = timeouts.sweep(
+                s,
+                _store(s, clock),
+                clock=clock,
+                actor_account_id=str(SERVICE),
+                workspace_id=str(WS),
+            )
             if expected_count < 4:
                 assert [o.action for o in report.outcomes] == ["REDELIVER"]
                 assert inbox.load(s, wid).status is WorkItemState.QUEUED
@@ -179,7 +191,13 @@ def test_three_redeliveries_after_ack_timeouts_then_expired(engine: Engine) -> N
         )
         clock.advance(dt.timedelta(hours=1))
         assert (
-            timeouts.sweep(s, _store(s, clock), clock=clock, actor_account_id=str(SERVICE)).outcomes
+            timeouts.sweep(
+                s,
+                _store(s, clock),
+                clock=clock,
+                actor_account_id=str(SERVICE),
+                workspace_id=str(WS),
+            ).outcomes
             == []
         )
         with pytest.raises(WorkItemError) as exc:
