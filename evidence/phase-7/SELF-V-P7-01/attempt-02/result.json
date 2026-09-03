@@ -1,0 +1,19 @@
+{
+  "test_id": "V-P7-01",
+  "evidence_id": "SELF-V-P7-01",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/e2e/test_clean_install.py",
+    "-q",
+    "-s"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "7ad91d0bc4fa94f11a5d1cb90bcc0371049a9806",
+  "started_at": "2026-09-03T22:21:19.566439+00:00",
+  "finished_at": "2026-09-03T22:21:53.656813+00:00",
+  "output_sha256": "eb4bd64f7014f7d42e9d358035802242741b974e8dfcd37c59f9c21ce29d781e"
+}

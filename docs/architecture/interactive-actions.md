@@ -20,6 +20,24 @@ reference resolved from the environment in Phase 2). Without a secret no button 
 attached, so buttons cannot execute anything. `server/channels/task_cards.py` attaches the
 contexts when it enqueues the card post or patch.
 
+## What Mattermost requires of a button
+
+Mattermost calls the integration itself when a button is pressed, so three things about the
+attachment action are not free choices (all three are covered by the real-Mattermost acceptance
+path, `docs/operations/acceptance-path.md`):
+
+- **The URL must be absolute.** A relative `integration.url` resolves against the Mattermost site,
+  and the press fails with an action integration error. The URL is built from
+  `AGENT_COLAB_BASE_URL` plus `/api/v1/providers/mattermost/actions`; a deployment that does not
+  set that base leaves the bare path and its buttons cannot be pressed.
+- **The action id must be alphanumeric.** A press is routed as
+  `POST /api/v4/posts/{post_id}/actions/{action_id}` and Mattermost accepts only `[A-Za-z0-9]`
+  there, so the id is `sha256(subject_type|subject_id|button)` truncated to 32 characters
+  (`actions.button_action_id`) rather than the identifiers joined with punctuation.
+- **The correlation id must fit the Event envelope.** Mattermost's `trigger_id` is a signed base64
+  blob well over the envelope's 200-character limit, so the callback trims it the way the Command
+  Router trims its own.
+
 ## Callback validation and execution
 
 `POST /api/v1/providers/mattermost/actions` receives Mattermost's interactive-message callback

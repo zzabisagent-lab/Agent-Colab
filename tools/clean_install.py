@@ -6,9 +6,15 @@ database, key, Owner and integration sections, run preflight, read the redacted 
 to LOCKED. Reports the wall-clock time so the 30-minute criterion is measurable. No secret value is
 printed: the Owner material is reported as "received" only.
 
+The install provisions everything it needs. With no ``COLAB_SERVER_IMAGE`` it builds the
+production server image from ``deploy/production/Dockerfile.server``; with no Mattermost URL it
+starts the local Team Edition (``scripts/dev/mattermost-local.sh``) and uses its bot credentials,
+which are read from ``~/.local/opt/mattermost/.spike-credentials`` and never printed. Only an
+unusable Docker makes this unrunnable, and then the reason is stated.
+
 Usage:
     uv run python -m tools.clean_install --check      # is the environment able to run this?
-    uv run python -m tools.clean_install --run        # bring up, configure, verify, tear down
+    uv run python -m tools.clean_install --run        # provision, bring up, configure, verify
 """
 
 from __future__ import annotations
@@ -29,7 +35,21 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 COMPOSE = ROOT / "deploy" / "production" / "compose.yaml"
+DOCKERFILE = ROOT / "deploy" / "production" / "Dockerfile.server"
+LOCAL_IMAGE = "agent-colab/server:local"
+MATTERMOST_SCRIPT = ROOT / "scripts" / "dev" / "mattermost-local.sh"
+MATTERMOST_LOCAL_URL = "http://127.0.0.1:8065"
+MATTERMOST_CREDENTIALS = Path(
+    os.environ.get(
+        "COLAB_MATTERMOST_CREDENTIALS",
+        str(Path.home() / ".local/opt/mattermost/.spike-credentials"),
+    )
+)
 DEADLINE_S = 30 * 60
+
+
+class InstallUnavailableError(RuntimeError):
+    """Something the install needs could not be provisioned; the message says what."""
 
 
 def _docker(*args: str, check: bool = True, timeout: int = 900) -> subprocess.CompletedProcess[str]:
@@ -45,17 +65,136 @@ def _docker(*args: str, check: bool = True, timeout: int = 900) -> subprocess.Co
 
 
 def available() -> tuple[bool, str]:
+    """Docker is the only thing this cannot provision for itself."""
     if shutil.which("sg") is None:
-        return False, "sg is not available"
+        return False, "sg is not available (docker needs the docker group in this shell)"
     probe = _docker("version", "--format", "{{.Server.Version}}", check=False, timeout=60)
     if probe.returncode != 0:
         return False, f"docker is not usable: {probe.stderr.strip()[:120]}"
-    if not os.environ.get("COLAB_SERVER_IMAGE"):
-        return False, "COLAB_SERVER_IMAGE is not set (build a release first)"
-    for name in ("COLAB_MATTERMOST_URL", "COLAB_MATTERMOST_BOT_TOKEN"):
-        if not os.environ.get(name):
-            return False, f"{name} is not set (Mattermost is a mandatory integration)"
+    if not COMPOSE.exists():
+        return False, f"{COMPOSE.relative_to(ROOT)} is missing"
     return True, f"docker {probe.stdout.strip()}"
+
+
+def ensure_image() -> tuple[str, str]:
+    """The released server image, built from this source tree when none is named."""
+    named = os.environ.get("COLAB_SERVER_IMAGE")
+    if named:
+        return named, "COLAB_SERVER_IMAGE"
+    if not DOCKERFILE.exists():
+        raise InstallUnavailableError(f"{DOCKERFILE.relative_to(ROOT)} is missing")
+    build = _docker(
+        "build", "-f", str(DOCKERFILE), "-t", LOCAL_IMAGE, str(ROOT), check=False, timeout=3600
+    )
+    if build.returncode != 0:
+        tail = (build.stderr or build.stdout).strip().splitlines()
+        raise InstallUnavailableError(f"image build failed: {tail[-1] if tail else 'no output'}")
+    return LOCAL_IMAGE, "built from deploy/production/Dockerfile.server"
+
+
+@dataclass(frozen=True)
+class MattermostTarget:
+    """Where the container reaches Mattermost. The token is never printed or reported."""
+
+    url: str
+    team: str
+    token: str = field(repr=False)
+    detail: str = ""
+
+
+def _bridge_gateway() -> str:
+    """The host address a container reaches: the docker bridge gateway, not the host loopback."""
+    out = _docker(
+        "network",
+        "inspect",
+        "bridge",
+        "--format",
+        "'{{(index .IPAM.Config 0).Gateway}}'",
+        check=False,
+        timeout=60,
+    )
+    gateway = out.stdout.strip() if out.returncode == 0 else ""
+    return gateway or "172.17.0.1"
+
+
+def _mattermost_up(url: str) -> bool:
+    try:
+        with urllib.request.urlopen(  # noqa: S310  # nosec B310 - http(s) URL from configuration
+            f"{url.rstrip('/')}/api/v4/system/ping", timeout=10
+        ) as response:
+            return bool(response.status == 200)
+    except (OSError, urllib.error.HTTPError):
+        return False
+
+
+def _mattermost_api(url: str, token: str, path: str, body: dict[str, Any] | None = None) -> Any:
+    data = None if body is None else json.dumps(body).encode()
+    request = urllib.request.Request(  # noqa: S310 - http(s) URL from configuration
+        f"{url.rstrip('/')}/api/v4{path}",
+        data=data,
+        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+        method="GET" if data is None else "POST",
+    )
+    with urllib.request.urlopen(request, timeout=30) as response:  # noqa: S310  # nosec B310
+        return json.loads(response.read() or b"{}")
+
+
+def _credentials() -> dict[str, str]:
+    if not MATTERMOST_CREDENTIALS.exists():
+        raise InstallUnavailableError(f"{MATTERMOST_CREDENTIALS} is missing")
+    values: dict[str, str] = {}
+    for line in MATTERMOST_CREDENTIALS.read_text(encoding="utf-8").splitlines():
+        if "=" in line and not line.lstrip().startswith("#"):
+            key, value = line.split("=", 1)
+            values[key.strip()] = value.strip()
+    missing = [k for k in ("ADMIN_TOKEN", "BOT_TOKEN", "BOT_USER_ID") if not values.get(k)]
+    if missing:
+        raise InstallUnavailableError(f"{MATTERMOST_CREDENTIALS} has no {', '.join(missing)}")
+    return values
+
+
+def ensure_mattermost() -> MattermostTarget:
+    """Mattermost is a mandatory integration, so start the local instance when none is named."""
+    url = os.environ.get("COLAB_MATTERMOST_URL", "")
+    token = os.environ.get("COLAB_MATTERMOST_BOT_TOKEN", "")
+    team = os.environ.get("COLAB_MATTERMOST_TEAM", "")
+    if url and token:
+        return MattermostTarget(url, team or "colab", token, "named by the environment")
+    how = "local Team Edition, already running"
+    if not _mattermost_up(MATTERMOST_LOCAL_URL):
+        how = "local Team Edition started by scripts/dev/mattermost-local.sh"
+        if not MATTERMOST_SCRIPT.exists():
+            raise InstallUnavailableError(f"{MATTERMOST_SCRIPT.relative_to(ROOT)} is missing")
+        subprocess.run(
+            ["bash", str(MATTERMOST_SCRIPT), "start"],
+            capture_output=True,
+            text=True,
+            timeout=600,
+            check=False,
+        )
+        if not _mattermost_up(MATTERMOST_LOCAL_URL):
+            raise InstallUnavailableError("scripts/dev/mattermost-local.sh start did not come up")
+    creds = _credentials()
+    if not team:  # a team the bot is a member of, created for this install
+        team = f"clean{uuid.uuid4().hex[:8]}"
+        created = _mattermost_api(
+            MATTERMOST_LOCAL_URL,
+            creds["ADMIN_TOKEN"],
+            "/teams",
+            {"name": team, "display_name": f"clean install {team}", "type": "O"},
+        )
+        _mattermost_api(
+            MATTERMOST_LOCAL_URL,
+            creds["ADMIN_TOKEN"],
+            f"/teams/{created['id']}/members",
+            {"team_id": created["id"], "user_id": creds["BOT_USER_ID"]},
+        )
+    return MattermostTarget(
+        f"http://{_bridge_gateway()}:8065",
+        team,
+        creds["BOT_TOKEN"],
+        how,
+    )
 
 
 @dataclass
@@ -136,11 +275,12 @@ def _host_refused(base: str, path: str) -> bool:
 def run_install(port: int = 8080, keep: bool = False) -> InstallReport:
     base = f"http://127.0.0.1:{port}"
     started = time.monotonic()
+    image, image_detail = ensure_image()
+    mattermost = ensure_mattermost()
     env_file = ROOT / "deploy" / "production" / ".env.clean-install"
     password = uuid.uuid4().hex  # a fresh instance password, never reused or printed
     env_file.write_text(
-        f"COLAB_DB_PASSWORD={password}\nCOLAB_SERVER_PORT={port}\n"
-        f"COLAB_SERVER_IMAGE={os.environ['COLAB_SERVER_IMAGE']}\n",
+        f"COLAB_DB_PASSWORD={password}\nCOLAB_SERVER_PORT={port}\nCOLAB_SERVER_IMAGE={image}\n",
         encoding="utf-8",
     )
     compose = f"compose -f {COMPOSE} --env-file {env_file} -p colab-clean"
@@ -190,9 +330,9 @@ def run_install(port: int = 8080, keep: bool = False) -> InstallReport:
                     # Mattermost is a mandatory integration: preflight refuses an instance that
                     # cannot reach its conversation channel. The container reaches a host service
                     # through the bridge gateway, not through the host's loopback.
-                    "mattermost.url": os.environ["COLAB_MATTERMOST_URL"],
-                    "mattermost.team": os.environ.get("COLAB_MATTERMOST_TEAM", "colab"),
-                    "mattermost.bot_token": os.environ["COLAB_MATTERMOST_BOT_TOKEN"],
+                    "mattermost.url": mattermost.url,
+                    "mattermost.team": mattermost.team,
+                    "mattermost.bot_token": mattermost.token,
                     "storage.artifact_root": "/var/lib/agent-colab/artifacts",
                     "storage.document_root": "/var/lib/agent-colab/documents",
                     "ops.channel_id": "ops",
@@ -227,7 +367,8 @@ def run_install(port: int = 8080, keep: bool = False) -> InstallReport:
             elapsed,
             str(final.get("state")),
             steps,
-            f"owner material {owner_material}; bootstrap sealed: {relocked}",
+            f"owner material {owner_material}; bootstrap sealed: {relocked}; "
+            f"image {image_detail}; mattermost {mattermost.detail}",
         )
     finally:
         if not keep:
@@ -250,7 +391,11 @@ def main(argv: list[str] | None = None) -> int:
     if not ok:
         print(json.dumps({"available": False, "detail": detail}))
         return 1
-    report = run_install(port=args.port, keep=args.keep)
+    try:
+        report = run_install(port=args.port, keep=args.keep)
+    except InstallUnavailableError as exc:
+        print(json.dumps({"available": True, "provisioned": False, "detail": str(exc)}))
+        return 1
     payload = report.as_dict()
     print(json.dumps(payload, indent=2))
     if args.out:

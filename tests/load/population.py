@@ -17,13 +17,21 @@ from dataclasses import dataclass, field
 from sqlalchemy import Engine, text
 from sqlalchemy.orm import Session
 
-from server.identity.principals import token_hash
+from server.agents import registry as reg
+from server.api.dispatch import Runtime, execute_command
+from server.application import agents as ag
+from server.application.authz import BusAuthorizer
+from server.db.engine import make_session_factory
+from server.domain.clock import SystemClock
+from server.identity.principals import Principal, token_hash
 from server.policy.repository import PostgresPolicyRepository
+from server.usage.versions import activate_from_file
 from tests.load.profile import Profile
 
 WRITER_ROLE_PERMISSIONS = ["task.create", "task.read", "task.progress", "task.delegate"]
 AGENT_ROLE_PERMISSIONS = ["task.accept", "task.progress", "task.read", "task.submit"]
-OPS_ROLE_PERMISSIONS = ["admin.settings", "task.read", "schedule.read"]
+# ops also beats for the seeded Agents during a soak, which needs agent.manage (§7C)
+OPS_ROLE_PERMISSIONS = ["admin.settings", "task.read", "schedule.read", "agent.manage"]
 # the Workspace system Account the scheduler tick runs as (development plan §10A.2)
 SYSTEM_ROLE_PERMISSIONS = [
     "task.create",
@@ -44,6 +52,7 @@ class Population:
     owner_account: uuid.UUID
     owner_token: str = field(repr=False)
     ops_token: str = field(repr=False)
+    agent_ids: list[str] = field(default_factory=list)
     channel_ids: list[str] = field(default_factory=list)
     channel_uuids: list[uuid.UUID] = field(default_factory=list)
     schedule_ids: list[str] = field(default_factory=list)
@@ -113,6 +122,10 @@ def seed_population(engine: Engine, profile: Profile, tag: str | None = None) ->
         repo.commit_role_version(s, system_role, SYSTEM_ROLE_PERMISSIONS, [], {}, owner)
         repo.assign_role(s, system, system_role, owner, now - dt.timedelta(minutes=1))
 
+        # heartbeats carry §7C usage, which is costed against the activated pricing table; a
+        # deployment activates it during setup, so a realistic population has it activated too
+        activate_from_file(s, activated_by=str(owner))
+
         provider = uuid.uuid4()
         s.execute(
             text(
@@ -134,23 +147,6 @@ def seed_population(engine: Engine, profile: Profile, tag: str | None = None) ->
         for i in range(profile.humans):
             human = _account(s, ws, f"acct-{tag}-h{i:03d}", "human")
             repo.assign_role(s, human, writer_role, owner, now - dt.timedelta(minutes=1))
-        for i in range(profile.agents):
-            account = _account(s, ws, f"acct-{tag}-a{i:03d}", "agent")
-            repo.assign_role(s, account, agent_role, owner, now - dt.timedelta(minutes=1))
-            s.execute(
-                text(
-                    "INSERT INTO agents (id, agent_id, workspace_id, account_id, adapter_type, "
-                    "status, display_name, online, capacity, last_heartbeat_at) VALUES "
-                    "(:i, :g, :w, :a, 'mcp', 'active', :g, true, 50, :now)"
-                ),
-                {
-                    "i": uuid.uuid4(),
-                    "g": f"agent-{tag}-{i:03d}",
-                    "w": ws,
-                    "a": account,
-                    "now": now,
-                },
-            )
         for i in range(profile.channels):
             channel = uuid.uuid4()
             channel_id = f"chan-{tag}-{i:03d}"
@@ -197,8 +193,56 @@ def seed_population(engine: Engine, profile: Profile, tag: str | None = None) ->
                     "now": now,
                 },
             )
+    _register_agents(engine, pop, profile, ops, f"role-{tag}-agent")
     _create_schedules(engine, pop, profile, now)
     return pop
+
+
+def _register_agents(
+    engine: Engine, pop: Population, profile: Profile, admin: uuid.UUID, agent_role: str
+) -> None:
+    """Agents come up through the real lifecycle, not a row insert.
+
+    Registry state is derived from the Agent's event stream and written back on every command, so
+    an Agent inserted straight into ``agents`` is recomputed to ``pending`` the first time it is
+    touched and every later heartbeat is rejected with ``AGENT_STATUS_INVALID``. Registering and
+    activating through the command bus is also what a deployment does.
+    """
+    if profile.agents <= 0:
+        return
+    runtime = Runtime(
+        make_session_factory(engine), BusAuthorizer(), None, SystemClock(), str(pop.ws)
+    )
+    principal = Principal(f"acct-{pop.tag}-ops", str(admin), "human", f"sha256:acct-{pop.tag}-ops")
+    for i in range(profile.agents):
+        agent_id = f"agent-{pop.tag}-{i:03d}"
+        execute_command(
+            runtime,
+            principal,
+            ag.RegisterAgent(
+                agent_id=agent_id,
+                display_name=agent_id,
+                adapter_type="mcp",
+                roles=(agent_role,),
+                channel_ids=(pop.channel_ids[i % len(pop.channel_ids)],),
+            ),
+            idempotency_key=f"{pop.tag}-reg-{i:03d}",
+            correlation_id=f"corr-{pop.tag}",
+        )
+        execute_command(
+            runtime,
+            principal,
+            ag.ActivateAgent(
+                agent_id=agent_id,
+                probe={"identity_hash": f"id-{agent_id}", "capabilities": []},
+            ),
+            idempotency_key=f"{pop.tag}-act-{i:03d}",
+            correlation_id=f"corr-{pop.tag}",
+        )
+        pop.agent_ids.append(agent_id)
+    with Session(engine) as s:
+        row = reg.load_agent(s, pop.ws, pop.agent_ids[0])
+        assert row is not None and row.status == "active", "Agents did not reach active"
 
 
 def _create_schedules(engine: Engine, pop: Population, profile: Profile, now: dt.datetime) -> None:

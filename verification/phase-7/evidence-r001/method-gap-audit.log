@@ -1,0 +1,65 @@
+V-P7-02/V-P7-22 acceptance test transport audit
+10:and interactive-action handler, with the Mattermost server itself replaced by the in-process fake
+11:client (`FakeMattermostClient`) — the seam the provider talks to. A live Team Edition instance can
+34:from server.channels.mattermost.client import FakeMattermostClient
+37:from server.channels.router import Router, SlashRequest
+107:FAKE = FakeMattermostClient(
+120:    prov.set_client_factory(lambda inst: FAKE)
+189:    prov.set_client_factory(None)
+199:    router = Router(rt, CLOCK)
+200:    request = SlashRequest(
+
+V-P7-04 duration audit
+4:The criterion names 24 hours. This host runs a bounded window instead — ``AGENT_COLAB_SOAK_MINUTES``
+5:(default 30) — and the failure modes a 24-hour soak looks for are *growth* signals rather than
+9:evidence so the difference from 24 hours is visible rather than implied.
+27:MINUTES = float(os.environ.get("AGENT_COLAB_SOAK_MINUTES", "30"))
+
+V-P7-17 acceptor audit
+# Residual security risks
+
+Findings the release accepts, each with an owner and a deadline. High and Critical findings are
+never listed here: they block the release (V-P7-11).
+
+| Finding | Severity | Owner | Deadline | Note |
+|---|---|---|---|---|
+| Container rebuilds are not bit-reproducible | Informational | agent-claude-code | Phase 8 | Container builds embed timestamps and layer metadata. The published digest is the immutable identifier and `tools/release_build.py --verify` proves it still resolves; reproducibility is reported, not claimed. |
+| Image signing is not performed | Low | agent-claude-code | first deployment | No registry or signing key exists in this environment. The release manifest records digests and SBOM hashes, which is what a signature would attest; signing is a deployment-time step. |
+| The dynamic scan runs in-process by default | Low | agent-claude-code | first deployment | It drives the real ASGI application including middleware. A deployed instance should be scanned over the network with `--base-url`. |
+
+As of this release the scans report **zero** High or Critical findings, so nothing else is listed.
+
+V-P7-15 target/signature audit
+{
+  "source_revision": "7d817278ebe3ec417f518fe870d674838f199076",
+  "signature": null,
+  "images": [
+    {
+      "name": "server",
+      "image_id": "sha256:24c44507df74836d22853b3fff8cebde4baf2905e190ab0e3c6771593b5eaf53"
+    },
+    {
+      "name": "web-admin",
+      "image_id": "sha256:4886e45a54746e1cf0574f17c83bf284b94fc61f986aa9331b5e540913fe6b7d"
+    }
+  ],
+  "sbom": {
+    "javascript": {
+      "components": 12,
+      "format": "CycloneDX",
+      "generated": true,
+      "lock_sha256": "b739a301fe43e0d728b20025d0abd875bb32e125a1b28909077482ee8a7af927",
+      "path": "release/sbom-javascript-8.0.0-test.json",
+      "sha256": "7f42f73a849571fa783a30109439b00e1f641d7ee800e72a7fd516d327e5614f",
+      "spec_version": "1.5"
+    },
+    "python": {
+      "components": 97,
+      "format": "CycloneDX",
+      "generated": true,
+      "path": "release/sbom-python-8.0.0-test.json",
+      "sha256": "5486039d9be4c63c2d0ef400a5a6e1cc1b9d096f02149e8368f3740d4708e825",
+      "spec_version": "1.6"
+    }
+  }
+}

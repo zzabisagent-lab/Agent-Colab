@@ -1,0 +1,13 @@
+2026-09-03T20:59:33Z
+Linux ai 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Python 3.12.3
+uv 0.12.9 (x86_64-unknown-linux-gnu)
+v22.23.2
+11.25.0
+Docker version 29.1.3, build 29.1.3-0ubuntu3~24.04.2
+Docker Compose version 2.40.3+ds1-0ubuntu1~24.04.1
+7ad91d0bc4fa94f11a5d1cb90bcc0371049a9806
+?? evidence/phase-7/manifest.yaml
+?? verification/phase-7/
+database_url_present=yes
+required_credentials_present=checked_without_values

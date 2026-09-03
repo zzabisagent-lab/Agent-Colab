@@ -1,0 +1,644 @@
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+[09/03/26 21:02:22] INFO     StreamableHTTP       streamable_http_manager.py:148
+                             session manager                                    
+                             started                                            
+                    INFO     HTTP Request: GET                   _client.py:1085
+                             http://testserver/healthz "HTTP/1.1                
+                             200 OK"                                            
+                    ERROR    gateway drain failed                 gateway.py:121
+                             ╭─ Traceback (most recent call las─╮               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/sqlalchemy/engine/bas │               
+                             │ e.py:1969 in                     │               
+                             │ _exec_single_context             │               
+                             │                                  │               
+                             │   1966 │   │   │   │   │   │   │ │               
+                             │   1967 │   │   │   │   │   │   │ │               
+                             │   1968 │   │   │   │   if not ev │               
+                             │ ❱ 1969 │   │   │   │   │   self. │               
+                             │   1970 │   │   │   │   │   │   c │               
+                             │   1971 │   │   │   │   │   )     │               
+                             │   1972                           │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/sqlalchemy/engine/def │               
+                             │ ault.py:952 in do_execute        │               
+                             │                                  │               
+                             │    949 │   │   cursor.executeman │               
+                             │    950 │                         │               
+                             │    951 │   def do_execute(self,  │               
+                             │ ❱  952 │   │   cursor.execute(st │               
+                             │    953 │                         │               
+                             │    954 │   def do_execute_no_par │               
+                             │    955 │   │   cursor.execute(st │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/psycopg/cursor.py:117 │               
+                             │  in execute                      │               
+                             │                                  │               
+                             │   114 │   │   │   │   │   self._ │               
+                             │   115 │   │   │   │   )          │               
+                             │   116 │   │   except e._NO_TRACE │               
+                             │ ❱ 117 │   │   │   raise ex.with_ │               
+                             │   118 │   │   return self        │               
+                             │   119 │                          │               
+                             │   120 │   def executemany(       │               
+                             ╰──────────────────────────────────╯               
+                             UndefinedTable: relation                           
+                             "workspaces" does not exist                        
+                             LINE 1: SELECT id FROM workspaces                  
+                             ORDER BY created_at LIMIT 1                        
+                                                    ^                           
+                                                                                
+                             The above exception was the direct                 
+                             cause of the following exception:                  
+                                                                                
+                             ╭─ Traceback (most recent call las─╮               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/server/channels/gateway. │               
+                             │ py:119 in _loop                  │               
+                             │                                  │               
+                             │   116 │   async def _loop(self)  │               
+                             │   117 │   │   while True:        │               
+                             │   118 │   │   │   try:           │               
+                             │ ❱ 119 │   │   │   │   await asyn │               
+                             │   120 │   │   │   except Excepti │               
+                             │   121 │   │   │   │   log.except │               
+                             │   122 │   │   │   self._since_ma │               
+                             │                                  │               
+                             │ /usr/lib/python3.12/asyncio/thre │               
+                             │ ads.py:25 in to_thread           │               
+                             │                                  │               
+                             │   22 │   loop = events.get_runni │               
+                             │   23 │   ctx = contextvars.copy_ │               
+                             │   24 │   func_call = functools.p │               
+                             │ ❱ 25 │   return await loop.run_i │               
+                             │   26                             │               
+                             │                                  │               
+                             │ /usr/lib/python3.12/concurrent/f │               
+                             │ utures/thread.py:58 in run       │               
+                             │                                  │               
+                             │    55 │   │   │   return         │               
+                             │    56 │   │                      │               
+                             │    57 │   │   try:               │               
+                             │ ❱  58 │   │   │   result = self. │               
+                             │    59 │   │   except BaseExcepti │               
+                             │    60 │   │   │   self.future.se │               
+                             │    61 │   │   │   # Break a refe │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/server/channels/gateway. │               
+                             │ py:105 in drain_once             │               
+                             │                                  │               
+                             │   102 │   │   if not self.provid │               
+                             │   103 │   │   │   return {}      │               
+                             │   104 │   │   with session_scope │               
+                             │ ❱ 105 │   │   │   ws = self.runt │               
+                             │   106 │   │   │   result = self. │               
+                             │   107 │   │   self.drains += 1   │               
+                             │   108 │   │   return result      │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/server/api/dispatch.py:5 │               
+                             │ 8 in resolve_workspace           │               
+                             │                                  │               
+                             │    55 │   │   │   if row is not  │               
+                             │    56 │   │   │   │   return str │               
+                             │    57 │   │   if self.workspace_ │               
+                             │ ❱  58 │   │   │   row = session. │               
+                             │    59 │   │   │   │   text("SELE │               
+                             │    60 │   │   │   ).first()      │               
+                             │    61 │   │   │   if row is None │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/sqlalchemy/orm/sessio │               
+                             │ n.py:2373 in execute             │               
+                             │                                  │               
+                             │   2370 │   │                     │               
+                             │   2371 │   │                     │               
+                             │   2372 │   │   """               │               
+                             │ ❱ 2373 │   │   return self._exec │               
+                             │   2374 │   │   │   statement,    │               
+                             │   2375 │   │   │   params,       │               
+                             │   2376 │   │   │   execution_opt │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/sqlalchemy/orm/sessio │               
+                             │ n.py:2280 in _execute_internal   │               
+                             │                                  │               
+                             │   2277 │   │   │   │   conn,     │               
+                             │   2278 │   │   │   )             │               
+                             │   2279 │   │   else:             │               
+                             │ ❱ 2280 │   │   │   result = conn │               
+                             │   2281 │   │   │   │   statement │               
+                             │   2282 │   │   │   )             │               
+                             │   2283                           │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/sqlalchemy/engine/bas │               
+                             │ e.py:1421 in execute             │               
+                             │                                  │               
+                             │   1418 │   │   except AttributeE │               
+                             │   1419 │   │   │   raise exc.Obj │               
+                             │   1420 │   │   else:             │               
+                             │ ❱ 1421 │   │   │   return meth(  │               
+                             │   1422 │   │   │   │   self,     │               
+                             │   1423 │   │   │   │   distilled │               
+                             │   1424 │   │   │   │   execution │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/sqlalchemy/sql/elemen │               
+                             │ ts.py:526 in                     │               
+                             │ _execute_on_connection           │               
+                             │                                  │               
+                             │    523 │   │   if self.supports_ │               
+                             │    524 │   │   │   if TYPE_CHECK │               
+                             │    525 │   │   │   │   assert is │               
+                             │ ❱  526 │   │   │   return connec │               
+                             │    527 │   │   │   │   self, dis │               
+                             │    528 │   │   │   )             │               
+                             │    529 │   │   else:             │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/sqlalchemy/engine/bas │               
+                             │ e.py:1643 in                     │               
+                             │ _execute_clauseelement           │               
+                             │                                  │               
+                             │   1640 │   │   │   schema_transl │               
+                             │   1641 │   │   │   linting=self. │               
+                             │   1642 │   │   )                 │               
+                             │ ❱ 1643 │   │   ret = self._execu │               
+                             │   1644 │   │   │   dialect,      │               
+                             │   1645 │   │   │   dialect.execu │               
+                             │   1646 │   │   │   compiled_sql, │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/sqlalchemy/engine/bas │               
+                             │ e.py:1848 in _execute_context    │               
+                             │                                  │               
+                             │   1845 │   │   if context.execut │               
+                             │   1846 │   │   │   return self._ │               
+                             │   1847 │   │   else:             │               
+                             │ ❱ 1848 │   │   │   return self._ │               
+                             │   1849 │   │   │   │   dialect,  │               
+                             │   1850 │   │   │   )             │               
+                             │   1851                           │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/sqlalchemy/engine/bas │               
+                             │ e.py:1988 in                     │               
+                             │ _exec_single_context             │               
+                             │                                  │               
+                             │   1985 │   │   │   result = cont │               
+                             │   1986 │   │                     │               
+                             │   1987 │   │   except BaseExcept │               
+                             │ ❱ 1988 │   │   │   self._handle_ │               
+                             │   1989 │   │   │   │   e, str_st │               
+                             │   1990 │   │   │   )             │               
+                             │   1991                           │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/sqlalchemy/engine/bas │               
+                             │ e.py:2365 in                     │               
+                             │ _handle_dbapi_exception          │               
+                             │                                  │               
+                             │   2362 │   │   │   │   raise new │               
+                             │   2363 │   │   │   elif should_w │               
+                             │   2364 │   │   │   │   assert sq │               
+                             │ ❱ 2365 │   │   │   │   raise sql │               
+                             │   2366 │   │   │   else:         │               
+                             │   2367 │   │   │   │   assert ex │               
+                             │   2368 │   │   │   │   raise exc │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/sqlalchemy/engine/bas │               
+                             │ e.py:1969 in                     │               
+                             │ _exec_single_context             │               
+                             │                                  │               
+                             │   1966 │   │   │   │   │   │   │ │               
+                             │   1967 │   │   │   │   │   │   │ │               
+                             │   1968 │   │   │   │   if not ev │               
+                             │ ❱ 1969 │   │   │   │   │   self. │               
+                             │   1970 │   │   │   │   │   │   c │               
+                             │   1971 │   │   │   │   │   )     │               
+                             │   1972                           │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/sqlalchemy/engine/def │               
+                             │ ault.py:952 in do_execute        │               
+                             │                                  │               
+                             │    949 │   │   cursor.executeman │               
+                             │    950 │                         │               
+                             │    951 │   def do_execute(self,  │               
+                             │ ❱  952 │   │   cursor.execute(st │               
+                             │    953 │                         │               
+                             │    954 │   def do_execute_no_par │               
+                             │    955 │   │   cursor.execute(st │               
+                             │                                  │               
+                             │ /home/master/.local/verify/phase │               
+                             │ -7-r001/.venv/lib/python3.12/sit │               
+                             │ e-packages/psycopg/cursor.py:117 │               
+                             │  in execute                      │               
+                             │                                  │               
+                             │   114 │   │   │   │   │   self._ │               
+                             │   115 │   │   │   │   )          │               
+                             │   116 │   │   except e._NO_TRACE │               
+                             │ ❱ 117 │   │   │   raise ex.with_ │               
+                             │   118 │   │   return self        │               
+                             │   119 │                          │               
+                             │   120 │   def executemany(       │               
+                             ╰──────────────────────────────────╯               
+                             ProgrammingError:                                  
+                             (psycopg.errors.UndefinedTable)                    
+                             relation "workspaces" does not exist               
+                             LINE 1: SELECT id FROM workspaces                  
+                             ORDER BY created_at LIMIT 1                        
+                                                    ^                           
+                             [SQL: SELECT id FROM workspaces                    
+                             ORDER BY created_at LIMIT 1]                       
+                             (Background on this error at:                      
+                             https://sqlalche.me/e/20/f405)                     
+{"ts": "2026-09-03T21:02:24.147983+00:00", "level": "INFO", "logger": "agent_colab.access", "message": "GET /api/v1/accounts 401", "correlation_id": "corr-467659a3ed4745a7", "method": "GET", "path": "/api/v1/accounts", "status": 401, "duration_ms": 2000, "outcome": "error"}
+[09/03/26 21:02:24] INFO     HTTP Request: GET                   _client.py:1085
+                             http://testserver/api/v1/accounts                  
+                             "HTTP/1.1 401 Unauthorized"                        
+{"ts": "2026-09-03T21:02:24.153020+00:00", "level": "INFO", "logger": "agent_colab.access", "message": "GET /api/v1/settings 401", "correlation_id": "corr-7ba967e0db314b65", "method": "GET", "path": "/api/v1/settings", "status": 401, "duration_ms": 2, "outcome": "error"}
+                    INFO     HTTP Request: GET                   _client.py:1085
+                             http://testserver/api/v1/settings                  
+                             "HTTP/1.1 401 Unauthorized"                        
+{"ts": "2026-09-03T21:02:24.158296+00:00", "level": "INFO", "logger": "agent_colab.access", "message": "GET /api/v1/secrets 401", "correlation_id": "corr-58dfb2e6858e4921", "method": "GET", "path": "/api/v1/secrets", "status": 401, "duration_ms": 2, "outcome": "error"}
+                    INFO     HTTP Request: GET                   _client.py:1085
+                             http://testserver/api/v1/secrets                   
+                             "HTTP/1.1 401 Unauthorized"                        
+{"ts": "2026-09-03T21:02:24.179460+00:00", "level": "INFO", "logger": "agent_colab.access", "message": "GET /api/v1/audit 401", "correlation_id": "corr-919d2b565431436e", "method": "GET", "path": "/api/v1/audit", "status": 401, "duration_ms": 17, "outcome": "error"}
+                    INFO     HTTP Request: GET                   _client.py:1085
+                             http://testserver/api/v1/audit                     
+                             "HTTP/1.1 401 Unauthorized"                        
+{"ts": "2026-09-03T21:02:24.186639+00:00", "level": "INFO", "logger": "agent_colab.access", "message": "GET /api/v1/ops/overview 401", "correlation_id": "corr-c836ec9bb25e4403", "method": "GET", "path": "/api/v1/ops/overview", "status": 401, "duration_ms": 2, "outcome": "error"}
+                    INFO     HTTP Request: GET                   _client.py:1085
+                             http://testserver/api/v1/ops/overvi                
+                             ew "HTTP/1.1 401 Unauthorized"                     
+                    WARNING  database unavailable: ProgrammingError errors.py:56
+{"ts": "2026-09-03T21:02:24.197808+00:00", "level": "INFO", "logger": "agent_colab.access", "message": "POST /api/v1/auth/sessions 503", "correlation_id": "corr-ed40500e41ff4b00", "method": "POST", "path": "/api/v1/auth/sessions", "status": 503, "duration_ms": 6, "outcome": "error"}
+                    INFO     HTTP Request: POST                  _client.py:1085
+                             http://testserver/api/v1/auth/sessi                
+                             ons "HTTP/1.1 503 Service                          
+                             Unavailable"                                       
+                    INFO     StreamableHTTP       streamable_http_manager.py:152
+                             session manager                                    
+                             shutting down                                      
+{
+  "container": {
+    "blocking": 36,
+    "counts": {
+      "CRITICAL": 0,
+      "HIGH": 36,
+      "LOW": 0,
+      "MEDIUM": 0,
+      "UNKNOWN": 0
+    },
+    "findings": [
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-76642",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "bsdutils 1:2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78408",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "bsdutils 1:2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78409",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "bsdutils 1:2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78410",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "bsdutils 1:2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-76642",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libblkid1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78408",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libblkid1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78409",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libblkid1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78410",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libblkid1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-76642",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "liblastlog2-2 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78408",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "liblastlog2-2 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78409",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "liblastlog2-2 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78410",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "liblastlog2-2 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-76642",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libmount1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78408",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libmount1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78409",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libmount1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78410",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libmount1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-76642",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libsmartcols1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78408",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libsmartcols1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78409",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libsmartcols1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78410",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libsmartcols1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-76642",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libuuid1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78408",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libuuid1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78409",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libuuid1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78410",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "libuuid1 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-76642",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "login 1:4.16.0-2+really2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78408",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "login 1:4.16.0-2+really2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78409",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "login 1:4.16.0-2+really2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78410",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "login 1:4.16.0-2+really2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-76642",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "mount 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78408",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "mount 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78409",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "mount 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78410",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "mount 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-76642",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "util-linux 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78408",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "util-linux 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78409",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "util-linux 2.41.5-0+deb13u1"
+      },
+      {
+        "fixed_version": null,
+        "id": "CVE-2026-78410",
+        "image": "agent-colab/server:8.0.0-test",
+        "severity": "HIGH",
+        "title": "util-linux 2.41.5-0+deb13u1"
+      }
+    ],
+    "images": [
+      "agent-colab/server:8.0.0-test",
+      "agent-colab/web-admin:8.0.0-test"
+    ],
+    "ran": true,
+    "ran_at": "2026-09-03T21:02:19+00:00",
+    "scan": "container",
+    "schema_id": "colab.security-scan.v1",
+    "tool": "trivy"
+  },
+  "dependency": {
+    "blocking": 0,
+    "counts": {
+      "CRITICAL": 0,
+      "HIGH": 0,
+      "LOW": 0,
+      "MEDIUM": 0,
+      "UNKNOWN": 0
+    },
+    "findings": [],
+    "ran": true,
+    "ran_at": "2026-09-03T21:01:40+00:00",
+    "scan": "dependency",
+    "schema_id": "colab.security-scan.v1",
+    "tools": [
+      "pip-audit",
+      "pnpm audit"
+    ]
+  },
+  "dynamic": {
+    "base_url": "in-process",
+    "blocking": 0,
+    "counts": {
+      "CRITICAL": 0,
+      "HIGH": 0,
+      "LOW": 0,
+      "MEDIUM": 0,
+      "UNKNOWN": 0
+    },
+    "findings": [],
+    "ran": true,
+    "ran_at": "2026-09-03T21:02:24+00:00",
+    "scan": "dynamic",
+    "schema_id": "colab.security-scan.v1"
+  },
+  "sast": {
+    "blocking": 0,
+    "counts": {
+      "CRITICAL": 0,
+      "HIGH": 0,
+      "LOW": 0,
+      "MEDIUM": 0,
+      "UNKNOWN": 0
+    },
+    "findings": [],
+    "ran": true,
+    "ran_at": "2026-09-03T21:01:38+00:00",
+    "scan": "sast",
+    "scanned": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 54410,
+      "nosec": 0,
+      "skipped_tests": 47
+    },
+    "schema_id": "colab.security-scan.v1",
+    "tool": "bandit"
+  }
+}
+FAILED_SCANS=container
+
+EXIT_CODE=1

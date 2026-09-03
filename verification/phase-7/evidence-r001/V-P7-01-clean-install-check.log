@@ -1,0 +1,8 @@
+COMMAND: uv run python -m tools.clean_install --check
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+{"available": false, "detail": "COLAB_SERVER_IMAGE is not set (build a release first)"}
+EXIT_CODE=1
+Required variables checked by name only:
+COLAB_SERVER_IMAGE=absent
+COLAB_MATTERMOST_URL=absent
+COLAB_MATTERMOST_BOT_TOKEN=absent

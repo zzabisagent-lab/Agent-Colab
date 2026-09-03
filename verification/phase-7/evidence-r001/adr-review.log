@@ -1,0 +1,64 @@
+Applicable ADR review hashes and headings
+431ebecfcdf8829e13d8e1803dc3beaac8b62392c59d7a981174e9e69e0c42d0  docs/adr/ADR-0001-baseline-and-v8-principles.md
+7a66d7da8b0bec073c940769fc1ed9ca98fc86674d5f5c9a9bb47af5e823638d  docs/adr/ADR-0002-technology-stack-and-pins.md
+95a9a6d7f382825420b65b236a2a5c88843dfad9caa23ccf0e49305048444647  docs/adr/ADR-0003-environment-inventory-and-dependency-decisions.md
+a22e27dc68026954cb5012bbdae8995cb27a93a87765c590564238cf92ab5451  docs/adr/ADR-0004-deterministic-defaults.md
+c93e992d7348a40ebd299607bd1c217e73b973ae6b2a13d1baa56d75c46b0076  docs/adr/ADR-0005-repository-conventions-and-identities.md
+4a2a8fd66ed3dd0933e9b85ccf915b4834e5263547c4e81f7cc9ba8b44c1aa5a  docs/adr/ADR-0006-schedule-contract.md
+2445ff70c7558dcae8ec20155307221e72d4fdddbdf93ff423753e2c22d9e901  docs/adr/ADR-0007-setup-bootstrap.md
+906d08fba5651e0ff06fb8632038fbf43a12d63a7bc1a5fcaccbb688af02cdc2  docs/adr/ADR-0008-phase1-core-decisions.md
+e72a488e2ff4c0145469b0ef277a595a52c0830c813a816a7de9ae0f1eec3bd3  docs/adr/ADR-0009-phase2-channel-decisions.md
+3d6240ba2cd52b6bb62df9eedd5563f06ebadaf757311600de713a044e53f3db  docs/adr/ADR-0010-phase3-agent-decisions.md
+b6ec2850affd6f8df0a808640cc53abd444712c121dbd9854d8d876308c87c72  docs/adr/ADR-0011-phase4-admin-decisions.md
+ec96e53decda5cf09e46dac97625bdc6bcb3df9488a9060de063231f464cca59  docs/adr/ADR-0012-phase5-schedule-decisions.md
+51618aefb59942612f4b78eb85234bec2a2183d1b78f8a75775ad81e7f76d0e4  docs/adr/ADR-0013-phase6-collaboration-decisions.md
+docs/adr/ADR-0001-baseline-and-v8-principles.md:1:# ADR-0001: Adopt the v8 documents as the protected baseline
+docs/adr/ADR-0001-baseline-and-v8-principles.md:6:## Context
+docs/adr/ADR-0001-baseline-and-v8-principles.md:11:## Decision
+docs/adr/ADR-0001-baseline-and-v8-principles.md:31:## Consequences
+docs/adr/ADR-0013-phase6-collaboration-decisions.md:1:# ADR-0013: Phase 6 collaboration and documentation decisions
+docs/adr/ADR-0013-phase6-collaboration-decisions.md:6:## Decisions
+docs/adr/ADR-0013-phase6-collaboration-decisions.md:33:## Consequences
+docs/adr/ADR-0010-phase3-agent-decisions.md:1:# ADR-0010: Phase 3 generic-Agent decisions
+docs/adr/ADR-0010-phase3-agent-decisions.md:6:## Decisions
+docs/adr/ADR-0010-phase3-agent-decisions.md:32:## Consequences
+docs/adr/ADR-0012-phase5-schedule-decisions.md:1:# ADR-0012: Phase 5 scheduled-work decisions
+docs/adr/ADR-0012-phase5-schedule-decisions.md:6:## Decisions
+docs/adr/ADR-0012-phase5-schedule-decisions.md:33:## Consequences
+docs/adr/ADR-0009-phase2-channel-decisions.md:1:# ADR-0009: Phase 2 channel decisions
+docs/adr/ADR-0009-phase2-channel-decisions.md:6:## Decisions
+docs/adr/ADR-0009-phase2-channel-decisions.md:18:4. **Bridge per channel with server-side relay identity.** A Telegram Bridge belongs to exactly
+docs/adr/ADR-0009-phase2-channel-decisions.md:38:## Consequences
+docs/adr/ADR-0008-phase1-core-decisions.md:1:# ADR-0008: Phase 1 core decisions
+docs/adr/ADR-0008-phase1-core-decisions.md:6:## Decisions
+docs/adr/ADR-0007-setup-bootstrap.md:1:# ADR-0007: Setup state, token, and pre-DB bootstrap store
+docs/adr/ADR-0007-setup-bootstrap.md:6:## Decisions
+docs/adr/ADR-0007-setup-bootstrap.md:30:## Consequences
+docs/adr/ADR-0006-schedule-contract.md:1:# ADR-0006: Schedule contract decisions (P0-08)
+docs/adr/ADR-0006-schedule-contract.md:6:## Decisions
+docs/adr/ADR-0006-schedule-contract.md:27:8. **Lease-expiry recovery** is modelled as `CLAIMED→DUE` (the claim is released and re-claimed by
+docs/adr/ADR-0006-schedule-contract.md:32:## Consequences
+docs/adr/ADR-0005-repository-conventions-and-identities.md:1:# ADR-0005: Repository conventions, evidence layout, and implementer/verifier identities
+docs/adr/ADR-0005-repository-conventions-and-identities.md:6:## Layout
+docs/adr/ADR-0005-repository-conventions-and-identities.md:17:## Identities
+docs/adr/ADR-0005-repository-conventions-and-identities.md:24:`identity_graph_version = identity-v8-001`. The two identities share no account, credential,
+docs/adr/ADR-0005-repository-conventions-and-identities.md:25:alias, or session. The fingerprints are computed from identity labels, never from secrets, and
+docs/adr/ADR-0005-repository-conventions-and-identities.md:28:## Branching
+docs/adr/ADR-0005-repository-conventions-and-identities.md:33:## Addendum (Phase 0): verifier process sandbox
+docs/adr/ADR-0004-deterministic-defaults.md:1:# ADR-0004: Deterministic verification defaults
+docs/adr/ADR-0004-deterministic-defaults.md:6:## Decision
+docs/adr/ADR-0004-deterministic-defaults.md:13:an injectable `Clock` (`server/domain/clock.py`); production uses the system UTC clock and tests
+docs/adr/ADR-0002-technology-stack-and-pins.md:1:# ADR-0002: Technology stack and version pins
+docs/adr/ADR-0002-technology-stack-and-pins.md:6:## Decision
+docs/adr/ADR-0003-environment-inventory-and-dependency-decisions.md:1:# ADR-0003: Environment inventory and dependency decisions (development plan §25)
+docs/adr/ADR-0003-environment-inventory-and-dependency-decisions.md:6:## Inventory of the build/verification host
+docs/adr/ADR-0003-environment-inventory-and-dependency-decisions.md:20:## Decisions per §25 row
+docs/adr/ADR-0003-environment-inventory-and-dependency-decisions.md:24:| Deployment host/container runtime/inventory | Target host from `.env` (SSH). Container runtime on the target is confirmed during Phase 7 install; Compose is the deployment method (§23). |
+docs/adr/ADR-0003-environment-inventory-and-dependency-decisions.md:33:| Distinct verification Agent identity | Codex (`agent-codex`) with its own ChatGPT credential (ADR-0005). |
+docs/adr/ADR-0003-environment-inventory-and-dependency-decisions.md:36:| Secret master key custody/provider | Encrypted local provider mandatory; master key file with owner-only permission outside DB/backups (Phase 4). |
+docs/adr/ADR-0003-environment-inventory-and-dependency-decisions.md:44:| DNS/TLS/firewall | Deployment-target decision at Phase 7 install; Setup stays loopback-bound. |
+docs/adr/ADR-0003-environment-inventory-and-dependency-decisions.md:47:## Blockers raised to the user
+docs/adr/ADR-0011-phase4-admin-decisions.md:1:# ADR-0011: Phase 4 admin, setup and secret decisions
+docs/adr/ADR-0011-phase4-admin-decisions.md:6:## Decisions
+docs/adr/ADR-0011-phase4-admin-decisions.md:11:2. **Fail-closed re-authentication seam.** `server/security/reauth.require_recent_mfa` guards
+docs/adr/ADR-0011-phase4-admin-decisions.md:29:## Consequences

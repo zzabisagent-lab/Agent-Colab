@@ -1,0 +1,23 @@
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/master/.local/verify/phase-7-r001/.venv/bin/python
+hypothesis profile 'default'
+rootdir: /home/master/.local/verify/phase-7-r001
+configfile: pyproject.toml
+plugins: asyncio-1.4.0, cov-7.1.0, anyio-4.14.2, hypothesis-6.167.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 9 items
+
+tests/integration/test_security_scans.py::test_sast_reports_no_high_or_critical PASSED [ 11%]
+tests/integration/test_security_scans.py::test_dependency_audit_reports_no_high_or_critical PASSED [ 22%]
+tests/integration/test_security_scans.py::test_dynamic_scan_is_clean_on_the_real_application PASSED [ 33%]
+tests/integration/test_security_scans.py::test_dynamic_scan_detects_an_unprotected_application PASSED [ 44%]
+tests/integration/test_security_scans.py::test_scan_reports_are_written_for_the_evidence_archive PASSED [ 55%]
+tests/integration/test_release_artifacts.py::test_manifest_pins_image_digests_and_sboms PASSED [ 66%]
+tests/integration/test_release_artifacts.py::test_recorded_sbom_hashes_still_match_their_files PASSED [ 77%]
+tests/integration/test_release_artifacts.py::test_python_sbom_lists_the_pinned_dependency_set PASSED [ 88%]
+tests/integration/test_release_artifacts.py::test_recorded_digests_still_resolve_to_the_same_content PASSED [100%]
+
+============================== 9 passed in 20.17s ==============================
+
+EXIT_CODE=0

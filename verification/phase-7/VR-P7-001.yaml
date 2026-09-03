@@ -1,0 +1,181 @@
+verification_id: VR-P7-001
+criteria_version: v8.0
+implementer_agent_id: agent-claude-code
+verifier_agent_id: agent-codex
+implementer_account_id: account-implementer-claude
+verifier_account_id: account-verifier-codex
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+verifier_credential_fingerprint: sha256:ecbd74ce21cb00f0e36136b78a0fe57c8241013e4125100e2871351c90b530b9
+identity_graph_version: identity-v8-001
+effective_policy_hash: sha256:41ddbafbf2d606fa1aac8ee39e47f170fa01a5bd8a2a24c78b1ffc6c621ba678
+target_commit: 7ad91d0bc4fa94f11a5d1cb90bcc0371049a9806
+environment_fingerprint: sha256:c59cfa237a208c5d095316900e09697fa2de9002ba48a115dd50f71495d852ba
+started_at: '2026-09-03T20:59:33Z'
+completed_at: '2026-09-03T21:44:40Z'
+tests:
+  - id: V-P7-01
+    result: NOT_RUN
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-01-clean-install-check.log
+    note: The production-like method was unavailable because COLAB_SERVER_IMAGE, COLAB_MATTERMOST_URL, and COLAB_MATTERMOST_BOT_TOKEN were absent; no narrower test was treated as a substitute.
+  - id: V-P7-02
+    result: FAIL
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-02-13-22-e2e-tabletop.log + verification/phase-7/evidence-r001/method-gap-audit.log
+    note: Twenty application-path iterations passed, but the mandatory Mattermost path was replaced by FakeMattermostClient and therefore does not evidence the external Mattermost integration.
+  - id: V-P7-03
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-03-peak-30m.log
+    note: The 1800.6-second peak run sustained 54.92 write rps and 29.96 read rps over 152846 requests with zero errors/duplicates; write/read p95 were 288.9/108.7 ms.
+  - id: V-P7-04
+    result: FAIL
+    evidence_ref: verification/phase-7/evidence-r001/method-gap-audit.log + verification/phase-7/evidence-r001/V-P7-04-short-diagnostic.log
+    note: A one-minute diagnostic passed, but the supplied soak test explicitly substitutes a default 30-minute bounded window for the mandatory 24-hour soak; the required duration was not demonstrated.
+  - id: V-P7-05
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-05-10-12-14-19-20-db.log
+    note: Five named non-DB dependencies were failed for ten virtual minutes; core writes persisted and the related outbox drained exactly once within five virtual minutes.
+  - id: V-P7-06
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-05-10-12-14-19-20-db.log
+    note: An independently removed database caused readiness and writes to return 503 inside 30 seconds, with the Event chain identical after recovery.
+  - id: V-P7-07
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-05-10-12-14-19-20-db.log
+    note: Restore into an empty disposable database reproduced the required state and hashes within the RPO/RTO limits.
+  - id: V-P7-08
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-05-10-12-14-19-20-db.log
+    note: Full Event replay produced an identical projection snapshot.
+  - id: V-P7-09
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-05-10-12-14-19-20-db.log
+    note: Previous-release fixtures upgraded with data, settings, secret references, and Schedules preserved.
+  - id: V-P7-10
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-05-10-12-14-19-20-db.log
+    note: Application rollback and irreversible-migration forward-fix scenarios completed with consistent hashes and migration ledger.
+  - id: V-P7-11
+    result: FAIL
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-11-four-scans.json
+    note: SAST, dependency, and dynamic scans were clean, but Trivy found 36 High container vulnerabilities.
+  - id: V-P7-12
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-05-10-12-14-19-20-db.log
+    note: Agent, Mattermost, Telegram, and administrator credentials rotated sequentially; old fingerprints were rejected and nine Tasks/Events remained unique.
+  - id: V-P7-13
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-02-13-22-e2e-tabletop.log
+    note: All 20 detection, isolation, recovery, and post-verification checkpoints across five scenarios passed without operational secrets.
+  - id: V-P7-14
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-05-10-12-14-19-20-db.log
+    note: Synthetic failures raised defined alerts within the probe window and dashboard/log state, cause, and correlation IDs matched.
+  - id: V-P7-15
+    result: FAIL
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-15-artifact-inspection.log
+    note: SBOM hashes and image content digests resolve, but signature is null and the manifest identifies a different source revision than the target commit.
+  - id: V-P7-16
+    result: FAIL
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-16-17-archive-post-report.log
+    note: The post-report archive checker exited 1 because Phase 7 has no PASSED Verifier report; all prior phases were retrievable and the secret scan was clean.
+  - id: V-P7-17
+    result: FAIL
+    evidence_ref: verification/phase-7/evidence-r001/method-gap-audit.log
+    note: Open residual risks have owners and deadlines but no acceptor field, contrary to the mandatory owner/deadline/acceptor criterion.
+  - id: V-P7-18
+    result: FAIL
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-18-approval-state.log
+    note: REPORT.md and an explicit deployment decision are absent. No deployment artifact was found, so the no-deployment-before-approval half is intact but the explicit-approval criterion is unmet.
+  - id: V-P7-19
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-05-10-12-14-19-20-db.log
+    note: Injectable-clock daily, weekly, and monthly boundary checks matched production-path catalog retention after clock reset.
+  - id: V-P7-20
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-05-10-12-14-19-20-db.log
+    note: A pre-deletion backup kept readiness closed until tombstone reconciliation and could not decrypt or reactivate the destroyed key afterward.
+  - id: V-P7-21
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-21-runbook-lint.log
+    note: Seven runbooks contained all four procedure sections and all seven critical alerts linked to a runbook.
+  - id: V-P7-22
+    result: FAIL
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-02-13-22-e2e-tabletop.log + verification/phase-7/evidence-r001/method-gap-audit.log
+    note: Ten application-path iterations passed with cards, threads, and notifications, but every Mattermost interaction used FakeMattermostClient rather than Mattermost.
+findings:
+  - id: F-P7-001
+    severity: High
+    affected: [REQ-QGAT-007, V-P7-11]
+    summary: Pinned release images contain 36 High-severity vulnerabilities.
+    reproduction:
+      - Run each scan function from tools.security_scan against release/manifest.json.
+      - Inspect the container report's counts and blocking fields.
+    expected: SAST, dependency, container, and dynamic scans contain zero High or Critical findings.
+    actual: The Trivy container scan ran and returned 36 High findings; the other three scans returned zero blocking findings.
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-11-four-scans.json
+    impact: The mandatory security gate is open and vulnerable container packages would ship.
+    fix_condition: Rebuild both target-commit images on remediated base/runtime packages and independently rerun all four scans with zero High or Critical findings.
+  - id: F-P7-002
+    severity: Medium
+    affected: [REQ-RELS-001, V-P7-15]
+    summary: Release artifacts are unsigned and are not pinned to the target commit.
+    reproduction:
+      - Inspect release/manifest.json for source_revision and signature.
+      - Compare source_revision with git rev-parse HEAD and search the release workflow for signing or attestation.
+    expected: The target release has immutable image digests, matching SBOM hashes, and a verifiable signature tied to commit 7ad91d0bc4fa94f11a5d1cb90bcc0371049a9806.
+    actual: Signature is null; no signature artifact or signing workflow exists; source_revision is 7d817278ebe3ec417f518fe870d674838f199076 rather than the target commit.
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-15-artifact-inspection.log
+    impact: Consumers cannot authenticate the artifacts or establish that they represent the verified target.
+    fix_condition: Build artifacts from the target commit, sign/attest them, record the verifiable signature, and independently verify digest, SBOM, signature, and source revision.
+  - id: F-P7-003
+    severity: Medium
+    affected: [REQ-OPS-003, V-P7-04]
+    summary: The required 24-hour soak is replaced by a 30-minute default.
+    reproduction:
+      - Inspect tests/e2e/test_soak.py.
+      - Observe that AGENT_COLAB_SOAK_MINUTES defaults to 30 and the module explicitly calls this a bounded substitute for 24 hours.
+    expected: Bridge, heartbeat, scheduler, and lease run for 24 hours with zero leaks, duplicates, or stuck work.
+    actual: No 24-hour independent run exists; the supplied test's default duration is 30 minutes.
+    evidence_ref: verification/phase-7/evidence-r001/method-gap-audit.log
+    impact: Long-duration resource growth and stuck-work behavior remain unverified.
+    fix_condition: Execute the production-path soak for 24 continuous hours and preserve duration plus leak/duplicate/stuck metrics meeting the criterion.
+  - id: F-P7-004
+    severity: Medium
+    affected: [REQ-MMUX-004, V-P7-02, V-P7-22]
+    summary: Human-path acceptance replaces Mattermost with an in-process fake.
+    reproduction:
+      - Run tests/e2e/test_human_path_acceptance.py and observe 20/20 and 10/10 application-path successes.
+      - 'Inspect the fixture and observe prov.set_client_factory(lambda inst: FAKE) with FakeMattermostClient.'
+    expected: The mandatory paths traverse Mattermost itself, including real cards, threads, callbacks, and notifications.
+    actual: The tests directly call Router and ActionHandler and drain to FakeMattermostClient; no Mattermost server or API participates.
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-02-13-22-e2e-tabletop.log + verification/phase-7/evidence-r001/method-gap-audit.log
+    impact: Provider transport, Mattermost rendering/callback compatibility, and external thread behavior are not acceptance-tested.
+    fix_condition: Reproduce 20 consecutive full E2E successes and 10 consecutive Human-only successes through a forum-enabled Mattermost test tenant with all stated UI/message assertions.
+  - id: F-P7-005
+    severity: Medium
+    affected: [REQ-RELS-002, V-P7-17]
+    summary: Residual risks have no recorded acceptor.
+    reproduction:
+      - Inspect docs/security/residual-risks.md.
+      - Compare its columns with the V-P7-17 owner/deadline/acceptor criterion.
+    expected: Every open residual risk identifies an owner, deadline, and acceptor.
+    actual: Three risks list owner and deadline, but the register has no acceptor column or values.
+    evidence_ref: verification/phase-7/evidence-r001/method-gap-audit.log
+    impact: Risk acceptance authority and accountability cannot be established.
+    fix_condition: Record an eligible acceptor for every open risk and independently validate all three required fields.
+  - id: F-P7-006
+    severity: Medium
+    affected: [REQ-RELS-002, V-P7-18]
+    summary: The mandatory deployment-approval record and final development report are absent.
+    reproduction:
+      - Test for REPORT.md in the target checkout.
+      - Search non-baseline repository state for a recorded explicit deployment decision and deployment artifacts.
+    expected: The final development report is delivered and an explicit user decision is recorded before any deployment action.
+    actual: REPORT.md and an explicit decision are absent; no deployment artifact was found.
+    evidence_ref: verification/phase-7/evidence-r001/V-P7-18-approval-state.log
+    impact: V-P7-18 cannot pass, and the baseline sequencing makes this criterion depend on an action documented to occur only after Phase 7 passes.
+    fix_condition: Resolve the baseline sequencing conflict, deliver the final report, record the user's explicit decision, and prove zero deployment action preceded it.
+result: FAILED
+residual_risks:
+  - V-P7-01 remains NOT_RUN because required clean-install image and Mattermost inputs were absent.
+  - A 24-hour soak was not attempted because the supplied implementation and evidence use a shorter substitute; this is recorded as F-P7-003 and V-P7-04 FAIL.
+  - The post-report release archive check retrieves prior phases but necessarily reports that Phase 7 has no PASSED report.

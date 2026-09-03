@@ -1,0 +1,367 @@
+Baseline and target hashes
+0f6440a0c9ca7a0732ce704b3b2b2c00954608da493d201aed81e479c5d75a90  docs/baseline/agent-colab-development-plan_en-v8.md
+2fe485e3e4868a8e1e2a38d9f7daecbf6d626c5af4f1d29e868e259e9869ab24  docs/baseline/agent-colab-project-spec_en-v8.md
+9131d0f8948bf0af70f594dae102b654b96950fb09216cffdab8750e648f0bc3  docs/baseline/agent-colab-validation-plan_en-v8.md
+1b227e1c0d6c9f97307e7f7d2133a8a47aa4cb3f93a25cb9d760116521b1d7c5  schemas/documents/verifier-report.v1.schema.json
+
+Target metadata
+commit 7ad91d0bc4fa94f11a5d1cb90bcc0371049a9806
+Merge: 514dcc4 36d30f5
+Author:     zzabisagent-lab <zzabisagent-lab@users.noreply.github.com>
+AuthorDate: Thu Sep 3 20:58:46 2026 +0000
+Commit:     zzabisagent-lab <zzabisagent-lab@users.noreply.github.com>
+CommitDate: Thu Sep 3 20:58:46 2026 +0000
+
+    Merge origin/phase-7: Playwright browser install in CI and the wizard e2e database password
+    
+    The workflow conflict keeps both: the browser install step and the named gates.
+    
+    Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+    Claude-Session: https://claude.ai/code/session_01FyZk57QK367z2LN69RRxNR
+
+Phase 6 to target diff stat
+ .github/workflows/ci.yml                           |     58 +-
+ .github/workflows/release.yml                      |     51 +
+ Makefile                                           |      1 +
+ PROGRESS.md                                        |     25 +-
+ deploy/production/Dockerfile.server                |     66 +
+ deploy/production/Dockerfile.web-admin             |     16 +
+ deploy/production/compose.yaml                     |     66 +
+ deploy/production/nginx.conf                       |     11 +
+ docs/architecture/phase7-release.md                |     16 +
+ docs/operations/acceptance-path.md                 |     51 +
+ docs/operations/backup-restore.md                  |     99 +
+ docs/operations/load-testing.md                    |    106 +
+ docs/operations/observability.md                   |     81 +
+ docs/operations/release-build.md                   |     39 +
+ docs/operations/runbooks/bridge-loop.md            |     45 +
+ docs/operations/runbooks/credential-rotation.md    |     48 +
+ docs/operations/runbooks/db-restore.md             |     47 +
+ docs/operations/runbooks/hard-delete-restore.md    |     43 +
+ docs/operations/runbooks/nas-full.md               |     41 +
+ docs/operations/runbooks/scheduler-storm.md        |     45 +
+ docs/operations/runbooks/secret-leak.md            |     51 +
+ docs/operations/upgrade-rollback.md                |     72 +
+ docs/security/hardening.md                         |     46 +
+ docs/security/residual-risks.md                    |     12 +
+ .../phase-2/SELF-V-P2-31/attempt-03/output.log     |      1 +
+ .../phase-2/SELF-V-P2-31/attempt-03/result.json    |     22 +
+ .../phase-5/SELF-V-P5-23/attempt-02/output.log     |      1 +
+ .../phase-5/SELF-V-P5-23/attempt-02/result.json    |     20 +
+ .../phase-7/SELF-V-P7-01/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-01/attempt-01/result.json    |     20 +
+ .../phase-7/SELF-V-P7-02/attempt-01/output.log     |      3 +
+ .../phase-7/SELF-V-P7-02/attempt-01/result.json    |     21 +
+ .../phase-7/SELF-V-P7-02/attempt-02/output.log     |     28 +
+ .../phase-7/SELF-V-P7-02/attempt-02/result.json    |     21 +
+ .../phase-7/SELF-V-P7-03/attempt-01/output.log     | 110487 ++++++++++++++++++
+ .../phase-7/SELF-V-P7-03/attempt-01/result.json    |     21 +
+ .../phase-7/SELF-V-P7-03/attempt-02/output.log     |      1 +
+ .../phase-7/SELF-V-P7-03/attempt-02/result.json    |     19 +
+ .../phase-7/SELF-V-P7-03/attempt-03/output.log     |     85 +
+ .../phase-7/SELF-V-P7-03/attempt-03/result.json    |     20 +
+ .../phase-7/SELF-V-P7-03/attempt-04/output.log     |     54 +
+ .../phase-7/SELF-V-P7-03/attempt-04/result.json    |     20 +
+ .../phase-7/SELF-V-P7-04/attempt-01/output.log     |     66 +
+ .../phase-7/SELF-V-P7-04/attempt-01/result.json    |     20 +
+ .../phase-7/SELF-V-P7-05/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-05/attempt-01/result.json    |     20 +
+ .../phase-7/SELF-V-P7-06/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-06/attempt-01/result.json    |     20 +
+ .../phase-7/SELF-V-P7-07/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-07/attempt-01/result.json    |     22 +
+ .../phase-7/SELF-V-P7-08/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-08/attempt-01/result.json    |     22 +
+ .../phase-7/SELF-V-P7-09/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-09/attempt-01/result.json    |     22 +
+ .../phase-7/SELF-V-P7-10/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-10/attempt-01/result.json    |     22 +
+ .../phase-7/SELF-V-P7-11/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-11/attempt-01/result.json    |     20 +
+ .../phase-7/SELF-V-P7-12/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-12/attempt-01/result.json    |     20 +
+ .../phase-7/SELF-V-P7-13/attempt-01/output.log     |      3 +
+ .../phase-7/SELF-V-P7-13/attempt-01/result.json    |     19 +
+ .../phase-7/SELF-V-P7-13/attempt-02/output.log     |     48 +
+ .../phase-7/SELF-V-P7-13/attempt-02/result.json    |     19 +
+ .../phase-7/SELF-V-P7-14/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-14/attempt-01/result.json    |     20 +
+ .../phase-7/SELF-V-P7-14/attempt-02/output.log     |      1 +
+ .../phase-7/SELF-V-P7-14/attempt-02/result.json    |     20 +
+ .../phase-7/SELF-V-P7-14/attempt-03/output.log     |      1 +
+ .../phase-7/SELF-V-P7-14/attempt-03/result.json    |     19 +
+ .../phase-7/SELF-V-P7-15/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-15/attempt-01/result.json    |     20 +
+ .../phase-7/SELF-V-P7-16/attempt-01/output.log     |      3 +
+ .../phase-7/SELF-V-P7-16/attempt-01/result.json    |     22 +
+ .../phase-7/SELF-V-P7-17/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-17/attempt-01/result.json    |     22 +
+ .../phase-7/SELF-V-P7-19/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-19/attempt-01/result.json    |     22 +
+ .../phase-7/SELF-V-P7-20/attempt-01/output.log     |      1 +
+ .../phase-7/SELF-V-P7-20/attempt-01/result.json    |     22 +
+ .../phase-7/SELF-V-P7-21/attempt-01/output.log     |      2 +
+ .../phase-7/SELF-V-P7-21/attempt-01/result.json    |     18 +
+ .../phase-7/SELF-V-P7-22/attempt-01/output.log     |      3 +
+ .../phase-7/SELF-V-P7-22/attempt-01/result.json    |     21 +
+ .../phase-7/SELF-V-P7-22/attempt-02/output.log     |     28 +
+ .../phase-7/SELF-V-P7-22/attempt-02/result.json    |     21 +
+ evidence/phase-7/install/clean-install.json        |     43 +
+ evidence/phase-7/manifest-inputs.yaml              |     20 +
+ evidence/phase-7/scans/container.json              |     20 +
+ evidence/phase-7/scans/dependency.json             |     19 +
+ evidence/phase-7/scans/dynamic.json                |     16 +
+ evidence/phase-7/scans/sast.json                   |     29 +
+ policy/alert-rules.yaml                            |    123 +
+ release/evidence-index.json                        |    359 +
+ release/manifest.json                              |     41 +
+ release/sbom-javascript-8.0.0-test.json            |     72 +
+ release/sbom-python-8.0.0-test.json                |   4311 +
+ server/agents/maintenance.py                       |     23 +
+ server/api/dispatch.py                             |     62 +
+ server/api/errors.py                               |     21 +
+ server/api/v1/ops.py                               |     17 +-
+ server/application/tasks.py                        |     21 +-
+ server/channels/approval_cards.py                  |     25 +-
+ server/channels/outbox.py                          |     42 +
+ server/channels/router.py                          |      4 +
+ server/channels/task_cards.py                      |     10 +-
+ server/db/engine.py                                |     23 +-
+ server/main.py                                     |     46 +-
+ server/notifications/rules.py                      |     17 +
+ server/observability/health.py                     |     55 +-
+ server/observability/logs.py                       |    180 +
+ server/ops/alerts.py                               |    263 +
+ server/ops/metrics.py                              |    155 +
+ server/ops/restore_gate.py                         |     65 +
+ server/schedules/notify.py                         |      6 +-
+ server/settings/registry.py                        |     29 +
+ tests/e2e/test_clean_install.py                    |     31 +
+ tests/e2e/test_human_path_acceptance.py            |    434 +
+ tests/e2e/test_incident_tabletop.py                |    490 +
+ tests/e2e/test_load_peak.py                        |     66 +
+ tests/e2e/test_release_evidence.py                 |     43 +
+ tests/e2e/test_setup_wizard_ui.py                  |      1 +
+ tests/e2e/test_soak.py                             |     63 +
+ tests/integration/phase7_recovery_seed.py          |    268 +
+ tests/integration/test_credential_rotation_db.py   |    227 +
+ tests/integration/test_database_outage_db.py       |    197 +
+ tests/integration/test_dependency_outage_db.py     |    214 +
+ tests/integration/test_notification_dispatch_db.py |    140 +
+ tests/integration/test_observability_alerts_db.py  |    260 +
+ tests/integration/test_recovery_db.py              |    395 +
+ tests/integration/test_release_artifacts.py        |    103 +
+ tests/integration/test_security_scans.py           |     78 +
+ tests/integration/test_upgrade_rollback.py         |     82 +
+ tests/load/__init__.py                             |      1 +
+ tests/load/generator.py                            |    105 +
+ tests/load/harness.py                              |    605 +
+ tests/load/population.py                           |    273 +
+ tests/load/profile.py                              |     55 +
+ tests/load/run.py                                  |    117 +
+ tests/unit/test_health.py                          |     11 +-
+ tools/backup.py                                    |    283 +-
+ tools/clean_install.py                             |    262 +
+ tools/evidence_archive.py                          |    176 +
+ tools/release_build.py                             |    275 +
+ tools/restore.py                                   |    145 +-
+ tools/runbook_lint.py                              |    109 +
+ tools/security_scan.py                             |    364 +
+ tools/upgrade_rehearsal.py                         |    390 +
+ verification/phase-6/VR-P6-002.yaml                |    137 +
+ verification/phase-6/VR-P6-002.yaml.sha256         |      1 +
+ .../phase-6/evidence-r002/approvals.junit.xml      |      1 +
+ .../evidence-r002/artifacts-publishers.junit.xml   |      1 +
+ .../phase-6/evidence-r002/brainstorm.junit.xml     |      1 +
+ .../phase-6/evidence-r002/command-summary.txt      |     26 +
+ .../phase-6/evidence-r002/documents.junit.xml      |      1 +
+ .../evidence-r002/regression-probes.junit.xml      |     28 +
+ .../phase-6/evidence-r002/report-validation.txt    |     14 +
+ .../phase-6/evidence-r002/run-metadata.txt         |     11 +
+ .../phase-6/evidence-r002/test_v_p6_29_low.py      |     24 +
+ .../evidence-r002/v-p6-08-20-automatic.junit.xml   |      1 +
+ .../phase-6/evidence-r002/v-p6-19-exact.junit.xml  |      1 +
+ .../evidence-r002/v-p6-24-blocked.junit.xml        |      1 +
+ .../evidence-r002/v-p6-25-schedule-run.junit.xml   |      1 +
+ .../phase-6/evidence-r002/v-p6-29-low.junit.xml    |      1 +
+ verification/phase-6/run-r002/events.jsonl         |     97 +
+ verification/phase-6/run-r002/last-message.txt     |      9 +
+ verification/phase-6/run-r002/manifest.yaml        |    429 +
+ verification/phase-6/run-r002/prompt.md            |     73 +
+ verification/phase-6/run-r002/run.json             |     18 +
+ verification/phase-6/run-r002/stderr.log           |      1 +
+ web-admin/tests/setup.spec.ts                      |      1 +
+ 171 files changed, 125769 insertions(+), 91 deletions(-)
+
+Phase 7 changed paths
+M	.github/workflows/ci.yml
+A	.github/workflows/release.yml
+M	Makefile
+M	PROGRESS.md
+A	deploy/production/Dockerfile.server
+A	deploy/production/Dockerfile.web-admin
+A	deploy/production/compose.yaml
+A	deploy/production/nginx.conf
+A	docs/architecture/phase7-release.md
+A	docs/operations/acceptance-path.md
+A	docs/operations/backup-restore.md
+A	docs/operations/load-testing.md
+A	docs/operations/observability.md
+A	docs/operations/release-build.md
+A	docs/operations/runbooks/bridge-loop.md
+A	docs/operations/runbooks/credential-rotation.md
+A	docs/operations/runbooks/db-restore.md
+A	docs/operations/runbooks/hard-delete-restore.md
+A	docs/operations/runbooks/nas-full.md
+A	docs/operations/runbooks/scheduler-storm.md
+A	docs/operations/runbooks/secret-leak.md
+A	docs/operations/upgrade-rollback.md
+A	docs/security/hardening.md
+A	docs/security/residual-risks.md
+A	evidence/phase-2/SELF-V-P2-31/attempt-03/output.log
+A	evidence/phase-2/SELF-V-P2-31/attempt-03/result.json
+A	evidence/phase-5/SELF-V-P5-23/attempt-02/output.log
+A	evidence/phase-5/SELF-V-P5-23/attempt-02/result.json
+A	evidence/phase-7/SELF-V-P7-01/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-01/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-02/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-02/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-02/attempt-02/output.log
+A	evidence/phase-7/SELF-V-P7-02/attempt-02/result.json
+A	evidence/phase-7/SELF-V-P7-03/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-03/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-03/attempt-02/output.log
+A	evidence/phase-7/SELF-V-P7-03/attempt-02/result.json
+A	evidence/phase-7/SELF-V-P7-03/attempt-03/output.log
+A	evidence/phase-7/SELF-V-P7-03/attempt-03/result.json
+A	evidence/phase-7/SELF-V-P7-03/attempt-04/output.log
+A	evidence/phase-7/SELF-V-P7-03/attempt-04/result.json
+A	evidence/phase-7/SELF-V-P7-04/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-04/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-05/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-05/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-06/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-06/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-07/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-07/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-08/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-08/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-09/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-09/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-10/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-10/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-11/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-11/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-12/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-12/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-13/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-13/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-13/attempt-02/output.log
+A	evidence/phase-7/SELF-V-P7-13/attempt-02/result.json
+A	evidence/phase-7/SELF-V-P7-14/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-14/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-14/attempt-02/output.log
+A	evidence/phase-7/SELF-V-P7-14/attempt-02/result.json
+A	evidence/phase-7/SELF-V-P7-14/attempt-03/output.log
+A	evidence/phase-7/SELF-V-P7-14/attempt-03/result.json
+A	evidence/phase-7/SELF-V-P7-15/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-15/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-16/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-16/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-17/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-17/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-19/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-19/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-20/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-20/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-21/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-21/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-22/attempt-01/output.log
+A	evidence/phase-7/SELF-V-P7-22/attempt-01/result.json
+A	evidence/phase-7/SELF-V-P7-22/attempt-02/output.log
+A	evidence/phase-7/SELF-V-P7-22/attempt-02/result.json
+A	evidence/phase-7/install/clean-install.json
+A	evidence/phase-7/manifest-inputs.yaml
+A	evidence/phase-7/scans/container.json
+A	evidence/phase-7/scans/dependency.json
+A	evidence/phase-7/scans/dynamic.json
+A	evidence/phase-7/scans/sast.json
+A	policy/alert-rules.yaml
+A	release/evidence-index.json
+A	release/manifest.json
+A	release/sbom-javascript-8.0.0-test.json
+A	release/sbom-python-8.0.0-test.json
+M	server/agents/maintenance.py
+M	server/api/dispatch.py
+M	server/api/errors.py
+M	server/api/v1/ops.py
+M	server/application/tasks.py
+M	server/channels/approval_cards.py
+M	server/channels/outbox.py
+M	server/channels/router.py
+M	server/channels/task_cards.py
+M	server/db/engine.py
+M	server/main.py
+M	server/notifications/rules.py
+M	server/observability/health.py
+A	server/observability/logs.py
+A	server/ops/alerts.py
+A	server/ops/metrics.py
+A	server/ops/restore_gate.py
+M	server/schedules/notify.py
+M	server/settings/registry.py
+A	tests/e2e/test_clean_install.py
+A	tests/e2e/test_human_path_acceptance.py
+A	tests/e2e/test_incident_tabletop.py
+A	tests/e2e/test_load_peak.py
+A	tests/e2e/test_release_evidence.py
+M	tests/e2e/test_setup_wizard_ui.py
+A	tests/e2e/test_soak.py
+A	tests/integration/phase7_recovery_seed.py
+A	tests/integration/test_credential_rotation_db.py
+A	tests/integration/test_database_outage_db.py
+A	tests/integration/test_dependency_outage_db.py
+A	tests/integration/test_notification_dispatch_db.py
+A	tests/integration/test_observability_alerts_db.py
+A	tests/integration/test_recovery_db.py
+A	tests/integration/test_release_artifacts.py
+A	tests/integration/test_security_scans.py
+A	tests/integration/test_upgrade_rollback.py
+A	tests/load/__init__.py
+A	tests/load/generator.py
+A	tests/load/harness.py
+A	tests/load/population.py
+A	tests/load/profile.py
+A	tests/load/run.py
+M	tests/unit/test_health.py
+M	tools/backup.py
+A	tools/clean_install.py
+A	tools/evidence_archive.py
+A	tools/release_build.py
+M	tools/restore.py
+A	tools/runbook_lint.py
+A	tools/security_scan.py
+A	tools/upgrade_rehearsal.py
+A	verification/phase-6/VR-P6-002.yaml
+A	verification/phase-6/VR-P6-002.yaml.sha256
+A	verification/phase-6/evidence-r002/approvals.junit.xml
+A	verification/phase-6/evidence-r002/artifacts-publishers.junit.xml
+A	verification/phase-6/evidence-r002/brainstorm.junit.xml
+A	verification/phase-6/evidence-r002/command-summary.txt
+A	verification/phase-6/evidence-r002/documents.junit.xml
+A	verification/phase-6/evidence-r002/regression-probes.junit.xml
+A	verification/phase-6/evidence-r002/report-validation.txt
+A	verification/phase-6/evidence-r002/run-metadata.txt
+A	verification/phase-6/evidence-r002/test_v_p6_29_low.py
+A	verification/phase-6/evidence-r002/v-p6-08-20-automatic.junit.xml
+A	verification/phase-6/evidence-r002/v-p6-19-exact.junit.xml
+A	verification/phase-6/evidence-r002/v-p6-24-blocked.junit.xml
+A	verification/phase-6/evidence-r002/v-p6-25-schedule-run.junit.xml
+A	verification/phase-6/evidence-r002/v-p6-29-low.junit.xml
+A	verification/phase-6/run-r002/events.jsonl
+A	verification/phase-6/run-r002/last-message.txt
+A	verification/phase-6/run-r002/manifest.yaml
+A	verification/phase-6/run-r002/prompt.md
+A	verification/phase-6/run-r002/run.json
+A	verification/phase-6/run-r002/stderr.log
+M	web-admin/tests/setup.spec.ts

@@ -176,14 +176,20 @@ def drain_channels(
 ) -> ChannelDrainResult:
     """Deliver due channel rows; failures only touch outbox/channel_posts rows (never Events)."""
     now = clock.now()
+    # the kind filter belongs in the query: rows of another kind (notifications have their own
+    # drain) would otherwise fill the batch and starve channel deliveries behind them
+    kinds = " OR ".join(f"left(kind, {len(k)}) = :k{i}" for i, k in enumerate(kinds_prefix))
+    params: dict[str, Any] = {"ws": uuid.UUID(workspace_id), "now": now, "lim": batch}
+    params.update({f"k{i}": k for i, k in enumerate(kinds_prefix)})
     rows = session.execute(
         text(
-            "SELECT id, outbox_id, kind, destination, payload, attempts, dedupe_key, created_at "
+            "SELECT id, outbox_id, kind, destination, payload, attempts, dedupe_key, created_at "  # noqa: S608
             "FROM delivery_outbox WHERE workspace_id = :ws AND status = 'pending' "
+            f"AND ({kinds or 'true'}) "
             "AND next_attempt_at <= :now ORDER BY next_attempt_at, id LIMIT :lim "
             "FOR UPDATE SKIP LOCKED"
         ),
-        {"ws": uuid.UUID(workspace_id), "now": now, "lim": batch},
+        params,
     ).all()
     result = ChannelDrainResult()
     for row_id, _outbox_id, kind, destination, payload, attempts, dedupe_key, created_at in rows:

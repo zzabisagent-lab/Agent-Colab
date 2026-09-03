@@ -1,0 +1,68 @@
+release/manifest.json
+{
+  "schema_id": "colab.release-manifest.v1",
+  "version": "8.0.0-test",
+  "source_revision": "7d817278ebe3ec417f518fe870d674838f199076",
+  "images": [
+    {
+      "built": true,
+      "dockerfile": "deploy/production/Dockerfile.server",
+      "image_id": "sha256:24c44507df74836d22853b3fff8cebde4baf2905e190ab0e3c6771593b5eaf53",
+      "name": "server",
+      "tag": "agent-colab/server:8.0.0-test"
+    },
+    {
+      "built": true,
+      "dockerfile": "deploy/production/Dockerfile.web-admin",
+      "image_id": "sha256:4886e45a54746e1cf0574f17c83bf284b94fc61f986aa9331b5e540913fe6b7d",
+      "name": "web-admin",
+      "tag": "agent-colab/web-admin:8.0.0-test"
+    }
+  ],
+  "sbom": {
+    "javascript": {
+      "components": 12,
+      "format": "CycloneDX",
+      "generated": true,
+      "lock_sha256": "b739a301fe43e0d728b20025d0abd875bb32e125a1b28909077482ee8a7af927",
+      "path": "release/sbom-javascript-8.0.0-test.json",
+      "sha256": "7f42f73a849571fa783a30109439b00e1f641d7ee800e72a7fd516d327e5614f",
+      "spec_version": "1.5"
+    },
+    "python": {
+      "components": 97,
+      "format": "CycloneDX",
+      "generated": true,
+      "path": "release/sbom-python-8.0.0-test.json",
+      "sha256": "5486039d9be4c63c2d0ef400a5a6e1cc1b9d096f02149e8368f3740d4708e825",
+      "spec_version": "1.6"
+    }
+  },
+  "signature": null
+}
+
+sha256 artifacts
+2966ae6b236f02c27c2955222c230833e6afcc50b7127c3991b3955657788b68  release/manifest.json
+7f42f73a849571fa783a30109439b00e1f641d7ee800e72a7fd516d327e5614f  release/sbom-javascript-8.0.0-test.json
+5486039d9be4c63c2d0ef400a5a6e1cc1b9d096f02149e8368f3740d4708e825  release/sbom-python-8.0.0-test.json
+
+signature-related repository files
+
+release workflow signature/attestation references
+release/manifest.json:19:  "sbom": {
+release/manifest.json:25:      "path": "release/sbom-javascript-8.0.0-test.json",
+release/manifest.json:33:      "path": "release/sbom-python-8.0.0-test.json",
+docs/operations/release-build.md:12:  by its content-addressed digest.
+docs/operations/release-build.md:13:- **SBOMs** in CycloneDX form: the Python environment through `cyclonedx-py`, the JavaScript tree
+docs/operations/release-build.md:16:- **`release/manifest.json`** pinning the version, the source revision, every image digest and
+docs/operations/release-build.md:17:  every SBOM path with its SHA-256.
+docs/operations/release-build.md:21:Immutability is the gate: each recorded digest must still resolve to that exact content, and each
+docs/operations/release-build.md:22:SBOM file must still hash to its recorded value. Reproducibility is reported separately — a rebuilt
+docs/operations/release-build.md:30:manifest, the SBOMs and the container scan report as release artifacts.
+.github/workflows/release.yml:17:    name: images, SBOM and manifest
+.github/workflows/release.yml:34:      # builds both production images, reads back their content-addressed digests and writes a
+.github/workflows/release.yml:35:      # CycloneDX SBOM for the Python and JavaScript trees into release/manifest.json
+.github/workflows/release.yml:36:      - name: build images, SBOMs and the release manifest
+.github/workflows/release.yml:38:      # a published digest must always name the same content; the check also reports whether the
+.github/workflows/release.yml:40:      - name: verify the recorded digests and SBOM hashes
+.github/workflows/release.yml:50:            release/sbom-*.json

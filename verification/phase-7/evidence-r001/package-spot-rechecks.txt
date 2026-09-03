@@ -1,0 +1,54 @@
+Phase 7 prerequisite/status table
+# Agent-Colab — Progress
+
+Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENTS.md`, ADRs in `docs/adr/`.
+
+## Current phase: 7 (Release Hardening) — branch `phase-7`
+
+### Phase 7 package status
+
+| ID | Work | Size | Prereq | Status | SELF evidence |
+|---|---|---|---|---|---|
+| P7-01 | CI/CD | M | P0-01 | IMPLEMENTED | SELF-V-P7-11/15 |
+| P7-02 | observability | M | P4-02 | IMPLEMENTED | SELF-V-P7-14 |
+| P7-03 | backup/restore | L | P4-11, P5-03 | IMPLEMENTED | SELF-V-P7-07/08/19/20 |
+| P7-04 | load/soak | M | P5-10 | IMPLEMENTED | SELF-V-P7-03/04 |
+| P7-05 | security hardening | M | P7-01 | IMPLEMENTED | SELF-V-P7-05/06/11/12 |
+| P7-06 | upgrade/rollback | M | P7-03 | IMPLEMENTED | SELF-V-P7-09/10 |
+| P7-07 | release package | S | P7-01 | IMPLEMENTED | SELF-V-P7-01/16/17 |
+| P7-08 | runbooks | M | P7-02 | IMPLEMENTED | SELF-V-P7-13/21 |
+| P7-09 | Human-path acceptance automation | M | P2-11, P6-01, P6-04 | IMPLEMENTED | SELF-V-P7-02/22 |
+
+Phase 7 progress (size-weighted): 26 / 26 — all packages implemented; V-P7-18 is the deployment decision, which only the user can give; Codex verification pending
+
+## Phase 6 (PASSED) — branch `phase-6`, tag `phase-6-passed`
+
+
+Development plan packages
+
+| ID | Work | Completion criteria | Prereq | Size | Tests |
+|---|---|---|---|---|---|
+| P7-01 | CI/CD | lint/type/unit/integration/e2e/scan/SBOM/image | P0-01 | M | V-P7-11, V-P7-15 |
+| P7-02 | observability | metrics/logs/alerts/runbook links | P4-02 | M | V-P7-14 |
+| P7-03 | backup/restore | full-scope consistent backup, key tombstone reconciliation, default RPO 24 h/RTO 4 h, retention applied | P4-11, P5-03 | L | V-P7-07, V-P7-08, V-P7-19, V-P7-20 |
+| P7-04 | load/soak | 3× the §21 baseline load for 30 minutes + normal load for 24 h, zero Event/Run loss | P5-10 | M | V-P7-03, V-P7-04 |
+| P7-05 | security hardening | threat controls, dependency/container scans | P7-01 | M | V-P7-05, V-P7-06, V-P7-11, V-P7-12 |
+| P7-06 | upgrade/rollback | staging rehearsal and forward-fix DB strategy | P7-03 | M | V-P7-09, V-P7-10 |
+| P7-07 | release package | immutable digests, changelog, operations docs, final development report (§27A) | P7-01 | S | V-P7-01, V-P7-15~18 |
+| P7-08 | runbooks | 7 runbooks: secret leak/NAS full/Bridge loop/Scheduler storm/DB restore/credential rotation/hard-delete restore; every critical alert links to a runbook | P7-02 | M | V-P7-13, V-P7-21 |
+| P7-09 | Human-path acceptance automation | Task creation→delegation→approval→verification→document viewing using Mattermost only, automated with Playwright/Mattermost API | P2-11, P6-01, P6-04 | M | V-P7-02, V-P7-22 |
+
+Independent package spot-recheck ledger
+P7-01: V-P7-11 FAIL, V-P7-15 FAIL
+P7-02: V-P7-14 PASS
+P7-03: V-P7-07 PASS, V-P7-08 PASS, V-P7-19 PASS, V-P7-20 PASS
+P7-04: V-P7-03 PASS, V-P7-04 FAIL
+P7-05: V-P7-05 PASS, V-P7-06 PASS, V-P7-11 FAIL, V-P7-12 PASS
+P7-06: V-P7-09 PASS, V-P7-10 PASS
+P7-07: V-P7-01 NOT_RUN, V-P7-15 FAIL, V-P7-16 FAIL, V-P7-17 FAIL, V-P7-18 FAIL
+P7-08: V-P7-13 PASS, V-P7-21 PASS
+P7-09: V-P7-02 FAIL, V-P7-22 FAIL
+
+### Independent verification
+
+The Release Verifier is a different Agent and cross-reviews the Security/Ops verification results. After Phase 7 PASSES, the implementer delivers the final development report and asks the user for deployment approval (§12.2, §27A).

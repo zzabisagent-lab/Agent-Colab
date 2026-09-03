@@ -25,6 +25,9 @@ VERIFICATION = ROOT / "verification"
 EVIDENCE = ROOT / "evidence"
 RESIDUAL = ROOT / "docs" / "security" / "residual-risks.md"
 PHASES = range(0, 8)
+#: The Phase under verification right now: its reports must be retrievable and secret-free like
+#: every other, but it cannot yet carry a PASSED verdict — that is what the verification decides.
+CURRENT_PHASE = 7
 
 
 def _sha256(path: Path) -> str:
@@ -68,7 +71,7 @@ def collect_phase(phase: int) -> PhaseEntry:
                 entry.problems.append(f"{report.name} does not match its recorded checksum")
     if not entry.reports:
         entry.problems.append("no Verifier report")
-    elif entry.passed_report is None:
+    elif entry.passed_report is None and phase < CURRENT_PHASE:
         entry.problems.append("no PASSED Verifier report")
     for attempt in sorted((EVIDENCE / f"phase-{phase}").glob("SELF-*/attempt-*/result.json")):
         payload = json.loads(attempt.read_text(encoding="utf-8"))
@@ -82,12 +85,14 @@ def collect_phase(phase: int) -> PhaseEntry:
 
 
 ROW = re.compile(
-    r"^\|\s*(?P<finding>[^|]+?)\s*\|\s*(?P<severity>[^|]+?)\s*\|\s*(?P<owner>[^|]+?)\s*\|\s*(?P<deadline>[^|]+?)\s*\|"
+    r"^\|\s*(?P<finding>[^|]+?)\s*\|\s*(?P<severity>[^|]+?)\s*\|\s*(?P<owner>[^|]+?)\s*"
+    r"\|\s*(?P<deadline>[^|]+?)\s*\|\s*(?P<acceptor>[^|]+?)\s*\|"
 )
 
 
 def residual_risks() -> tuple[list[dict[str, str]], list[str]]:
-    """Every open finding needs a severity, an owner and a deadline; High and Critical block."""
+    """Every open finding needs a severity, an owner, a deadline and an acceptor (V-P7-17);
+    High and Critical findings block the release rather than being accepted."""
     if not RESIDUAL.is_file():
         return [], ["docs/security/residual-risks.md is missing"]
     rows: list[dict[str, str]] = []
@@ -96,13 +101,13 @@ def residual_risks() -> tuple[list[dict[str, str]], list[str]]:
         match = ROW.match(line)
         if not match or match.group("finding").lower() in ("finding", "---"):
             continue
-        row = {k: match.group(k) for k in ("finding", "severity", "owner", "deadline")}
+        row = {k: match.group(k) for k in ("finding", "severity", "owner", "deadline", "acceptor")}
         if set(row["severity"]) <= {"-"}:
             continue
         rows.append(row)
         if row["severity"].upper() in ("HIGH", "CRITICAL"):
             problems.append(f"{row['finding']}: {row['severity']} findings block the release")
-        for field_name in ("owner", "deadline"):
+        for field_name in ("owner", "deadline", "acceptor"):
             if not row[field_name] or set(row[field_name]) <= {"-"}:
                 problems.append(f"{row['finding']}: no {field_name}")
     if not rows:

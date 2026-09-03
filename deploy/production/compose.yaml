@@ -28,6 +28,8 @@ services:
       AGENT_COLAB_DOCUMENT_ROOT: /var/lib/agent-colab/documents
       AGENT_COLAB_SERVER_WORKERS: ${COLAB_SERVER_WORKERS:-4}
       AGENT_COLAB_GATEWAY_DRAIN: "1"
+      # Mattermost calls card-button URLs itself, so this must be the address it can reach
+      AGENT_COLAB_BASE_URL: ${COLAB_BASE_URL:-http://127.0.0.1:8080}
     volumes:
       - colab-state:/var/lib/agent-colab
     ports:

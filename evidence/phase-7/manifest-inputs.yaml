@@ -1,9 +1,9 @@
 # Inputs for the Phase 7 Evidence Manifest (validation plan §6.1); the manifest itself is generated
 # by tools/run_verification.py at verification time for the exact target commit.
 known_gaps:
-  - "V-P7-18 (deployment approval) cannot be satisfied by the implementer: it records the user's explicit decision after the final report is delivered. The report and the single question are produced once this Phase passes; nothing is deployed without that answer."
+  - "V-P7-18 (deployment approval) is half implementer, half user. The implementer side is done and evidenced: REPORT.md exists with the sections development plan §27A requires, docs/operations/deployment-decision.md records the decision state, and tools/deployment_decision.py proves the deployment ledger is empty, so no deployment preceded a decision. The user side, the explicit answer, is recorded only after the report is delivered; the record stays PENDING_USER_DECISION until then, and .env names no target for it to approve."
   - "The soak (V-P7-04) ran 30 minutes at the normal profile rather than 24 hours, and is documented as a bounded window that watches the growth trends a leak would show at any scale: worker memory grew 1.2 %, connections stayed flat, open work items began and ended at zero, with no stuck claimed Runs, dead letters or duplicate deliveries."
-  - "Image signing is not performed: this environment has no registry and no signing key. Recorded as a Low residual risk with an owner and a deadline. Digests are content-addressed and recorded in release/manifest.json; `--verify` gates on the recorded digest still resolving and SBOM hashes matching, and reports reproducibility per image (web-admin reproduces, server does not, with the reason recorded)."
+  - "Image signing uses a locally held Ed25519 key generated outside the repository at ~/.local/share/agent-colab/release-signing.key; no registry and no organisational signing key exist in this environment, so trust in the public key is local. `--verify` fails rather than skips on an absent, wrong or tampered signature, and gates the recorded digests and SBOM hashes; registry publication remains a deployment step and stays a Low residual risk with an owner and a deadline."
   - "The container scan runs Trivy through Docker; where a scanner cannot run at all the scan records SCANNER_UNAVAILABLE rather than reporting clean."
   - "Peak load (V-P7-03) was measured on this build host with four API processes and two workers; the serving process count is a deployment parameter and the release notes carry the sizing rule (offered rate, not a short run's p95)."
   - "Human-path acceptance (V-P7-02, V-P7-22) drives channel surfaces only, through the provider's client-factory seam with an in-process Mattermost client; the same seam a real Team Edition instance plugs into. The clean install (V-P7-01) does contact a real Mattermost Team Edition for its preflight."
@@ -11,10 +11,11 @@ reproduction:
   - "git clone git@github.com:zzabisagent-lab/Agent-Colab.git && git checkout <target commit>"
   - "export PATH=$HOME/.local/bin:$PATH; export AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test"
   - "make ci   # lint, tests, doc checks, build; sidecar: uv run pytest sidecar/tests -q"
-  - "Every V-P7 Test except V-P7-18 has a SELF evidence attempt under evidence/phase-7/SELF-V-P7-NN/attempt-NN/result.json; the latest attempt of each is PASS"
+  - "Every V-P7 Test has a SELF evidence attempt under evidence/phase-7/SELF-V-P7-NN/attempt-NN/result.json; the latest attempt of each is PASS"
   - "Release build and scans: uv run python -m tools.release_build --version <v>; uv run python -m tools.security_scan --require"
   - "Clean production install (V-P7-01): COLAB_SERVER_IMAGE=<image> COLAB_MATTERMOST_URL=<url> COLAB_MATTERMOST_BOT_TOKEN=<token> uv run python -m tools.clean_install --run"
   - "Backup, restore, upgrade (V-P7-07..10, 19, 20): uv run pytest tests/integration/test_recovery_db.py tests/integration/test_upgrade_rollback.py -q"
   - "Load and soak (V-P7-03/04): uv run python -m tests.load.run --profile peak --minutes 30; observability (V-P7-14): uv run pytest tests/integration/test_observability_alerts_db.py -q"
   - "Runbooks, tabletop and acceptance (V-P7-13/21/02/22): uv run pytest tests/e2e/test_incident_tabletop.py tests/e2e/test_human_path_acceptance.py -q; uv run python -m tools.runbook_lint"
   - "Evidence archive and residual risks (V-P7-16/17): uv run python -m tools.evidence_archive --check --phases 7"
+  - "Report and deployment decision (V-P7-18): uv run python -m tools.deployment_decision --check; uv run pytest tests/e2e/test_release_evidence.py -q"

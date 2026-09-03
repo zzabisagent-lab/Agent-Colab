@@ -5,12 +5,16 @@ Four scans, each writing ``evidence/phase-7/scans/<name>.json``:
 * **sast** — bandit over ``server`` and ``sidecar`` at every severity.
 * **dependency** — pip-audit against the installed project environment (OSV), plus the pnpm
   lockfile audit for the JavaScript tree.
-* **container** — Trivy against the images a release manifest pins.
+* **container** — Trivy against every image a release ships (server and web-admin), each pinned
+  to the image id the release manifest records.
 * **dynamic** — checks against a running instance: security headers, unauthenticated access to
   admin routes, error-body leakage and cookie flags.
 
 The gate is zero High or Critical. A scanner that cannot run records ``SCANNER_UNAVAILABLE`` with
 the reason and does not silently pass: ``--require`` names the scans that must actually have run.
+The container scan goes further and blocks outright when it cannot cover both release images, so
+it can never report a clean result while an image went unscanned or a tag drifted from the
+manifest.
 
     uv run python -m tools.security_scan --all
     uv run python -m tools.security_scan --scan sast dependency --require sast dependency
@@ -31,6 +35,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 OUT_DIR = ROOT / "evidence" / "phase-7" / "scans"
 BLOCKING = ("HIGH", "CRITICAL")
+# Every image a release ships. The container gate must scan all of them: it cannot pass while one
+# is unscanned, whatever the manifest happens to pin (V-P7-11).
+REQUIRED_IMAGES = ("server", "web-admin")
 
 
 def _report(name: str, findings: list[dict[str, Any]], **extra: Any) -> dict[str, Any]:
@@ -52,6 +59,21 @@ def _report(name: str, findings: list[dict[str, Any]], **extra: Any) -> dict[str
 
 def _unavailable(name: str, reason: str) -> dict[str, Any]:
     return _report(name, [], ran=False, reason_code="SCANNER_UNAVAILABLE", reason=reason)
+
+
+def _blocked(name: str, code: str, reason: str) -> dict[str, Any]:
+    """A scan that could not cover what it must. Blocking, not merely unavailable.
+
+    A release gate that reports "unavailable" when it cannot scan can be passed by removing the
+    scanner. An image the gate never looked at is indistinguishable from an image full of
+    vulnerabilities, so it counts as a blocking finding (V-P7-11).
+    """
+    return _report(
+        name,
+        [{"id": code, "severity": "CRITICAL", "title": reason}],
+        reason_code=code,
+        reason=reason,
+    )
 
 
 def _docker(args: list[str]) -> subprocess.CompletedProcess[str]:
@@ -167,18 +189,55 @@ def scan_dependency() -> dict[str, Any]:
 
 
 def scan_container(manifest: Path) -> dict[str, Any]:
-    """Trivy against every image the release manifest pins."""
+    """Trivy against every image the release manifest pins, and every image a release must ship.
+
+    Three ways this used to pass without telling the truth, all now blocking: the manifest pinning
+    only one of the two images, Trivy failing, and a tag that has drifted away from the image the
+    manifest recorded. The last one is the reason an independent verifier can find vulnerabilities
+    where this scan found none: the tag it resolved was not the image the manifest describes.
+    """
     if not manifest.exists():
-        return _unavailable("container", f"{manifest} does not exist; build a release first")
+        return _blocked(
+            "container",
+            "RELEASE_MANIFEST_MISSING",
+            f"{manifest} does not exist; build a release before scanning it",
+        )
     images = [i for i in json.loads(manifest.read_text()).get("images", []) if i.get("built")]
-    if not images:
-        return _unavailable("container", "the manifest pins no built image")
+    by_name = {str(i.get("name")): i for i in images}
+    absent = [name for name in REQUIRED_IMAGES if name not in by_name]
+    if absent:
+        return _blocked(
+            "container",
+            "IMAGE_NOT_SCANNED",
+            f"the manifest pins no built image named {', '.join(absent)}; "
+            f"every release image must be scanned ({', '.join(REQUIRED_IMAGES)})",
+        )
     probe = _docker(["version", "--format", "{{.Server.Version}}"])
     if probe.returncode != 0:
-        return _unavailable("container", "docker is not available")
+        return _blocked(
+            "container", "DOCKER_UNAVAILABLE", "docker is not available, so no image was scanned"
+        )
     findings: list[dict[str, Any]] = []
-    scanned: list[str] = []
-    for image in images:
+    scanned: list[dict[str, str]] = []
+    for name in REQUIRED_IMAGES:
+        image = by_name[name]
+        tag = str(image["tag"])
+        recorded = str(image.get("image_id") or "")
+        resolved = _docker(["image", "inspect", "--format", "{{.Id}}", tag])
+        local_id = resolved.stdout.strip()
+        if resolved.returncode != 0 or not local_id:
+            return _blocked(
+                "container",
+                "IMAGE_NOT_PRESENT",
+                f"{tag} is not present locally, so it was not scanned",
+            )
+        if recorded and local_id != recorded:
+            return _blocked(
+                "container",
+                "IMAGE_DIGEST_DRIFT",
+                f"{tag} resolves to {local_id} but the manifest records {recorded}; "
+                "the scanned image would not be the released image",
+            )
         run = _docker(
             [
                 "run",
@@ -192,14 +251,14 @@ def scan_container(manifest: Path) -> dict[str, Any]:
                 "json",
                 "--severity",
                 "HIGH,CRITICAL",
-                str(image["tag"]),
+                tag,
             ]
         )
         if run.returncode != 0 or not run.stdout.strip():
-            return _unavailable(
-                "container", f"trivy failed for {image['tag']}: {run.stderr[-300:]}"
+            return _blocked(
+                "container", "TRIVY_FAILED", f"trivy failed for {tag}: {run.stderr[-300:]}"
             )
-        scanned.append(str(image["tag"]))
+        scanned.append({"name": name, "tag": tag, "image_id": local_id})
         for result in json.loads(run.stdout).get("Results") or []:
             for vuln in result.get("Vulnerabilities") or []:
                 findings.append(
@@ -207,7 +266,7 @@ def scan_container(manifest: Path) -> dict[str, Any]:
                         "id": vuln.get("VulnerabilityID"),
                         "severity": str(vuln.get("Severity", "UNKNOWN")).upper(),
                         "title": f"{vuln.get('PkgName')} {vuln.get('InstalledVersion')}",
-                        "image": image["tag"],
+                        "image": tag,
                         "fixed_version": vuln.get("FixedVersion"),
                     }
                 )

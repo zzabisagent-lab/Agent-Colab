@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P7-15",
+  "evidence_id": "SELF-V-P7-15",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_release_artifacts.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "7ad91d0bc4fa94f11a5d1cb90bcc0371049a9806",
+  "started_at": "2026-09-03T22:26:42.934995+00:00",
+  "finished_at": "2026-09-03T22:26:44.676596+00:00",
+  "output_sha256": "08faea39fd19189f6544839f505d91d76ecb1367e219f5db362cdf22916ef869"
+}

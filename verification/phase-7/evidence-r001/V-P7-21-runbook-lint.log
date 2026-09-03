@@ -1,0 +1,5 @@
+COMMAND: uv run python -m tools.runbook_lint
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+runbook_lint: 7 critical alerts linked to a runbook
+runbook_lint: 7 runbooks, 0 problems
+EXIT_CODE=0

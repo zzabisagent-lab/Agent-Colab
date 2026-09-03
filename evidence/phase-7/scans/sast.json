@@ -9,7 +9,7 @@
   },
   "findings": [],
   "ran": true,
-  "ran_at": "2026-09-03T16:18:14+00:00",
+  "ran_at": "2026-09-03T22:19:29+00:00",
   "scan": "sast",
   "scanned": {
     "CONFIDENCE.HIGH": 0,
@@ -20,7 +20,7 @@
     "SEVERITY.LOW": 0,
     "SEVERITY.MEDIUM": 0,
     "SEVERITY.UNDEFINED": 0,
-    "loc": 54364,
+    "loc": 54441,
     "nosec": 0,
     "skipped_tests": 47
   },

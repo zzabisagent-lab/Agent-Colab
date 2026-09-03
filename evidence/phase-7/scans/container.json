@@ -9,11 +9,19 @@
   },
   "findings": [],
   "images": [
-    "agent-colab/server:8.0.0-test",
-    "agent-colab/web-admin:8.0.0-test"
+    {
+      "image_id": "sha256:e8b1dbefaa41e67e52d895f60056b2955644414c9c76f735f23fa998276f8831",
+      "name": "server",
+      "tag": "agent-colab/server:8.0.0-test"
+    },
+    {
+      "image_id": "sha256:4886e45a54746e1cf0574f17c83bf284b94fc61f986aa9331b5e540913fe6b7d",
+      "name": "web-admin",
+      "tag": "agent-colab/web-admin:8.0.0-test"
+    }
   ],
   "ran": true,
-  "ran_at": "2026-09-03T16:17:58+00:00",
+  "ran_at": "2026-09-03T22:15:06+00:00",
   "scan": "container",
   "schema_id": "colab.security-scan.v1",
   "tool": "trivy"

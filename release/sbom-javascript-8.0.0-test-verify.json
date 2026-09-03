@@ -1,0 +1,72 @@
+{
+  "bomFormat": "CycloneDX",
+  "components": [
+    {
+      "name": "react",
+      "type": "library",
+      "version": "19.2.8"
+    },
+    {
+      "name": "react-dom",
+      "type": "library",
+      "version": "19.2.8"
+    },
+    {
+      "name": "react",
+      "type": "library",
+      "version": "19.2.8"
+    },
+    {
+      "name": "scheduler",
+      "type": "library",
+      "version": "0.27.0"
+    },
+    {
+      "name": "react-router-dom",
+      "type": "library",
+      "version": "7.18.3"
+    },
+    {
+      "name": "react",
+      "type": "library",
+      "version": "19.2.8"
+    },
+    {
+      "name": "react-dom",
+      "type": "library",
+      "version": "19.2.8"
+    },
+    {
+      "name": "react-router",
+      "type": "library",
+      "version": "7.18.3"
+    },
+    {
+      "name": "cookie",
+      "type": "library",
+      "version": "1.1.1"
+    },
+    {
+      "name": "react",
+      "type": "library",
+      "version": "19.2.8"
+    },
+    {
+      "name": "react-dom",
+      "type": "library",
+      "version": "19.2.8"
+    },
+    {
+      "name": "set-cookie-parser",
+      "type": "library",
+      "version": "2.7.2"
+    }
+  ],
+  "metadata": {
+    "component": {
+      "name": "agent-colab-web-admin",
+      "type": "application"
+    }
+  },
+  "specVersion": "1.5"
+}

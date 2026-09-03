@@ -39,6 +39,8 @@ from server.identity.principals import IdentityError, Principal
 from server.observability.audit import append_audit
 
 ACTION_SECRET_ENV = "AGENT_COLAB_MATTERMOST_ACTION_SECRET"  # noqa: S105 - env var name  # nosec B105 - environment variable name, not a secret
+ACTION_CALLBACK_PATH = "/api/v1/providers/mattermost/actions"
+BASE_URL_ENV = "AGENT_COLAB_BASE_URL"
 BUTTON_LABELS: dict[str, str] = {
     "accept": "Accept",
     "submit": "Submit",
@@ -134,6 +136,29 @@ def new_nonce() -> str:
     return uuid.uuid4().hex
 
 
+def default_callback_url() -> str:
+    """Where Mattermost sends a button press.
+
+    Mattermost calls the integration URL itself: a relative URL resolves against the Mattermost
+    site, so a real click never reaches this server and Mattermost answers the user with an action
+    integration error. The instance base URL (``AGENT_COLAB_BASE_URL``) makes it absolute; the
+    bare path remains the fallback for callers that rewrite it.
+    """
+    base = os.environ.get(BASE_URL_ENV, "").strip().rstrip("/")
+    return f"{base}{ACTION_CALLBACK_PATH}" if base else ACTION_CALLBACK_PATH
+
+
+def button_action_id(subject_type: str, subject_id: str, button: str) -> str:
+    """Stable action id for one button.
+
+    Mattermost routes a press as ``/posts/{post_id}/actions/{action_id}`` and accepts only
+    ``[A-Za-z0-9]`` in the action id, so the identifying triple is hashed rather than joined:
+    an id like ``task-1:approve`` is stored on the post but can never be pressed.
+    """
+    seed = f"{subject_type}|{subject_id}|{button}"
+    return hashlib.sha256(seed.encode()).hexdigest()[:32]
+
+
 def build_button_actions(
     secret: bytes,
     *,
@@ -141,19 +166,20 @@ def build_button_actions(
     subject_id: str,
     buttons: tuple[str, ...] | list[str],
     now: dt.datetime,
-    callback_url: str = "/api/v1/providers/mattermost/actions",
+    callback_url: str | None = None,
 ) -> list[dict[str, Any]]:
     """Mattermost message-attachment actions with server-signed integration contexts."""
     issued = int(now.timestamp())
+    url = callback_url or default_callback_url()
     actions: list[dict[str, Any]] = []
     for button in buttons:
         ctx = ActionContext(subject_type, subject_id, button, issued, new_nonce())
         actions.append(
             {
-                "id": f"{subject_id}:{button}",
+                "id": button_action_id(subject_type, subject_id, button),
                 "name": BUTTON_LABELS.get(button, button),
                 "type": "button",
-                "integration": {"url": callback_url, "context": ctx.as_button_context(secret)},
+                "integration": {"url": url, "context": ctx.as_button_context(secret)},
             }
         )
     return actions
@@ -189,6 +215,16 @@ class ActionRequest:
     post_id: str
     context: dict[str, Any]
     trigger_id: str = ""
+
+
+def _correlation(req: ActionRequest) -> str:
+    """Correlate on the press.
+
+    Mattermost's ``trigger_id`` is a signed base64 blob well over 200 characters, and the Event
+    envelope caps a correlation id at 200 (schemas/events/envelope.v1.schema.json), so the id is
+    trimmed the way the Command Router trims its own.
+    """
+    return f"action:{req.trigger_id or req.post_id}"[:200]
 
 
 @dataclass(frozen=True)
@@ -267,7 +303,7 @@ class ActionHandler:
             target_id=subject,
             result=result,
             actor_label=actor.account_id if actor else f"mm:{req.user_id}",
-            correlation_id=f"action:{req.trigger_id or req.post_id}",
+            correlation_id=_correlation(req),
             workspace_id=inst.workspace_id if inst else None,
             actor_account_id=uuid.UUID(actor.account_uuid) if actor else None,
             error_code=code,
@@ -320,7 +356,7 @@ class ActionHandler:
                 principal,
                 plan.command,
                 idempotency_key=idem,
-                correlation_id=f"action:{req.trigger_id or req.post_id}",
+                correlation_id=_correlation(req),
                 extras={"reauth_verified": False},
             )
         except ApiError as exc:

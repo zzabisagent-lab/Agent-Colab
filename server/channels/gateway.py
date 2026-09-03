@@ -140,7 +140,52 @@ class ChannelGateway:
             self._task = None
 
 
-def providers_from_env() -> dict[str, ChannelProvider]:
+@dataclass
+class LazyMattermostProvider:
+    """Delivers every ``mattermost.*`` payload kind, not only new posts.
+
+    The registered provider instance is a database row, so it cannot be resolved while the
+    process is starting. This resolves it on first delivery and then delegates to
+    ``MattermostChannelProvider``, which handles post, patch, ephemeral and direct-message
+    payloads. Until an instance is registered it falls back to posting, and it re-resolves on
+    every delivery until it succeeds, so registering an instance later needs no restart.
+    """
+
+    client: Any
+    session_factory: Any
+    _delegate: ChannelProvider | None = None
+
+    def _resolve(self) -> ChannelProvider:
+        from server.channels.mattermost import provider as prov
+        from server.channels.mattermost.delivery import MattermostChannelProvider
+        from server.channels.telegram.bridge import MattermostBridgeProvider
+
+        instance = None
+        try:
+            with session_scope(self.session_factory) as session:
+                row = session.execute(
+                    text(
+                        "SELECT provider_instance_id FROM provider_instances WHERE provider = "
+                        "'mattermost' AND status = 'active' ORDER BY created_at LIMIT 1"
+                    )
+                ).first()
+                if row is not None:
+                    instance = prov.load_instance(session, str(row[0]))
+        except Exception:
+            log.exception("could not resolve the Mattermost provider instance")
+        if instance is None:
+            # No registered instance yet: post-only, and try again on the next delivery.
+            return MattermostBridgeProvider(self.client)
+        delegate = MattermostChannelProvider(self.client, instance, self.session_factory)
+        self._delegate = delegate
+        return delegate
+
+    def deliver(self, destination: str, payload: dict[str, Any]) -> str:
+        delegate = self._delegate or self._resolve()
+        return delegate.deliver(destination, payload)
+
+
+def providers_from_env(session_factory: Any | None = None) -> dict[str, ChannelProvider]:
     """Build outbox providers from configured credentials; missing credentials → no provider."""
     providers: dict[str, ChannelProvider] = {}
     mm_url = os.environ.get("AGENT_COLAB_MATTERMOST_URL")
@@ -149,7 +194,12 @@ def providers_from_env() -> dict[str, ChannelProvider]:
         from server.channels.mattermost.client import HttpMattermostClient
         from server.channels.telegram.bridge import MattermostBridgeProvider
 
-        providers["mattermost"] = MattermostBridgeProvider(HttpMattermostClient(mm_url, mm_token))
+        client = HttpMattermostClient(mm_url, mm_token)
+        providers["mattermost"] = (
+            LazyMattermostProvider(client, session_factory)
+            if session_factory is not None
+            else MattermostBridgeProvider(client)
+        )
     tg_token = os.environ.get("TELEGRAM_BOT_TOKEN")
     if tg_token:
         from server.channels.telegram.bridge import TelegramBridgeProvider
@@ -172,6 +222,6 @@ def build_gateway(runtime: Runtime) -> ChannelGateway:
     return ChannelGateway(
         runtime=runtime,
         clock=runtime.clock,
-        providers=providers_from_env(),
+        providers=providers_from_env(runtime.session_factory),
         inbound_hooks=[telegram_commands],
     )

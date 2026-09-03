@@ -30,6 +30,7 @@ from sqlalchemy.orm import Session
 from server.secrets.envelope import new_master_key
 from tests.load.population import Population
 from tests.load.profile import Profile
+from tests.load.samples import SampleContext
 
 ROOT = Path(__file__).resolve().parents[2]
 TICKS = os.sysconf("SC_CLK_TCK")
@@ -182,7 +183,9 @@ def _child_log(name: str) -> Any:
 
 
 @contextlib.contextmanager
-def running_server(database_url: str, *, workers: int = 1) -> Iterator[str]:
+def running_server(
+    database_url: str, *, workers: int = 1, pids: list[int] | None = None
+) -> Iterator[str]:
     """The real server process (the ``agent-colab`` entry point), not an in-process thread.
 
     Measuring through a server that shares an interpreter with the measurer would blend the two;
@@ -219,6 +222,8 @@ def running_server(database_url: str, *, workers: int = 1) -> Iterator[str]:
         stdout=log,
         stderr=log,
     )
+    if pids is not None:
+        pids.append(proc.pid)
     try:
         deadline = time.monotonic() + 60
         with httpx.Client(base_url=base, timeout=5.0) as client:
@@ -302,6 +307,7 @@ def _spawn_generators(
         procs = _fan_out(rate)
         for index in range(procs):
             out = out_dir / f"{kind}-{index}.json"
+            progress = out_dir / f"{kind}-{index}.progress.json"
             spawned.append(
                 (
                     subprocess.Popen(
@@ -323,6 +329,8 @@ def _spawn_generators(
                             channels,
                             "--out",
                             str(out),
+                            "--progress",
+                            str(progress),
                         ],
                         cwd=ROOT,
                         env=os.environ.copy(),
@@ -333,6 +341,43 @@ def _spawn_generators(
                 )
             )
     return spawned
+
+
+def _spawn_heartbeats(
+    base: str, population: Population, seconds: float, out_dir: Path
+) -> subprocess.Popen[bytes] | None:
+    """One process beating for every seeded Agent, so heartbeat behaviour is exercised for real."""
+    if not population.agent_ids:
+        return None
+    return subprocess.Popen(
+        [
+            sys.executable,
+            "-m",
+            "tests.load.heartbeat",
+            "--base",
+            base,
+            "--token",
+            population.ops_token,
+            "--agents",
+            ",".join(population.agent_ids),
+            "--seconds",
+            str(seconds),
+            "--progress",
+            str(out_dir / "heartbeat.progress.json"),
+        ],
+        cwd=ROOT,
+        env=os.environ.copy(),
+        stdout=_child_log("heartbeat"),
+        stderr=subprocess.STDOUT,
+    )
+
+
+def _stop(proc: subprocess.Popen[bytes]) -> None:
+    proc.terminate()
+    try:
+        proc.wait(timeout=30)
+    except subprocess.TimeoutExpired:  # pragma: no cover - defensive
+        proc.kill()
 
 
 def _collect(spawned: list[tuple[subprocess.Popen[bytes], Path]], report: Report) -> None:
@@ -421,25 +466,57 @@ def run_load(
     api_workers: int = API_WORKERS,
     sample_interval_s: float = 5.0,
     worker_watch: Any = None,
+    sample_sink: Any = None,
+    sample_period_s: float = 60.0,
+    heartbeats: bool = False,
 ) -> Report:
-    """Drive the profile for ``seconds`` of wall clock and return the measured report."""
+    """Drive the profile for ``seconds`` of wall clock and return the measured report.
+
+    ``sample_sink`` is called with a :class:`~tests.load.samples.SampleContext` every
+    ``sample_period_s``, and once more when the window closes; a soak writes those to disk so the
+    whole run can be asserted afterwards rather than only its endpoints.
+    """
     report = Report(profile=profile.name, seconds=seconds)
     report.events_before, report.runs_before = _counts(engine, population.ws)
     cpu = DbCpu()
     with tempfile.TemporaryDirectory(prefix="agent-colab-load-") as tmp:
         out_dir = Path(tmp)
+        server_pids: list[int] = []
         with (
-            running_server(database_url, workers=api_workers) as base,
+            running_server(database_url, workers=api_workers, pids=server_pids) as base,
             running_workers(database_url, str(population.ws), workers) as procs,
         ):
             started = time.monotonic()
             spawned = _spawn_generators(base, population, profile, seconds, out_dir)
+            beater = _spawn_heartbeats(base, population, seconds, out_dir) if heartbeats else None
             deadline = started + seconds
+            next_sample = started + sample_period_s
+
+            def emit(final: bool) -> None:
+                if sample_sink is None:
+                    return
+                sample_sink(
+                    SampleContext(
+                        elapsed_s=time.monotonic() - started,
+                        server_pids=list(server_pids),
+                        worker_pids=[p.pid for p in procs if p.poll() is None],
+                        out_dir=out_dir,
+                        db_cpu_pct=cpu.samples[-1] if cpu.samples else 0.0,
+                        final=final,
+                    )
+                )
+
             while time.monotonic() < deadline:
                 time.sleep(min(sample_interval_s, max(0.1, deadline - time.monotonic())))
                 cpu.sample()
                 if worker_watch is not None:
                     worker_watch([p.pid for p in procs if p.poll() is None])
+                if time.monotonic() >= next_sample:
+                    emit(False)
+                    next_sample += sample_period_s
+            emit(True)
+            if beater is not None:
+                _stop(beater)
             _collect(spawned, report)
             report.seconds = time.monotonic() - started
     report.events_after, report.runs_after = _counts(engine, population.ws)
@@ -487,7 +564,38 @@ class SoakReport:
         }
 
 
-def _rss_kb(pids: list[int]) -> int:
+def process_tree(roots: list[int]) -> list[int]:
+    """Every live descendant of ``roots``, plus the roots.
+
+    A multi-process API server and the scheduler workers fork children; resident memory measured
+    only at the parent would miss exactly the processes that do the work.
+    """
+    parents: dict[int, int] = {}
+    for entry in Path("/proc").iterdir():
+        if not entry.name.isdigit():
+            continue
+        try:
+            stat = (entry / "stat").read_text(encoding="utf-8")
+        except OSError:
+            continue
+        _head, _, tail = stat.rpartition(") ")
+        fields = tail.split()
+        if len(fields) > 1:
+            parents[int(entry.name)] = int(fields[1])
+    tree = set(roots)
+    for _ in range(8):  # process trees here are two deep; the bound just stops a cycle
+        grew = False
+        for pid, ppid in parents.items():
+            if ppid in tree and pid not in tree:
+                tree.add(pid)
+                grew = True
+        if not grew:
+            break
+    return sorted(tree)
+
+
+def rss_kb(pids: list[int]) -> int:
+    """Summed resident memory of the given processes, in kilobytes."""
     total = 0
     for pid in pids:
         try:
@@ -500,6 +608,9 @@ def _rss_kb(pids: list[int]) -> int:
         except OSError:
             continue
     return total
+
+
+_rss_kb = rss_kb
 
 
 def _connection_count(engine: Engine, database: str) -> int:
@@ -567,6 +678,9 @@ def run_soak(
     minutes: float,
     workers: int = 2,
     api_workers: int = API_WORKERS,
+    sample_sink: Any = None,
+    sample_period_s: float = 60.0,
+    heartbeats: bool = True,
 ) -> SoakReport:
     """A bounded soak: the same traffic, plus growth checks on memory, connections and queues."""
     database = database_url.rsplit("/", 1)[-1]
@@ -589,6 +703,9 @@ def run_soak(
         workers=workers,
         api_workers=api_workers,
         worker_watch=watch,
+        sample_sink=sample_sink,
+        sample_period_s=sample_period_s,
+        heartbeats=heartbeats,
     )
     report.connections_last = _connection_count(engine, database)
     report.work_items_open_last = _open_work_items(engine, population.ws)

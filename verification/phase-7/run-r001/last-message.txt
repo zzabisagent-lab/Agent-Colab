@@ -1,0 +1,15 @@
+Verification completed and schema-validated.
+
+- 13 PASS
+- 8 FAIL
+- 1 NOT_RUN
+- 6 findings, including one High
+- No product code modified
+- Evidence secret scan passed
+
+Report: [VR-P7-001.yaml](/home/master/.local/verify/phase-7-r001/verification/phase-7/VR-P7-001.yaml)  
+Evidence: [evidence-r001](/home/master/.local/verify/phase-7-r001/verification/phase-7/evidence-r001)
+
+Primary blocker: container scanning found 36 High-severity vulnerabilities. Additional failures include unsigned/wrong-revision release artifacts, no 24-hour soak, fake-Mattermost acceptance paths, missing residual-risk acceptors, and absent deployment approval.
+
+result: FAILED

@@ -30,6 +30,26 @@ def _write_body(channel_uuid: str, n: int) -> dict[str, Any]:
     }
 
 
+#: How often a running generator republishes its counters. A soak reads these files once a
+#: minute to report cumulative traffic while the run is still going; the full sample list is only
+#: written when the process exits.
+PROGRESS_INTERVAL_S = 10.0
+
+
+def _publish(progress: Path | None, kind: str, requests: int, errors: int) -> None:
+    """Counters only, written by rename so a reader never sees a half-written file."""
+    if progress is None:
+        return
+    tmp = progress.with_suffix(".tmp")
+    try:
+        tmp.write_text(
+            json.dumps({"kind": kind, "requests": requests, "errors": errors}), encoding="utf-8"
+        )
+        tmp.replace(progress)
+    except OSError:  # pragma: no cover - progress is advisory, never fatal
+        pass
+
+
 def generate(
     base: str,
     token: str,
@@ -37,6 +57,7 @@ def generate(
     rate_per_s: float,
     seconds: float,
     channels: list[str],
+    progress: Path | None = None,
 ) -> dict[str, Any]:
     latencies: list[float] = []
     statuses: dict[str, int] = {}
@@ -45,6 +66,9 @@ def generate(
     deadline = time.monotonic() + seconds
     if interval == 0.0:
         return {"kind": kind, "latency_ms": [], "statuses": {}}
+    errors = 0
+    next_progress = time.monotonic() + PROGRESS_INTERVAL_S
+    _publish(progress, kind, 0, 0)
     with httpx.Client(base_url=base, timeout=30.0) as client:
         next_at = time.monotonic()
         while time.monotonic() < deadline:
@@ -70,12 +94,18 @@ def generate(
                 status = 599  # a transport failure counts as a server error
             latencies.append((time.perf_counter() - started) * 1000.0)
             statuses[str(status)] = statuses.get(str(status), 0) + 1
+            if status >= 500:
+                errors += 1
+            if time.monotonic() >= next_progress:
+                _publish(progress, kind, len(latencies), errors)
+                next_progress = time.monotonic() + PROGRESS_INTERVAL_S
             next_at += interval
             sleep = next_at - time.monotonic()
             if sleep > 0:
                 time.sleep(sleep)
             else:  # fell behind: resynchronise rather than burst
                 next_at = time.monotonic()
+    _publish(progress, kind, len(latencies), errors)
     return {"kind": kind, "latency_ms": latencies, "statuses": statuses}
 
 
@@ -88,6 +118,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--seconds", type=float, required=True)
     parser.add_argument("--channels", required=True, help="comma-separated channel row ids")
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--progress", type=Path, default=None, help="counters, rewritten in place")
     args = parser.parse_args(argv)
     result = generate(
         args.base,
@@ -96,6 +127,7 @@ def main(argv: list[str] | None = None) -> int:
         args.rate,
         args.seconds,
         args.channels.split(","),
+        args.progress,
     )
     args.out.write_text(json.dumps(result), encoding="utf-8")
     return 0

@@ -1,0 +1,11 @@
+V-P7-18 repository-state inspection
+REPORT.md: absent
+approval/deployment references outside baselines and verification prompts:
+./evidence/phase-7/manifest-inputs.yaml:4:  - "V-P7-18 (deployment approval) cannot be satisfied by the implementer: it records the user's explicit decision after the final report is delivered. The report and the single question are produced once this Phase passes; nothing is deployed without that answer."
+./docs/criteria-lint.json:2225:      "criterion": "explicit approval recorded before any deployment action; zero deployment without it",
+./docs/adr/ADR-0001-baseline-and-v8-principles.md:27:   only human decision is deployment approval after the final report.
+./docs/traceability.json:920:      "text": "Evidence, residual risk, deployment approval",
+./docs/traceability.json:5788:      "subject": "deployment approval",
+./PROGRESS.md:21:Phase 7 progress (size-weighted): 26 / 26 — all packages implemented; V-P7-18 is the deployment decision, which only the user can give; Codex verification pending
+./evidence/phase-7/manifest.yaml:266:- 'V-P7-18 (deployment approval) cannot be satisfied by the implementer: it records
+deployment artifacts/status candidates:

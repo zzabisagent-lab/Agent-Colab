@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P7-17",
+  "evidence_id": "SELF-V-P7-17",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "python",
+    "-m",
+    "tools.evidence_archive",
+    "--check",
+    "--phases",
+    "7"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "7ad91d0bc4fa94f11a5d1cb90bcc0371049a9806",
+  "started_at": "2026-09-03T22:26:41.784313+00:00",
+  "finished_at": "2026-09-03T22:26:47.221052+00:00",
+  "output_sha256": "b3330b296810fb62bbf81ed4fed082d9ee9448f80357bde0998320d77e20853b"
+}

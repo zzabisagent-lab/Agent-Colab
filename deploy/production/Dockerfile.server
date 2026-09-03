@@ -41,13 +41,23 @@ COPY --from=build /app/migrations /app/migrations
 COPY --from=build /app/alembic.ini /app/alembic.ini
 # Remove OS packages the runtime never uses. Their remaining advisories have no fix from the
 # distribution, and a released image must not ship known-vulnerable content it does not need
-# (V-P7-11). The image is verified to import and serve after the purge.
-ARG PURGE="perl-base perl-modules-5.40 ncurses-bin ncurses-base libncursesw6 libtinfo6 gzip libsystemd0 libudev1 libacl1 libsqlite3-0"
-RUN dpkg --purge --force-depends $PURGE 2>&1 | tail -5; \
+# (V-P7-11). The util-linux family carries four unfixed Debian 13 advisories across nine binary
+# packages (36 High findings); the service is a Python process that never mounts a filesystem,
+# opens a login session or reads a partition table, so the whole family goes. util-linux and
+# bsdutils are marked essential and login is protected, hence the explicit force flags. The image
+# is verified to import and serve after the purge.
+ARG PURGE="perl-base perl-modules-5.40 ncurses-bin ncurses-base libncursesw6 libtinfo6 gzip libsystemd0 libudev1 libacl1 libsqlite3-0 util-linux bsdutils login mount libmount1 libblkid1 libsmartcols1 libuuid1 liblastlog2-2"
+# Two passes: dpkg refuses a package whose dependant is still present earlier in the same run.
+RUN for pass in 1 2; do \
+      dpkg --purge --force-depends --force-remove-essential --force-remove-protected $PURGE \
+        >/dev/null 2>&1 || true; \
+    done; \
     for pkg in $PURGE; do \
-      if dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null | grep -q "install ok installed"; then \
-        echo "purge failed: $pkg is still installed" >&2; exit 1; \
-      fi; \
+      status="$(dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null || true)"; \
+      case "$status" in \
+        ""|"unknown ok not-installed") ;; \
+        *) echo "purge failed: $pkg is still recorded as [$status]" >&2; exit 1 ;; \
+      esac; \
     done; \
     rm -rf /var/lib/apt/lists/* /var/cache/debconf/*
 WORKDIR /app
