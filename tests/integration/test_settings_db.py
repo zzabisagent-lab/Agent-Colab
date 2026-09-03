@@ -131,13 +131,16 @@ def test_settings_api_validation_diff_audit_rollback(
         json={"value": 10, "reason": "tune"},
         headers=_h(TOK_ADMIN),
     )
-    assert r.status_code == 200 and r.json()["version"] == 1 and r.json()["value"] == 10, r.text
+    assert r.status_code == 200 and r.json()["value"] == 10, r.text
+    v0 = int(r.json()["version"])  # instance-level setting: earlier modules may have versions
     r = client.put(
         "/api/v1/settings/scheduler.poll_interval_s", json={"value": 20}, headers=_h(TOK_ADMIN)
     )
-    assert r.json()["version"] == 2 and r.json()["layer"] == "runtime"
-    r = client.post("/api/v1/settings/scheduler.poll_interval_s/rollback/1", headers=_h(TOK_ADMIN))
-    assert r.status_code == 200 and r.json()["version"] == 3 and r.json()["value"] == 10
+    assert r.json()["version"] == v0 + 1 and r.json()["layer"] == "runtime"
+    r = client.post(
+        f"/api/v1/settings/scheduler.poll_interval_s/rollback/{v0}", headers=_h(TOK_ADMIN)
+    )
+    assert r.status_code == 200 and r.json()["version"] == v0 + 2 and r.json()["value"] == 10
     history = client.get(
         "/api/v1/settings/scheduler.poll_interval_s", headers=_h(TOK_ADMIN)
     ).json()["history"]
