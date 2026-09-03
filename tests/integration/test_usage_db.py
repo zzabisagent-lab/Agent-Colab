@@ -120,10 +120,12 @@ def test_pricing_activation_is_idempotent_and_immutable(engine: Engine) -> None:
             },
             "models": {},
         }
+        # pricing versions are instance-level: compare against what is already active
+        before = s.execute(text("SELECT count(*) FROM pricing_versions")).scalar_one()
         with pytest.raises(UsageError) as exc:
             activate_pricing(s, table)
         assert exc.value.code == "PRICING_VERSION_IMMUTABLE"
-        assert s.execute(text("SELECT count(*) FROM pricing_versions")).scalar_one() == 1
+        assert s.execute(text("SELECT count(*) FROM pricing_versions")).scalar_one() == before
 
 
 def test_record_usage_known_unknown_reported_and_missing(engine: Engine) -> None:

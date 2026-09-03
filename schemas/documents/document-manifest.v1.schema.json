@@ -4,53 +4,220 @@
   "title": "Canonical document manifest v1 (spec §14.1 provenance, development plan §10.4)",
   "type": "object",
   "required": [
-    "document_id", "version", "status", "doc_type", "source_type", "source_id",
-    "source_freeze_event_seq", "template_version", "generator", "sha256", "body_sha256",
-    "provenance", "verification", "resources"
+    "document_id",
+    "version",
+    "status",
+    "doc_type",
+    "source_type",
+    "source_id",
+    "source_freeze_event_seq",
+    "template_version",
+    "generator",
+    "sha256",
+    "body_sha256",
+    "provenance",
+    "verification",
+    "resources"
   ],
   "properties": {
-    "document_id": {"type": "string", "pattern": "^doc-[0-9a-f]{16}$"},
-    "version": {"type": "integer", "minimum": 1},
-    "status": {"type": "string", "enum": ["DRAFT_PRE_VERIFICATION", "ATTEMPT_FINALIZED", "FINALIZED"]},
-    "doc_type": {"type": "string", "enum": ["task", "brainstorm", "schedule_run", "period"]},
-    "source_type": {"type": "string"},
-    "source_id": {"type": "string"},
-    "source_freeze_event_seq": {"type": "integer", "minimum": 0},
-    "template_version": {"type": "string"},
-    "generator": {"type": "string"},
-    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
-    "body_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "document_id": {
+      "type": "string",
+      "pattern": "^doc-[0-9a-f]{16}$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "DRAFT_PRE_VERIFICATION",
+        "ATTEMPT_FINALIZED",
+        "FINALIZED"
+      ]
+    },
+    "doc_type": {
+      "type": "string",
+      "enum": [
+        "task",
+        "brainstorm",
+        "schedule_run",
+        "period"
+      ]
+    },
+    "source_type": {
+      "type": "string"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_freeze_event_seq": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "template_version": {
+      "type": "string"
+    },
+    "generator": {
+      "type": "string"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "body_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
     "provenance": {
       "type": "object",
-      "required": ["task_id", "root_task_id", "channel", "event_ids", "artifact_ids", "verification_ids", "revision_ids", "decision_ids", "schedule_run_id", "sensitive_event_ids"],
+      "required": [
+        "task_id",
+        "root_task_id",
+        "channel",
+        "event_ids",
+        "artifact_ids",
+        "verification_ids",
+        "revision_ids",
+        "decision_ids",
+        "schedule_run_id",
+        "sensitive_event_ids"
+      ],
       "properties": {
-        "task_id": {"type": "string"},
-        "root_task_id": {"type": ["string", "null"]},
-        "channel": {"type": ["object", "null"]},
-        "event_ids": {"type": "array", "items": {"type": "string"}},
-        "artifact_ids": {"type": "array", "items": {"type": "string"}},
-        "verification_ids": {"type": "array", "items": {"type": "string"}},
-        "revision_ids": {"type": "array", "items": {"type": "string"}},
-        "decision_ids": {"type": "array", "items": {"type": "string"}},
-        "schedule_run_id": {"type": ["string", "null"]},
-        "sensitive_event_ids": {"type": "array", "items": {"type": "string"}}
+        "task_id": {
+          "type": "string"
+        },
+        "root_task_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "channel": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "artifact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verification_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "revision_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "decision_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "schedule_run_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sensitive_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
     "verification": {
-      "type": ["object", "null"],
-      "required": ["verification_id", "revision", "result"],
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "verification_id",
+        "revision",
+        "result"
+      ],
       "properties": {
-        "verification_id": {"type": "string"},
-        "revision": {"type": "integer"},
-        "result": {"type": "string", "enum": ["PASSED", "FAILED", "BLOCKED"]},
-        "findings": {"type": "integer"},
-        "residual_risks": {"type": "integer"}
+        "verification_id": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "integer"
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "PASSED",
+            "FAILED",
+            "BLOCKED"
+          ]
+        },
+        "findings": {
+          "type": "integer"
+        },
+        "residual_risks": {
+          "type": "integer"
+        }
       }
     },
     "resources": {
       "type": "object",
-      "required": ["agents", "models", "tools", "input_tokens", "output_tokens", "tool_calls", "wall_ms", "cost_units", "artifacts", "sources"],
+      "required": [
+        "agents",
+        "models",
+        "tools",
+        "input_tokens",
+        "output_tokens",
+        "tool_calls",
+        "wall_ms",
+        "cost_units",
+        "artifacts",
+        "sources"
+      ],
       "description": "Every field has a value or a standard UNAVAILABLE_<REASON> placeholder (V-P6-11)."
+    },
+    "redactions": {
+      "type": "array",
+      "description": "Redaction rules applied to this version: rule name, how many matches and a salted sample hash. A redacted value is never stored (P6-05, development plan §9.3).",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule": {
+            "type": "string",
+            "minLength": 1
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "sample_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8,64}$"
+          }
+        },
+        "required": [
+          "rule",
+          "count",
+          "sample_hash"
+        ],
+        "additionalProperties": false
+      }
     }
   },
   "additionalProperties": false
