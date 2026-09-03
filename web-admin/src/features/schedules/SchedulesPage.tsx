@@ -13,7 +13,7 @@ interface ScheduleView {
 interface PreviewItem { local: string; utc: string; reason?: string | null; occurrence_key?: string }
 interface RunView {
   run_id: string
-  kind: string
+  run_kind: string
   status: string
   scheduled_for?: string | null
   started_at?: string | null
@@ -44,6 +44,7 @@ export function SchedulesPage() {
   const [missed, setMissed] = useState('RUN_ONCE')
   const [maxDuration, setMaxDuration] = useState('3600')
   const [dailyBudget, setDailyBudget] = useState('1000000')
+  const [runBudget, setRunBudget] = useState('100000')
   const [preview, setPreview] = useState<PreviewItem[] | null>(null)
   const [selected, setSelected] = useState<string | null>(null)
   const [runs, setRuns] = useState<RunView[]>([])
@@ -53,12 +54,18 @@ export function SchedulesPage() {
     timezone,
     channel_id: channelId,
     execution_principal_id: principal,
-    agent_selection: agentMode === 'fixed' ? { mode: 'fixed', agent_id: agentValue } : { mode: 'capability', capability_id: agentValue },
-    action_template: { action: 'task_create', title, domain, risk: 'LOW' },
+    agent_selection: agentMode === 'fixed'
+      ? { mode: 'fixed', agent_id: agentValue }
+      : { mode: 'capability', required_capabilities: [agentValue] },
+    action_template: {
+      schema_id: 'action-template.v1',
+      action: 'task_create',
+      input: { title, domain, risk: 'LOW' },
+    },
     concurrency_policy: concurrency,
     missed_run_policy: missed,
-    max_duration_s: Number(maxDuration),
-    budget_policy: { daily_cost_units: Number(dailyBudget) },
+    max_duration_seconds: Number(maxDuration),
+    budget_policy: { per_run_cost_units: Number(runBudget), daily_cost_units: Number(dailyBudget) },
   })
   async function run(action: () => Promise<unknown>, ok: string) {
     setError(null); setNotice(null)
@@ -66,7 +73,10 @@ export function SchedulesPage() {
   }
   async function doPreview() {
     setError(null)
-    try { setPreview((await post<{ items: PreviewItem[] }>(`${base}/preview`, version())).items) } catch (e) { setError(codeOf(e)) }
+    try {
+      const body = { cron_expression: cron, timezone, count: 10 }
+      setPreview((await post<{ items: PreviewItem[] }>(`${base}/preview`, body)).items)
+    } catch (e) { setError(codeOf(e)) }
   }
   function create(e: FormEvent) {
     e.preventDefault()
@@ -125,6 +135,8 @@ export function SchedulesPage() {
           </select>
           <label htmlFor="sch-max">Max duration (seconds)</label>
           <input id="sch-max" inputMode="numeric" value={maxDuration} onChange={(e) => setMaxDuration(e.target.value)} />
+          <label htmlFor="sch-run-budget">Per-Run budget (cost_units)</label>
+          <input id="sch-run-budget" inputMode="numeric" value={runBudget} onChange={(e) => setRunBudget(e.target.value)} />
           <label htmlFor="sch-budget">Daily budget (cost_units)</label>
           <input id="sch-budget" inputMode="numeric" value={dailyBudget} onChange={(e) => setDailyBudget(e.target.value)} />
         </fieldset>
@@ -164,7 +176,7 @@ export function SchedulesPage() {
           <tbody>
             {runs.map((r) => (
               <tr key={r.run_id}>
-                <td><code>{r.run_id}</code></td><td>{r.kind}{r.retry_of_run_id ? ` (retry of ${r.retry_of_run_id})` : ''}</td><td>{r.status}</td>
+                <td><code>{r.run_id}</code></td><td>{r.run_kind}{r.retry_of_run_id ? ` (retry of ${r.retry_of_run_id})` : ''}</td><td>{r.status}</td>
                 <td>{r.scheduled_for ?? '—'}</td><td>{r.started_at ?? '—'}</td><td>{r.finished_at ?? '—'}</td><td>{r.error_code ?? '—'}</td>
                 <td>{r.task_id ? `task ${r.task_id}` : '—'}{r.links ? Object.entries(r.links).filter(([, v]) => v).map(([k, v]) => ` · ${k} ${v}`).join('') : ''}</td>
                 <td>

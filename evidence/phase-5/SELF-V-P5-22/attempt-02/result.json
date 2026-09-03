@@ -1,0 +1,23 @@
+{
+  "test_id": "V-P5-22",
+  "evidence_id": "SELF-V-P5-22",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/e2e/test_admin_schedules_ui.py",
+    "tests/integration/test_schedules_api_db.py",
+    "-q",
+    "-k",
+    "console or lifecycle or version",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "fbcb8ee59652fb873a1a7df7d3310ac39711185e",
+  "started_at": "2026-09-03T09:37:50.052796+00:00",
+  "finished_at": "2026-09-03T09:38:00.405741+00:00",
+  "output_sha256": "99db33d5c94c6f7da021687c7391181685cc33299c5435b1c861e2db3be3ec87"
+}

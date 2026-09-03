@@ -80,7 +80,14 @@ def engine(database_url: str) -> Iterator[Engine]:
         repo.commit_role_version(
             s,
             "ui-sch-admin",
-            ["schedule.manage", "schedule.run", "task.create", "task.read", "admin.accounts"],
+            [
+                "schedule.manage",
+                "schedule.run",
+                "schedule.read",
+                "task.create",
+                "task.read",
+                "admin.accounts",
+            ],
             [],
             {},
             ADMIN,
@@ -165,7 +172,7 @@ def test_schedule_admin_console(server: str, engine: Engine) -> None:
     assert denied.status_code in (403, 404)
     with Session(engine) as s:
         manual = s.execute(
-            text("SELECT count(*) FROM schedule_runs WHERE schedule_id = :s AND kind = 'MANUAL'"),
+            text("SELECT count(*) FROM schedule_runs WHERE schedule_id = :s AND run_kind = 'MANUAL'"),
             {"s": sid},
         ).scalar_one()
     assert manual == 1
