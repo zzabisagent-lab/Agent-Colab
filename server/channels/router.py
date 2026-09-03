@@ -753,12 +753,16 @@ class Router:
         parsed: grammar.ParsedCommand,
     ) -> CommandResponse:
         a = parsed.args
+        # the channel the request came from is part of the grant: the eligible-approver selector
+        # notifies that channel's members, so an approval asked for in a channel must carry it
+        channel = self._internal_channel(session, inst, req)
         cmd = approvals_app.RequestApproval(
             subject_type="task",
             subject_id=a["task_id"],
             action=a["action"],
             risk=a.get("risk"),
             resource_scope={"scope": a["scope"]} if a.get("scope") else {},
+            channel_uuid=str(channel["id"]),
         )
         result = self._run(principal, cmd, req)
         return self._reply(

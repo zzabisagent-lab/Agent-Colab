@@ -1,0 +1,19 @@
+{
+  "test_id": "V-P7-13",
+  "evidence_id": "SELF-V-P7-13",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/e2e/test_incident_tabletop.py",
+    "-q",
+    "-s"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "b5bbf521dc497b9a6f93ce613d7b0671fe59c277",
+  "started_at": "2026-09-03T15:57:53.745424+00:00",
+  "finished_at": "2026-09-03T15:57:57.868632+00:00",
+  "output_sha256": "3f85603cf18a6a80c77fa2f02998c8aab27ef14c9e304a2b846240e450ab866d"
+}

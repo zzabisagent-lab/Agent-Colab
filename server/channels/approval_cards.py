@@ -154,20 +154,27 @@ def render_approval_event(
     dedupe = key if root is None else f"{key}:{event['aggregate_seq']}:{event['event_id'][-8:]}"
     if root is not None:
         payload["post_id"] = root
-    accepted = enqueue_delivery(
-        session,
-        workspace_id=workspace_id,
-        source_event_id=event["event_id"],
-        delivery=Delivery(
-            "mattermost.post" if root is None else "mattermost.patch",
+    # The first Event posts the card and claims the subject's single `role = 'card'` row; later
+    # Events patch that post in place and must not claim a second one (channel_posts_card_idx is
+    # unique per provider/subject where role = 'card'), exactly as the Task card patch does.
+    delivery = (
+        Delivery(
+            "mattermost.post",
             destination,
             payload,
             dedupe,
             subject_type="approval",
             subject_id=approval_id,
-            role="card",  # channel_posts tracks one row per subject; a patch updates the same card
-            root_post_id=root,
-        ),
+            role="card",
+        )
+        if root is None
+        else Delivery("mattermost.patch", destination, payload, dedupe)
+    )
+    accepted = enqueue_delivery(
+        session,
+        workspace_id=workspace_id,
+        source_event_id=event["event_id"],
+        delivery=delivery,
         provider_instance_id=target.provider_instance_id,
         external_channel_id=target.external_channel_id,
         now=now,

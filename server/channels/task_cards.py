@@ -420,13 +420,19 @@ def render_task_event(
 
 
 def bind_delivered_cards(session: Session) -> int:
-    """Create thread bindings for delivered cards that are not bound yet; returns the count."""
+    """Create thread bindings for delivered cards that are not bound yet; returns the count.
+
+    Only subjects a thread is addressed by are bound: the router resolves a Task (and a Brainstorm)
+    from its thread root, which is what ``thread_bindings`` exists for and what its CHECK allows.
+    An approval card is addressed by its own ``channel_posts`` row, so binding it would add nothing
+    and violate that constraint.
+    """
     rows = session.execute(
         text(
             "SELECT cp.provider_instance_id, cp.post_id, cp.external_channel_id, cp.subject_type, "
             "cp.subject_id "
             "FROM channel_posts cp WHERE cp.role = 'card' AND cp.status = 'sent' AND cp.post_id IS "
-            "NOT NULL "
+            "NOT NULL AND cp.subject_type IN ('task', 'brainstorm') "
             "AND NOT EXISTS (SELECT 1 FROM thread_bindings tb JOIN provider_instances p ON p.id = "
             "tb.provider_instance_id "
             "WHERE p.provider_instance_id = cp.provider_instance_id AND tb.subject_type = "

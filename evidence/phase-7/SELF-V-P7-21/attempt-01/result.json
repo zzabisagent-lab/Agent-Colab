@@ -1,0 +1,18 @@
+{
+  "test_id": "V-P7-21",
+  "evidence_id": "SELF-V-P7-21",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "python",
+    "-m",
+    "tools.runbook_lint"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "b5bbf521dc497b9a6f93ce613d7b0671fe59c277",
+  "started_at": "2026-09-03T15:57:04.259439+00:00",
+  "finished_at": "2026-09-03T15:57:04.373768+00:00",
+  "output_sha256": "93bc05daae4767e8dd8e6ba2c9ab1b0a8788ec16801b3ce17b9cdb1989f9bb84"
+}

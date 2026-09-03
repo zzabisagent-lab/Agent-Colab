@@ -41,6 +41,7 @@ check-docs:
 	$(UV) run python -m tools.policy_lint
 	$(UV) run python -m tools.name_role_lint
 	$(UV) run python -m tools.threat_model_lint
+	$(UV) run python -m tools.runbook_lint
 	$(UV) run python -m tools.gen_event_schemas --check
 	$(UV) run python -m tools.gen_event_fixtures --check
 

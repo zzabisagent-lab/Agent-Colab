@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P7-02",
+  "evidence_id": "SELF-V-P7-02",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/e2e/test_human_path_acceptance.py",
+    "-q",
+    "-s",
+    "-k",
+    "twenty_consecutive"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "b5bbf521dc497b9a6f93ce613d7b0671fe59c277",
+  "started_at": "2026-09-03T15:58:28.150583+00:00",
+  "finished_at": "2026-09-03T15:58:49.847348+00:00",
+  "output_sha256": "66463af9b31f6a5f3c100f7ab48573e9907d79435730d692bce93d66b740bb6e"
+}
