@@ -1,0 +1,21 @@
+{
+  "test_id": "V-P6-06",
+  "evidence_id": "SELF-V-P6-06",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_artifact_malicious_fixtures.py",
+    "tests/integration/test_artifact_quarantine_db.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "a31338c4113be648e5c37bc38c1070f07383725c",
+  "started_at": "2026-09-03T11:40:42.500734+00:00",
+  "finished_at": "2026-09-03T11:40:44.420944+00:00",
+  "output_sha256": "f44919a3367dc52929a8af8f8919d5f9536d2eb90b5c6c6d38b1e58904be21bc"
+}

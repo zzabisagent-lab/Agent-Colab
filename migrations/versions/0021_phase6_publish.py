@@ -1,4 +1,4 @@
-"""Phase 6 (P6-03/P6-06): artifact quarantine/provenance, publishers and destinations (owned .
+"""Phase 6 (P6-03/P6-06/P6-07): artifact quarantine and provenance, publishers, publish reviews.
 
 Revision ID: 0021
 Revises: 0020
@@ -23,4 +23,12 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    pass  # tables created by this revision are dropped by the owning package's downgrade list
+    for table in (
+        "publish_attempts",
+        "published_documents",
+        "publish_reviews",
+        "publish_destinations",
+        "artifact_quarantine",
+        "artifact_scan_results",
+    ):
+        op.execute(f"DROP TABLE IF EXISTS {table} CASCADE")

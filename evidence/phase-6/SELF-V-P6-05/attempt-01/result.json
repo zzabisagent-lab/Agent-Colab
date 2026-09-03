@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P6-05",
+  "evidence_id": "SELF-V-P6-05",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_artifact_upload_db.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "a31338c4113be648e5c37bc38c1070f07383725c",
+  "started_at": "2026-09-03T11:40:40.575267+00:00",
+  "finished_at": "2026-09-03T11:40:42.396359+00:00",
+  "output_sha256": "cf426ab35f3b06fccef8290fde5325d90af130a79da1d1752031518df77c4236"
+}

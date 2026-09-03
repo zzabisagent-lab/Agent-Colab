@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P6-17",
+  "evidence_id": "SELF-V-P6-17",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_publisher_filesystem_git_db.py",
+    "-k",
+    "correction",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "a31338c4113be648e5c37bc38c1070f07383725c",
+  "started_at": "2026-09-03T11:40:58.227575+00:00",
+  "finished_at": "2026-09-03T11:41:00.343457+00:00",
+  "output_sha256": "423b1d0e014eb1eab96f4420f7b344c2615be505dd574b756ac884826ca74f2d"
+}

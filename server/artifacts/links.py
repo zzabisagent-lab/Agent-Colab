@@ -126,8 +126,13 @@ def default_registry() -> SubjectRegistry:
     from server.schedules.links import ScheduleRunSubjectHandler  # Phase 5 activation (§6.8)
 
     registry.register(ScheduleRunSubjectHandler())
-    registry.register(InactiveSubjectHandler("brainstorm", 6))
-    registry.register(InactiveSubjectHandler("decision", 6))
+    from server.artifacts.subjects_phase6 import (  # Phase 6 activation (§6.8)
+        BrainstormSubjectHandler,
+        DecisionSubjectHandler,
+    )
+
+    registry.register(BrainstormSubjectHandler())
+    registry.register(DecisionSubjectHandler())
     return registry
 
 
