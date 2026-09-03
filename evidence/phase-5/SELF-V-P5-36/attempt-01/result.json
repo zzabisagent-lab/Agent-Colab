@@ -1,0 +1,24 @@
+{
+  "test_id": "V-P5-36",
+  "evidence_id": "SELF-V-P5-36",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_schedules_api_db.py",
+    "tests/unit/test_artifact_links.py",
+    "tests/unit/test_approval_rules.py",
+    "-k",
+    "subjects or registry or activation",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "75696b579c7fe433d4b03f8c0e3cad9281c6346a",
+  "started_at": "2026-09-03T09:26:41.240884+00:00",
+  "finished_at": "2026-09-03T09:26:43.386423+00:00",
+  "output_sha256": "cf426ab35f3b06fccef8290fde5325d90af130a79da1d1752031518df77c4236"
+}

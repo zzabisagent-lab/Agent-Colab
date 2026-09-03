@@ -224,7 +224,7 @@ def _events(engine: Engine, approval_id: str) -> list[str]:
 
 
 # ---------------------------------------------------------------- V-P1-15 subjects
-def test_task_and_action_subjects_fixed_schedule_run_not_active(engine: Engine) -> None:
+def test_task_action_and_phase5_schedule_run_subjects(engine: Engine) -> None:
     task_apr = _request(engine, "s-task")
     action_apr = _request(
         engine,
@@ -235,6 +235,7 @@ def test_task_and_action_subjects_fixed_schedule_run_not_active(engine: Engine) 
     )
     assert _status(engine, task_apr) == "PENDING" and _status(engine, action_apr) == "PENDING"
     assert _events(engine, task_apr) == ["APPROVAL_REQUESTED"]
+    # schedule/run subjects are active from Phase 5: unknown ids are missing subjects (V-P5-36)
     for st in ("schedule", "run"):
         with Session(engine) as s, s.begin():
             with pytest.raises(bus.CommandError) as exc:
@@ -242,13 +243,15 @@ def test_task_and_action_subjects_fixed_schedule_run_not_active(engine: Engine) 
                     RequestApproval(st, "sch-1", "tool:schedule_run_now"),
                     _ctx(s, "acct-ap-req", f"s-{st}"),
                 )
-            assert exc.value.code == "SUBJECT_TYPE_NOT_ACTIVE"
+            assert exc.value.code == "SUBJECT_NOT_FOUND"
     with engine.connect() as c:
         assert (
             c.execute(
                 text(
-                    "SELECT count(*) FROM approval_grants WHERE subject_type IN ('schedule','run')"
-                )
+                    "SELECT count(*) FROM approval_grants WHERE subject_type IN "
+                    "('schedule','run') AND workspace_id = :w"
+                ),
+                {"w": WS},
             ).scalar_one()
             == 0
         )

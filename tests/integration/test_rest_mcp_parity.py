@@ -261,7 +261,7 @@ async def test_rest_and_mcp_share_handlers_errors_and_idempotency(server: str) -
             f"/api/v1/approvals/{ra.json()['resource_id']}", headers=_h(TOKEN_H, "x")
         )
         assert got.status_code == 200 and got.json()["status"] == "PENDING"
-        # not-yet-active subject handlers answer identically on both paths
+        # subject handlers answer identically on both paths (schedule is active from Phase 5)
         rs = await rest.post(
             "/api/v1/approvals",
             json={**req, "subject_type": "schedule", "subject_id": "sch-1"},
@@ -273,7 +273,7 @@ async def test_rest_and_mcp_share_handlers_errors_and_idempotency(server: str) -
             **{**req, "subject_type": "schedule", "subject_id": "sch-1"},
             idempotency_key="par-apr-mcp-2",
         )
-        assert rs.json()["code"] == ms["error"]["code"] == "SUBJECT_TYPE_NOT_ACTIVE"
+        assert rs.json()["code"] == ms["error"]["code"] == "SUBJECT_NOT_FOUND"
         assert rs.status_code == ms["error"]["status"]
 
     # zero bypass side effects: every Event came through the bus with a known idempotency scope

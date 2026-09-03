@@ -161,11 +161,8 @@ def test_premature_run_link_and_link_negatives(engine: Engine, storage: Artifact
         )
         aid = res.resource_id
         cases = [
-            (
-                art.LinkArtifact(aid, "schedule_run", "run-0001"),
-                "SUBJECT_TYPE_NOT_ACTIVE",
-                "Phase 5",
-            ),
+            # schedule_run is active from Phase 5: an unknown Run is a missing subject
+            (art.LinkArtifact(aid, "schedule_run", "run-0001"), "SUBJECT_NOT_FOUND", ""),
             (art.LinkArtifact(aid, "brainstorm", "bs-0001"), "SUBJECT_TYPE_NOT_ACTIVE", "Phase 6"),
             (art.LinkArtifact(aid, "decision", "dec-0001"), "SUBJECT_TYPE_NOT_ACTIVE", "Phase 6"),
             (art.LinkArtifact(aid, "workspace", "ws"), "SUBJECT_TYPE_UNKNOWN", ""),

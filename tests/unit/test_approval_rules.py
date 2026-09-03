@@ -81,10 +81,10 @@ def test_subject_registry_phase_activation() -> None:
     from server.approvals.model import validate_subject
 
     session: Session = _NoTask()  # type: ignore[assignment]
-    for st in ("schedule", "run"):
+    for st in ("schedule", "run"):  # active from Phase 5: the id must exist in this Workspace
         with pytest.raises(ApprovalError) as exc:
             validate_subject(session, WS, Subject(st, "x"))
-        assert exc.value.code == "SUBJECT_TYPE_NOT_ACTIVE" and "Phase 5" in exc.value.detail
+        assert exc.value.code == "SUBJECT_NOT_FOUND"
     with pytest.raises(ApprovalError) as exc2:
         validate_subject(session, WS, Subject("bogus", "x"))
     assert exc2.value.code == "SUBJECT_TYPE_UNKNOWN"

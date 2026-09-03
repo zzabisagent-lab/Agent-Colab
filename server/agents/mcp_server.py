@@ -221,6 +221,15 @@ class AgentColabMCPServer(MCPServer):
             )
         return await super().call_tool(name, arguments, context)
 
+    async def list_tools(self) -> list[Any]:
+        """Hide management/schedule tools from callers without their permission (§7.4)."""
+        from server.agents.schedule_tools import filter_hidden_tools
+
+        return filter_hidden_tools(self._runtime, await super().list_tools(), _principal_from_token)
+
+
+from server.agents.schedule_tools import register_schedule_tools  # noqa: E402 - avoids a cycle
+
 
 def build_mcp_server(runtime: Runtime, base_url: str) -> MCPServer:
     register_core_tools()
@@ -235,6 +244,7 @@ def build_mcp_server(runtime: Runtime, base_url: str) -> MCPServer:
     )
     for name, command_type in TOOL_MAP.items():
         server.tool(name=name)(_make_tool(runtime, name, command_type))
+    register_schedule_tools(server, runtime, _principal_from_token)  # §7.4, hidden by default
     from server.agents.transport_mcp import register_work_transport
 
     server.inbox_subscriptions = register_work_transport(  # type: ignore[attr-defined]

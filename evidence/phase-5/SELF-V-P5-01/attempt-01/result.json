@@ -1,0 +1,23 @@
+{
+  "test_id": "V-P5-01",
+  "evidence_id": "SELF-V-P5-01",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_schedule_contract.py",
+    "tests/integration/test_schedules_api_db.py",
+    "-k",
+    "cron or create_validates or grammar",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "75696b579c7fe433d4b03f8c0e3cad9281c6346a",
+  "started_at": "2026-09-03T09:25:49.201338+00:00",
+  "finished_at": "2026-09-03T09:25:51.511024+00:00",
+  "output_sha256": "4bed8cc624113743771e380f4fea7f09ec8586d03d46684c5c3a9889a2038305"
+}

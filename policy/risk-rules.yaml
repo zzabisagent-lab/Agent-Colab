@@ -124,6 +124,7 @@ actions:
   api:audit_export:                 {class: read_query,         permission: admin.audit}
   api:breakglass_activate:          {class: destructive,        permission: admin.break_glass}
   api:ops_read:                     {class: read_query,         permission: admin.settings}
+  api:schedule_metrics_read:        {class: read_query,         permission: schedule.manage}
   api:role_create:                  {class: production_change,  permission: admin.accounts}
   api:role_update:                  {class: production_change,  permission: admin.accounts}
   api:role_assign:                  {class: production_change,  permission: admin.accounts}

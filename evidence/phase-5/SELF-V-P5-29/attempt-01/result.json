@@ -1,0 +1,23 @@
+{
+  "test_id": "V-P5-29",
+  "evidence_id": "SELF-V-P5-29",
+  "attempt": 1,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_schedule_api_models.py",
+    "tests/unit/test_schedule_contract.py",
+    "-k",
+    "dom_dow or dow or cron",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "75696b579c7fe433d4b03f8c0e3cad9281c6346a",
+  "started_at": "2026-09-03T09:26:28.556987+00:00",
+  "finished_at": "2026-09-03T09:26:30.423904+00:00",
+  "output_sha256": "cc34b63aed9ded66f0e7fe2019892e09f95bda31d78523503dd936241e3dc3f5"
+}

@@ -92,7 +92,7 @@ def reminder_at(valid_from: dt.datetime, expires_at: dt.datetime) -> dt.datetime
 SUBJECT_TYPES: tuple[str, ...] = ("task", "schedule", "run", "action")
 # activating phase per subject (development plan §6.7): task/action in Phase 1, schedule/run in 5
 SUBJECT_ACTIVATION: dict[str, int] = {"task": 1, "schedule": 5, "run": 5, "action": 1}
-CURRENT_PHASE = 1
+CURRENT_PHASE = 5  # schedule/run subjects activate with Phase 5 (development plan §6.7)
 
 
 @dataclass(frozen=True)
@@ -113,9 +113,15 @@ def validate_subject(session: Session, workspace_uuid: uuid.UUID, subject: Subje
             "SUBJECT_TYPE_NOT_ACTIVE",
             f"{subject.subject_type} subjects activate in Phase {activates}",
         )
-    if subject.subject_type == "task":
+    tables = {
+        "task": ("tasks_projection", "task_id"),
+        "schedule": ("schedules", "schedule_id"),
+        "run": ("schedule_runs", "run_id"),
+    }
+    if subject.subject_type in tables:
+        table, column = tables[subject.subject_type]
         row = session.execute(
-            text("SELECT workspace_id FROM tasks_projection WHERE task_id = :t"),
+            text(f"SELECT workspace_id FROM {table} WHERE {column} = :t"),  # noqa: S608 - fixed map
             {"t": subject.subject_id},
         ).first()
         if row is None:

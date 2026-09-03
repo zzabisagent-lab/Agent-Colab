@@ -36,11 +36,14 @@ from server.api.v1.providers_mattermost import router as providers_mattermost_ro
 from server.api.v1.providers_mattermost_actions import router as mattermost_actions_router
 from server.api.v1.providers_telegram import router as providers_telegram_router
 from server.api.v1.roles import router as roles_router
+from server.api.v1.schedule_metrics import router as schedule_metrics_router
+from server.api.v1.schedules import router as schedules_router
 from server.api.v1.secrets import router as secrets_router
 from server.api.v1.settings import router as settings_router
 from server.api.v1.tasks import router as tasks_router
 from server.api.v1.verification import router as verification_router
 from server.api.v1.work import router as work_router
+from server.application import schedule_runs
 from server.config import PRODUCT_NAME, Settings, get_settings
 from server.db.engine import make_engine, make_session_factory
 from server.identity import mattermost_link
@@ -99,6 +102,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(work_router)  # P3-11: work item REST + signed webhook callbacks
     app.include_router(agents_router)
     app.include_router(roles_router)
+    app.include_router(schedule_metrics_router)  # P5-09; before any /schedules/{id} router
+    app.include_router(schedules_router)  # P5-01 Schedules and Runs
     app.include_router(setup_router)  # P4-03 Setup Wizard (/setup, transport-guarded)
     app.include_router(settings_router)  # P4-04
     app.include_router(maintenance_router)  # P4-13
@@ -110,6 +115,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(audit_router)  # P4-02 audit explorer
     app.include_router(hard_delete_router)  # P4-11 hard-delete workflow
     _wire_secrets(app)
+    schedule_runs.register_hooks()  # P5: Schedule Run closes with its Task
     mattermost_link.register()  # P2-13: `link start|confirm` slash handlers
     app.state.telegram_webhook_secret = None  # env AGENT_COLAB_TELEGRAM_WEBHOOK_SECRET by default
     # P4-08 admin security: CSRF (innermost), session policy (idle/MFA gate/break-glass), headers

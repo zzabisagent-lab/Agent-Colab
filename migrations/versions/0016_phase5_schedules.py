@@ -23,4 +23,17 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    pass  # tables created by this revision are dropped by the owning package's downgrade list
+    for table in (
+        "schedule_planner_notes",
+        "schedule_run_attempts",
+        "schedule_runs",
+        "schedule_versions",
+        "schedules",
+    ):
+        op.execute(f"DROP TABLE IF EXISTS {table} CASCADE")
+    for fn in (
+        "agent_colab_forbid_schedule_version_change",
+        "agent_colab_check_schedule_version_owner",
+        "agent_colab_forbid_run_version_change",
+    ):
+        op.execute(f"DROP FUNCTION IF EXISTS {fn}()")
