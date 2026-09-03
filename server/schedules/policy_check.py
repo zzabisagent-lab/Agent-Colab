@@ -25,6 +25,11 @@ if TYPE_CHECKING:
     from server.schedules.execution import ExecutionContext, RunLike, ScheduleLike, VersionLike
 
 PERMISSION_FOR_ACTION = {"task_create": "task.create"}
+# The Policy Engine classifies risk by catalog action. Passing a schedule-scoped string left every
+# scheduled action unclassified, so `unclassified_default: HIGH` demanded an Approval for even a
+# LOW-risk task_create, which development plan §10A.4 does not require. Map to the catalog action
+# and keep the schedule-scoped fallback (deliberately unclassified) for anything unknown.
+CATALOG_ACTION_FOR_ACTION = {"task_create": "api:task_create"}
 APPROVAL_STATUSES_RUN = ("APPROVED",)
 APPROVAL_STATUSES_SCHEDULE = ("APPROVED", "PARTIALLY_CONSUMED")
 
@@ -70,7 +75,10 @@ def check(
         return _denied(SkipCode.SKIPPED_POLICY, f"action {action} not executable by schedules")
     if not _member(ctx, version.channel_id, principal.account_uuid):
         return _denied(SkipCode.SKIPPED_POLICY, "execution principal is not a channel member")
-    risk, approval_required = _authorize(ctx, principal, permission, version, run)
+    catalog_action = CATALOG_ACTION_FOR_ACTION.get(action, f"schedule:{run.schedule_id}")
+    risk, approval_required = _authorize(
+        ctx, principal, permission, version, run, catalog_action=catalog_action
+    )
     if risk is None:
         return _denied(SkipCode.SKIPPED_POLICY, "permission revoked")
     agent = _select_agent(ctx, version, principal)
@@ -110,7 +118,13 @@ def _member(ctx: ExecutionContext, channel_uuid: str, account_uuid: str) -> bool
 
 
 def _authorize(
-    ctx: ExecutionContext, principal: Principal, permission: str, version: VersionLike, run: RunLike
+    ctx: ExecutionContext,
+    principal: Principal,
+    permission: str,
+    version: VersionLike,
+    run: RunLike,
+    *,
+    catalog_action: str | None = None,
 ) -> tuple[str | None, bool]:
     """Risk and approval requirement per the Policy Engine; (None, False) when denied."""
     if ctx.authorizer is None:
@@ -120,7 +134,7 @@ def _authorize(
             ctx.session,
             principal.account_id,
             permission,
-            action=f"schedule:{run.schedule_id}",
+            action=catalog_action or f"schedule:{run.schedule_id}",
             channel_id=version.channel_id,
             correlation_id=run.run_id,
         )
