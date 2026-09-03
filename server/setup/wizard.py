@@ -251,7 +251,8 @@ class SetupService:
                 "failed_at": self.machine.failure.failed_at,
             },
             "lock_marker": False,
-            "rejection_log": list(self.rejections.entries[-50:]),
+            # every not-yet-audited rejection is kept until the DB takes it over (F-P4-002)
+            "rejection_log": [e for e in self.rejections.entries if not e.get("audited")][-500:],
         }
         if record is not None:
             doc.update(record.as_store_fields())
@@ -310,10 +311,12 @@ class SetupService:
     def reject(self, code: str, ip: str, presented: str) -> None:
         """One redacted entry per rejection: local log always, DB audit when a DB exists."""
         entry = {
+            "id": f"rej-{uuid.uuid4().hex[:16]}",
             "at": isoformat_utc(self.clock.now()),
             "ip": ip,
             "token_fingerprint": token_fingerprint(presented) if presented else "",
             "code": code,
+            "audited": False,
         }
         self.rejections.entries.append(entry)
         try:
@@ -323,22 +326,50 @@ class SetupService:
         if self.session_factory is not None:
             try:
                 with self.session_factory() as session, session.begin():
-                    append_audit(
-                        session,
-                        action="setup.token_rejected",
-                        target_type="setup",
-                        target_id="bootstrap",
-                        result="DENY",
-                        actor_label=f"ip:{ip}",
-                        correlation_id="setup",
-                        error_code=code,
-                        metadata=entry,
-                        clock=self.clock,
-                    )
+                    self._audit_rejection(session, entry)
+                entry["audited"] = True
+                self.persist_local()
             except Exception as exc:  # audit table may not exist before migration
                 log.warning(
                     "rejection audit not written (%s); local log holds it", type(exc).__name__
                 )
+
+    def _audit_rejection(self, session: Session, entry: dict[str, Any]) -> None:
+        """One redacted ``setup.token_rejected`` AuditEvent per rejection (idempotent by id)."""
+        exists = session.execute(
+            text(
+                "SELECT 1 FROM audit_events WHERE action = 'setup.token_rejected' "
+                "AND redacted_metadata->>'id' = :i"
+            ),
+            {"i": entry["id"]},
+        ).first()
+        if exists:
+            return
+        append_audit(
+            session,
+            action="setup.token_rejected",
+            target_type="setup",
+            target_id="bootstrap",
+            result="DENY",
+            actor_label=f"ip:{entry['ip']}",
+            correlation_id="setup",
+            error_code=str(entry["code"]),
+            metadata={k: v for k, v in entry.items() if k != "audited"},
+            clock=self.clock,
+        )
+
+    def migrate_rejections_to_audit(self, session: Session) -> int:
+        """Move every sealed pre-DB rejection into audit_events (atomic with the caller's
+        transaction; safe to retry). Returns the number of entries newly audited."""
+        moved = 0
+        for entry in self.rejections.entries:
+            if entry.get("audited"):
+                continue
+            entry.setdefault("id", f"rej-{uuid.uuid4().hex[:16]}")
+            self._audit_rejection(session, entry)
+            entry["audited"] = True
+            moved += 1
+        return moved
 
     # ------------------------------------------------------------------ inputs
     def configure(self, section: str, values: dict[str, Any]) -> dict[str, Any]:
@@ -655,6 +686,8 @@ class SetupService:
             self.session_factory = make_session_factory(make_engine(url))
         with self.session_factory() as session, session.begin():
             self._persist_db_state(session, SetupState.BOOTSTRAPPING)
+            # every sealed pre-DB rejection becomes an authoritative AuditEvent (F-P4-002)
+            self.migrate_rejections_to_audit(session)
         self.order.complete(ApplyStep.DB_MIGRATION)
         self._injected_kill(ApplyStep.DB_MIGRATION)
 

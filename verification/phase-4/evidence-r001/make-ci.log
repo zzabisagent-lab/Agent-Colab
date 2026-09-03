@@ -1,0 +1,18 @@
+Script started on 2026-09-03 01:36:57+00:00 [COMMAND="cd /tmp/agent-colab-vrp4-ui.CmmWaM && make ci" <not executed on terminal>]
+/home/master/.local/bin/uv run ruff check .
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+E501 Line too long (103 > 100)
+  --> tests/integration/test_maintenance_db.py:28:101
+   |
+26 |     with Session(eng) as s, s.begin():
+27 |         s.execute(
+28 |             text("INSERT INTO workspaces (id, workspace_id, name) VALUES (:i, 'ws-maint-tick', 'mt')"),
+   |                                                                                                     ^^^
+29 |             {"i": WS},
+30 |         )
+   |
+
+Found 1 error.
+make: *** [Makefile:16: lint] Error 1
+
+Script done on 2026-09-03 01:36:57+00:00 [COMMAND_EXIT_CODE="2"]

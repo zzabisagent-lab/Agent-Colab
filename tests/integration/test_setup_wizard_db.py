@@ -243,7 +243,7 @@ def test_setup_token_rejections_are_403_then_429_and_each_is_logged(
     )  # invalid, expired, reused (+ the consumed-then-refused is not a rejection) ... see below
     assert len(rejections) == expected - 1 + 1 or len(rejections) == 11
     for entry in rejections:
-        assert set(entry) == {"at", "ip", "token_fingerprint", "code"}
+        assert {"at", "ip", "token_fingerprint", "code"} <= set(entry)
         assert len(entry["token_fingerprint"]) == fingerprint_len
         assert entry["code"].startswith("SETUP_TOKEN_")
     assert bad not in wizard.store_path.read_text() and good not in wizard.store_path.read_text()

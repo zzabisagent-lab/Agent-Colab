@@ -25,7 +25,9 @@ def engine(database_url: str) -> Iterator[Engine]:
     eng = make_engine(database_url)
     with Session(eng) as s, s.begin():
         s.execute(
-            text("INSERT INTO workspaces (id, workspace_id, name) VALUES (:i, 'ws-maint-tick', 'mt')"),
+            text(
+                "INSERT INTO workspaces (id, workspace_id, name) VALUES (:i, 'ws-maint-tick', 'mt')"
+            ),
             {"i": WS},
         )
     yield eng

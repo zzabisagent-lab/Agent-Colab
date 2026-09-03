@@ -1,0 +1,199 @@
+verification_id: VR-P4-001
+criteria_version: v8.0
+implementer_agent_id: agent-claude-code
+verifier_agent_id: agent-codex
+implementer_account_id: account-implementer-claude
+verifier_account_id: account-verifier-codex
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+verifier_credential_fingerprint: sha256:ecbd74ce21cb00f0e36136b78a0fe57c8241013e4125100e2871351c90b530b9
+identity_graph_version: identity-v8-001
+effective_policy_hash: sha256:055832206b82039ebbedda9dffac310c23418abefa730821ef14b51805b9f531
+target_commit: a488dfe25ab39358e207307ecc394729ae8f403f
+environment_fingerprint: "linux-x86_64/6.8.0-138-generic; python=3.12.3; uv=0.12.9; node=22.23.2; pnpm=11.25.0; postgresql=16.15; chromium=playwright-1234"
+started_at: "2026-09-03T01:33:00Z"
+completed_at: "2026-09-03T01:44:32Z"
+tests:
+  - id: V-P4-01
+    result: FAIL
+    evidence_ref: verification/phase-4/evidence-r001/repro-web-setup-contract-attempt3.log
+    note: "The backend harness configures and locks successfully, but UI-shaped requests return preflight ok=false, diff 405, and bootstrap 422; the Web Wizard cannot configure a clean environment."
+  - id: V-P4-02
+    result: FAIL
+    evidence_ref: verification/phase-4/evidence-r001/repro-setup-rejection-audit-attempt2.log
+    note: "Invalid/expired/reused/rate-limit responses pass, but a pre-DB token rejection leaves zero setup.token_rejected AuditEvents after successful bootstrap."
+  - id: V-P4-03
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/setup-settings-maintenance.log
+    note: "Post-completion bootstrap/configuration endpoints reject access and configuration remains locked."
+  - id: V-P4-04
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/setup-settings-maintenance.log
+    note: "Injected termination after every apply step leaves no partial Owner/CONFIGURED state and permits re-entry."
+  - id: V-P4-05
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/setup-settings-maintenance.log
+    note: "Wrong type, endpoint, and permission cases are rejected before apply."
+  - id: V-P4-06
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/setup-settings-maintenance.log
+    note: "Change and rollback produce linked, redacted version diffs and audit records."
+  - id: V-P4-07
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/accounts-ops-delete.log
+    note: "Create/edit/suspend/delete-request paths preserve permissions, references, and audit."
+  - id: V-P4-08
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/ui-build-e2e.log
+    note: "Browser and direct API denial/action trails match; Member escalation attempts create no accounts."
+  - id: V-P4-09
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/admin-security.log
+    note: "CSRF, session expiry/cookies, CSP/security headers, rate limits, and re-auth protections pass."
+  - id: V-P4-10
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/secrets.log
+    note: "Database/provider inspection finds ciphertext and wrapped DEKs only; master key separation passes."
+  - id: V-P4-11
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/secrets.log
+    note: "Wrong Agent, Task, action, resource, and sidecar scope requests are rejected."
+  - id: V-P4-12
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/secrets.log
+    note: "Expired and reused single-use handles return zero secret bytes with one redacted denial audit each."
+  - id: V-P4-13
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/secrets.log
+    note: "Grant, Task, and Agent revocation immediately invalidate handles and notify cleanup subscribers."
+  - id: V-P4-14
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/secrets.log
+    note: "Canary flow scans chat/events/logs/errors/documents with zero canaries; planted control is detected."
+  - id: V-P4-15
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/secrets.log
+    note: "LLM-context resolution is denied until quorum approval by distinct Humans."
+  - id: V-P4-16
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/accounts-ops-delete.log
+    note: "Injected dependency failure and recovery are represented accurately within the 60-second bound."
+  - id: V-P4-17
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/secrets.log
+    note: "Database dump plus runtime tokens cannot decrypt secret versions; master key is absent from DB."
+  - id: V-P4-18
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/ui-build-e2e.log
+    note: "Axe WCAG 2.1 A/AA reports zero violations on all console routes; keyboard critical flow passes; default CSS contrast was inspected."
+  - id: V-P4-19
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/setup-settings-maintenance.log
+    note: "Maintenance/recovery/MFA path accepts the 29-minute session and rejects 30-minute/ordinary sessions without configuration change."
+  - id: V-P4-20
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/admin-security.log
+    note: "Owner/Administrator TOTP enrollment and critical-action bypass attempts enforce MFA."
+  - id: V-P4-21
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/admin-security.log
+    note: "Break-glass re-auth, expiry, termination, announcement, post-hoc verification Task, and Event immutability pass."
+  - id: V-P4-22
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/accounts-ops-delete.log
+    note: "Single approval, early execution, and direct DELETE are rejected; dual approval/waiting/tombstones/audit pass."
+  - id: V-P4-23
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/accounts-ops-delete.log
+    note: "Period/actor/action search and export are accurate and remain redacted."
+  - id: V-P4-24
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/setup-settings-maintenance.log
+    note: "Bootstrap store permissions are 0700/0600, token is hashed, secrets are absent, and only LOCKED marker remains."
+  - id: V-P4-25
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/accounts-ops-delete.log
+    note: "Pre-existing Event bytes/hashes remain unchanged while DEK destruction and display redaction occur."
+  - id: V-P4-26
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/accounts-ops-delete.log
+    note: "Human/Agent/service Role CRUD is reflected in common Account assignment with API/bus parity and audit."
+  - id: V-P4-27
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/setup-settings-maintenance.log
+    note: "All 16 remote boundary combinations plus HTTP negative paths allow only TLS+mTLS+allowlist+valid-token; loopback remains default."
+  - id: V-P4-28
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/setup-settings-maintenance.log
+    note: "DB/key failures and restart points preserve DB-to-key-to-Owner/TOTP order and suppress false Owner-created state."
+  - id: V-P4-29
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/accounts-ops-delete.log
+    note: "Pre-delete backup restored into an empty DB reconciles tombstones, prevents DEK resurrection, and preserves Event hashes."
+  - id: V-P4-30
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/setup-settings-maintenance.log
+    note: "Integration wrong endpoint/permission failures block configuration; successful values survive restart only as redacted values/references."
+  - id: V-P4-31
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/sidecar.log
+    note: "Env/fd/socket injection, host binding, revoke under 5 seconds, expiry, disk/log scans, polling fallback, and real loopback HTTP pass."
+  - id: V-P4-32
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/setup-settings-maintenance.log
+    note: "Non-admin writes receive 503+Retry-After, due Runs are unclaimed, outbox drains, and enter/exit audit/announcements pass."
+  - id: V-P4-33
+    result: PASS
+    evidence_ref: verification/phase-4/evidence-r001/admin-security.log
+    note: "HIGH re-auth and CRITICAL quorum behavior pass; duplicate Human and Agent approvals are rejected."
+findings:
+  - id: F-P4-001
+    severity: Medium
+    affected: [REQ-SETP-001, V-P4-01]
+    summary: "The Web Setup Wizard cannot execute the server's Setup protocol."
+    target_commit: a488dfe25ab39358e207307ecc394729ae8f403f
+    environment: "environment_fingerprint above; clean target checkout"
+    reproduction:
+      - "Open web-admin/src/features/setup/SetupWizardPage.tsx and observe no calls to POST /setup/configure."
+      - "Submit the UI-shaped form body to POST /setup/preflight and POST /setup/diff, then submit it to POST /setup/bootstrap."
+      - "Observe preflight ok=false with missing DB inputs, HTTP 405 for diff, and HTTP 422 for bootstrap."
+    expected: "A clean environment can be fully configured and locked through the Web Wizard within 30 minutes."
+    actual: "The UI sends request methods and bodies incompatible with server/api/setup.py, so the Web flow cannot reach a successful preflight or bootstrap."
+    evidence_ref: verification/phase-4/evidence-r001/repro-web-setup-contract-attempt3.log
+    impact: "Initial operators cannot install Agent-Colab through the mandated Web Wizard; only the lower-level API harness succeeds."
+    fix_condition: "Wire each form section through POST /setup/configure, call GET /setup/diff, send {token} to POST /setup/bootstrap, and add a browser E2E test that configures an empty DB/storage and reaches LOCKED."
+  - id: F-P4-002
+    severity: Medium
+    affected: [REQ-SETP-002, V-P4-02]
+    summary: "Pre-DB Setup token rejection records are discarded instead of becoming AuditEvents."
+    target_commit: a488dfe25ab39358e207307ecc394729ae8f403f
+    environment: "environment_fingerprint above; empty PostgreSQL 16 database"
+    reproduction:
+      - "Create a fresh Wizard and submit an invalid setup token before DB migration."
+      - "Complete a valid bootstrap to LOCKED."
+      - "Query audit_events for action='setup.token_rejected'."
+    expected: "Exactly one redacted AuditEvent exists for every rejected token request."
+    actual: "The query returns zero; the pre-DB rejection exists only in rejection_log and is removed when the local file becomes a LOCKED marker."
+    evidence_ref: verification/phase-4/evidence-r001/repro-setup-rejection-audit-attempt2.log
+    impact: "Setup takeover attempts before DB availability are absent from the authoritative audit trail."
+    fix_condition: "Atomically migrate every sealed pre-DB rejection entry into redacted audit_events when the DB becomes available, prove one event per request including 429 responses, and retain retry/idempotency safety."
+  - id: F-P4-003
+    severity: Low
+    affected: [REQ-QGAT-004, make-ci]
+    summary: "The documented clean-clone CI gate fails Ruff lint."
+    target_commit: a488dfe25ab39358e207307ecc394729ae8f403f
+    environment: "environment_fingerprint above; clean local clone"
+    reproduction:
+      - "Check out the target commit in a clean clone."
+      - "Run make ci."
+      - "Observe Ruff E501 at tests/integration/test_maintenance_db.py:28 and exit code 2."
+    expected: "make ci completes successfully as required by repository agreements and reproduction steps."
+    actual: "make ci stops during ruff check because line 28 is 103 characters, exceeding the configured 100-character limit."
+    evidence_ref: verification/phase-4/evidence-r001/make-ci.log
+    impact: "The target cannot pass its required CI gate and the manifest's lint-green assertion is not reproducible."
+    fix_condition: "Format the offending statement and demonstrate make ci exits 0 from a clean target checkout."
+findings_count: 3
+result: FAILED
+residual_risks:
+  - "OIDC remains an optional adapter interface tested with a fake provider; enforced Owner/Administrator factor is TOTP."
+  - "Setup mTLS is represented by trusted reverse-proxy request attributes; deployment-level TLS termination is deferred to Phase 5."
+  - "The local encrypted provider is the only concrete secret provider; external providers rely on the shared contract."

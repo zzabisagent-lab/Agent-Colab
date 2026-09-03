@@ -198,6 +198,13 @@
           "code": {
             "type": "string",
             "pattern": "^SETUP_[A-Z_]+$"
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^rej-[0-9a-f]{16}$"
+          },
+          "audited": {
+            "type": "boolean"
           }
         },
         "required": [

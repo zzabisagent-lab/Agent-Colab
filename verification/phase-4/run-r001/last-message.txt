@@ -1,0 +1,13 @@
+Verification completed and schema-validated.
+
+Report: [VR-P4-001.yaml](/home/master/.local/verify/phase-4-r001/verification/phase-4/VR-P4-001.yaml)
+
+Key failures:
+
+- V-P4-01: Web Setup Wizard requests do not match the server API contract.
+- V-P4-02: pre-database token rejections are not migrated into `AuditEvent` records.
+- `make ci`: Ruff E501 failure in `test_maintenance_db.py:28`.
+
+All 33 mandatory tests are recorded. Findings: 2 Medium, 1 Low. Evidence passed a redacted gitleaks scan.
+
+result: FAILED
