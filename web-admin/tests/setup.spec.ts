@@ -13,6 +13,7 @@ test('web setup wizard configures an empty environment to LOCKED', async ({ page
   await page.getByLabel('Port').fill(env('E2E_DB_PORT'))
   await page.getByLabel('Database name').fill(env('E2E_DB_NAME'))
   await page.getByLabel('User').fill(env('E2E_DB_USER'))
+  await page.getByLabel('Password (kept in memory only)').fill(env('E2E_DB_PASSWORD'))
   await page.getByLabel('Master key file path (owner-only, outside backups)').fill(env('E2E_KEY_PATH'))
   await page.getByLabel('Mattermost URL').fill('http://mattermost.test:8065')
   await page.getByLabel('Mattermost team').fill('colab')

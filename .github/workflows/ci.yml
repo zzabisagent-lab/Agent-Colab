@@ -36,6 +36,8 @@ jobs:
           node-version: "22"
       - run: npm install -g pnpm
       - run: make bootstrap
+      - name: Install Playwright browsers
+        run: cd web-admin && pnpm exec playwright install --with-deps chromium
       - name: lint, format, types, bandit, web lint
         run: make lint
       - name: unit, integration and end-to-end tests
