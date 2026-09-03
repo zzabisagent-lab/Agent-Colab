@@ -37,6 +37,7 @@ TOOL_MAP: dict[str, type[bus.Command]] = {}
 def register_core_tools() -> None:
     from server.application import approvals as ap
     from server.application import artifacts as ar
+    from server.application import brainstorm as bs
     from server.application import tasks as t
     from server.application import usage as us
     from server.application import verification as vf
@@ -54,6 +55,8 @@ def register_core_tools() -> None:
         "artifact_register": ar.RegisterArtifact,
         "verification_submit": vf.SubmitVerdict,
         "verification_evidence_submit": vf.SubmitEvidence,
+        # §7.4 (P6-02): Agents contribute to a Brainstorm only through this tool
+        "brainstorm_contribute": bs.ContributeTurn,
     }.items():
         TOOL_MAP.setdefault(name, command_type)
 

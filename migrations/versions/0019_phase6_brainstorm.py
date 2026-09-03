@@ -23,4 +23,17 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    pass  # tables created by this revision are dropped by the owning package's downgrade list
+    op.execute("ALTER TABLE channel_posts DROP CONSTRAINT IF EXISTS channel_posts_role_check")
+    op.execute(
+        "ALTER TABLE channel_posts ADD CONSTRAINT channel_posts_role_check CHECK (role IN "
+        "('card','reply','link_card','ephemeral','work_message','notice'))"
+    )
+    for table in (
+        "decision_tasks",
+        "brainstorm_decisions",
+        "brainstorm_summaries",
+        "brainstorm_turns",
+        "brainstorm_participants",
+        "brainstorms",
+    ):
+        op.execute(f"DROP TABLE IF EXISTS {table}")

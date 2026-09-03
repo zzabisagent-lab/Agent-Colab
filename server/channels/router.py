@@ -150,6 +150,14 @@ LinkHandler = Callable[
 ]
 LINK_HANDLERS: dict[str, LinkHandler] = {}  # P2-13 registers "start" and "confirm"
 
+# Resource-level extension point in the same style: a later Phase registers ``(resource, verb)``
+# handlers, which also lifts that resource out of the PHASE_LATER gate below (P6-02: brainstorm).
+ResourceHandler = Callable[
+    ["Router", Session, prov.ProviderInstance, SlashRequest, Principal, grammar.ParsedCommand],
+    "CommandResponse",
+]
+RESOURCE_HANDLERS: dict[tuple[str, str], ResourceHandler] = {}
+
 PHASE_LATER: dict[str, int] = {"schedule": 5, "brainstorm": 6}
 DOC_LATER_VERBS = {"review": 6, "publish": 6}
 
@@ -216,8 +224,10 @@ class Router:
                     "",
                     "/colab link start",
                 )
-            if parsed.resource in PHASE_LATER or (
-                parsed.resource == "doc" and parsed.verb in DOC_LATER_VERBS
+            registered = (parsed.resource, parsed.verb) in RESOURCE_HANDLERS
+            if not registered and (
+                parsed.resource in PHASE_LATER
+                or (parsed.resource == "doc" and parsed.verb in DOC_LATER_VERBS)
             ):
                 phase = PHASE_LATER.get(parsed.resource, DOC_LATER_VERBS.get(parsed.verb, 0))
                 return ephemeral(
@@ -363,6 +373,9 @@ class Router:
         principal: Principal,
         parsed: grammar.ParsedCommand,
     ) -> CommandResponse:
+        registered = RESOURCE_HANDLERS.get((parsed.resource, parsed.verb))
+        if registered is not None:
+            return registered(self, session, inst, req, principal, parsed)
         handler = getattr(self, f"_cmd_{parsed.resource}_{parsed.verb.replace('-', '_')}", None)
         if handler is None:
             return ephemeral(
@@ -1138,6 +1151,7 @@ def route(runtime: Runtime, request: SlashRequest, clock: Clock | None = None) -
 __all__ = [
     "LINK_HANDLERS",
     "MESSAGES",
+    "RESOURCE_HANDLERS",
     "CommandResponse",
     "Router",
     "SlashRequest",
