@@ -328,8 +328,14 @@ def build_skeleton(
     document_id: str,
     version: int,
     verification_id: str | None = None,
+    narrative: str | None = None,
 ) -> BuiltDocument:
-    """Render the skeleton for a stage; PASSED verdicts may only appear in FINALIZED versions."""
+    """Render the skeleton for a stage; PASSED verdicts may only appear in FINALIZED versions.
+
+    ``narrative`` is the linted layer-2 prose (P6-10). It replaces the placeholder of the
+    *Discussion* section and never touches any other section, so it cannot overwrite a
+    structured fact of layer 1.
+    """
     if stage not in STAGES:
         raise DocumentBuildError("DOCUMENT_STAGE_INVALID", stage)
     state = src.state
@@ -391,9 +397,11 @@ def build_skeleton(
         ]
 
     sections["process"] = [_event_line(src, e) for e in src.events]
-    sections["discussion"] = [
-        "_Narrative layer not generated (development plan §10.4 layer 2, Phase 6)._"
-    ]
+    sections["discussion"] = (
+        [narrative]
+        if narrative
+        else ["_Narrative layer not generated (development plan §10.4 layer 2, Phase 6)._"]
+    )
 
     results: list[str] = []
     submissions = [e for e in task_events if e["type"] == "IMPLEMENTATION_SUBMITTED"]
@@ -497,13 +505,19 @@ def build_skeleton(
         f"- Generator: {GENERATOR}; template {TEMPLATE_VERSION}; "
         f"document `{document_id}` version {version} ({stage})",
     ]
+    # REDACT (development plan §10.1) runs before hashing, so the stored bytes are already clean
+    # and stay hash-reproducible; a document with nothing to redact is byte-identical either way.
+    from server.documents import redaction
+
     # body checksum excludes the provenance checksum line itself
-    body_without_checksum = render(
-        state.title or src.task_id, {**sections, "provenance": provenance_lines}
+    body_without_checksum, _ = redaction.redact(
+        render(state.title or src.task_id, {**sections, "provenance": provenance_lines})
     )
     body_sha = hashlib.sha256(body_without_checksum.encode("utf-8")).hexdigest()
     provenance_lines.append(f"- Body SHA-256 (all sections above this line): {body_sha}")
-    markdown = render(state.title or src.task_id, {**sections, "provenance": provenance_lines})
+    markdown, redaction_counts = redaction.redact(
+        render(state.title or src.task_id, {**sections, "provenance": provenance_lines})
+    )
     sha = hashlib.sha256(markdown.encode("utf-8")).hexdigest()
     verification_meta = None
     if run is not None and latest is not None:
@@ -545,6 +559,7 @@ def build_skeleton(
         },
         "verification": verification_meta,
         "resources": res,
+        "redactions": redaction.as_manifest(redaction_counts),
     }
     # the manifest must be canonicalizable (no non-JSON values)
     canonical_json(manifest)

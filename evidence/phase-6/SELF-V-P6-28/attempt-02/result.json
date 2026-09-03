@@ -1,0 +1,23 @@
+{
+  "test_id": "V-P6-28",
+  "evidence_id": "SELF-V-P6-28",
+  "attempt": 2,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/unit/test_narrative_citations.py",
+    "tests/integration/test_document_rate_db.py",
+    "-q",
+    "-k",
+    "citation or narrative",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "12af00fb31f5c246043e37cef11c120cc2f88c3e",
+  "started_at": "2026-09-03T11:46:05.471833+00:00",
+  "finished_at": "2026-09-03T11:46:07.819520+00:00",
+  "output_sha256": "7040371af15613c02e821ec0eecc1d1330f691ace4cef93a41bfa358822c4103"
+}

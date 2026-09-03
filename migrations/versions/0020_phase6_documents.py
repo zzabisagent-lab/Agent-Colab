@@ -1,4 +1,4 @@
-"""Phase 6 (P6-04/P6-05/P6-07/P6-08/P6-10): document freezes, versions, redaction reports, pu.
+"""Phase 6 (P6-04/P6-05/P6-08/P6-10): document freezes, provenance, redaction counts, narratives.
 
 Revision ID: 0020
 Revises: 0019
@@ -23,4 +23,11 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    pass  # tables created by this revision are dropped by the owning package's downgrade list
+    for table in (
+        "document_generation_failures",
+        "document_narratives",
+        "document_redactions",
+        "document_provenance",
+        "document_freezes",
+    ):
+        op.execute(f"DROP TABLE IF EXISTS {table}")
