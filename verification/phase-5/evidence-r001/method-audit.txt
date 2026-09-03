@@ -1,0 +1,334 @@
+Method-level evidence audit (line-numbered excerpts)
+V-P5-08 test:
+   238	def test_task_idempotency_key_is_deterministic_per_occurrence(engine: Engine, seed: Seed) -> None:
+   239	    """V-P5-08: a crash between Task creation and the Run update cannot duplicate the Task."""
+   240	    schedule_id = _schedule_with_runs(engine, seed, "run-idem", horizon_s=2 * 3600)
+   241	    rows = run_rows(engine, schedule_id)
+   242	    assert rows
+   243	    expected = {scheduled_idempotency_key(schedule_id, str(r["occurrence_key"])) for r in rows}
+   244	    with Session(engine) as s:
+   245	        stored = {
+   246	            str(r[0])
+   247	            for r in s.execute(
+   248	                text("SELECT idempotency_key FROM schedule_runs WHERE schedule_id = :s"),
+   249	                {"s": schedule_id},
+   250	            ).all()
+   251	        }
+   252	    assert stored == expected
+   253	    # replanning the same occurrences reuses the key and creates no second Run
+   254	    clock = FixedClock(T0)
+   255	    with Session(engine) as s, s.begin():
+   256	        schedule = st.load_schedule(s, seed.ws, schedule_id)
+   257	        assert schedule is not None and schedule.current_version_id is not None
+   258	        version = st.load_version(s, schedule.current_version_id)
+   259	        assert version is not None
+   260	        st.update_schedule(s, schedule_id, T0, last_planned_until=T0)
+   261	        again = planner.plan_schedule(
+   262	            s,
+   263	            PostgresEventStore(s, clock=clock),
+   264	            clock,
+   265	            schedule=schedule,
+   266	            version=version,
+   267	            horizon_s=2 * 3600,
+   268	        )
+   269	    assert again.created == ()
+   270	    assert len(run_rows(engine, schedule_id)) == len(rows)
+   271	
+   272	
+   273	def test_missing_executor_fails_the_run_instead_of_stalling(engine: Engine, seed: Seed) -> None:
+   274	    """A claimed Run never stays claimed silently when no executor is installed."""
+   275	    _schedule_with_runs(engine, seed, "run-noexec", horizon_s=2 * 3600)
+V-P5-24 test:
+   171	    """V-P5-24: a kill right after the claim is recovered inside lease + 2 poll intervals."""
+   172	    _schedule_with_runs(engine, seed, "run-lease", horizon_s=2 * 3600)
+   173	    clock = FixedClock(DUE_AT)
+   174	    with Session(engine) as s, s.begin():
+   175	        store = PostgresEventStore(s, clock=clock)
+   176	        claimed = runner.claim_due(
+   177	            s,
+   178	            "runner-dead",
+   179	            clock.now(),
+   180	            workspace_id=str(seed.ws),
+   181	            store=store,
+   182	            actor_account_id=_actor(seed),
+   183	            limit=1,
+   184	        )
+   185	    run_id = claimed[0].run_id  # the runner "dies" here: no heartbeat, no execution
+   186	
+   187	    # before the lease expires nothing is recovered
+   188	    early = DUE_AT + dt.timedelta(seconds=defaults.SCHEDULER_CLAIM_LEASE_S - 1)
+   189	    with Session(engine) as s, s.begin():
+   190	        assert runner.expire_leases(s, early, workspace_id=str(seed.ws)) == 0
+   191	
+   192	    deadline = DUE_AT + dt.timedelta(
+   193	        seconds=defaults.SCHEDULER_CLAIM_LEASE_S + 2 * defaults.SCHEDULER_POLL_S
+   194	    )
+   195	    later = FixedClock(deadline)
+   196	    with Session(engine) as s, s.begin():
+   197	        recovered = runner.expire_leases(
+   198	            s,
+   199	            later.now(),
+   200	            workspace_id=str(seed.ws),
+   201	            store=PostgresEventStore(s, clock=later),
+   202	            actor_account_id=_actor(seed),
+   203	        )
+   204	    assert recovered >= 1
+   205	    with Session(engine) as s, s.begin():
+   206	        again = runner.claim_due(s, "runner-b", later.now(), workspace_id=str(seed.ws), limit=5)
+   207	    assert run_id in [r.run_id for r in again]
+   208	    with Session(engine) as s:
+   209	        row = st.load_run(s, run_id)
+   210	        assert row is not None and row.claimed_by == "runner-b"
+   211	        types = [
+   212	            str(r[0])
+   213	            for r in s.execute(
+   214	                text("SELECT type FROM events WHERE aggregate_id = :a ORDER BY aggregate_seq"),
+   215	                {"a": run_id},
+   216	            ).all()
+   217	        ]
+   218	    assert types.count("RUN_CLAIMED") == 1  # the recovered claim by runner-b carries no event dup
+   219	    assert types[:2] == ["RUN_DUE", "RUN_CLAIMED"] and "RUN_DUE" in types[2:]
+   220	
+V-P5-27 test:
+     1	"""Start-delay target for Schedule Runs under normal load (P5-10; V-P5-27).
+     2	
+     3	Development plan §21.1 normal load: 100 active Schedules, at most 20 due per minute, 2 runners.
+     4	The simulation drives the execution package with a virtual clock and measures the delay between
+     5	each Run's ``scheduled_for`` and the moment its Task was created; p95 must stay ≤ 60 s and a Run
+     6	that exceeds it must raise a ``start_delay`` alert with the late notice.
+     7	"""
+     8	
+     9	from __future__ import annotations
+    10	
+    11	import datetime as dt
+    12	import statistics
+    13	import uuid
+    14	from collections.abc import Iterator
+    15	
+    16	import pytest
+    17	from sqlalchemy import Engine, text
+    18	from sqlalchemy.orm import Session
+    19	
+    20	from server.db.engine import make_engine
+    21	from server.domain import defaults
+    22	from server.domain.clock import FixedClock
+    23	from server.schedules import budget as run_budget
+    24	from server.schedules import execution
+    25	from server.schedules.contract import RunStatus
+    26	from tests.integration.schedule_exec_fixture import Fixture
+    27	from tests.integration.schedule_seed import T0
+    28	
+    29	pytestmark = pytest.mark.db
+    30	
+    31	SCHEDULES = 100
+    32	DUE_PER_MINUTE = 20
+    33	RUNNERS = 2
+    34	BATCH_PER_RUNNER_TICK = 10
+    35	TICK_S = defaults.SCHEDULER_POLL_S  # 15 s
+    36	
+    37	
+    38	def set_clock(clock: FixedClock, at: dt.datetime) -> None:
+    39	    """Move the virtual clock to an absolute instant (the simulation drives time explicitly)."""
+    40	    clock.advance(at - clock.now())
+    41	
+    42	
+    43	@pytest.fixture(scope="module")
+    44	def engine(database_url: str) -> Iterator[Engine]:
+    45	    eng = make_engine(database_url)
+    46	    yield eng
+    47	    eng.dispose()
+    48	
+    49	
+    50	def test_start_delay_p95_under_normal_load(engine: Engine) -> None:
+    51	    """V-P5-27: p95 of (task created minus scheduled_for) ≤ 60 s at 20 due Runs per minute."""
+    52	    fx = Fixture.create(engine, f"lat{uuid.uuid4().hex[:6]}", FixedClock(T0))
+    53	    delays: list[float] = []
+    54	    with Session(engine) as s, s.begin():
+    55	        for i in range(SCHEDULES):
+    56	            # no Agent selection: the simulation measures scheduler latency, not routing
+    57	            fx.schedule(s, f"sch-lat-{i:03d}", concurrency="ALLOW", agent_selection={})
+    58	
+    59	    minute = 0
+    60	    created = 0
+    61	    with Session(engine) as s, s.begin():
+    62	        pending: list[tuple[str, dt.datetime]] = []
+    63	        while created < SCHEDULES:
+    64	            # a minute's worth of occurrences becomes due at the top of the minute
+    65	            due_at = T0 + dt.timedelta(minutes=minute)
+    66	            for _ in range(DUE_PER_MINUTE):
+    67	                if created >= SCHEDULES:
+    68	                    break
+    69	                run_id = f"run-lat-{created:03d}"
+    70	                set_clock(fx.clock, due_at)
+    71	                fx.run(
+    72	                    s,
+    73	                    f"sch-lat-{created:03d}",
+    74	                    run_id=run_id,
+    75	                    status="DUE",
+    76	                    scheduled_for=due_at,
+    77	                )
+    78	                pending.append((run_id, due_at))
+    79	                created += 1
+    80	            # four ticks per minute, two runners each claiming a bounded batch
+    81	            for tick in range(4):
+    82	                set_clock(fx.clock, due_at + dt.timedelta(seconds=TICK_S * (tick + 1)))
+    83	                for _ in range(RUNNERS):
+    84	                    batch, pending = (
+    85	                        pending[:BATCH_PER_RUNNER_TICK],
+    86	                        pending[BATCH_PER_RUNNER_TICK:],
+    87	                    )
+    88	                    for run_id, scheduled_for in batch:
+    89	                        ctx = fx.ctx(s)
+    90	                        s.execute(
+    91	                            text(
+    92	                                "UPDATE schedule_runs SET status = 'CLAIMED', claimed_by = 'r', "
+    93	                                "claimed_at = :now, lease_expires_at = :lease WHERE run_id = :r"
+    94	                            ),
+    95	                            {
+    96	                                "now": ctx.now,
+    97	                                "lease": ctx.now + dt.timedelta(seconds=60),
+    98	                                "r": run_id,
+    99	                            },
+   100	                        )
+   101	                        outcome = execution.execute(ctx.store.load_run(s, run_id), ctx)
+   102	                        assert outcome.status == RunStatus.TASK_CREATED.value, outcome
+   103	                        delays.append((ctx.now - scheduled_for).total_seconds())
+   104	            minute += 1
+   105	
+   106	    assert len(delays) == SCHEDULES
+   107	    ordered = sorted(delays)
+   108	    p95 = ordered[max(0, int(len(ordered) * 0.95) - 1)]
+   109	    assert p95 <= defaults.SCHEDULE_START_DELAY_P95_S, (p95, statistics.mean(delays))
+   110	    assert max(ordered) <= 60
+   111	
+   112	
+   113	def test_a_late_start_raises_an_alert_and_a_late_notice(engine: Engine) -> None:
+   114	    """V-P5-27 (alert half): a Run whose start exceeds the p95 target alerts and posts a notice."""
+   115	    fx = Fixture.create(engine, f"late{uuid.uuid4().hex[:6]}", FixedClock(T0))
+   116	    with Session(engine) as s, s.begin():
+   117	        fx.schedule(s, "sch-late")
+   118	        run = fx.run(s, "sch-late", run_id="run-late-1", scheduled_for=T0 - dt.timedelta(minutes=5))
+   119	        outcome = execution.execute(run, fx.ctx(s))
+   120	        assert outcome.status == RunStatus.TASK_CREATED.value
+   121	        alerts = [
+   122	            a
+   123	            for a in run_budget.alerts(s, str(fx.seed.ws), "start_delay")
+   124	            if a["run_id"] == "run-late-1"
+   125	        ]
+V-P5-17 test:
+   148	    """V-P5-17: a template Secret reference without a grant skips; with a grant the Run gets a
+   149	    short single-use lease that is revoked when the Run ends. No value is ever stored."""
+   150	    template = {
+   151	        "schema_id": "action-template.v1",
+   152	        "action": "task_create",
+   153	        "input": {"title": "with secret", "domain": "research"},
+   154	        "secret_refs": ["secret://ops/api-key"],
+   155	    }
+   156	    with Session(engine) as s, s.begin():
+   157	        fx.schedule(
+   158	            s, "sch-secret", agent_selection=dict(CAPABILITY_SELECTION), action_template=template
+   159	        )
+   160	        run = fx.run(s, "sch-secret", run_id="run-secret-1")
+   161	        outcome = execution.execute(run, fx.ctx(s))
+   162	        assert outcome.error_code == SkipCode.SKIPPED_POLICY.value
+   163	        assert "SECRET_GRANT_MISSING" in outcome.detail
+   164	
+   165	    with Session(engine) as s, s.begin():
+   166	        s.execute(
+   167	            text(
+   168	                "INSERT INTO secrets (secret_ref, workspace_id, name, provider, current_version, "
+   169	                "metadata, created_by, created_at) VALUES ('secret://ops/api-key', :w, 'api-key', "
+   170	                "'local', 1, CAST('{}' AS jsonb), :by, :now) ON CONFLICT DO NOTHING"
+   171	            ),
+   172	            {"w": fx.seed.ws, "by": fx.seed.accounts[fx.seed.owner], "now": fx.clock.now()},
+   173	        )
+   174	        s.execute(
+   175	            text(
+   176	                "INSERT INTO secret_grants (grant_id, workspace_id, secret_ref, agent_id, "
+   177	                "task_id, action, ttl_seconds, single_use, expires_at, created_by, "
+   178	                "created_at) VALUES (:g, :w, 'secret://ops/api-key', :a, NULL, NULL, 300, true, "
+   179	                ":exp, :by, :now)"
+   180	            ),
+   181	            {
+   182	                "g": f"grt-{uuid.uuid4().hex[:12]}",
+   183	                "w": fx.seed.ws,
+   184	                "a": fx.seed.agent_id,
+   185	                "exp": fx.clock.now() + dt.timedelta(hours=1),
+   186	                "by": fx.seed.accounts[fx.seed.owner],
+   187	                "now": fx.clock.now(),
+   188	            },
+   189	        )
+   190	        run = fx.run(s, "sch-secret", run_id="run-secret-2")
+   191	        outcome = execution.execute(run, fx.ctx(s))
+   192	        assert outcome.status == RunStatus.TASK_CREATED.value
+   193	        leases = s.execute(
+   194	            text("SELECT expires_at, single_use, revoked_at FROM secret_leases WHERE task_id = :t"),
+   195	            {"t": outcome.task_id},
+   196	        ).all()
+   197	        assert leases and leases[0][1] is True
+   198	        assert (leases[0][0] - fx.clock.now()).total_seconds() <= 300
+   199	        # the Run ends: leases are revoked with the Task (§9.3)
+   200	        fx.finish_task(s, str(outcome.task_id), "COMPLETED")
+   201	        execution.on_task_terminal(fx.ctx(s), str(outcome.task_id), "COMPLETED")
+   202	        revoked = s.execute(
+   203	            text("SELECT revoked_at FROM secret_leases WHERE task_id = :t"),
+   204	            {"t": outcome.task_id},
+   205	        ).first()
+   206	        assert revoked is not None and revoked[0] is not None
+   207	
+   208	
+   209	def _approval(
+   210	    s: Session,
+   211	    fx: Fixture,
+   212	    subject_type: str,
+   213	    subject_id: str,
+   214	    *,
+   215	    max_uses: int | None,
+   216	    status: str = "APPROVED",
+   217	) -> str:
+   218	    approval_id = f"apr-{uuid.uuid4().hex[:12]}"
+   219	    s.execute(
+   220	        text(
+   221	            "INSERT INTO approval_grants (id, approval_id, workspace_id, subject_type, subject_id, "
+   222	            "action, risk, status, requested_by, valid_from, expires_at, max_uses, "
+   223	            "quorum_required, aggregate_seq) VALUES (:i, :a, :w, :st, :sid, 'api:schedule_run', "
+   224	            "'HIGH', :status, :by, :from, :to, :mu, 1, 0)"
+   225	        ),
+   226	        {
+   227	            "i": uuid.uuid4(),
+   228	            "a": approval_id,
+   229	            "w": fx.seed.ws,
+   230	            "st": subject_type,
+   231	            "sid": subject_id,
+   232	            "status": status,
+   233	            "by": fx.seed.accounts[fx.seed.owner],
+   234	            "from": fx.clock.now() - dt.timedelta(minutes=1),
+   235	            "to": fx.clock.now() + dt.timedelta(hours=1),
+   236	            "mu": max_uses,
+   237	        },
+   238	    )
+   239	    return approval_id
+   240	
+   241	
+   242	def test_approval_is_required_and_consumed_atomically(fx: Fixture, engine: Engine) -> None:
+Search for crash/process-kill/load CPU mechanisms:
+Implementer-declared method gaps:
+   376	known_gaps:
+   377	- The cron next-run reference (V-P5-02) cross-checks 50 expressions × next 10 against
+   378	  croniter as a development-only reference (ADR-0002/ADR-0006); croniter is never
+   379	  imported at runtime. The normative implementation is server/schedules/cron.py.
+   380	- 'Start-delay p95 (V-P5-27) is a virtual-clock simulation: 100 active Schedules,
+   381	  20 due per minute, 2 runners, 4 ticks per minute; p95 and max stay at or below 60
+   382	  s. No wall-clock load generator runs in this environment; Phase 7 (P7-04) covers
+   383	  sustained load.'
+   384	- Dual-planner and dual-runner concurrency (V-P5-06/07) run as concurrent threads
+   385	  against the same PostgreSQL instance, relying on the unique occurrence key and FOR
+   386	  UPDATE SKIP LOCKED rather than two operating-system processes.
+   387	- Channel notices are asserted on the delivery outbox rows and rendered payloads;
+   388	  a live Mattermost instance is exercised separately by the Phase 2 provider tests.
+   389	- Secret leases for Runs use the Phase 4 local Broker; per-Run leases are revoked
+   390	  at Run end (V-P5-17) and the canary scan from Phase 4 covers leakage paths.
+   391	rollback: git checkout ff0aa8d79555d432a811c98518d90a63590fc3ec (merge-base with main);
+   392	  drop test databases
+   393	evidence_refs:
+exit_code: 0

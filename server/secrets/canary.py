@@ -3,7 +3,8 @@
 A canary is a registered secret whose value is a marker ``CANARY-NOT-A-SECRET-<n>``. After a
 full flow (grant → lease → resolve → work result → card → document) :func:`scan` searches every
 place text can land — Events, audit metadata, messages, channel outbox rows, documents, work
-receipts, provided log lines — and reports locations only (never the marker itself).
+receipts, Schedule Runs/attempts/notices/versions, usage records, budget alerts and provided log
+lines — and reports locations only (never the marker itself).
 """
 
 from __future__ import annotations
@@ -89,6 +90,40 @@ _TEXT_QUERIES: tuple[tuple[str, str], ...] = (
         "SELECT notification_id, coalesce(payload::text,'') FROM notifications "
         "WHERE workspace_id = :w",
     ),
+    (
+        "schedule_runs",
+        "SELECT run_id, concat_ws(' ', idempotency_key, request_key, error_code, planner_note, "
+        "occurrence_key, task_id) FROM schedule_runs WHERE workspace_id = :w",
+    ),
+    (
+        "schedule_run_attempts",
+        "SELECT run_id || '/' || attempt_no, concat_ws(' ', result, error_code, runner_id) "
+        "FROM schedule_run_attempts WHERE run_id IN "
+        "(SELECT run_id FROM schedule_runs WHERE workspace_id = :w)",
+    ),
+    (
+        "schedule_notices",
+        "SELECT run_id || '/' || kind, concat_ws(' ', dedupe_key, outbox_id) "
+        "FROM schedule_notices WHERE run_id IN "
+        "(SELECT run_id FROM schedule_runs WHERE workspace_id = :w)",
+    ),
+    (
+        "schedule_versions.action_template",
+        "SELECT schedule_version_id, action_template::text || ' ' || agent_selection::text "
+        "FROM schedule_versions WHERE schedule_id IN "
+        "(SELECT schedule_id FROM schedules WHERE workspace_id = :w)",
+    ),
+    (
+        "usage_records",
+        "SELECT coalesce(run_id, task_id, work_item_id, id::text), "
+        "concat_ws(' ', model, source, unavailable_reason) FROM usage_records "
+        "WHERE workspace_id = :w",
+    ),
+    (
+        "budget_alerts",
+        "SELECT coalesce(run_id, schedule_id, id::text), detail::text FROM budget_alerts "
+        "WHERE workspace_id = :w",
+    ),
 )
 
 
@@ -140,6 +175,11 @@ def scan(
                 for ref in _find(body):
                     hits.append(Hit(f"file:{path.name}", ref))
     return hits
+
+
+def scan_text(lines: Iterable[str], *, label: str = "text") -> list[Hit]:
+    """Scan arbitrary text (log lines, error strings) without touching the database."""
+    return [Hit(f"{label}:{i}", ref) for i, line in enumerate(lines) for ref in _find(line)]
 
 
 def summarize(hits: list[Hit]) -> dict[str, Any]:

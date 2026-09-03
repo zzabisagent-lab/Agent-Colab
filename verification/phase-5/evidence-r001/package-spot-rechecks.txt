@@ -1,0 +1,13 @@
+Package spot-recheck matrix
+P5-01: V-P5-01/22/26/31/32/36 -> phase5-verbose.log + admin-ui-e2e.log
+P5-02: V-P5-02/03/04/05/29 -> phase5-verbose.log + timezone-variants.log
+P5-03: V-P5-06/07/08/24/33/35 -> phase5-verbose.log
+P5-04: V-P5-15/16/17/18/30 -> phase5-verbose.log
+P5-05: V-P5-09/10/11/12/13/14 -> phase5-verbose.log
+P5-06: V-P5-11/19/20/34 -> phase5-verbose.log
+P5-07: V-P5-23 -> phase5-verbose.log
+P5-08: V-P5-21/22 -> admin-ui-e2e.log + phase5-verbose.log
+P5-09: V-P5-25/27 -> phase5-verbose.log
+P5-10: V-P5-27/28/37 -> phase5-verbose.log
+All package rows are IMPLEMENTED in PROGRESS.md; prerequisites listed by the baseline and earlier rows are IMPLEMENTED.
+exit_code: 0

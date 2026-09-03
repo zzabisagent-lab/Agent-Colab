@@ -10,7 +10,9 @@ from sqlalchemy import engine_from_config, pool
 
 config = context.config
 if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+    # keep application loggers alive: Alembic's default would disable every existing logger,
+    # silencing server.* whenever migrations run inside the application process
+    fileConfig(config.config_file_name, disable_existing_loggers=False)
 
 _url = context.get_x_argument(as_dictionary=True).get("url") or os.environ.get(
     "AGENT_COLAB_DATABASE_URL"

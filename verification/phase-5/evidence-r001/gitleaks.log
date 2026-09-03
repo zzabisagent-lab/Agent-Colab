@@ -1,0 +1,6 @@
+10:02AM INF 1 commits scanned.
+10:02AM INF scanned ~304 bytes (304 bytes) in 303ms
+10:02AM INF no leaks found
+
+command: gitleaks detect --no-banner --redact --source . --log-opts=88c72b2fc06eff9685de95cad0a487e3de145ba2^..88c72b2fc06eff9685de95cad0a487e3de145ba2
+exit_code: 0

@@ -1,0 +1,70 @@
+warning: `VIRTUAL_ENV=/home/master/work/agent-colab/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/master/.local/verify/phase-5-r001/.venv/bin/python
+hypothesis profile 'default'
+rootdir: /home/master/.local/verify/phase-5-r001
+configfile: pyproject.toml
+plugins: asyncio-1.4.0, cov-7.1.0, anyio-4.14.2, hypothesis-6.167.1
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 55 items
+
+tests/unit/test_schedule_api_models.py::test_snapshot_hash_is_canonical_and_content_addressed PASSED [  1%]
+tests/unit/test_schedule_api_models.py::test_create_body_rejects_invalid_policies PASSED [  3%]
+tests/unit/test_schedule_api_models.py::test_next_run_reference_fixture_matches_the_implementation PASSED [  5%]
+tests/unit/test_schedule_api_models.py::test_dom_dow_or_semantics_from_fixtures PASSED [  7%]
+tests/unit/test_schedule_api_models.py::test_timezones_are_independent_of_the_server_zone PASSED [  9%]
+tests/unit/test_schedule_api_models.py::test_run_view_serializes_timestamps_in_the_contract_form PASSED [ 10%]
+tests/integration/test_schedules_api_db.py::test_create_validates_cron_timezone_and_action_template PASSED [ 12%]
+tests/integration/test_schedules_api_db.py::test_preview_reports_dst_gap_and_fold PASSED [ 14%]
+tests/integration/test_schedules_api_db.py::test_lifecycle_and_version_pinning PASSED [ 16%]
+tests/integration/test_schedules_api_db.py::test_manual_runs_retry_and_cancel PASSED [ 18%]
+tests/integration/test_schedules_api_db.py::test_schedule_and_run_subjects_are_active PASSED [ 20%]
+tests/integration/test_schedule_planner_db.py::test_planner_materializes_each_occurrence_once PASSED [ 21%]
+tests/integration/test_schedule_planner_db.py::test_two_planners_create_one_run_per_occurrence PASSED [ 23%]
+tests/integration/test_schedule_planner_db.py::test_dst_gap_is_skipped_and_fold_runs_once PASSED [ 25%]
+tests/integration/test_schedule_planner_db.py::test_missed_run_policies_after_downtime[SKIP-0-None] PASSED [ 27%]
+tests/integration/test_schedule_planner_db.py::test_missed_run_policies_after_downtime[RUN_ONCE-1-MISSED_RUN_ONCE] PASSED [ 29%]
+tests/integration/test_schedule_planner_db.py::test_missed_run_policies_after_downtime[BACKFILL_LIMITED-2-MISSED_BACKFILL_LIMITED] PASSED [ 30%]
+tests/integration/test_schedule_planner_db.py::test_planner_respects_validity_window PASSED [ 32%]
+tests/integration/test_schedule_planner_db.py::test_workspace_planning_covers_every_enabled_schedule PASSED [ 34%]
+tests/integration/test_schedule_runner_db.py::test_due_marking_and_claim_take_the_lease PASSED [ 36%]
+tests/integration/test_schedule_runner_db.py::test_two_runners_never_claim_the_same_run PASSED [ 38%]
+tests/integration/test_schedule_runner_db.py::test_lease_expiry_returns_the_run_to_exactly_one_runner PASSED [ 40%]
+tests/integration/test_schedule_runner_db.py::test_heartbeat_only_extends_the_owner_lease PASSED [ 41%]
+tests/integration/test_schedule_runner_db.py::test_task_idempotency_key_is_deterministic_per_occurrence PASSED [ 43%]
+tests/integration/test_schedule_runner_db.py::test_missing_executor_fails_the_run_instead_of_stalling PASSED [ 45%]
+tests/integration/test_schedule_runner_db.py::test_scheduler_settings_bounds PASSED [ 47%]
+tests/integration/test_schedule_execution_db.py::test_forbid_skips_while_a_previous_run_is_active PASSED [ 49%]
+tests/integration/test_schedule_execution_db.py::test_allow_runs_both_independently PASSED [ 50%]
+tests/integration/test_schedule_execution_db.py::test_replace_cancels_then_starts_and_times_out_when_unconfirmed PASSED [ 52%]
+tests/integration/test_schedule_execution_db.py::test_revoked_principal_skips_with_policy_and_zero_tasks PASSED [ 54%]
+tests/integration/test_schedule_execution_db.py::test_suspended_fixed_agent_skips_unless_a_capability_fallback_exists PASSED [ 56%]
+tests/integration/test_schedule_execution_db.py::test_secret_reference_needs_a_grant_and_leases_are_short_lived PASSED [ 58%]
+tests/integration/test_schedule_execution_db.py::test_approval_is_required_and_consumed_atomically PASSED [ 60%]
+tests/integration/test_schedule_execution_db.py::test_two_runners_consume_a_single_use_approval_once PASSED [ 61%]
+tests/integration/test_schedule_recovery_db.py::test_missed_run_policies_decide_what_executes_after_a_restart PASSED [ 63%]
+tests/integration/test_schedule_recovery_db.py::test_transient_failures_retry_three_times_then_fail PASSED [ 65%]
+tests/integration/test_schedule_recovery_db.py::test_permanent_failure_is_terminal_after_one_attempt PASSED [ 67%]
+tests/integration/test_schedule_recovery_db.py::test_max_duration_cancels_then_times_out_when_cleanup_never_confirms PASSED [ 69%]
+tests/integration/test_schedule_recovery_db.py::test_cancel_window_closes_as_cancelled_when_the_task_ends PASSED [ 70%]
+tests/integration/test_schedule_recovery_db.py::test_manual_run_executes_independently_of_scheduled_occurrences PASSED [ 72%]
+tests/integration/test_schedule_notices_db.py::test_success_and_failure_notices_reach_the_channel PASSED [ 74%]
+tests/integration/test_schedule_notices_db.py::test_skip_notice_carries_the_stable_code PASSED [ 76%]
+tests/integration/test_schedule_notices_db.py::test_notice_language_follows_the_channel PASSED [ 78%]
+tests/integration/test_schedule_notices_db.py::test_bridge_policy_decides_whether_a_notice_is_relayed PASSED [ 80%]
+tests/integration/test_schedule_budget_db.py::test_estimates_within_the_limit_run_and_the_next_one_is_rejected PASSED [ 81%]
+tests/integration/test_schedule_budget_db.py::test_usage_is_aggregated_per_run_and_settled_against_the_limit PASSED [ 83%]
+tests/integration/test_schedule_budget_db.py::test_a_skipped_run_releases_its_reservation PASSED [ 85%]
+tests/integration/test_schedule_latency.py::test_start_delay_p95_under_normal_load PASSED [ 87%]
+tests/integration/test_schedule_latency.py::test_a_late_start_raises_an_alert_and_a_late_notice PASSED [ 89%]
+tests/unit/test_schedule_metrics.py::test_percentiles_nearest_rank PASSED [ 90%]
+tests/unit/test_schedule_metrics.py::test_compute_derives_everything_from_run_rows PASSED [ 92%]
+tests/unit/test_schedule_metrics.py::test_alert_thresholds_fire_strictly_above_60s_and_on_stuck_leases_and_failure_rate PASSED [ 94%]
+tests/integration/test_schedule_metrics_db.py::test_snapshot_matches_history_and_schema PASSED [ 96%]
+tests/integration/test_schedule_metrics_db.py::test_alerts_emit_once_per_hour_through_the_outbox PASSED [ 98%]
+tests/integration/test_schedule_metrics_db.py::test_metrics_api_requires_schedule_or_admin_rights PASSED [100%]
+
+============================= 55 passed in 15.17s ==============================
+
+command: uv run pytest tests/unit/test_schedule_api_models.py tests/integration/test_schedules_api_db.py tests/integration/test_schedule_planner_db.py tests/integration/test_schedule_runner_db.py tests/integration/test_schedule_execution_db.py tests/integration/test_schedule_recovery_db.py tests/integration/test_schedule_notices_db.py tests/integration/test_schedule_budget_db.py tests/integration/test_schedule_latency.py tests/unit/test_schedule_metrics.py tests/integration/test_schedule_metrics_db.py -vv -p no:cacheprovider
+exit_code: 0

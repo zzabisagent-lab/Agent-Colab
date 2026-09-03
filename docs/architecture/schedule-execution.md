@@ -73,3 +73,34 @@ Skips: `SKIPPED_CONCURRENCY`, `SKIPPED_REPLACE_CANCEL_TIMEOUT`, `SKIPPED_POLICY`
 `TASK_<terminal state>`, `CANCEL_CLEANUP_TIMEOUT`, `MAX_DURATION_EXCEEDED`,
 `SCHEDULE_ACTION_UNSUPPORTED`. Secret values never appear in templates, notices, alerts or logs;
 only `secret://` references and lease ids do.
+
+## How the two Phase 5 measurements are made
+
+**Secret leakage (V-P5-17, `tests/integration/test_schedule_secret_canary.py`).** A synthetic
+canary value `CANARY-NOT-A-SECRET-5170` is registered through the local provider, granted to the
+Run's Agent and used by a real Run: the Broker issues the Run's short single-use lease, and
+`InMemoryHandleStore` resolves a handle of the same scope, so the value genuinely traverses the
+execution path. A second resolve is refused (`SECRET_HANDLE_USED`), the Run ends, every lease of
+the Task is revoked, the in-memory buffer is zeroed, and a handle that was still outstanding is
+refused (`SECRET_HANDLE_REVOKED`). Afterwards `server.secrets.canary.scan` searches Events, audit
+metadata, Tasks, Schedule Runs/attempts/notices/versions, delivery outbox, channel posts, work
+items and receipts, usage records, budget alerts, notifications, documents, the artifact and
+document roots on disk, and the captured application log; a positive control proves the scanner
+detects the marker, so the zero-hit result is meaningful. The value exists only as ciphertext at
+rest. Because a `dictConfig` elsewhere in a full test session can disable existing loggers, the
+test re-enables the `server.*` loggers before capturing, otherwise the log scan would pass
+vacuously.
+
+**Start delay under normal load (V-P5-27, `tests/e2e/test_schedule_load.py`).** Wall clock, no
+simulation. The database holds the §21.1 normal-profile population (50 Human accounts, 20 Agents,
+100 channels) and 100 ENABLED Schedules whose crons (`<offset>-59/5 * * * *`, five offsets of 20)
+make 20 occurrences due every minute. Two real worker processes
+(`python -m server.schedules.worker --workspace … --runner-id …`, staggered by 7 s) plan, claim and
+execute for a 300-second window while PostgreSQL CPU is sampled every 5 s from `/proc/<pid>/stat`
+(utime + stime of every `postgres` process, as a percentage of one core-second per wall second).
+The delay is `started_at - scheduled_for` for every Run started in the window, and the test asserts
+p95 ≤ 60 s, mean DB CPU < 70 %, and zero occurrence keys with more than one Run. Measured on the
+build host: 100 Runs started, p50 10.1 s, p95 16.3 s, max 16.7 s, DB CPU mean 0.1 % and peak 0.6 %
+over 60 samples. The alert half (p95 above 60 s raises `START_DELAY_P95_ABOVE_60S`, exactly 60 s
+does not) is asserted in the same file. `AGENT_COLAB_LOAD_WINDOW_S` shortens the window when
+iterating locally.
