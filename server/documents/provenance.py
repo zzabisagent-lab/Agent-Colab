@@ -31,7 +31,13 @@ _RESOLVERS: dict[str, tuple[str, str, str]] = {
     "vr": ("verification_runs", "verification_id", "snapshot_hash"),
     "run": ("schedule_runs", "run_id", "version_hash"),
     "msg": ("messages", "message_id", "coalesce(body_key_ref, message_id)"),
-    "dec": ("brainstorm_decisions", "decision_id", "content_hash"),
+    # a Decision keeps no second copy of its content, so its checksum is the hash of the Event
+    # that recorded it; the subquery keeps the existence check on one real table (P6-09)
+    "dec": (
+        "brainstorm_decisions",
+        "decision_id",
+        "(SELECT e.content_hash FROM events e WHERE e.event_id = brainstorm_decisions.event_id)",
+    ),
 }
 
 

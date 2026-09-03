@@ -1,0 +1,17 @@
+command=make ci
+exit_code=0
+ruff=PASS
+format_check=PASS (601 files)
+mypy=PASS (320 source files)
+pytest=PASS (1603 passed, 2 skipped, 1 warning; 548.80 seconds)
+trace_matrix=PASS (111 requirements, 103 packages, 230 tests)
+criteria_lint=PASS (230 tests)
+phase_dag_lint=PASS (333 items, 6 explicit stubs)
+plan_baseline_lint=PASS
+policy_lint=PASS
+name_role_lint=PASS
+threat_model_lint=PASS
+event_schema_and_fixture_checks=PASS
+python_build=PASS
+web_build=PASS
+note=Two live Telegram tests skipped because pytest did not load deployment .env; these are not Phase 6 methods and no secret file was read.

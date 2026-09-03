@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.907" timestamp="2026-09-03T12:28:42.431076+00:00" hostname="ai"><testcase classname="verification.phase-6.evidence-r001.test_v_p6_08_20_automatic" name="test_twenty_closed_brainstorms_each_create_an_automatic_draft" time="1.666"><failure message="AssertionError: V-P6-08/V-P6-20 expected &gt;=19 automatic drafts; actual=0&#10;assert 0 &gt;= 19">engine = Engine(postgresql+psycopg://colab@127.0.0.1:54329/colab_t_a3589c80f65e)
+
+    def test_twenty_closed_brainstorms_each_create_an_automatic_draft(engine: Engine) -&gt; None:
+        clock = FixedClock(T0)
+        brainstorm_ids = []
+        for number in range(20):
+            brainstorm_id = _start(engine, clock, {}, f"verify-rate-start-{number}")
+            SEED.run(
+                engine,
+                bs.CloseBrainstorm(brainstorm_id=brainstorm_id),
+                SEED.facilitator,
+                f"verify-rate-close-{number}",
+                clock,
+            )
+            brainstorm_ids.append(brainstorm_id)
+        with Session(engine) as session:
+            drafted = session.execute(
+                text(
+                    "SELECT count(DISTINCT subject_id) FROM document_freezes "
+                    "WHERE subject_type = 'brainstorm' AND subject_id = ANY(:ids)"
+                ),
+                {"ids": brainstorm_ids},
+            ).scalar_one()
+&gt;       assert drafted &gt;= 19, f"V-P6-08/V-P6-20 expected &gt;=19 automatic drafts; actual={drafted}"
+E       AssertionError: V-P6-08/V-P6-20 expected &gt;=19 automatic drafts; actual=0
+E       assert 0 &gt;= 19
+
+verification/phase-6/evidence-r001/test_v_p6_08_20_automatic.py:33: AssertionError</failure></testcase></testsuite></testsuites>

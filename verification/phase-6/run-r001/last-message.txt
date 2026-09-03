@@ -1,0 +1,16 @@
+Independent Phase 6 verification is complete.
+
+- Report: [VR-P6-001.yaml](/home/master/.local/verify/phase-6-r001/verification/phase-6/VR-P6-001.yaml)
+- Evidence: [evidence-r001](/home/master/.local/verify/phase-6-r001/verification/phase-6/evidence-r001)
+- Schema validation: PASS
+- Tests: 26 PASS, 3 FAIL
+- Findings: 1 Medium, 1 Low
+- Report SHA-256: `fcc4a87ee9035e823fca16a15a36bd1bda4142f0a3d5268ea040459d7e305643`
+
+Failures:
+
+- V-P6-08: closing a Brainstorm creates no automatic draft.
+- V-P6-20: 0/20 closed Brainstorms generated drafts; required ≥19/20.
+- V-P6-19: returned `VERIFICATION_REQUIRED` instead of required `COMPLETION_PREREQUISITE_MISSING`.
+
+result: FAILED

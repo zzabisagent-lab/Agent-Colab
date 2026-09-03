@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.375" timestamp="2026-09-03T12:27:57.376979+00:00" hostname="ai"><testcase classname="verification.phase-6.evidence-r001.test_v_p6_19_exact" name="test_missing_latest_passed_verification_uses_required_code" time="1.074"><failure message="AssertionError: V-P6-19 requires COMPLETION_PREREQUISITE_MISSING; actual=VERIFICATION_REQUIRED&#10;assert 'VERIFICATION_REQUIRED' == 'COMPLETION_P...ISITE_MISSING'&#10;  &#10;  - COMPLETION_PREREQUISITE_MISSING&#10;  + VERIFICATION_REQUIRED">engine = Engine(postgresql+psycopg://colab@127.0.0.1:54329/colab_t_d80224030045)
+seed = &lt;tests.integration.document_seed.DocSeed object at 0x7fae07dde300&gt;
+
+    def test_missing_latest_passed_verification_uses_required_code(
+        engine: Engine, seed: DocSeed
+    ) -&gt; None:
+        with Session(engine) as session, session.begin():
+            task_id = seed.implement(session, "verify19", "Exact gate code")
+            on_implementation_submitted(seed.ctx(session, seed.admin, "verify19-draft"), task_id)
+            verification_id = seed.verification(session, task_id, "verify19")
+            seed.verdict(session, verification_id, "FAILED", "verify19-failed")
+            on_verification_terminal(
+                seed.ctx(session, seed.admin, "verify19-attempt"), task_id, verification_id
+            )
+        with Session(engine) as session, session.begin():
+            try:
+&gt;               bus.execute(
+                    CompleteTask(task_id, document_id=document_id_for_task(task_id)),
+                    seed.ctx(session, seed.impl, "verify19-complete"),
+                )
+
+verification/phase-6/evidence-r001/test_v_p6_19_exact.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+server/application/bus.py:126: in execute
+    return handler(command, ctx)
+           ^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cmd = CompleteTask(task_id='task-6e57bfc30f22dc80', document_id='doc-69184e3c22e8d17d', idempotency_scope='task:complete')
+ctx = CommandContext(session=&lt;sqlalchemy.orm.session.Session object at 0x7fae08f11820&gt;, store=&lt;server.events.postgres_store....mplete', expected_seq=None, extras={'document_store': &lt;server.documents.store.DocumentStore object at 0x7fae07ddcd40&gt;})
+
+    @handles(CompleteTask)
+    def complete_task(cmd: CompleteTask, ctx: CommandContext) -&gt; Any:
+        state = load_task(ctx, cmd.task_id)
+        require_permission(ctx, "task.complete", channel_id=state.channel_id, domain=state.domain)
+        if _replay_from_stream(ctx, cmd.task_id, cmd.idempotency_scope) is None:
+            if state.status in (TaskStatus.COMPLETED, TaskStatus.CANCELLED):
+                raise CommandError("TASK_TERMINAL", f"{state.status} is terminal", status=409)
+            missing = completion_prerequisites(state, ctx.session)
+            if not missing and any(
+                getattr(c, "__name__", "") == "finalized_document_check" for c in COMPLETION_CHECKS
+            ):
+                from server.documents.lifecycle import expected_document_id
+    
+                expected = expected_document_id(ctx.session, cmd.task_id)
+                if expected is None or cmd.document_id != expected:
+                    missing = ["COMPLETION_PREREQUISITE_MISSING"]
+            if missing:
+&gt;               raise CommandError(
+                    missing[0],
+                    "completion prerequisites not met: " + ", ".join(missing),
+                    status=409,
+                    extra={"missing": missing},
+                )
+E               server.application.bus.CommandError: VERIFICATION_REQUIRED: completion prerequisites not met: VERIFICATION_REQUIRED, COMPLETION_PREREQUISITE_MISSING
+
+server/application/tasks.py:711: CommandError
+
+During handling of the above exception, another exception occurred:
+
+engine = Engine(postgresql+psycopg://colab@127.0.0.1:54329/colab_t_d80224030045)
+seed = &lt;tests.integration.document_seed.DocSeed object at 0x7fae07dde300&gt;
+
+    def test_missing_latest_passed_verification_uses_required_code(
+        engine: Engine, seed: DocSeed
+    ) -&gt; None:
+        with Session(engine) as session, session.begin():
+            task_id = seed.implement(session, "verify19", "Exact gate code")
+            on_implementation_submitted(seed.ctx(session, seed.admin, "verify19-draft"), task_id)
+            verification_id = seed.verification(session, task_id, "verify19")
+            seed.verdict(session, verification_id, "FAILED", "verify19-failed")
+            on_verification_terminal(
+                seed.ctx(session, seed.admin, "verify19-attempt"), task_id, verification_id
+            )
+        with Session(engine) as session, session.begin():
+            try:
+                bus.execute(
+                    CompleteTask(task_id, document_id=document_id_for_task(task_id)),
+                    seed.ctx(session, seed.impl, "verify19-complete"),
+                )
+            except bus.CommandError as exc:
+&gt;               assert exc.code == "COMPLETION_PREREQUISITE_MISSING", (
+                    f"V-P6-19 requires COMPLETION_PREREQUISITE_MISSING; actual={exc.code}"
+                )
+E               AssertionError: V-P6-19 requires COMPLETION_PREREQUISITE_MISSING; actual=VERIFICATION_REQUIRED
+E               assert 'VERIFICATION_REQUIRED' == 'COMPLETION_P...ISITE_MISSING'
+E                 
+E                 - COMPLETION_PREREQUISITE_MISSING
+E                 + VERIFICATION_REQUIRED
+
+verification/phase-6/evidence-r001/test_v_p6_19_exact.py:32: AssertionError</failure></testcase></testsuite></testsuites>

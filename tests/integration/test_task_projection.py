@@ -277,7 +277,7 @@ def test_complete_before_verification_is_rejected(engine: Engine) -> None:  # V-
     for key in ("e-complete-1", "e-complete-2"):
         with pytest.raises(CommandError) as exc:
             run(engine, tk.CompleteTask(tid, "doc-x"), HUMAN_P, key)
-        assert exc.value.code == "VERIFICATION_REQUIRED"
+        assert exc.value.code == "COMPLETION_PREREQUISITE_MISSING"
     assert _status(engine, tid) == "DELEGATED" and _event_count(engine, tid) == 2
 
 

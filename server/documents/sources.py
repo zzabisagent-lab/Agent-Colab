@@ -415,8 +415,8 @@ def collect_brainstorm(session: Session, brainstorm_id: str, now: dt.datetime) -
         dict(t)
         for t in session.execute(
             text(
-                "SELECT turn_no, account_id::text AS account_id, contribution_type, body, "
-                "event_id FROM brainstorm_turns WHERE brainstorm_id = :b ORDER BY turn_no"
+                "SELECT seq AS turn_no, account_id::text AS account_id, contribution_type, body, "
+                "event_id FROM brainstorm_turns WHERE brainstorm_id = :b ORDER BY seq"
             ),
             {"b": brainstorm_id},
         ).mappings()
@@ -425,7 +425,8 @@ def collect_brainstorm(session: Session, brainstorm_id: str, now: dt.datetime) -
         dict(s)
         for s in session.execute(
             text(
-                "SELECT summary_id, body, approved, event_id FROM brainstorm_summaries "
+                "SELECT summary_id, body, status = 'APPROVED' AS approved, event_id "
+                "FROM brainstorm_summaries "
                 "WHERE brainstorm_id = :b ORDER BY summary_id"
             ),
             {"b": brainstorm_id},

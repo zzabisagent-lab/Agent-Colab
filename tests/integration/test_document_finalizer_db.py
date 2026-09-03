@@ -125,7 +125,7 @@ def test_failed_then_passed_keeps_attempt_and_opens_the_gate(engine: Engine, see
                 seed.ctx(s, seed.impl, "fin3-complete-early"),
             )
         # the verification prerequisite fires first while the latest verdict is FAILED
-        assert exc.value.code == "VERIFICATION_REQUIRED"
+        assert exc.value.code == "COMPLETION_PREREQUISITE_MISSING"
     with Session(engine) as s, s.begin():
         seed.recheck(s, task_id, vid, "fin3-re")
         seed.verdict(s, vid, "PASSED", "fin3-verdict2")
@@ -191,7 +191,7 @@ def test_passed_verification_without_a_finalized_document_closes_the_gate(
             CompleteTask(task_id, document_id=document_id_for_task(task_id)),
             seed.ctx(s, seed.impl, "fin5-complete"),
         )
-    assert exc.value.code in ("COMPLETION_PREREQUISITE_MISSING", "VERIFICATION_REQUIRED")
+    assert exc.value.code == "COMPLETION_PREREQUISITE_MISSING"
 
 
 def test_source_freeze_is_recorded_and_reproducible(engine: Engine, seed: DocSeed) -> None:

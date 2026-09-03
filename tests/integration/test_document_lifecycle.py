@@ -243,7 +243,7 @@ def test_two_stage_lifecycle_and_completion_gate(engine: Engine, store: Document
             bus.execute(
                 CompleteTask(task_id, doc_id), _ctx(s, "acct-dl-admin", "dl1-complete-1", store)
             )
-        assert exc.value.code == "VERIFICATION_REQUIRED"
+        assert exc.value.code == "COMPLETION_PREREQUISITE_MISSING"
         assert expected_document_id(s, task_id) is None
         again = bus.execute(
             FinalizeAttempt(task_id, vid), _ctx(s, "acct-dl-admin", "dl1-att1-again", store)
@@ -264,7 +264,7 @@ def test_two_stage_lifecycle_and_completion_gate(engine: Engine, store: Document
             bus.execute(
                 CompleteTask(task_id, doc_id), _ctx(s, "acct-dl-admin", "dl1-complete-2", store)
             )
-        assert exc2.value.code == "VERIFICATION_REQUIRED"
+        assert exc2.value.code == "COMPLETION_PREREQUISITE_MISSING"
 
         # ---- PASSED -> FINALIZED v6 (v5 = automatic draft) -> completion allowed
         _recheck(s, store, task_id, vid, "dl1-r2")

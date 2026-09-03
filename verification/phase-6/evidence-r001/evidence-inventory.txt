@@ -1,0 +1,8 @@
+approvals.junit.xml sha256=9958ab7599b54ca5948684f746a57c0aab30494bd826f8402207ce67e05fee74 tests=4 exit_code=0
+brainstorm.junit.xml sha256=bcb60918914c7f6297c6ef367146dc69806f624fa91c6ce85ea7058b6d01020b tests=15 exit_code=0
+documents.junit.xml sha256=e28c060f0eb4d5317e40c10a7e1d67774344fc4b7663e3c6ee8a8a00944cd183 tests=28 exit_code=0
+artifacts-publishers.junit.xml sha256=4c3279e1032a45f4b02002294f2f95dd67bb36ea1b22067c88e3d7cac690a957 tests=32 exit_code=0
+v-p6-08-20-automatic.junit.xml sha256=df25454a727759ed53d7eeed6f448aeaf90b7057f1b928f31e8857e38b27bc44 tests=1 exit_code=1 actual_automatic_brainstorm_drafts=0 expected_minimum=19
+v-p6-19-exact.junit.xml sha256=fdb32bf43137572a8260cd0fc5ce5e62c75562a57b578fa9181d220a98b1fad6 tests=1 exit_code=1 actual_code=VERIFICATION_REQUIRED expected_code=COMPLETION_PREREQUISITE_MISSING
+v-p6-24-blocked.junit.xml sha256=15525011ff5917675f1171df3c210bf240f1ee4f226bcbf094e2dc073c2f05cf tests=1 exit_code=0
+ci-summary.txt command=make_ci exit_code=0 pytest=1603_passed_2_skipped

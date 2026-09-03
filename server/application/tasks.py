@@ -708,8 +708,10 @@ def complete_task(cmd: CompleteTask, ctx: CommandContext) -> Any:
             if expected is None or cmd.document_id != expected:
                 missing = ["COMPLETION_PREREQUISITE_MISSING"]
         if missing:
+            # V-P6-19: the closure gate answers with one stable code whichever prerequisite is
+            # missing; the specific reasons travel in `extra.missing`.
             raise CommandError(
-                missing[0],
+                "COMPLETION_PREREQUISITE_MISSING",
                 "completion prerequisites not met: " + ", ".join(missing),
                 status=409,
                 extra={"missing": missing},

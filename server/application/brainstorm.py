@@ -12,6 +12,7 @@ mandatory acceptance criteria (§7D.1).
 from __future__ import annotations
 
 import datetime as dt
+import logging
 import uuid
 from dataclasses import dataclass, field
 from typing import Any
@@ -39,6 +40,9 @@ from server.channels import members as mem
 from server.events.store import AppendRequest
 from server.observability.audit import append_audit
 from server.work import inbox
+
+log = logging.getLogger(__name__)
+
 
 GUIDANCE_KIND = "notification"
 
@@ -631,7 +635,22 @@ def close_brainstorm(cmd: CloseBrainstorm, ctx: CommandContext) -> CommandResult
         ctx.session, state.brainstorm_id, "CLOSED", now=now, reason=None, event_id=res.event_id
     )
     _audit(ctx, "brainstorm.closed", state.brainstorm_id, turn_count=state.turn_no)
+    _draft_closing_document(ctx, state.brainstorm_id)
     return _result(res, state.brainstorm_id, "brainstorm", status="CLOSED")
+
+
+def _draft_closing_document(ctx: CommandContext, brainstorm_id: str) -> None:
+    """`close` produces BRAINSTORM_CLOSED and DOCUMENT_DRAFTED (development plan §7F, V-P6-08).
+
+    The pipeline records its own reason code on failure, so a documentation problem never blocks
+    closing the session; drafting is idempotent, so a replayed close adds nothing.
+    """
+    from server.application import documents as docs
+
+    try:
+        docs.on_brainstorm_closed(ctx, brainstorm_id)
+    except Exception:
+        log.exception("closing document for brainstorm %s failed", brainstorm_id)
 
 
 @handles(SummarizeBrainstorm)

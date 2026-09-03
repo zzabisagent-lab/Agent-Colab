@@ -491,7 +491,7 @@ def test_completion_gate_requires_passed_verification(client: TestClient, engine
             bus.execute(
                 CompleteTask(task_id, "doc-none"), _ctx(s, "acct-vc-admin", "t-complete-early")
             )
-        assert exc.value.code == "VERIFICATION_REQUIRED"
+        assert exc.value.code == "COMPLETION_PREREQUISITE_MISSING"
         run = bus.execute(
             CreateVerificationRun(
                 target_type="task",

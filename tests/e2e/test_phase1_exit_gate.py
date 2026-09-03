@@ -291,7 +291,7 @@ def test_phase1_exit_gate_full_chain(database_url: str, engine: Engine, tmp_path
             headers=_h("creator", "eg-comp-0"),
         )
         assert pre.status_code == 409 and pre.json()["code"] in (
-            "VERIFICATION_REQUIRED",
+            "COMPLETION_PREREQUISITE_MISSING",
             "TASK_TRANSITION_INVALID",
         )
         # 6. independent verification: the implementing agent cannot verify itself
