@@ -41,7 +41,7 @@ def engine(database_url: str, tmp_path_factory: pytest.TempPathFactory) -> Itera
 
 
 def _open_session(engine: Engine, clock: FixedClock, key: str) -> str:
-    participants = tuple(SEED.agent_account(n) for n in AGENT_NAMES) + (SEED.human,)
+    participants = (*tuple(SEED.agent_account(n) for n in AGENT_NAMES), SEED.human)
     result = SEED.run(
         engine,
         bs.StartBrainstorm(channel_id=SEED.channel_id, topic="Pricing", participants=participants),

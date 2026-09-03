@@ -40,7 +40,7 @@ def engine(database_url: str) -> Iterator[Engine]:
 
 
 def _start(engine: Engine, clock: FixedClock, limits: dict[str, int], key: str) -> str:
-    participants = tuple(SEED.agent_account(n) for n in AGENT_NAMES) + (SEED.human,)
+    participants = (*tuple(SEED.agent_account(n) for n in AGENT_NAMES), SEED.human)
     result = SEED.run(
         engine,
         bs.StartBrainstorm(
