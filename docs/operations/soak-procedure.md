@@ -126,10 +126,17 @@ What its 14.8 hours did establish, over 1,008,059 writes and 509,268 reads:
 
 Every integrity criterion held across a million writes. The memory criterion failed.
 
-### Attempt 4 — 2026-09-04 16:46 UTC — in progress
+### Attempt 4 — 2026-09-04 16:46 UTC — in progress, and final
 
 First clean run: JIT disabled on the host and in the sampler, private memory recorded alongside
 RSS, and the first samples verified to carry every database and memory field.
+
+**This is the last attempt.** The System Owner directed a single trial and acceptance of whatever
+it reports, pass or fail. So its result stands as the V-P7-04 evidence and no further soak is run:
+if the memory bound is exceeded, V-P7-04 is recorded as FAILED with this procedure and the
+investigation attached, and Phase 7 carries that failure rather than iterating on it. The
+threshold is not adjusted to change the outcome — that was true before the decision and is
+unaffected by it.
 
 ## 5. The open question
 

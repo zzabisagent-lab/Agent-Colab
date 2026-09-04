@@ -40,8 +40,18 @@ Revision 2 repairs, on commit dedd2a1:
   in evidence/phase-7/soak/memory-investigation.md — and the cause is not isolated.
   PRIVATE_GROWTH_LIMIT was not changed.
 
-Next step: Codex Phase 7 revision 2 is launched with V-P7-04 failing. Expect FAILED on that Test;
-a revision 3 needs a clean 24-hour soak (JIT fix now in place) and a decision on the memory growth. V-P7-18's remaining half is the user's deployment answer; the record
+Verification revision 2 (`verification/phase-7/VR-P7-002.yaml`): FAILED, 18 of 22 PASS.
+V-P7-04 (no valid soak), V-P7-15 (manifest pinned to the wrong commit), V-P7-16 (cascades from
+V-P7-04) and V-P7-18 (no recorded deployment decision) failed. V-P7-15 is fixed: the pin is now
+satisfiable and the manifest is rebuilt and signed at the target commit.
+
+Soak attempt 4 launched 2026-09-04 16:46 UTC, ending about 16:47 UTC on 2026-09-05. By the System
+Owner's direction it is a **single trial and its result stands**, pass or fail; no further soak is
+attempted and PRIVATE_GROWTH_LIMIT is not adjusted.
+
+Next step: when attempt 4 ends, record its evidence as it falls, resolve V-P7-18 (the criterion
+needs a recorded deployment decision, which the plan sequences after Phase 7 passes — a conflict
+the Verifier has now flagged twice), run `make ci`, and submit revision 3. V-P7-18's remaining half is the user's deployment answer; the record
 stays PENDING_USER_DECISION and nothing is deployed without it.
 
 ## Phase 6 (PASSED) — branch `phase-6`, tag `phase-6-passed`
