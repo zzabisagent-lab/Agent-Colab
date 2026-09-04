@@ -15,12 +15,21 @@ the result is read against evidence rather than a guess. The bound was not chang
 | Copy-on-write un-sharing | `Shared_Dirty` across both live process trees | zero. Un-sharing completes within seconds; RSS growth *is* private growth |
 | Allocator arena proliferation | threads and 64 MB anon mappings in a live worker | 4 threads, 1 arena. Not thread-pool arena growth |
 
+| glibc-held free memory | `malloc_trim(0)` after 6,000 requests in-process | returned 0.2 MB. Not reclaimable free memory |
+| Request-driven growth | 42,000 requests, one real worker, 40 min | plateaus completely; 6,000 requests in-process grew 0.4 MB |
+
 ## What is left
 
-Growth is anonymous, the Python heap under it is flat, and the mapping count is constant at 402.
-That combination is intra-arena fragmentation: memory Python has freed which glibc holds rather
-than returning. It grows sub-linearly — √t fits the server series at R²=0.992 against a straight
-line at R²=0.948 — which is the shape of fragmentation approaching saturation, not of a leak.
+Growth is anonymous, the Python heap under it is flat, the mapping count is constant at 402, and
+`malloc_trim` cannot reclaim it. It grows sub-linearly — √t fits the server series at R²=0.988
+against a straight line at R²=0.969 — which is the shape of something saturating, not of a leak.
+
+The cause is **not isolated**, and this is the honest limit of what was established. It does not
+reproduce in any short run: a single real worker plateaus completely over 42,000 requests in 40
+minutes, and the same traffic mix in-process grows 0.4 MB over 6,000 requests. It appears only in
+the long multi-worker run, which points at something time-driven rather than request-driven —
+connection recycling, or a periodic path a short run never exercises enough of. Finding it needs
+another long run instrumented for it, which is follow-up work, not something to guess at here.
 
 Measured per-endpoint retention at steady state, for scale:
 
