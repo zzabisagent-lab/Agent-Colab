@@ -191,11 +191,12 @@ def test_private_memory_growth_stayed_bounded(soak: list[dict[str, Any]]) -> Non
 def test_resident_memory_stayed_under_its_ceiling_and_decelerated(
     soak: list[dict[str, Any]],
 ) -> None:
-    """Summed RSS climbs as forked workers un-share inherited pages, so its *shape* is the test.
+    """RSS adds no growth signal the private series lacks, so its *shape* is what is tested here.
 
-    Un-sharing is self-limiting: there are only so many inherited pages, so each successive hour
-    converts fewer of them. A leak has no such limit and holds its slope. Comparing the first half
-    of the run with the second separates the two without needing to know either rate in advance.
+    Warm-up and a leak look identical in a first/last pair: caches filling and allocator arenas
+    reaching steady state both add memory, and so does losing a page per request. They differ in
+    what happens next — warm-up decelerates, a leak under steady load holds its slope. Comparing
+    the second half of the run with the first separates them without assuming either rate.
     """
     for who in ("worker", "server"):
         series = _series(soak, f"{who}_rss_kb")

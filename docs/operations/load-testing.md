@@ -157,31 +157,39 @@ both the resident and the private memory of the whole API and worker process tre
 | oldest heartbeat | ≤ 90 s | heartbeats that stopped being recorded |
 | 5xx rate | ≤ 1 % | the §21.1 error budget |
 
-The memory bounds are the ones that need justifying, and the first version of them was measuring
-the wrong quantity.
+The memory bounds are the ones that need justifying, because a 24-hour first/last pair cannot on
+its own tell warm-up from a leak. Both add memory. They differ in what happens afterwards.
 
-Summed RSS across a pre-forked worker pool is not a leak metric. `VmRSS` counts a shared page once
-for every process that maps it, and the eight API workers are forks of one parent, so they start
-out sharing nearly all of their pages. Every inherited page a worker later writes to becomes
-private and is then counted eight times instead of once — the sum rises while nothing has been
-allocated. The first 24-hour attempt showed exactly that signature: quarter-hourly growth of 9.2,
-4.8, 4.0, 2.7, 2.4 MB and falling, fitting √t with R²=0.997 and a straight line only at R²=0.973.
-Extrapolating the straight line predicted 1.26x at hour 24 and would have failed the run.
+The leak bound reads *private* memory (`Private_Clean + Private_Dirty` per process). Summed
+`VmRSS` counts a shared page once for every process that maps it, so across eight forked API
+workers its absolute value overstates memory by the whole shared set — about 270 MB of a 1,260 MB
+reading here. Growth is identical in the two series, byte for byte, because the pages that would
+accumulate are private either way; what differs is the denominator, and the inflated one makes the
+same growth look smaller as a ratio. Measuring against what each process actually holds on its own
+is the stricter reading, so that is the one the bound uses. RSS is still recorded, still held to a
+ceiling and a peak, and still checked for shape.
 
-So the leak bound moved to *private* memory (`Private_Clean + Private_Dirty` per process), which
-counts each page exactly once, for whoever actually holds it. Copy-on-write cannot inflate it.
+Shape is the assertion that does the real work. The second half of the run is compared with the
+first: warm-up decelerates as caches fill and allocator arenas reach steady state, while a leak
+under steady load holds its slope. That comparison needs no advance knowledge of either rate,
+which a fixed growth threshold does.
 
-RSS is still recorded and still asserted, but on the two things that are true of un-sharing and
-false of a leak. It has a ceiling, because the pages available to un-share are bounded by the
-parent's heap at fork time. And its growth must *decelerate*: each successive hour has fewer
-inherited pages left to convert, while a leak under steady load holds its slope. The second half
-of the run is compared with the first, which needs no advance knowledge of either rate.
+None of this is inferred from the soak alone. Two faster tests measure the same thing directly and
+would fail in minutes rather than a day:
 
-None of this is inferred. `tests/integration/test_write_path_memory_db.py` drives 4,000 real
-commands through the real bus, policy check, Event store and database in a single process and
-measures from inside it: the Python heap and the live object count both come back to where they
-started, to within 250 bytes and 0.5 objects per command. There is no object leak in the write
-path, and the external numbers are read in that light.
+- `tests/integration/test_write_path_memory_db.py` drives 4,000 real commands through the real
+  bus, policy check, Event store and database inside one interpreter. The Python heap and the live
+  object count both come back to where they started, within 250 bytes and half an object per
+  command. The command path retains nothing.
+- `tests/e2e/test_http_path_memory.py` drives the real server process over loopback with a single
+  worker — no fork pool, no scheduler — for 8,400 requests. Private memory is flat for five
+  consecutive batches once warm-up ends near 6,000 requests, the second half grows sixteen times
+  less than the first, and steady-state retention measures 20 bytes per request. The measured run
+  is recorded at `evidence/phase-7/soak/http-path-memory-probe.md`.
+
+The first attempt at that HTTP test was too short to reach the plateau, so it measured warm-up and
+reported it as retention. It was lengthened rather than having its bound relaxed, which is the
+same correction the soak's own metric needed.
 
 Connections are compared with a *warmed* baseline (the first hour) rather than with the first
 sample, because eight API worker processes and two scheduler workers each fill their own pool

@@ -35,11 +35,14 @@ HEARTBEAT_STALE_S = 90.0
 #: any leak that matters: something losing even a kilobyte per request would pass a tenth of a
 #: percent per hour and blow through this by mid-morning.
 PRIVATE_GROWTH_LIMIT = 1.10
-#: Summed VmRSS is *not* the leak metric, because it counts a shared page once per process that
-#: maps it: across a pre-forked pool it climbs on its own as inherited copy-on-write pages are
-#: written to and stop being shared, allocating nothing. That climb is bounded by the parent's heap
-#: at fork time and decays, so RSS is held to a ceiling and to a *decelerating* shape rather than a
-#: growth ratio. A leak cannot decelerate under steady load; copy-on-write un-sharing must.
+#: Summed VmRSS counts a shared page once per process that maps it, so across a pre-forked pool its
+#: *absolute* value overstates memory by the shared set — here about 270 MB of a 1,260 MB reading.
+#: That inflated denominator makes the same growth look smaller as a ratio, which is why the leak
+#: bound reads private memory instead. Measured growth is identical in both (the two series move by
+#: the same bytes), so RSS carries no separate signal; it is kept as a ceiling and a shape check.
+#: Growth that decelerates is warm-up — caches filling, allocator arenas reaching steady state.
+#: A leak under steady load holds its slope, so the second half of the run is compared with the
+#: first rather than a rate being assumed in advance.
 RSS_CEILING = 1.35
 #: Peak against the opening level: a transient spike is normal, a doubling is not.
 RSS_PEAK_LIMIT = 1.5

@@ -613,11 +613,11 @@ def rss_kb(pids: list[int]) -> int:
 def private_kb(pids: list[int]) -> int:
     """Summed *private* resident memory (USS) of the given processes, in kilobytes.
 
-    ``rss_kb`` sums VmRSS, which counts a shared page once per process that maps it. Across a
-    pre-forked worker pool that overcounts, and worse, it *grows* on its own: every inherited
-    copy-on-write page a worker later writes to becomes private and starts being counted N times
-    instead of once, with no new memory allocated. Private memory does not have that artefact,
-    so it is what a leak is measured against.
+    ``rss_kb`` sums VmRSS, which counts a shared page once per process that maps it, so across a
+    pre-forked worker pool it overstates memory by the whole shared set. Growth is the same in
+    both series — the pages a leak would add are private either way — but the inflated RSS
+    denominator makes that growth look smaller as a ratio. Measuring the ratio against memory the
+    process actually holds on its own is the stricter and more honest reading.
     """
     total = 0
     for pid in pids:
