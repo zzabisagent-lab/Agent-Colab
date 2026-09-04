@@ -21,6 +21,8 @@ from pathlib import Path
 
 import pytest
 
+from tools import release_build
+
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST = ROOT / "release" / "manifest.json"
 
@@ -202,3 +204,24 @@ def test_a_dirty_tree_is_refused_unless_it_is_recorded_explicitly() -> None:
     with pytest.raises(ReleaseError, match="uncommitted changes"):
         source_revision()
     assert source_revision(allow_dirty=True)["dirty"] is True
+
+
+def test_a_manifest_pin_survives_committing_the_manifest() -> None:
+    """Writing the manifest makes a commit after the one it records; that is not drift.
+
+    A manifest can never name the commit that carries it, so a strict equality check on the pin is
+    unsatisfiable — it failed V-P7-15 for exactly that reason. Changes confined to the release
+    artifacts are allowed; a change to any source file is still drift and still fails.
+    """
+    head = subprocess.run(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True
+    ).stdout.strip()
+    parent = subprocess.run(
+        ["git", "rev-parse", "HEAD~1"], cwd=ROOT, capture_output=True, text=True, check=True
+    ).stdout.strip()
+
+    changed = release_build._source_paths_changed_between(parent, head)
+    assert changed is not None, "two real commits must be comparable"
+
+    unknown = release_build._source_paths_changed_between("0" * 40, head)
+    assert unknown is None, "an unknown commit is reported as uncomparable, not as drift"

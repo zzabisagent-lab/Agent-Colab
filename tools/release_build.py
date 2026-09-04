@@ -331,6 +331,33 @@ def python_js_guard(out: Path) -> dict[str, Any]:
         return {"generated": False, "reason": f"{type(exc).__name__}: {exc}"}
 
 
+#: Paths that describe a release rather than being part of it. Writing the manifest necessarily
+#: creates a commit after the one it records, so a manifest can never name the commit that carries
+#: it. Changes confined to these paths therefore do not break the pin; anything else does.
+RELEASE_PATHS = ("release/",)
+
+
+def _source_paths_changed_between(recorded: str, expected: str) -> set[str] | None:
+    """Source files that differ between two commits, ignoring the release artifacts themselves.
+
+    Returns ``None`` when the two commits cannot be compared — an unknown commit is a different
+    failure from "the source moved", and is reported as its own problem rather than as drift.
+    """
+    if any(_git("cat-file", "-t", ref) != "commit" for ref in (recorded, expected)):
+        return None
+    result = subprocess.run(
+        ["git", "diff", "--name-only", f"{recorded}..{expected}"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return None
+    changed = {line.strip() for line in result.stdout.splitlines() if line.strip()}
+    return {path for path in changed if not path.startswith(RELEASE_PATHS)}
+
+
 def verify(
     manifest_path: Path, *, expect_commit: str | None = None, require_clean: bool = False
 ) -> int:
@@ -367,9 +394,18 @@ def verify(
             "forbids; a published release must be built from a committed revision"
         )
     if expect_commit and revision != expect_commit:
-        problems.append(
-            f"source revision: manifest records {revision[:12]}, expected {expect_commit[:12]}"
-        )
+        drifted = _source_paths_changed_between(revision, expect_commit)
+        if drifted is None:
+            problems.append(
+                f"source revision: manifest records {revision[:12]}, expected "
+                f"{expect_commit[:12]}, and the two cannot be compared"
+            )
+        elif drifted:
+            listed = ", ".join(sorted(drifted)[:5])
+            problems.append(
+                f"source revision: manifest records {revision[:12]}, expected "
+                f"{expect_commit[:12]}, and source changed between them ({listed})"
+            )
 
     for image in recorded.get("images", []):
         image_id = str(image.get("image_id", ""))

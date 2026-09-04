@@ -83,3 +83,16 @@ installed package. It then removes OS packages the runtime does not use (see
 `docs/security/hardening.md`) and fails the build if any survives. It runs as an unprivileged user,
 declares a `HEALTHCHECK` against `/readyz`, and defaults to `--host 0.0.0.0 --port 8080` so the
 container serves on its own interface while the process default stays loopback for Setup.
+
+## Why the pin is not a strict equality
+
+`source_revision` records the commit the artifacts were built from, and `--expect-commit` checks
+it. A strict equality check is unsatisfiable in a repository that commits its manifest: writing the
+manifest necessarily creates a commit *after* the one it records, so the manifest can never name
+the commit that carries it. That is what failed V-P7-15 — the manifest named a real, correct
+revision and was rejected for not naming its own successor.
+
+So the check allows exactly one thing: changes confined to `release/`, the artifacts that describe
+the release rather than forming part of it. A change to any source file between the recorded
+revision and the expected one is still drift and still fails, named path by path. A commit that
+cannot be resolved is reported as uncomparable rather than silently treated as clean.
