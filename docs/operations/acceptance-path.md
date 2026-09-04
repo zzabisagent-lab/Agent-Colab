@@ -44,6 +44,12 @@ A real one. Nothing on this path is simulated:
   from the environment (`AGENT_COLAB_MATTERMOST_BOT_TOKEN`, `AGENT_COLAB_MATTERMOST_ADMIN_TOKEN`)
   exactly as a deployment configures them. Credentials live only in
   `~/.local/opt/mattermost/.spike-credentials` and are never printed.
+- **The bot account must hold no elevated role.** During earlier probing the local bot had been
+  promoted to system admin, which would let the run pass on rights a deployed bot would not have
+  and hide a permission failure. It is a plain `system_user` again, and the acceptance evidence was
+  re-recorded against it. Mattermost refuses to demote a bot while only one non-bot system admin
+  exists, so a second admin account was created to allow the demotion. Anyone reproducing this
+  should check the bot's roles before trusting a pass.
 
 Two consequences of driving the real thing are worth knowing:
 
