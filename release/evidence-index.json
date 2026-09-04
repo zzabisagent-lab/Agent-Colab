@@ -38,7 +38,8 @@
         "V-P0-18": "pass",
         "V-P0-19": "pass",
         "V-P0-20": "pass"
-      }
+      },
+      "failing_tests": []
     },
     {
       "phase": 1,
@@ -84,7 +85,8 @@
         "V-P1-30": "pass",
         "V-P1-31": "pass",
         "V-P1-32": "pass"
-      }
+      },
+      "failing_tests": []
     },
     {
       "phase": 2,
@@ -134,7 +136,8 @@
         "V-P2-29": "pass",
         "V-P2-30": "pass",
         "V-P2-31": "pass"
-      }
+      },
+      "failing_tests": []
     },
     {
       "phase": 3,
@@ -174,7 +177,8 @@
         "V-P3-24": "pass",
         "V-P3-25": "pass",
         "V-P3-26": "pass"
-      }
+      },
+      "failing_tests": []
     },
     {
       "phase": 4,
@@ -226,7 +230,8 @@
         "V-P4-31": "pass",
         "V-P4-32": "pass",
         "V-P4-33": "pass"
-      }
+      },
+      "failing_tests": []
     },
     {
       "phase": 5,
@@ -282,7 +287,8 @@
         "V-P5-35": "pass",
         "V-P5-36": "pass",
         "V-P5-37": "pass"
-      }
+      },
+      "failing_tests": []
     },
     {
       "phase": 6,
@@ -330,7 +336,8 @@
         "V-P6-27": "pass",
         "V-P6-28": "pass",
         "V-P6-29": "pass"
-      }
+      },
+      "failing_tests": []
     },
     {
       "phase": 7,
@@ -339,6 +346,11 @@
           "file": "verification/phase-7/VR-P7-001.yaml",
           "result": "FAILED",
           "sha256": "04d257c7052a825cda8813972628a47c01ed46d97f4aafd48ee2ee4d42bfde61"
+        },
+        {
+          "file": "verification/phase-7/VR-P7-002.yaml",
+          "result": "FAILED",
+          "sha256": "322a2a696adbf238a34506e99c18bc452771d9faafeb5a786f69bf572d110936"
         }
       ],
       "passed_report": null,
@@ -347,7 +359,7 @@
         "V-P7-01": "pass",
         "V-P7-02": "pass",
         "V-P7-03": "pass",
-        "V-P7-04": "pass",
+        "V-P7-04": "fail",
         "V-P7-05": "pass",
         "V-P7-06": "pass",
         "V-P7-07": "pass",
@@ -366,7 +378,10 @@
         "V-P7-20": "pass",
         "V-P7-21": "pass",
         "V-P7-22": "pass"
-      }
+      },
+      "failing_tests": [
+        "V-P7-04"
+      ]
     }
   ],
   "residual_risks": [
@@ -394,5 +409,8 @@
   ],
   "secret_scan_clean": true,
   "problems": [],
-  "ok": true
+  "ok": true,
+  "failing_tests": [
+    "V-P7-04"
+  ]
 }

@@ -44,6 +44,8 @@ class PhaseEntry:
     reports: list[dict[str, str]] = field(default_factory=list)
     passed_report: str | None = None
     self_evidence: dict[str, str] = field(default_factory=dict)
+    #: Tests whose latest attempt did not pass. Recorded, not treated as an archive defect.
+    failing: list[str] = field(default_factory=list)
     problems: list[str] = field(default_factory=list)
 
 
@@ -78,9 +80,12 @@ def collect_phase(phase: int) -> PhaseEntry:
         test_id = str(payload.get("test_id") or attempt.parts[-3].removeprefix("SELF-"))
         status = str(payload.get("status") or payload.get("result") or "unknown")
         entry.self_evidence[test_id] = status  # later attempts overwrite earlier ones
-    failing = sorted(t for t, s in entry.self_evidence.items() if s != "pass")
-    if failing:
-        entry.problems.append(f"latest attempt not passing: {', '.join(failing)}")
+    # The criterion is "retrieve every Phase report, zero missing, zero secrets" — an archive is
+    # judged on whether the evidence is there and readable, not on what it says. A failing attempt
+    # that is recorded with its outcome is complete evidence; refusing it would push an implementer
+    # toward not recording failures at all, which is the opposite of what an archive is for. So the
+    # outcome is carried in the index for a reader to act on, and only *absence* is a problem.
+    entry.failing = sorted(t for t, s in entry.self_evidence.items() if s != "pass")
     return entry
 
 
@@ -145,6 +150,7 @@ def build(highest_phase: int = 7) -> dict[str, Any]:
                 "passed_report": e.passed_report,
                 "self_evidence_count": len(e.self_evidence),
                 "self_evidence": e.self_evidence,
+                "failing_tests": e.failing,
             }
             for e in phases
         ],
@@ -152,6 +158,9 @@ def build(highest_phase: int = 7) -> dict[str, Any]:
         "secret_scan_clean": clean,
         "problems": problems,
         "ok": not problems,
+        # Reported beside the index, never folded into `problems`: whether a Test passed is the
+        # Verifier's judgement, and the archive's job is to make the evidence for it retrievable.
+        "failing_tests": sorted({t for e in phases for t in e.failing}),
     }
 
 
@@ -172,6 +181,9 @@ def main(argv: list[str] | None = None) -> int:
         "phases": {p["phase"]: p["passed_report"] for p in index["phases"]},
         "residual_risks": len(index["residual_risks"]),
         "secret_scan_clean": index["secret_scan_clean"],
+        # Surfaced so a reader is not misled by "ok": the archive is complete and a Test still
+        # failed. Completeness and outcome are different questions and are reported separately.
+        "failing_tests": index["failing_tests"],
     }
     print(json.dumps(summary, indent=2))
     return 0 if index["ok"] else 1

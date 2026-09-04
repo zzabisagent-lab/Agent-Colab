@@ -1,0 +1,22 @@
+{
+  "test_id": "V-P7-16",
+  "evidence_id": "SELF-V-P7-16",
+  "attempt": 4,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/e2e/test_release_evidence.py",
+    "-q",
+    "-k",
+    "archive or failing",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "b1efe17bee97e146373d51d2efbd138e9548d83b",
+  "started_at": "2026-09-04T17:31:51.771747+00:00",
+  "finished_at": "2026-09-04T17:32:09.379465+00:00",
+  "output_sha256": "4cad2835f415dae20be17bcfffdbe450491ee4a01fd3b36d0d3391545b3315d4"
+}

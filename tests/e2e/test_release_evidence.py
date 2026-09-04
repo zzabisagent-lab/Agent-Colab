@@ -38,6 +38,27 @@ def test_the_phase_under_verification_is_archived_without_a_verdict() -> None:
     assert index["problems"] == [], index["problems"]
 
 
+def test_a_failing_test_is_archived_rather_than_hidden() -> None:
+    """The criterion is "retrieve every report, zero missing, zero secrets" — not "all passed".
+
+    An archive that rejects a recorded failure pushes an implementer toward not recording failures
+    at all, which is the opposite of what an archive is for. So a failing attempt is complete
+    evidence, reported beside the index rather than folded into its problems.
+    """
+    index = evidence_archive.build(evidence_archive.CURRENT_PHASE)
+    assert "failing_tests" in index, "the index must say which Tests are failing"
+    for test_id in index["failing_tests"]:
+        recorded = [
+            phase["self_evidence"].get(test_id)
+            for phase in index["phases"]
+            if test_id in phase["self_evidence"]
+        ]
+        assert recorded, f"{test_id} is reported failing but has no archived attempt"
+    assert not any("not passing" in problem for problem in index["problems"]), (
+        "a failed Test is a Verifier judgement, not an archive defect"
+    )
+
+
 def test_open_findings_carry_an_owner_a_deadline_and_an_acceptor() -> None:
     rows, problems = evidence_archive.residual_risks()
     assert rows, "the residual-risk register must list what the release accepts"

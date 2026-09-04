@@ -14,7 +14,30 @@ decision: none
 decided_at: null
 decided_by: null
 deployment_actions: none
+deferred_by_owner: 2026-09-04
 ```
+
+## The decision is deliberately deferred
+
+On 2026-09-04 the System Owner directed: *"wait my order to deploy after p7 jobs"*. The decision is
+therefore not missing, it is **withheld until Phase 7 is finished**, by the person whose decision
+it is. `deferred_by_owner` records that, so a reader can tell a deliberate deferral from an
+implementer who never asked.
+
+This has a consequence worth stating plainly, because the Verifier has now failed V-P7-18 twice for
+it. The criterion asks for the user's explicit decision to be recorded, while the development plan
+(§12.2, §27A) sequences that decision *after* Phase 7 passes. A Phase cannot pass a criterion whose
+satisfaction is defined to occur after it passes. The two halves of V-P7-18 are not equally
+blocked, though, and only one of them is:
+
+| Half of the criterion | State |
+|---|---|
+| zero deployment without approval | **satisfied** — the ledger is empty, and `tools/deployment_decision.py` proves it |
+| explicit approval recorded | **not satisfied, by the owner's instruction** |
+
+Nothing here is worked around. The Test fails while the decision is outstanding, which is the
+honest state, and it is the ordering in the baseline rather than the implementation that makes it
+so.
 
 ## States
 
