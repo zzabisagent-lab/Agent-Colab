@@ -19,3 +19,4 @@ reproduction:
   - "Runbooks, tabletop and acceptance (V-P7-13/21/02/22): uv run pytest tests/e2e/test_incident_tabletop.py tests/e2e/test_human_path_acceptance.py -q; uv run python -m tools.runbook_lint"
   - "Evidence archive and residual risks (V-P7-16/17): uv run python -m tools.evidence_archive --check --phases 7"
   - "Report and deployment decision (V-P7-18): uv run python -m tools.deployment_decision --check; uv run pytest tests/e2e/test_release_evidence.py -q"
+  - "Soak (V-P7-04): the full procedure, every attempt and its outcome, and the open memory question are recorded in docs/operations/soak-procedure.md"

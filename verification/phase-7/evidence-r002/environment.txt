@@ -1,0 +1,12 @@
+captured_at=2026-09-04T16:03:45Z
+target_commit=4f2369f49abf78095a6281a6b0d498b47074ad17
+kernel=Linux 6.8.0-138-generic x86_64
+python=3.12.3
+uv=0.12.9
+docker=29.1.3
+docker_compose=2.40.3
+postgresql=16.15
+validation_plan_sha256=9131d0f8948bf0af70f594dae102b654b96950fb09216cffdab8750e648f0bc3
+project_spec_sha256=2fe485e3e4868a8e1e2a38d9f7daecbf6d626c5af4f1d29e868e259e9869ab24
+development_plan_sha256=0f6440a0c9ca7a0732ce704b3b2b2c00954608da493d201aed81e479c5d75a90
+report_schema_sha256=1b227e1c0d6c9f97307e7f7d2133a8a47aa4cb3f93a25cb9d760116521b1d7c5

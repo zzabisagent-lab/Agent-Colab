@@ -1,0 +1,28 @@
+{
+  "blocking": 0,
+  "counts": {
+    "CRITICAL": 0,
+    "HIGH": 0,
+    "LOW": 0,
+    "MEDIUM": 0,
+    "UNKNOWN": 0
+  },
+  "findings": [],
+  "images": [
+    {
+      "image_id": "sha256:b411843bbf0cc2345f45483da92832467882b7472a29ba73eb7fb71aa323bc4a",
+      "name": "server",
+      "tag": "agent-colab/server:8.0.0-test"
+    },
+    {
+      "image_id": "sha256:4886e45a54746e1cf0574f17c83bf284b94fc61f986aa9331b5e540913fe6b7d",
+      "name": "web-admin",
+      "tag": "agent-colab/web-admin:8.0.0-test"
+    }
+  ],
+  "ran": true,
+  "ran_at": "2026-09-04T15:59:43+00:00",
+  "scan": "container",
+  "schema_id": "colab.security-scan.v1",
+  "tool": "trivy"
+}

@@ -1,0 +1,16 @@
+{
+  "base_url": "in-process",
+  "blocking": 0,
+  "counts": {
+    "CRITICAL": 0,
+    "HIGH": 0,
+    "LOW": 0,
+    "MEDIUM": 0,
+    "UNKNOWN": 0
+  },
+  "findings": [],
+  "ran": true,
+  "ran_at": "2026-09-04T15:59:51+00:00",
+  "scan": "dynamic",
+  "schema_id": "colab.security-scan.v1"
+}

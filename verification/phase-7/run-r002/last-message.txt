@@ -1,0 +1,12 @@
+Verification completed. The schema-valid report is at [VR-P7-002.yaml](/home/master/.local/verify/phase-7-r002/verification/phase-7/VR-P7-002.yaml).
+
+Failures:
+
+- V-P7-04: no valid 24-hour soak.
+- V-P7-15: release manifest targets a different commit.
+- V-P7-16: evidence archive rejects the failed soak.
+- V-P7-18: explicit deployment approval is not recorded.
+
+All evidence hashes passed, and no secrets were detected.
+
+result: FAILED

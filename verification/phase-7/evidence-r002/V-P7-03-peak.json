@@ -1,0 +1,27 @@
+{
+  "profile": "peak",
+  "seconds": 1800.7,
+  "requests": 161943,
+  "writes": 107943,
+  "reads": 54000,
+  "messages": 0,
+  "write_rps": 59.95,
+  "read_rps": 29.99,
+  "write_p50_ms": 83.8,
+  "write_p95_ms": 130.5,
+  "write_max_ms": 334.6,
+  "read_p50_ms": 19.9,
+  "read_p95_ms": 39.7,
+  "read_max_ms": 170.7,
+  "statuses": {
+    "200": 54000,
+    "201": 107943
+  },
+  "error_rate": 0.0,
+  "events_created": 109743,
+  "runs_created": 900,
+  "duplicate_occurrences": 0,
+  "duplicate_events": 0,
+  "db_cpu_mean": 8.1,
+  "db_cpu_peak": 13.5
+}

@@ -1,0 +1,146 @@
+verification_id: VR-P7-002
+criteria_version: v8.0
+implementer_agent_id: agent-claude-code
+verifier_agent_id: agent-codex
+implementer_account_id: account-implementer-claude
+verifier_account_id: account-verifier-codex
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+verifier_credential_fingerprint: sha256:ecbd74ce21cb00f0e36136b78a0fe57c8241013e4125100e2871351c90b530b9
+identity_graph_version: identity-v8-001
+effective_policy_hash: sha256:41ddbafbf2d606fa1aac8ee39e47f170fa01a5bd8a2a24c78b1ffc6c621ba678
+target_commit: 4f2369f49abf78095a6281a6b0d498b47074ad17
+environment_fingerprint: sha256:5550403e6ec6c560f81cc83f00f08d7492460b6a0e3dd59f818394bf405c878f
+started_at: '2026-09-04T15:54:00Z'
+completed_at: '2026-09-04T16:29:17Z'
+tests:
+  - id: V-P7-01
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/V-P7-01-clean-install.json
+    note: Clean production Compose install on empty disposable volumes reached LOCKED in 116 seconds, within the 1800-second runbook deadline.
+  - id: V-P7-02
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: Live Mattermost HTTP acceptance completed 20 consecutive full Schedule-to-verification paths.
+  - id: V-P7-03
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/V-P7-03-peak.json
+    note: The independent 1800.7-second peak run handled 161943 requests with zero errors/duplicates; read/write p95 were 39.7/130.5 ms.
+  - id: V-P7-04
+    result: FAIL
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: No valid 24-hour sample exists; the shipped attempt ends at 53281.9 seconds with final=false and a sampler error.
+  - id: V-P7-05
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: Virtual-clock 10-minute outages for each non-DB provider preserved writes/outbox and drained exactly once within recovery limits.
+  - id: V-P7-06
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: DB outage negative path returned 503, failed readiness within budget, rejected successful writes, and preserved hashes after recovery.
+  - id: V-P7-07
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: Empty-environment restore reproduced required aggregate state and hashes within the simulated RPO/RTO bounds.
+  - id: V-P7-08
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: Full Event replay produced an identical projection snapshot.
+  - id: V-P7-09
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: Previous-version upgrade rehearsal preserved data, settings, secret references, and Schedules.
+  - id: V-P7-10
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: Application rollback and irreversible-migration forward-fix scenarios completed with consistent hashes and migration ledger.
+  - id: V-P7-11
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/scans
+    note: SAST, dependency, container, and dynamic scanners all ran and reported zero High/Critical findings.
+  - id: V-P7-12
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: Sequential Agent, Mattermost, Telegram, and admin credential rotation rejected old credentials within 60 seconds with no work loss/duplication.
+  - id: V-P7-13
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: All five tabletop scenarios exercised detection, isolation, recovery, and post-verification checkpoints using synthetic secrets.
+  - id: V-P7-14
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: Synthetic failures fired defined alerts within 60 seconds and maintained state/cause/correlation-ID parity.
+  - id: V-P7-15
+    result: FAIL
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: Signature and digests verify, but the release artifact is pinned to dedd2a1 rather than this mandatory target commit.
+  - id: V-P7-16
+    result: FAIL
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: The archive checker exits 2 because the latest V-P7-04 attempt is failing; therefore the Phase 7 archive is not complete/clean per its own gate.
+  - id: V-P7-17
+    result: PASS
+    evidence_ref: docs/security/residual-risks.md
+    note: Each listed residual risk has a severity, owner, deadline, and acceptor; no open High/Critical risk is listed.
+  - id: V-P7-18
+    result: FAIL
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: No deployment occurred, but the decision record is PENDING_USER_DECISION and contains no explicit approval.
+  - id: V-P7-19
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: Injectable-clock daily/weekly/monthly boundary tests exercised the production retention planner and catalog application.
+  - id: V-P7-20
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: Pre-delete restore remained closed through reconciliation; destroyed keys could not decrypt or reactivate content afterward.
+  - id: V-P7-21
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: Linter found seven complete runbooks, seven linked critical alerts, and zero problems.
+  - id: V-P7-22
+    result: PASS
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    note: Live Mattermost acceptance completed 10 consecutive human-only paths with card, thread, and notification assertions.
+findings:
+  - id: F-P7-R002-001
+    severity: Medium
+    affected: [REQ-OPS-003, REQ-OPS-007, V-P7-04, V-P7-16]
+    summary: No valid 24-hour soak exists and the evidence archive consequently rejects Phase 7.
+    reproduction:
+      - Run uv run pytest tests/e2e/test_soak.py -q.
+      - Inspect the last row of evidence/phase-7/soak/void-jit-14h-2026-09-04.jsonl.
+      - Run uv run python -m tools.evidence_archive --check --phases 7.
+    expected: A final=true sample covering at least 86400 seconds with zero leaks, duplicates, or stuck work, and an archive check with zero problems.
+    actual: The required soak file is absent; the shipped attempt stops at 53281.9 seconds with final=false and a PostgreSQL LLVM/JIT sampler error; the archive checker exits 2.
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    impact: Long-duration Bridge, heartbeat, scheduler, lease, and memory stability is unproven, and the release evidence archive cannot pass.
+    fix_condition: Complete a clean 24-hour production-path soak meeting every V-P7-04 bound, archive its final samples, and rerun the soak and archive checks successfully.
+  - id: F-P7-R002-002
+    severity: Medium
+    affected: [REQ-RELS-001, V-P7-15]
+    summary: Published release artifacts are not pinned to the target commit under verification.
+    reproduction:
+      - Run uv run python -m tools.release_build --verify release/manifest.json --expect-commit 4f2369f49abf78095a6281a6b0d498b47074ad17 --require-clean.
+      - Compare release/manifest.json source_revision with git rev-parse HEAD.
+    expected: Signed manifest source_revision equals 4f2369f49abf78095a6281a6b0d498b47074ad17 and all pinned artifacts verify.
+    actual: The signature and digests verify, but source_revision is dedd2a1943d32c15aba731577b7b9ee7896b78f8; verification exits 1.
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    impact: The inspected immutable images and SBOMs do not establish release provenance for the mandated target commit.
+    fix_condition: Rebuild and sign all release artifacts from the target commit, then pass verification with --expect-commit and --require-clean.
+  - id: F-P7-R002-003
+    severity: Medium
+    affected: [REQ-RELS-002, V-P7-18]
+    summary: The mandatory explicit deployment decision has not been recorded.
+    reproduction:
+      - Run uv run python -m tools.deployment_decision --check.
+      - Observe state PENDING_USER_DECISION, an empty ledger, and deployment_performed=false.
+    expected: The final development report is delivered and the user's explicit deployment approval is recorded before any deployment action.
+    actual: The report exists and no deployment occurred, but no explicit user approval is recorded.
+    evidence_ref: verification/phase-7/evidence-r002/independent-command-results.yaml
+    impact: The mandatory V-P7-18 criterion is incomplete; deployment remains correctly prohibited.
+    fix_condition: After all Phase 7 failures are resolved and the final report is delivered, record the user's explicit decision and prove no deployment preceded it.
+result: FAILED
+residual_risks:
+  - Container rebuilds are not bit-reproducible; immutable published digests are the release identity.
+  - The committed residual-risk register says image signing is not performed although this manifest carries a locally trusted Ed25519 signature; organizational trust remains pending deployment.
+  - The dynamic scan ran in-process; repeat against the deployed network endpoint before deployment.

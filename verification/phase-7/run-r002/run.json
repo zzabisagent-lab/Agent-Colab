@@ -1,0 +1,18 @@
+{
+  "verification_id": "VR-P7-002",
+  "phase": 7,
+  "revision": 2,
+  "target_commit": "4f2369f49abf78095a6281a6b0d498b47074ad17",
+  "worktree": "/home/master/.local/verify/phase-7-r002",
+  "codex_exit_code": 0,
+  "started_at": "2026-09-04T15:51:47.521198+00:00",
+  "finished_at": "2026-09-04T16:30:08.960702+00:00",
+  "environment_fingerprint": "Linux 6.8.0-138-generic x86_64 | Python 3.12.3 | codex-cli 0.152.1",
+  "report_present": true,
+  "sandbox": "none (host AppArmor blocks bubblewrap userns)",
+  "worktree_modifications_outside_verification": [],
+  "report_sha256": "322a2a696adbf238a34506e99c18bc452771d9faafeb5a786f69bf572d110936",
+  "copied_unmodified": true,
+  "schema_errors": [],
+  "result": "FAILED"
+}
