@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import logging
 import os
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -53,7 +54,11 @@ from server.config import PRODUCT_NAME, Settings, get_settings
 from server.db.engine import make_engine, make_session_factory
 from server.identity import mattermost_link
 from server.observability.health import router as health_router
-from server.observability.logs import RequestLogMiddleware, install_json_logging
+from server.observability.logs import (
+    RequestLogMiddleware,
+    install_json_logging,
+    reclaim_root_logging,
+)
 from server.schedules import router_handlers as schedule_router_handlers
 
 API_VERSION = "v1"
@@ -214,6 +219,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "/",
             MtlsProxyMiddleware(mcp.streamable_http_app(streamable_http_path="/mcp")),
             name="mcp",
+        )
+    # Last, because building the MCP server calls logging.basicConfig and seizes the root logger.
+    seized = reclaim_root_logging()
+    if seized:
+        logging.getLogger("agent_colab").warning(
+            "reclaimed the root logger from %s", ", ".join(seized)
         )
     return app
 

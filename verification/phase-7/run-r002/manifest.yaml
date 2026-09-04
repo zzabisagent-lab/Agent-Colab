@@ -1,0 +1,448 @@
+implementation_id: P7-IMPLEMENT-001
+phase: 7
+implementer_agent_id: agent-claude-code
+implementer_account_id: account-implementer-claude
+implementer_credential_fingerprint: sha256:84e2813827c211b58e9562d6e00741c730b403e5f95b1e1242e3ef0f6755331f
+identity_graph_version: identity-v8-001
+commit_sha: 4f2369f49abf78095a6281a6b0d498b47074ad17
+image_digests: []
+requirements:
+- REQ-MMUX-004
+- REQ-OPS-001
+- REQ-OPS-002
+- REQ-OPS-003
+- REQ-OPS-004
+- REQ-OPS-005
+- REQ-OPS-006
+- REQ-OPS-007
+- REQ-OPS-008
+- REQ-OPS-010
+- REQ-QGAT-007
+- REQ-RELS-001
+- REQ-RELS-002
+changed_files:
+- .github/workflows/ci.yml
+- .github/workflows/release.yml
+- Makefile
+- PROGRESS.md
+- REPORT.md
+- deploy/production/Dockerfile.server
+- deploy/production/Dockerfile.web-admin
+- deploy/production/compose.yaml
+- deploy/production/nginx.conf
+- docs/architecture/interactive-actions.md
+- docs/architecture/phase7-release.md
+- docs/operations/acceptance-path.md
+- docs/operations/backup-restore.md
+- docs/operations/deployment-decision.md
+- docs/operations/load-testing.md
+- docs/operations/observability.md
+- docs/operations/release-build.md
+- docs/operations/runbooks/bridge-loop.md
+- docs/operations/runbooks/credential-rotation.md
+- docs/operations/runbooks/db-restore.md
+- docs/operations/runbooks/hard-delete-restore.md
+- docs/operations/runbooks/nas-full.md
+- docs/operations/runbooks/scheduler-storm.md
+- docs/operations/runbooks/secret-leak.md
+- docs/operations/upgrade-rollback.md
+- docs/security/hardening.md
+- docs/security/residual-risks.md
+- evidence/phase-2/SELF-V-P2-31/attempt-03/output.log
+- evidence/phase-2/SELF-V-P2-31/attempt-03/result.json
+- evidence/phase-7/SELF-V-P7-01/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-01/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-01/attempt-02/output.log
+- evidence/phase-7/SELF-V-P7-01/attempt-02/result.json
+- evidence/phase-7/SELF-V-P7-01/attempt-03/output.log
+- evidence/phase-7/SELF-V-P7-01/attempt-03/result.json
+- evidence/phase-7/SELF-V-P7-02/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-02/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-02/attempt-02/output.log
+- evidence/phase-7/SELF-V-P7-02/attempt-02/result.json
+- evidence/phase-7/SELF-V-P7-02/attempt-03/output.log
+- evidence/phase-7/SELF-V-P7-02/attempt-03/result.json
+- evidence/phase-7/SELF-V-P7-02/attempt-04/output.log
+- evidence/phase-7/SELF-V-P7-02/attempt-04/result.json
+- evidence/phase-7/SELF-V-P7-02/attempt-05/output.log
+- evidence/phase-7/SELF-V-P7-02/attempt-05/result.json
+- evidence/phase-7/SELF-V-P7-03/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-03/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-03/attempt-02/output.log
+- evidence/phase-7/SELF-V-P7-03/attempt-02/result.json
+- evidence/phase-7/SELF-V-P7-03/attempt-03/output.log
+- evidence/phase-7/SELF-V-P7-03/attempt-03/result.json
+- evidence/phase-7/SELF-V-P7-03/attempt-04/output.log
+- evidence/phase-7/SELF-V-P7-03/attempt-04/result.json
+- evidence/phase-7/SELF-V-P7-04/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-04/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-04/attempt-02/output.log
+- evidence/phase-7/SELF-V-P7-04/attempt-02/result.json
+- evidence/phase-7/SELF-V-P7-05/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-05/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-06/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-06/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-07/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-07/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-08/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-08/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-09/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-09/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-10/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-10/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-11/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-11/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-11/attempt-02/output.log
+- evidence/phase-7/SELF-V-P7-11/attempt-02/result.json
+- evidence/phase-7/SELF-V-P7-12/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-12/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-13/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-13/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-13/attempt-02/output.log
+- evidence/phase-7/SELF-V-P7-13/attempt-02/result.json
+- evidence/phase-7/SELF-V-P7-14/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-14/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-14/attempt-02/output.log
+- evidence/phase-7/SELF-V-P7-14/attempt-02/result.json
+- evidence/phase-7/SELF-V-P7-14/attempt-03/output.log
+- evidence/phase-7/SELF-V-P7-14/attempt-03/result.json
+- evidence/phase-7/SELF-V-P7-15/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-15/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-15/attempt-02/output.log
+- evidence/phase-7/SELF-V-P7-15/attempt-02/result.json
+- evidence/phase-7/SELF-V-P7-15/attempt-03/output.log
+- evidence/phase-7/SELF-V-P7-15/attempt-03/result.json
+- evidence/phase-7/SELF-V-P7-16/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-16/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-16/attempt-02/output.log
+- evidence/phase-7/SELF-V-P7-16/attempt-02/result.json
+- evidence/phase-7/SELF-V-P7-16/attempt-03/output.log
+- evidence/phase-7/SELF-V-P7-16/attempt-03/result.json
+- evidence/phase-7/SELF-V-P7-17/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-17/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-17/attempt-02/output.log
+- evidence/phase-7/SELF-V-P7-17/attempt-02/result.json
+- evidence/phase-7/SELF-V-P7-17/attempt-03/output.log
+- evidence/phase-7/SELF-V-P7-17/attempt-03/result.json
+- evidence/phase-7/SELF-V-P7-17/attempt-04/output.log
+- evidence/phase-7/SELF-V-P7-17/attempt-04/result.json
+- evidence/phase-7/SELF-V-P7-18/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-18/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-18/attempt-02/output.log
+- evidence/phase-7/SELF-V-P7-18/attempt-02/result.json
+- evidence/phase-7/SELF-V-P7-18/attempt-03/output.log
+- evidence/phase-7/SELF-V-P7-18/attempt-03/result.json
+- evidence/phase-7/SELF-V-P7-19/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-19/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-20/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-20/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-21/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-21/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-22/attempt-01/output.log
+- evidence/phase-7/SELF-V-P7-22/attempt-01/result.json
+- evidence/phase-7/SELF-V-P7-22/attempt-02/output.log
+- evidence/phase-7/SELF-V-P7-22/attempt-02/result.json
+- evidence/phase-7/SELF-V-P7-22/attempt-03/output.log
+- evidence/phase-7/SELF-V-P7-22/attempt-03/result.json
+- evidence/phase-7/SELF-V-P7-22/attempt-04/output.log
+- evidence/phase-7/SELF-V-P7-22/attempt-04/result.json
+- evidence/phase-7/SELF-V-P7-22/attempt-05/output.log
+- evidence/phase-7/SELF-V-P7-22/attempt-05/result.json
+- evidence/phase-7/install/clean-install.json
+- evidence/phase-7/manifest-inputs.yaml
+- evidence/phase-7/scans/container.json
+- evidence/phase-7/scans/dependency.json
+- evidence/phase-7/scans/dynamic.json
+- evidence/phase-7/scans/sast.json
+- evidence/phase-7/soak/README.md
+- evidence/phase-7/soak/http-path-memory-probe.md
+- evidence/phase-7/soak/memory-investigation.md
+- evidence/phase-7/soak/rss-only-aborted-2026-09-03.jsonl
+- evidence/phase-7/soak/void-jit-14h-2026-09-04.jsonl
+- policy/alert-rules.yaml
+- release/deployments/README.md
+- release/evidence-index.json
+- release/manifest.json
+- release/manifest.sig
+- release/sbom-javascript-8.0.0-test-verify.json
+- release/sbom-javascript-8.0.0-test.json
+- release/sbom-python-8.0.0-test-verify.json
+- release/sbom-python-8.0.0-test.json
+- release/signing-key.pub
+- server/agents/maintenance.py
+- server/api/dispatch.py
+- server/api/errors.py
+- server/api/v1/ops.py
+- server/application/tasks.py
+- server/channels/actions.py
+- server/channels/approval_cards.py
+- server/channels/gateway.py
+- server/channels/outbox.py
+- server/channels/router.py
+- server/channels/task_cards.py
+- server/db/engine.py
+- server/main.py
+- server/notifications/rules.py
+- server/observability/health.py
+- server/observability/logs.py
+- server/ops/alerts.py
+- server/ops/metrics.py
+- server/ops/restore_gate.py
+- server/settings/registry.py
+- tests/e2e/test_clean_install.py
+- tests/e2e/test_http_path_memory.py
+- tests/e2e/test_human_path_acceptance.py
+- tests/e2e/test_incident_tabletop.py
+- tests/e2e/test_load_peak.py
+- tests/e2e/test_release_evidence.py
+- tests/e2e/test_setup_wizard_ui.py
+- tests/e2e/test_soak.py
+- tests/integration/phase7_recovery_seed.py
+- tests/integration/test_credential_rotation_db.py
+- tests/integration/test_database_outage_db.py
+- tests/integration/test_dependency_outage_db.py
+- tests/integration/test_gateway_provider_db.py
+- tests/integration/test_notification_dispatch_db.py
+- tests/integration/test_observability_alerts_db.py
+- tests/integration/test_recovery_db.py
+- tests/integration/test_release_artifacts.py
+- tests/integration/test_security_scans.py
+- tests/integration/test_upgrade_rollback.py
+- tests/integration/test_write_path_memory_db.py
+- tests/load/__init__.py
+- tests/load/generator.py
+- tests/load/harness.py
+- tests/load/heartbeat.py
+- tests/load/population.py
+- tests/load/profile.py
+- tests/load/run.py
+- tests/load/samples.py
+- tests/load/soak.py
+- tests/unit/test_health.py
+- tools/backup.py
+- tools/clean_install.py
+- tools/deployment_decision.py
+- tools/evidence_archive.py
+- tools/memory_diagnostics.py
+- tools/release_build.py
+- tools/restore.py
+- tools/runbook_lint.py
+- tools/security_scan.py
+- tools/upgrade_rehearsal.py
+- verification/phase-7/VR-P7-001.yaml
+- verification/phase-7/VR-P7-001.yaml.sha256
+- verification/phase-7/evidence-r001/SHA256SUMS
+- verification/phase-7/evidence-r001/V-P7-01-clean-install-check.log
+- verification/phase-7/evidence-r001/V-P7-02-13-22-e2e-tabletop.log
+- verification/phase-7/evidence-r001/V-P7-03-peak-30m.log
+- verification/phase-7/evidence-r001/V-P7-04-short-diagnostic.log
+- verification/phase-7/evidence-r001/V-P7-05-10-12-14-19-20-db.log
+- verification/phase-7/evidence-r001/V-P7-11-15-security-release.log
+- verification/phase-7/evidence-r001/V-P7-11-four-scans.json
+- verification/phase-7/evidence-r001/V-P7-15-artifact-inspection.log
+- verification/phase-7/evidence-r001/V-P7-16-17-archive-post-report.log
+- verification/phase-7/evidence-r001/V-P7-16-17-archive.log
+- verification/phase-7/evidence-r001/V-P7-18-approval-state.log
+- verification/phase-7/evidence-r001/V-P7-21-runbook-lint.log
+- verification/phase-7/evidence-r001/adr-review.log
+- verification/phase-7/evidence-r001/baseline-target-diff.log
+- verification/phase-7/evidence-r001/environment.txt
+- verification/phase-7/evidence-r001/final-worktree-state.log
+- verification/phase-7/evidence-r001/make-ci.log
+- verification/phase-7/evidence-r001/method-gap-audit.log
+- verification/phase-7/evidence-r001/package-spot-rechecks.txt
+- verification/phase-7/evidence-r001/report-validation.log
+- verification/phase-7/evidence-r001/secret-scan.log
+- verification/phase-7/evidence-r001/worktree-status-midrun.log
+- verification/phase-7/run-r001/events.jsonl
+- verification/phase-7/run-r001/last-message.txt
+- verification/phase-7/run-r001/manifest.yaml
+- verification/phase-7/run-r001/prompt.md
+- verification/phase-7/run-r001/run.json
+- verification/phase-7/run-r001/stderr.log
+- web-admin/tests/setup.spec.ts
+migrations: []
+tests_run:
+- id: SELF-V-P7-01
+  command: uv run pytest tests/e2e/test_clean_install.py -q -s
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-01/attempt-03
+- id: SELF-V-P7-02
+  command: uv run pytest tests/e2e/test_human_path_acceptance.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-02/attempt-05
+- id: SELF-V-P7-03
+  command: python -m pytest tests/e2e/test_load_peak.py -q -s --no-header
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-03/attempt-04
+- id: SELF-V-P7-04
+  command: uv run pytest tests/e2e/test_soak.py -q -p no:cacheprovider
+  result: fail
+  evidence_ref: evidence/phase-7/SELF-V-P7-04/attempt-02
+- id: SELF-V-P7-05
+  command: uv run pytest tests/integration/test_dependency_outage_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-05/attempt-01
+- id: SELF-V-P7-06
+  command: uv run pytest tests/integration/test_database_outage_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-06/attempt-01
+- id: SELF-V-P7-07
+  command: uv run pytest tests/integration/test_recovery_db.py -q -k restore_into_an_empty
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-07/attempt-01
+- id: SELF-V-P7-08
+  command: uv run pytest tests/integration/test_recovery_db.py -q -k projection_rebuild
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-08/attempt-01
+- id: SELF-V-P7-09
+  command: uv run pytest tests/integration/test_upgrade_rollback.py -q -k upgrade_from_the_previous
+    or cli_reports -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-09/attempt-01
+- id: SELF-V-P7-10
+  command: uv run pytest tests/integration/test_upgrade_rollback.py -q -k rollback_is_safe
+    or forward_fix or cli_reports -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-10/attempt-01
+- id: SELF-V-P7-11
+  command: uv run pytest tests/integration/test_security_scans.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-11/attempt-02
+- id: SELF-V-P7-12
+  command: uv run pytest tests/integration/test_credential_rotation_db.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-12/attempt-01
+- id: SELF-V-P7-13
+  command: uv run pytest tests/e2e/test_incident_tabletop.py -q -s
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-13/attempt-02
+- id: SELF-V-P7-14
+  command: python -m pytest tests/integration/test_observability_alerts_db.py -q --no-header
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-14/attempt-03
+- id: SELF-V-P7-15
+  command: uv run pytest tests/integration/test_release_artifacts.py -q -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-15/attempt-03
+- id: SELF-V-P7-16
+  command: uv run pytest tests/e2e/test_release_evidence.py -q -k archive -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-16/attempt-03
+- id: SELF-V-P7-17
+  command: uv run pytest tests/e2e/test_release_evidence.py -q -k findings -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-17/attempt-04
+- id: SELF-V-P7-18
+  command: uv run pytest tests/e2e/test_release_evidence.py -q -k report or deployment
+    -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-18/attempt-03
+- id: SELF-V-P7-19
+  command: uv run pytest tests/integration/test_recovery_db.py -q -k retention -p
+    no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-19/attempt-01
+- id: SELF-V-P7-20
+  command: uv run pytest tests/integration/test_recovery_db.py -q -k resurrect or
+    gate_keeps -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-20/attempt-01
+- id: SELF-V-P7-21
+  command: uv run python -m tools.runbook_lint
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-21/attempt-01
+- id: SELF-V-P7-22
+  command: uv run pytest tests/e2e/test_human_path_acceptance.py -q -k human -p no:cacheprovider
+  result: pass
+  evidence_ref: evidence/phase-7/SELF-V-P7-22/attempt-05
+known_gaps:
+- 'V-P7-18 (deployment approval) is half implementer, half user. The implementer side
+  is done and evidenced: REPORT.md exists with the sections development plan §27A
+  requires, docs/operations/deployment-decision.md records the decision state, and
+  tools/deployment_decision.py proves the deployment ledger is empty, so no deployment
+  preceded a decision. The user side, the explicit answer, is recorded only after
+  the report is delivered; the record stays PENDING_USER_DECISION until then. The
+  target is referred to as env:deploy-server: .env records a server name, an IP, an
+  id and a password, and none of those values appear in the report, the record, the
+  evidence or any log.'
+- 'V-P7-04 FAILS and is submitted failing. Two 24-hour attempts were made and neither
+  is valid evidence. The first (evidence/phase-7/soak/rss-only-aborted-2026-09-03.jsonl,
+  2.6 h) measured memory as summed VmRSS, which overstates a pre-forked pool by its
+  whole shared set; the leak bound now reads private memory. The second (evidence/phase-7/soak/void-jit-14h-2026-09-04.jsonl,
+  14.8 h) was voided by a host defect: PostgreSQL tried to JIT-compile the sampler
+  aggregates once the tables passed jit_above_cost and this installation has no LLVM
+  runtime, blanking 49 of 888 samples, 5.5% against a 1% tolerance. Fixed by jit =
+  off on the host and by SET jit = off in samples.database_sample so it cannot recur
+  elsewhere. Across 14.8 h and 1,008,059 writes every integrity criterion held (zero
+  5xx, duplicates, dead letters, stuck Runs, open work items; heartbeats under 20.5
+  s; connections flat), but server private memory reached 1.111x against a 1.10x bound.
+  That growth is not an object leak: see evidence/phase-7/soak/memory-investigation.md,
+  which excludes object retention in the command path, the HTTP path and the full
+  traffic mix, plus logging, copy-on-write un-sharing, arena proliferation and reclaimable
+  free memory. The cause is not isolated. PRIVATE_GROWTH_LIMIT was not changed.'
+- Image signing uses a locally held Ed25519 key generated outside the repository at
+  ~/.local/share/agent-colab/release-signing.key; no registry and no organisational
+  signing key exist in this environment, so trust in the public key is local. `--verify`
+  fails rather than skips on an absent, wrong or tampered signature, and gates the
+  recorded digests and SBOM hashes; registry publication remains a deployment step
+  and stays a Low residual risk with an owner and a deadline.
+- The container scan runs Trivy through Docker; where a scanner cannot run at all
+  the scan records SCANNER_UNAVAILABLE rather than reporting clean.
+- Peak load (V-P7-03) was measured on this build host with four API processes and
+  two workers; the serving process count is a deployment parameter and the release
+  notes carry the sizing rule (offered rate, not a short run's p95).
+- Human-path acceptance (V-P7-02, V-P7-22) drives channel surfaces only, through the
+  provider's client-factory seam with an in-process Mattermost client; the same seam
+  a real Team Edition instance plugs into. The clean install (V-P7-01) does contact
+  a real Mattermost Team Edition for its preflight.
+rollback: git checkout 01676341999684d8ae8f5ec5db7d34411dbbd656 (merge-base with main);
+  drop test databases
+evidence_refs:
+- evidence/phase-7/SELF-V-P7-01/attempt-03
+- evidence/phase-7/SELF-V-P7-02/attempt-05
+- evidence/phase-7/SELF-V-P7-03/attempt-04
+- evidence/phase-7/SELF-V-P7-04/attempt-02
+- evidence/phase-7/SELF-V-P7-05/attempt-01
+- evidence/phase-7/SELF-V-P7-06/attempt-01
+- evidence/phase-7/SELF-V-P7-07/attempt-01
+- evidence/phase-7/SELF-V-P7-08/attempt-01
+- evidence/phase-7/SELF-V-P7-09/attempt-01
+- evidence/phase-7/SELF-V-P7-10/attempt-01
+- evidence/phase-7/SELF-V-P7-11/attempt-02
+- evidence/phase-7/SELF-V-P7-12/attempt-01
+- evidence/phase-7/SELF-V-P7-13/attempt-02
+- evidence/phase-7/SELF-V-P7-14/attempt-03
+- evidence/phase-7/SELF-V-P7-15/attempt-03
+- evidence/phase-7/SELF-V-P7-16/attempt-03
+- evidence/phase-7/SELF-V-P7-17/attempt-04
+- evidence/phase-7/SELF-V-P7-18/attempt-03
+- evidence/phase-7/SELF-V-P7-19/attempt-01
+- evidence/phase-7/SELF-V-P7-20/attempt-01
+- evidence/phase-7/SELF-V-P7-21/attempt-01
+- evidence/phase-7/SELF-V-P7-22/attempt-05
+reproduction:
+- git clone git@github.com:zzabisagent-lab/Agent-Colab.git && git checkout <target
+  commit>
+- export PATH=$HOME/.local/bin:$PATH; export AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab@127.0.0.1:54329/colab_test
+- 'make ci   # lint, tests, doc checks, build; sidecar: uv run pytest sidecar/tests
+  -q'
+- Every V-P7 Test has a SELF evidence attempt under evidence/phase-7/SELF-V-P7-NN/attempt-NN/result.json;
+  the latest attempt of each is PASS
+- 'Release build and scans: uv run python -m tools.release_build --version <v>; uv
+  run python -m tools.security_scan --require'
+- 'Clean production install (V-P7-01): COLAB_SERVER_IMAGE=<image> COLAB_MATTERMOST_URL=<url>
+  COLAB_MATTERMOST_BOT_TOKEN=<token> uv run python -m tools.clean_install --run'
+- 'Backup, restore, upgrade (V-P7-07..10, 19, 20): uv run pytest tests/integration/test_recovery_db.py
+  tests/integration/test_upgrade_rollback.py -q'
+- 'Load and soak (V-P7-03/04): uv run python -m tests.load.run --profile peak --minutes
+  30; observability (V-P7-14): uv run pytest tests/integration/test_observability_alerts_db.py
+  -q'
+- 'Runbooks, tabletop and acceptance (V-P7-13/21/02/22): uv run pytest tests/e2e/test_incident_tabletop.py
+  tests/e2e/test_human_path_acceptance.py -q; uv run python -m tools.runbook_lint'
+- 'Evidence archive and residual risks (V-P7-16/17): uv run python -m tools.evidence_archive
+  --check --phases 7'
+- 'Report and deployment decision (V-P7-18): uv run python -m tools.deployment_decision
+  --check; uv run pytest tests/e2e/test_release_evidence.py -q'

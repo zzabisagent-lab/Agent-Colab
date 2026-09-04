@@ -93,3 +93,19 @@ after signing, and when the recorded `source_revision` is not a commit in the re
 ## Residual risks
 
 `docs/security/residual-risks.md` records anything Medium or lower with an owner and a deadline.
+
+## The application owns its logging configuration
+
+Constructing the MCP server calls `logging.basicConfig` with a `RichHandler`. That is a reasonable
+default for a script and wrong for a server: it seizes the root logger, so every record from
+SQLAlchemy, uvicorn, alembic and psycopg is rendered to a console on stderr as a bare message,
+without the JSON envelope, the correlation id, or any structured field an aggregator reads.
+
+The failure is quiet. The application's own access and command loggers keep their own handlers and
+set `propagate = False`, so they stay correct and nothing looks wrong until someone goes to production
+for a dependency's log line and finds it unparseable.
+
+`server.observability.logs.reclaim_root_logging` restores the root logger to a single JSON handler,
+and `create_app` calls it after the MCP server is built — last, because anything constructed later
+could seize it again. Handlers it removes are named in a warning rather than dropped silently: a
+dependency quietly taking over logging is worth a line in the log itself.

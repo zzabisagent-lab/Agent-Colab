@@ -89,6 +89,38 @@ def install_json_logging(level: int = logging.INFO) -> None:
         logger.propagate = False
 
 
+def reclaim_root_logging(level: int = logging.INFO) -> list[str]:
+    """Take the root logger back from any dependency that reconfigured it, and return what went.
+
+    The MCP server library calls ``logging.basicConfig`` with a ``RichHandler`` when it is
+    constructed, which is a reasonable default for a script and wrong for a server: every record
+    from SQLAlchemy, uvicorn, alembic and psycopg would then be rendered to a console on stderr as
+    a bare message, losing the JSON envelope, the correlation id and every structured field an
+    aggregator reads. The application's own loggers do not propagate, so they survive it and the
+    breakage is invisible until someone goes looking for a dependency's log line in production.
+
+    So the root logger is restored to one JSON handler after anything that might seize it. Foreign
+    handlers are named in the return value rather than dropped silently, because a dependency
+    quietly taking over logging is worth a line in the log itself.
+    """
+    root = logging.getLogger()
+    removed = [
+        f"{type(h).__module__}.{type(h).__name__}"
+        for h in list(root.handlers)
+        if not getattr(h, "_agent_colab_json", False)
+    ]
+    for handler in list(root.handlers):
+        if not getattr(handler, "_agent_colab_json", False):
+            root.removeHandler(handler)
+    if not any(getattr(h, "_agent_colab_json", False) for h in root.handlers):
+        handler = logging.StreamHandler()
+        handler.setFormatter(JsonFormatter())
+        handler._agent_colab_json = True  # type: ignore[attr-defined]
+        root.addHandler(handler)
+    root.setLevel(level)
+    return removed
+
+
 def log_command(
     *,
     command: str,
