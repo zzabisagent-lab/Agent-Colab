@@ -1,0 +1,138 @@
+E.EEEEEEEE                                                               [100%]
+==================================== ERRORS ====================================
+_________ ERROR at setup of test_sample_file_covers_the_full_24_hours __________
+
+    @pytest.fixture(scope="module")
+    def soak() -> list[dict[str, Any]]:
+        if not SAMPLE_FILE.exists():
+>           pytest.fail(
+                f"no soak samples at {SAMPLE_FILE}. Record a run first:\n"
+                "  AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak "
+                f"--profile normal --minutes 1440 --samples {SAMPLE_FILE}"
+            )
+E           Failed: no soak samples at /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl. Record a run first:
+E             AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak --profile normal --minutes 1440 --samples /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl
+
+tests/e2e/test_soak.py:70: Failed
+______ ERROR at setup of test_traffic_was_sustained_for_the_whole_window _______
+
+    @pytest.fixture(scope="module")
+    def soak() -> list[dict[str, Any]]:
+        if not SAMPLE_FILE.exists():
+>           pytest.fail(
+                f"no soak samples at {SAMPLE_FILE}. Record a run first:\n"
+                "  AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak "
+                f"--profile normal --minutes 1440 --samples {SAMPLE_FILE}"
+            )
+E           Failed: no soak samples at /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl. Record a run first:
+E             AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak --profile normal --minutes 1440 --samples /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl
+
+tests/e2e/test_soak.py:70: Failed
+__________ ERROR at setup of test_nothing_was_delivered_or_run_twice ___________
+
+    @pytest.fixture(scope="module")
+    def soak() -> list[dict[str, Any]]:
+        if not SAMPLE_FILE.exists():
+>           pytest.fail(
+                f"no soak samples at {SAMPLE_FILE}. Record a run first:\n"
+                "  AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak "
+                f"--profile normal --minutes 1440 --samples {SAMPLE_FILE}"
+            )
+E           Failed: no soak samples at /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl. Record a run first:
+E             AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak --profile normal --minutes 1440 --samples /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl
+
+tests/e2e/test_soak.py:70: Failed
+_______ ERROR at setup of test_no_run_stayed_stuck_and_no_delivery_died ________
+
+    @pytest.fixture(scope="module")
+    def soak() -> list[dict[str, Any]]:
+        if not SAMPLE_FILE.exists():
+>           pytest.fail(
+                f"no soak samples at {SAMPLE_FILE}. Record a run first:\n"
+                "  AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak "
+                f"--profile normal --minutes 1440 --samples {SAMPLE_FILE}"
+            )
+E           Failed: no soak samples at /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl. Record a run first:
+E             AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak --profile normal --minutes 1440 --samples /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl
+
+tests/e2e/test_soak.py:70: Failed
+______________ ERROR at setup of test_work_items_drained_to_zero _______________
+
+    @pytest.fixture(scope="module")
+    def soak() -> list[dict[str, Any]]:
+        if not SAMPLE_FILE.exists():
+>           pytest.fail(
+                f"no soak samples at {SAMPLE_FILE}. Record a run first:\n"
+                "  AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak "
+                f"--profile normal --minutes 1440 --samples {SAMPLE_FILE}"
+            )
+E           Failed: no soak samples at /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl. Record a run first:
+E             AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak --profile normal --minutes 1440 --samples /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl
+
+tests/e2e/test_soak.py:70: Failed
+________________ ERROR at setup of test_heartbeats_stayed_fresh ________________
+
+    @pytest.fixture(scope="module")
+    def soak() -> list[dict[str, Any]]:
+        if not SAMPLE_FILE.exists():
+>           pytest.fail(
+                f"no soak samples at {SAMPLE_FILE}. Record a run first:\n"
+                "  AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak "
+                f"--profile normal --minutes 1440 --samples {SAMPLE_FILE}"
+            )
+E           Failed: no soak samples at /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl. Record a run first:
+E             AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak --profile normal --minutes 1440 --samples /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl
+
+tests/e2e/test_soak.py:70: Failed
+_________ ERROR at setup of test_private_memory_growth_stayed_bounded __________
+
+    @pytest.fixture(scope="module")
+    def soak() -> list[dict[str, Any]]:
+        if not SAMPLE_FILE.exists():
+>           pytest.fail(
+                f"no soak samples at {SAMPLE_FILE}. Record a run first:\n"
+                "  AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak "
+                f"--profile normal --minutes 1440 --samples {SAMPLE_FILE}"
+            )
+E           Failed: no soak samples at /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl. Record a run first:
+E             AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak --profile normal --minutes 1440 --samples /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl
+
+tests/e2e/test_soak.py:70: Failed
+_ ERROR at setup of test_resident_memory_stayed_under_its_ceiling_and_decelerated _
+
+    @pytest.fixture(scope="module")
+    def soak() -> list[dict[str, Any]]:
+        if not SAMPLE_FILE.exists():
+>           pytest.fail(
+                f"no soak samples at {SAMPLE_FILE}. Record a run first:\n"
+                "  AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak "
+                f"--profile normal --minutes 1440 --samples {SAMPLE_FILE}"
+            )
+E           Failed: no soak samples at /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl. Record a run first:
+E             AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak --profile normal --minutes 1440 --samples /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl
+
+tests/e2e/test_soak.py:70: Failed
+__________ ERROR at setup of test_database_connections_were_returned ___________
+
+    @pytest.fixture(scope="module")
+    def soak() -> list[dict[str, Any]]:
+        if not SAMPLE_FILE.exists():
+>           pytest.fail(
+                f"no soak samples at {SAMPLE_FILE}. Record a run first:\n"
+                "  AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak "
+                f"--profile normal --minutes 1440 --samples {SAMPLE_FILE}"
+            )
+E           Failed: no soak samples at /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl. Record a run first:
+E             AGENT_COLAB_TEST_DATABASE_URL=... uv run python -m tests.load.soak --profile normal --minutes 1440 --samples /home/master/work/agent-colab/evidence/phase-7/soak-24h.jsonl
+
+tests/e2e/test_soak.py:70: Failed
+=========================== short test summary info ============================
+ERROR tests/e2e/test_soak.py::test_sample_file_covers_the_full_24_hours - Fai...
+ERROR tests/e2e/test_soak.py::test_traffic_was_sustained_for_the_whole_window
+ERROR tests/e2e/test_soak.py::test_nothing_was_delivered_or_run_twice - Faile...
+ERROR tests/e2e/test_soak.py::test_no_run_stayed_stuck_and_no_delivery_died
+ERROR tests/e2e/test_soak.py::test_work_items_drained_to_zero - Failed: no so...
+ERROR tests/e2e/test_soak.py::test_heartbeats_stayed_fresh - Failed: no soak ...
+ERROR tests/e2e/test_soak.py::test_private_memory_growth_stayed_bounded - Fai...
+ERROR tests/e2e/test_soak.py::test_resident_memory_stayed_under_its_ceiling_and_decelerated
+ERROR tests/e2e/test_soak.py::test_database_connections_were_returned - Faile...

@@ -30,16 +30,18 @@ Revision 2 repairs, on commit dedd2a1:
 - V-P7-16/17/18: REPORT.md written per development plan §27A, the deployment decision record and
   its checker added, residual risks carry an acceptor, the archive exempts only the verdict of the
   phase under verification.
-- V-P7-04: the full 24-hour soak is running, restarted 2026-09-04 00:45:48 UTC and ending about
-  00:46 UTC on 2026-09-05. Revision 2 cannot be submitted before it finishes. The first attempt was
-  stopped at 2.6 h because it measured the wrong quantity: summed VmRSS across a pre-forked pool
-  double-counts shared pages and climbs as they un-share, with no allocation. The leak bound now
-  reads private memory, RSS is held to a ceiling and a decelerating shape, and
-  tests/integration/test_write_path_memory_db.py proves in-process that 4,000 real commands retain
-  no Python objects.
+- V-P7-04 FAILS, and revision 2 is submitted with it failing, at the System Owner's direction.
+  Two soak attempts, neither valid. The first (2.6 h) measured summed VmRSS, which overstates a
+  pre-forked pool by its shared set; the bound now reads private memory. The second (14.8 h) was
+  voided by a host defect — PostgreSQL JIT-compiling the sampler aggregates with no LLVM runtime
+  present, blanking 5.5% of samples against a 1% tolerance. Fixed on the host and in
+  samples.database_sample. Across 14.8 h and 1,008,059 writes every integrity criterion held, but
+  server private memory reached 1.111x against 1.10x. That is not an object leak — six exclusions
+  in evidence/phase-7/soak/memory-investigation.md — and the cause is not isolated.
+  PRIVATE_GROWTH_LIMIT was not changed.
 
-Next step: when the soak completes, record its evidence, run `make ci`, push `phase-7`, and launch
-Codex Phase 7 revision 2. V-P7-18's remaining half is the user's deployment answer; the record
+Next step: Codex Phase 7 revision 2 is launched with V-P7-04 failing. Expect FAILED on that Test;
+a revision 3 needs a clean 24-hour soak (JIT fix now in place) and a decision on the memory growth. V-P7-18's remaining half is the user's deployment answer; the record
 stays PENDING_USER_DECISION and nothing is deployed without it.
 
 ## Phase 6 (PASSED) — branch `phase-6`, tag `phase-6-passed`

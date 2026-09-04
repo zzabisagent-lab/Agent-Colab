@@ -95,8 +95,18 @@ def _scalar(session: Session, sql: str, params: dict[str, Any]) -> int:
 
 
 def database_sample(engine: Engine, ws: uuid.UUID, database: str) -> dict[str, Any]:
-    """Everything the soak watches that lives in PostgreSQL."""
+    """Everything the soak watches that lives in PostgreSQL.
+
+    JIT is disabled for the sampler's own session. These are unindexed aggregates over tables that
+    reach millions of rows during a soak, so their planned cost crosses ``jit_above_cost`` partway
+    through the run and PostgreSQL starts trying to compile them. Compilation buys nothing here —
+    the queries run once a minute and are I/O bound — and on an installation whose ``llvmjit.so``
+    cannot resolve its LLVM runtime it fails the query outright, which silently blanks every
+    database field from the moment the tables grow past the threshold. A soak must not depend on
+    the host's JIT configuration to record its own evidence.
+    """
     with Session(engine) as s:
+        s.execute(text("SET jit = off"))
         events = _scalar(s, "SELECT count(*) FROM events WHERE workspace_id = :w", {"w": ws})
         runs = _scalar(
             s,
