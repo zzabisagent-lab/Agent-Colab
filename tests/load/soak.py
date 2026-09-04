@@ -65,8 +65,12 @@ class Sampler:
             writes, reads, errors = samples.generator_totals(ctx.out_dir)
             line.update({"writes": writes, "reads": reads, "errors": errors})
             line.update(samples.database_sample(self._engine, self._population.ws, self._database))
-            line["server_rss_kb"] = harness.rss_kb(harness.process_tree(ctx.server_pids))
-            line["worker_rss_kb"] = harness.rss_kb(harness.process_tree(ctx.worker_pids))
+            server_tree = harness.process_tree(ctx.server_pids)
+            worker_tree = harness.process_tree(ctx.worker_pids)
+            line["server_rss_kb"] = harness.rss_kb(server_tree)
+            line["worker_rss_kb"] = harness.rss_kb(worker_tree)
+            line["server_private_kb"] = harness.private_kb(server_tree)
+            line["worker_private_kb"] = harness.private_kb(worker_tree)
             line["sample_error"] = None
         except Exception as exc:  # a bad sample must not end a 24-hour run
             self.errors += 1

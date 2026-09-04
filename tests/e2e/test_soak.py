@@ -174,19 +174,47 @@ def test_heartbeats_stayed_fresh(soak: list[dict[str, Any]]) -> None:
     assert beats[-1] > beats[0], "heartbeats stopped being recorded"
 
 
-def test_memory_growth_stayed_bounded(soak: list[dict[str, Any]]) -> None:
+def test_private_memory_growth_stayed_bounded(soak: list[dict[str, Any]]) -> None:
+    """The leak check: memory each process holds on its own, which nothing else can inflate."""
     for who in ("worker", "server"):
-        series = _series(soak, f"{who}_rss_kb")
-        assert series, f"no {who} memory was sampled"
+        series = _series(soak, f"{who}_private_kb")
+        assert series, f"no {who} private memory was sampled"
         first, last = _median(series[:EDGE]), _median(series[-EDGE:])
         assert first > 0
         growth = last / first
-        assert growth <= samples.RSS_GROWTH_LIMIT, (
-            f"{who} resident memory grew {growth:.3f}x over 24 h "
-            f"({first:.0f} kB to {last:.0f} kB), past {samples.RSS_GROWTH_LIMIT}x"
+        assert growth <= samples.PRIVATE_GROWTH_LIMIT, (
+            f"{who} private memory grew {growth:.3f}x over 24 h "
+            f"({first:.0f} kB to {last:.0f} kB), past {samples.PRIVATE_GROWTH_LIMIT}x"
         )
+
+
+def test_resident_memory_stayed_under_its_ceiling_and_decelerated(
+    soak: list[dict[str, Any]],
+) -> None:
+    """Summed RSS climbs as forked workers un-share inherited pages, so its *shape* is the test.
+
+    Un-sharing is self-limiting: there are only so many inherited pages, so each successive hour
+    converts fewer of them. A leak has no such limit and holds its slope. Comparing the first half
+    of the run with the second separates the two without needing to know either rate in advance.
+    """
+    for who in ("worker", "server"):
+        series = _series(soak, f"{who}_rss_kb")
+        assert series, f"no {who} memory was sampled"
+        first = _median(series[:EDGE])
+        assert first > 0
         assert max(series) / first <= samples.RSS_PEAK_LIMIT, (
             f"{who} resident memory peaked at {max(series) / first:.2f}x its opening level"
+        )
+        assert _median(series[-EDGE:]) / first <= samples.RSS_CEILING, (
+            f"{who} resident memory ended at {_median(series[-EDGE:]) / first:.2f}x its opening "
+            f"level, past the {samples.RSS_CEILING}x ceiling"
+        )
+        half = len(series) // 2
+        early = _median(series[half - EDGE : half]) - first
+        late = _median(series[-EDGE:]) - _median(series[half : half + EDGE])
+        assert late <= early, (
+            f"{who} resident memory grew {late:.0f} kB in the second half against {early:.0f} kB "
+            "in the first: growth is not decelerating, which is what a leak looks like"
         )
 
 

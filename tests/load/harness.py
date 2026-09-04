@@ -610,6 +610,27 @@ def rss_kb(pids: list[int]) -> int:
     return total
 
 
+def private_kb(pids: list[int]) -> int:
+    """Summed *private* resident memory (USS) of the given processes, in kilobytes.
+
+    ``rss_kb`` sums VmRSS, which counts a shared page once per process that maps it. Across a
+    pre-forked worker pool that overcounts, and worse, it *grows* on its own: every inherited
+    copy-on-write page a worker later writes to becomes private and starts being counted N times
+    instead of once, with no new memory allocated. Private memory does not have that artefact,
+    so it is what a leak is measured against.
+    """
+    total = 0
+    for pid in pids:
+        try:
+            rollup = (Path("/proc") / str(pid) / "smaps_rollup").read_text(encoding="utf-8")
+        except OSError:
+            continue
+        for line in rollup.split("\n"):
+            if line.startswith(("Private_Clean:", "Private_Dirty:")):
+                total += int(line.split()[1])
+    return total
+
+
 _rss_kb = rss_kb
 
 

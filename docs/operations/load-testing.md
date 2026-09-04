@@ -138,14 +138,16 @@ Elapsed seconds, cumulative writes, reads and 5xx errors, Events, scheduled Runs
 occurrence keys, duplicate Event identities, duplicate deliveries, duplicate bridge relays, open
 work items, stuck claimed Runs, dead letters (delivery outbox plus bridge), bridge relay counts,
 Agent heartbeat count and the age of the oldest heartbeat, stale Agents, database connections, and
-the resident memory of the whole API and worker process trees.
+both the resident and the private memory of the whole API and worker process trees.
 
 ### What it asserts, and why those bounds
 
 | Watched | Bound | Failure it catches |
 |---|---|---|
 | coverage | ≥ 24 h, final sample present | a short window substituted for the day |
-| worker and server memory | ≤ 1.10x, median of first vs last 10 samples | a leaking process |
+| worker and server private memory | ≤ 1.10x, median of first vs last 10 samples | a leaking process |
+| resident memory ceiling | ≤ 1.35x the opening level | growth beyond what un-sharing explains |
+| resident memory shape | second half grows no more than the first | growth that is not decelerating |
 | memory peak | ≤ 1.5x the opening level | a spike that is not reclaimed |
 | database connections | last hour ≤ warmed baseline + 5 | connections never returned to the pool |
 | open work items | zero at the end | a queue that only grows |
@@ -155,13 +157,31 @@ the resident memory of the whole API and worker process trees.
 | oldest heartbeat | ≤ 90 s | heartbeats that stopped being recorded |
 | 5xx rate | ≤ 1 % | the §21.1 error budget |
 
-The memory bound is the one that needs justifying. A leak grows without bound, so the question is
-only where to draw the line above allocator noise. The 30-minute window already measured 1.2 %
-growth; a process leaking at that rate would be near 1 %/hour and far past 10 % in a day. Ten per
-cent across 24 hours therefore sits about an order of magnitude below a real leak and still well
-above arena fragmentation and per-tick buffers. Medians of ten samples at each end are compared
-rather than single samples, because one minute of resident memory is noisy and a leak that matters
-is visible either way.
+The memory bounds are the ones that need justifying, and the first version of them was measuring
+the wrong quantity.
+
+Summed RSS across a pre-forked worker pool is not a leak metric. `VmRSS` counts a shared page once
+for every process that maps it, and the eight API workers are forks of one parent, so they start
+out sharing nearly all of their pages. Every inherited page a worker later writes to becomes
+private and is then counted eight times instead of once — the sum rises while nothing has been
+allocated. The first 24-hour attempt showed exactly that signature: quarter-hourly growth of 9.2,
+4.8, 4.0, 2.7, 2.4 MB and falling, fitting √t with R²=0.997 and a straight line only at R²=0.973.
+Extrapolating the straight line predicted 1.26x at hour 24 and would have failed the run.
+
+So the leak bound moved to *private* memory (`Private_Clean + Private_Dirty` per process), which
+counts each page exactly once, for whoever actually holds it. Copy-on-write cannot inflate it.
+
+RSS is still recorded and still asserted, but on the two things that are true of un-sharing and
+false of a leak. It has a ceiling, because the pages available to un-share are bounded by the
+parent's heap at fork time. And its growth must *decelerate*: each successive hour has fewer
+inherited pages left to convert, while a leak under steady load holds its slope. The second half
+of the run is compared with the first, which needs no advance knowledge of either rate.
+
+None of this is inferred. `tests/integration/test_write_path_memory_db.py` drives 4,000 real
+commands through the real bus, policy check, Event store and database in a single process and
+measures from inside it: the Python heap and the live object count both come back to where they
+started, to within 250 bytes and 0.5 objects per command. There is no object leak in the write
+path, and the external numbers are read in that light.
 
 Connections are compared with a *warmed* baseline (the first hour) rather than with the first
 sample, because eight API worker processes and two scheduler workers each fill their own pool

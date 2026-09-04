@@ -30,11 +30,17 @@ COVERAGE_SLACK_S = 60.0
 HEARTBEAT_INTERVAL_S = 20.0
 HEARTBEAT_STALE_S = 90.0
 
-#: Worker resident memory over a day. A leak grows without bound — the 30-minute window already
-#: measured 1.2 %, so a day at the same rate lands near 1 %/hour if anything leaks at all. Ten
-#: per cent across 24 hours is roughly an order of magnitude below that and still far enough above
-#: allocator noise (arena fragmentation, per-tick buffers) not to fail a healthy run.
-RSS_GROWTH_LIMIT = 1.10
+#: Private (unshared) memory over a day, which is what a leak actually grows. Ten per cent across
+#: 24 hours is far above allocator noise — arena fragmentation and per-tick buffers — and far below
+#: any leak that matters: something losing even a kilobyte per request would pass a tenth of a
+#: percent per hour and blow through this by mid-morning.
+PRIVATE_GROWTH_LIMIT = 1.10
+#: Summed VmRSS is *not* the leak metric, because it counts a shared page once per process that
+#: maps it: across a pre-forked pool it climbs on its own as inherited copy-on-write pages are
+#: written to and stop being shared, allocating nothing. That climb is bounded by the parent's heap
+#: at fork time and decays, so RSS is held to a ceiling and to a *decelerating* shape rather than a
+#: growth ratio. A leak cannot decelerate under steady load; copy-on-write un-sharing must.
+RSS_CEILING = 1.35
 #: Peak against the opening level: a transient spike is normal, a doubling is not.
 RSS_PEAK_LIMIT = 1.5
 
