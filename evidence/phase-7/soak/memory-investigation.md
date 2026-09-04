@@ -41,6 +41,21 @@ Measured per-endpoint retention at steady state, for scale:
 The heartbeat figure is genuine and worth reducing, but at the soak's one beat per second it
 accounts for roughly 0.4 MB/h of an observed 7.4 MB/h. It does not explain the trend.
 
+## Re-running these measurements
+
+The two probes that need no fixtures are a tool, so the investigation can be repeated against any
+environment rather than only inside pytest:
+
+```
+uv run python -m tools.memory_diagnostics command-path   # retention in the write path
+uv run python -m tools.memory_diagnostics trim           # free memory the allocator holds
+```
+
+`tests/integration/test_write_path_memory_db.py` is the first of those wired as a gate.
+The two that need a running server stay tests, because they need the load harness:
+`tests/e2e/test_http_path_memory.py` (single real worker, watches for a plateau) and
+`tests/e2e/test_soak.py` (the 24-hour run).
+
 ## Why the bound was left alone
 
 Moving `PRIVATE_GROWTH_LIMIT` after seeing the trajectory would make the evidence worthless. If the
