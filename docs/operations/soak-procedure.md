@@ -126,17 +126,46 @@ What its 14.8 hours did establish, over 1,008,059 writes and 509,268 reads:
 
 Every integrity criterion held across a million writes. The memory criterion failed.
 
-### Attempt 4 — 2026-09-04 16:46 UTC — in progress, and final
+### Attempt 4 — 2026-09-04 16:46 UTC — complete, FAILED on one assertion of ten
 
 First clean run: JIT disabled on the host and in the sampler, private memory recorded alongside
 RSS, and the first samples verified to carry every database and memory field.
 
-**This is the last attempt.** The System Owner directed a single trial and acceptance of whatever
-it reports, pass or fail. So its result stands as the V-P7-04 evidence and no further soak is run:
-if the memory bound is exceeded, V-P7-04 is recorded as FAILED with this procedure and the
-investigation attached, and Phase 7 carries that failure rather than iterating on it. The
-threshold is not adjusted to change the outcome — that was true before the decision and is
-unaffected by it.
+**This was the last attempt.** The System Owner directed a single trial and acceptance of whatever
+it reported. It ran the full window and its result stands as the V-P7-04 evidence; no further soak
+was run and `PRIVATE_GROWTH_LIMIT` was not adjusted.
+
+Ran 24.0 h to `final: true`, 1,441 samples, **zero sampler errors** — the JIT fix held. Traffic:
+1,681,209 writes and 863,052 reads.
+
+| Assertion | Result |
+|---|---|
+| coverage: full 24 h, final sample, < 1% sampler errors | PASS (0.00% errors) |
+| a short sample file is rejected | PASS |
+| traffic sustained for the whole window | PASS |
+| nothing delivered or run twice | PASS |
+| no Run stuck, no delivery dead-lettered | PASS |
+| work items drained to zero | PASS |
+| heartbeats stayed fresh (max age 22.9 s) | PASS |
+| resident memory under its ceiling and decelerating | PASS (1.117x, peak 1.133x) |
+| database connections returned (12–24, ended 17) | PASS |
+| **private memory growth ≤ 1.10x** | **FAIL — server 1.149x** |
+
+Nine of ten. Every integrity criterion — the "zero leaks, duplicates, stuck" the baseline actually
+names — held across 1.68 million writes: zero 5xx, zero duplicate occurrence keys, Events,
+deliveries or relays, zero dead letters, zero stuck Runs, zero open work items, no stale Agents.
+
+The one failure is the private-memory ratio: server 989 → 1,136 MB, 1.149x against a 1.10x bound.
+Worker memory passed at 1.032x. This is close to the 1.14x the √t fit projected at hour 6, so the
+shape was understood well before the run ended; what was never isolated is the cause.
+
+Growth did decelerate — the second half added 62.6 MB against the first half's 89.2 MB, which is
+why the resident-memory shape assertion passed. A leak under steady load holds its slope; this did
+not. But it also had not flattened by hour 24, so the ratio bound is exceeded and the Test fails.
+
+**V-P7-04 is FAILED.** The evidence is `evidence/phase-7/SELF-V-P7-04/attempt-03` (FAIL), the
+samples are `evidence/phase-7/soak-24h.jsonl`, and the cause remains open in
+`evidence/phase-7/soak/memory-investigation.md`.
 
 ## 5. The open question
 

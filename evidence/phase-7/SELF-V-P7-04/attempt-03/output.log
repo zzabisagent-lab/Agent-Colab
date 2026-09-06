@@ -1,0 +1,25 @@
+.......F..                                                               [100%]
+=================================== FAILURES ===================================
+__________________ test_private_memory_growth_stayed_bounded ___________________
+
+soak = [{'at': '2026-09-04T16:46:02+00:00', 'elapsed_s': 60.5, 'final': False, 'profile': 'normal', ...}, {'at': '2026-09-04T...'normal', ...}, {'at': '2026-09-04T16:51:05+00:00', 'elapsed_s': 363.1, 'final': False, 'profile': 'normal', ...}, ...]
+
+    def test_private_memory_growth_stayed_bounded(soak: list[dict[str, Any]]) -> None:
+        """The leak check: memory each process holds on its own, which nothing else can inflate."""
+        for who in ("worker", "server"):
+            series = _series(soak, f"{who}_private_kb")
+            assert series, f"no {who} private memory was sampled"
+            first, last = _median(series[:EDGE]), _median(series[-EDGE:])
+            assert first > 0
+            growth = last / first
+>           assert growth <= samples.PRIVATE_GROWTH_LIMIT, (
+                f"{who} private memory grew {growth:.3f}x over 24 h "
+                f"({first:.0f} kB to {last:.0f} kB), past {samples.PRIVATE_GROWTH_LIMIT}x"
+            )
+E           AssertionError: server private memory grew 1.149x over 24 h (1012288 kB to 1163036 kB), past 1.1x
+E           assert 1.1489180944553328 <= 1.1
+E            +  where 1.1 = samples.PRIVATE_GROWTH_LIMIT
+
+tests/e2e/test_soak.py:185: AssertionError
+=========================== short test summary info ============================
+FAILED tests/e2e/test_soak.py::test_private_memory_growth_stayed_bounded - As...

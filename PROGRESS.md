@@ -45,13 +45,18 @@ V-P7-04 (no valid soak), V-P7-15 (manifest pinned to the wrong commit), V-P7-16 
 V-P7-04) and V-P7-18 (no recorded deployment decision) failed. V-P7-15 is fixed: the pin is now
 satisfiable and the manifest is rebuilt and signed at the target commit.
 
-Soak attempt 4 launched 2026-09-04 16:46 UTC, ending about 16:47 UTC on 2026-09-05. By the System
-Owner's direction it is a **single trial and its result stands**, pass or fail; no further soak is
-attempted and PRIVATE_GROWTH_LIMIT is not adjusted.
+Soak attempt 4 completed 2026-09-05 16:45 UTC: 24.0 h, 1,441 samples, zero sampler errors,
+1,681,209 writes. **Nine of ten assertions pass.** Every integrity criterion held; server private
+memory grew 1.149x against a 1.10x bound, so V-P7-04 is FAILED. By the System Owner's direction it
+was a single trial and its result stands; PRIVATE_GROWTH_LIMIT was not adjusted and no further soak
+was run. Full record: docs/operations/soak-procedure.md.
 
-Next step: when attempt 4 ends, record its evidence as it falls, resolve V-P7-18 (the criterion
-needs a recorded deployment decision, which the plan sequences after Phase 7 passes — a conflict
-the Verifier has now flagged twice), run `make ci`, and submit revision 3. V-P7-18's remaining half is the user's deployment answer; the record
+V-P7-15 and V-P7-16 are fixed and re-recorded PASS. V-P7-18 stays failing by instruction: the
+System Owner has deferred the deployment order until after Phase 7, and the criterion cannot be
+satisfied before it is given.
+
+Next step: `make ci`, then submit revision 3 expecting FAILED on V-P7-04 and V-P7-18. Merge to
+`main` and the `phase-7-passed` tag wait for a PASSED verdict, per the System Owner's decision. V-P7-18's remaining half is the user's deployment answer; the record
 stays PENDING_USER_DECISION and nothing is deployed without it.
 
 ## Phase 6 (PASSED) — branch `phase-6`, tag `phase-6-passed`
