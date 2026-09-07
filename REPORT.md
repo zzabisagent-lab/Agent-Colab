@@ -107,7 +107,7 @@ All are fixed, each with a test that fails without the fix.
 | After hard delete, content undecryptable and Event bytes unchanged | Met | V-P4-22, V-P4-25 |
 | Restoring a pre-deletion backup does not resurrect deleted content | Met | V-P4-29, V-P7-20 |
 | 20 consecutive full end-to-end successes | Met through a real Mattermost; awaiting re-verification | V-P7-02, V-P7-22 |
-| RPO 24 h / RTO 4 h and the load profiles met | Met for recovery and peak; soak running | V-P7-07, V-P7-03, V-P7-04 |
+| RPO 24 h / RTO 4 h and the load profiles met | Recovery and peak met; the 24 h soak **failed** on memory growth alone | V-P7-07, V-P7-03, V-P7-04 |
 | Zero High or Critical security findings | Met on both images; awaiting re-verification | V-P7-11 |
 | break-glass and hard delete only through defined workflows | Met | V-P4-21, V-P4-22 |
 | Zero executions exceeding Agent Limits and Schedule budgets | Met | V-P3-15, V-P5-28, V-P5-37 |
@@ -120,8 +120,13 @@ a deadline and an acceptor. No High or Critical finding is accepted; they block 
 
 Known limitations, stated plainly:
 
-- The soak is running its full 24 hours now. Earlier evidence used a 30-minute window, and the
-  Verifier rightly refused it. Phase 7 cannot be resubmitted until that run finishes.
+- **The 24-hour soak failed one assertion of ten.** It ran the full window with zero sampler
+  errors over 1,681,209 writes, and every integrity criterion held: zero 5xx, zero duplicates of
+  any kind, zero dead letters, zero stuck Runs, zero open work items, heartbeats under 22.9 s,
+  connections flat. Server private memory grew 1.149x against a 1.10x bound. It is not an object
+  leak — six hypotheses are excluded by measurement — and growth decelerated, but it had not
+  flattened by hour 24 and the cause was never isolated. This is the one open defect in the
+  release, and it is recorded as a failure rather than accommodated.
 - The release manifest is signed, but with a key generated and held on this build host, so trust
   in the public key is local. There is no registry, no organisational signing key and no production
   TLS terminator in this environment; publication and TLS termination remain deployment steps.
@@ -182,8 +187,9 @@ deployment decision, not a code change.
 
 ## 7. The decision that remains
 
-Development is complete except for Phase 7's second verification revision, which is in progress:
-the full 24-hour soak is running and Phase 7 is resubmitted to the Verifier when it finishes.
+Development is complete and Phase 7 is in its third verification revision. Two Tests are expected
+to fail it: V-P7-04, on the memory growth above, and V-P7-18, which cannot pass until the
+deployment decision below is made.
 
 Nothing has been deployed. `docs/operations/deployment-decision.md` records the state as
 `PENDING_USER_DECISION`, and the deployment ledger under `release/deployments/` is empty, which is

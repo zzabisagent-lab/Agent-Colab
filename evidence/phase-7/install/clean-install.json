@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "seconds": 31.3,
+  "seconds": 131.0,
   "deadline_seconds": 1800,
   "state": "LOCKED",
   "steps": [
@@ -39,5 +39,5 @@
       "guidance": ""
     }
   ],
-  "detail": "owner material received; bootstrap sealed: True; image built from deploy/production/Dockerfile.server; mattermost local Team Edition, already running"
+  "detail": "owner material received; bootstrap sealed: True; image built from deploy/production/Dockerfile.server; mattermost local Team Edition started by scripts/dev/mattermost-local.sh"
 }
