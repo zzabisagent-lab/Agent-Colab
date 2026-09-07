@@ -234,3 +234,25 @@ def test_a_manifest_pin_survives_committing_the_manifest() -> None:
 
     unknown = release_build._source_paths_changed_between("0" * 40, head)
     assert unknown is None, "an unknown commit is reported as uncomparable, not as drift"
+
+
+def test_only_paths_that_cannot_reach_an_image_are_exempt_from_the_pin() -> None:
+    """The exemption must stay narrower than what the Dockerfiles copy in.
+
+    A pin that ignores too much stops meaning anything. This pins the list against the images
+    themselves: nothing a Dockerfile COPYs may be exempt, or the manifest could describe a tree
+    that built different artifacts.
+    """
+    copied: set[str] = set()
+    for dockerfile in ("Dockerfile.server", "Dockerfile.web-admin"):
+        for line in (ROOT / "deploy" / "production" / dockerfile).read_text().splitlines():
+            if line.startswith("COPY") and "--from=" not in line:
+                # COPY <src>... <dest>; the sources are everything but the last field.
+                copied.update(line.split()[1:-1])
+
+    for exempt in release_build.NON_BUILD_PATHS:
+        for source in copied:
+            assert not source.startswith(exempt.rstrip("/")), (
+                f"{exempt!r} is exempt from the release pin but {dockerfile} copies {source!r}"
+            )
+    assert "README.md" in copied, "the server image copies README.md; the exemption must not"

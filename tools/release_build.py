@@ -342,10 +342,24 @@ def python_js_guard(out: Path) -> dict[str, Any]:
         return {"generated": False, "reason": f"{type(exc).__name__}: {exc}"}
 
 
-#: Paths that describe a release rather than being part of it. Writing the manifest necessarily
-#: creates a commit after the one it records, so a manifest can never name the commit that carries
-#: it. Changes confined to these paths therefore do not break the pin; anything else does.
-RELEASE_PATHS = ("release/",)
+#: Paths that provably cannot reach a built artifact, checked against what the Dockerfiles COPY.
+#: Writing the manifest, recording the evidence for it and reporting the result all necessarily
+#: create commits *after* the one the manifest records, so a manifest can never name the commit
+#: that carries it and a strict pin is unsatisfiable. Drift confined to these paths therefore does
+#: not break the pin; anything else does.
+#:
+#: The list is deliberately short and conservative. ``README.md`` is **not** here, because the
+#: server image copies it. Neither are ``tests/``, ``tools/`` or ``scripts/``: ``tools/`` builds the
+#: release, so changing it changes the build, and the others are cheap to rebuild for. If a new
+#: source directory is added it is drift by default, which is the safe way round.
+NON_BUILD_PATHS = (
+    "docs/",
+    "evidence/",
+    "verification/",
+    "release/",
+    "PROGRESS.md",
+    "REPORT.md",
+)
 
 
 def _source_paths_changed_between(recorded: str, expected: str) -> set[str] | None:
@@ -366,7 +380,7 @@ def _source_paths_changed_between(recorded: str, expected: str) -> set[str] | No
     if result.returncode != 0:
         return None
     changed = {line.strip() for line in result.stdout.splitlines() if line.strip()}
-    return {path for path in changed if not path.startswith(RELEASE_PATHS)}
+    return {path for path in changed if not path.startswith(NON_BUILD_PATHS)}
 
 
 def verify(
