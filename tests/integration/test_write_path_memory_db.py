@@ -2,25 +2,31 @@
 
 The 24-hour soak measures memory from outside the process, where it cannot tell retained objects
 from memory the allocator is holding. This measures from inside: it drives the real command path
-thousands of times in one process and asserts that the Python heap and the live object count come
-back to where they started.
+thousands of times and asserts that the Python heap and the live object count come back to where
+they started.
 
-Nothing here is mocked — the bus, the policy check, the Event store and PostgreSQL are all real.
-If a handler, a cache or a registry retained one object per command, both numbers would climb in
-step with the loop.
+The measurement runs in a **subprocess**, which is not fastidiousness. Run in-process inside the
+full suite, it reported 2,371 bytes retained per command against 55 when run alone: it was
+measuring whatever several hundred other test modules had left in the interpreter — global
+registries, warmed caches, module-level hooks — and not the write path at all. A memory
+measurement is only meaningful in a process whose history it controls.
 
-The probe itself is ``tools.memory_diagnostics``, so the same measurement can be re-run against any
-environment rather than only inside pytest.
+The probe itself is ``tools.memory_diagnostics``, so the same measurement can be re-run by hand
+against any environment.
 """
 
 from __future__ import annotations
 
-import pytest
+import json
+import subprocess
+import sys
+from pathlib import Path
 
-from tools import memory_diagnostics
+import pytest
 
 pytestmark = pytest.mark.db
 
+ROOT = Path(__file__).resolve().parents[2]
 #: Enough commands that a per-command retention of even a few hundred bytes is unmistakable, and
 #: few enough to stay a fast test. A one-kilobyte-per-command leak shows up as +4 MB.
 WARMUP = 200
@@ -29,14 +35,36 @@ COMMANDS = 4000
 #: measurement starts. What is left is per-command retention.
 HEAP_GROWTH_LIMIT_MB = 1.0
 OBJECT_GROWTH_LIMIT = 2000
+TIMEOUT_S = 900
 
 
 @pytest.fixture(scope="module")
 def measurement(database_url: str) -> dict[str, float]:
-    import os
-
-    os.environ["AGENT_COLAB_TEST_DATABASE_URL"] = database_url
-    return memory_diagnostics.command_path(WARMUP, COMMANDS)
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "tools.memory_diagnostics",
+            "command-path",
+            "--warmup",
+            str(WARMUP),
+            "--commands",
+            str(COMMANDS),
+        ],
+        cwd=ROOT,
+        env={
+            "PATH": "/usr/bin:/bin",
+            "HOME": str(Path.home()),
+            "AGENT_COLAB_TEST_DATABASE_URL": database_url,
+            "PYTHONPATH": str(ROOT),
+        },
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=TIMEOUT_S,
+    )
+    assert result.returncode == 0, f"probe failed: {result.stderr[-2000:]}"
+    return dict(json.loads(result.stdout[result.stdout.index("{") :]))
 
 
 def test_thousands_of_commands_retain_no_python_objects(measurement: dict[str, float]) -> None:

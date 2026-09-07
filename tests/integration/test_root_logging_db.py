@@ -12,6 +12,7 @@ dependency's logging has been redirected. So this asserts the root logger specif
 
 from __future__ import annotations
 
+import io
 import logging
 from collections.abc import Iterator
 
@@ -58,16 +59,29 @@ def test_building_the_app_leaves_the_root_logger_ours(settings: Settings) -> Non
     )
 
 
-def test_a_dependency_record_is_emitted_as_json(settings: Settings, capsys) -> None:  # type: ignore[no-untyped-def]
+def test_a_dependency_record_is_emitted_as_json(settings: Settings) -> None:
+    """Read the handler's own stream rather than the process's.
+
+    ``logging.StreamHandler`` binds to ``sys.stderr`` when it is *constructed*, so a handler an
+    earlier test created points at that test's stderr and ``capsys`` sees nothing. Swapping the
+    stream on the handler under test asserts the same thing without depending on which test ran
+    first.
+    """
     create_app(settings)
-    capsys.readouterr()
+    handlers = _root_handlers()
+    assert handlers, "the root logger must carry a handler after the app is built"
+    stream = io.StringIO()
+    for handler in handlers:
+        assert isinstance(handler, logging.StreamHandler)
+        handler.setStream(stream)
 
     logging.getLogger("sqlalchemy.engine.probe").warning("dependency speaking")
 
-    written = capsys.readouterr()
-    assert '"logger": "sqlalchemy.engine.probe"' in written.err + written.out, (
-        "a dependency's record did not reach the JSON handler"
+    written = stream.getvalue()
+    assert '"logger": "sqlalchemy.engine.probe"' in written, (
+        f"a dependency's record did not reach the JSON handler: {written!r}"
     )
+    assert '"message": "dependency speaking"' in written, written
 
 
 def test_reclaim_reports_what_it_removed() -> None:

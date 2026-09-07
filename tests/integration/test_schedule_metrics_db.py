@@ -215,6 +215,11 @@ def test_metrics_api_requires_schedule_or_admin_rights(
     app = create_app(
         Settings(database_url=database_url, base_url="http://t", master_key_b64=sd.master_key_b64)
     )
+    # The runs are seeded relative to NOW, so the endpoint must read the same clock. Left on the
+    # system clock this passes for a day and then decays: the seeded window slides into the past
+    # and every count silently reads zero (validation plan §21: time-dependent tests use an
+    # injectable Clock).
+    app.state.runtime.clock = FixedClock(NOW)
     with TestClient(app) as client:
         r = client.get("/api/v1/schedules/metrics", headers=sd.headers("admin1", "r"))
         assert r.status_code == 200, r.text
