@@ -1,0 +1,20 @@
+{
+  "test_id": "V-P7-11",
+  "evidence_id": "SELF-V-P7-11",
+  "attempt": 3,
+  "command": [
+    "uv",
+    "run",
+    "pytest",
+    "tests/integration/test_security_scans.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "result": "pass",
+  "commit_sha": "6decad19515da9a4bb5c69193d5ef34c4af9ea8f",
+  "started_at": "2026-09-07T07:25:17.959623+00:00",
+  "finished_at": "2026-09-07T07:26:25.338743+00:00",
+  "output_sha256": "7040371af15613c02e821ec0eecc1d1330f691ace4cef93a41bfa358822c4103"
+}

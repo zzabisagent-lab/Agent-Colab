@@ -1,18 +1,18 @@
 {
-  "built_at": "2026-09-07T07:14:32+00:00",
+  "built_at": "2026-09-07T07:22:41+00:00",
   "dirty": false,
   "images": [
     {
       "built": true,
       "dockerfile": "deploy/production/Dockerfile.server",
-      "image_id": "sha256:e24fa79c8fb26ed42a0e8bbac4c0374e49b450e176444623bdcf9763c8586891",
+      "image_id": "sha256:ffa6021412f88a7b8d3d1f6d12fa43c5405b273f930ad76fa428c043faf722e4",
       "name": "server",
       "tag": "agent-colab/server:8.0.0-test"
     },
     {
       "built": true,
       "dockerfile": "deploy/production/Dockerfile.web-admin",
-      "image_id": "sha256:4886e45a54746e1cf0574f17c83bf284b94fc61f986aa9331b5e540913fe6b7d",
+      "image_id": "sha256:7301816d6f92891f6590e7eedb6549941736d8ad1859c4952bed4b15f9d71ca9",
       "name": "web-admin",
       "tag": "agent-colab/web-admin:8.0.0-test"
     }
@@ -32,7 +32,7 @@
       "format": "CycloneDX",
       "generated": true,
       "path": "release/sbom-python-8.0.0-test.json",
-      "sha256": "7e43b6cb34f886586bd0cbcf2f324e36c64cf5cc5563fa2f9a7df557d6bb5155",
+      "sha256": "65c38efc3b92583f2f86d398c89bc50e6fa53efd231599c82d6640b4c71fbb28",
       "spec_version": "1.6"
     }
   },
@@ -41,10 +41,10 @@
     "algorithm": "Ed25519",
     "public_key_path": "release/signing-key.pub",
     "public_key_sha256": "2be2af2008681e8064886f750a9924a61dcc32da11b9811200d8f04f882aebf0",
-    "signature": "nIYa08/M1AbzduXETduQIJBEe3dmbsD4an0peJF9PywGyZny1M2bLSyWMI71nBjA1hYXiIpf2/m+9P/ygnSBDg==",
+    "signature": "EFg55yUYARN/FYO88/z9Jp4dycEzZ+vDl5ggrpD5J7QyJO/nyJxS19KgZKsQ0Y1AoC1XS2xjZ2WJmtzMuQ4YBQ==",
     "signature_path": "release/manifest.sig",
-    "signed_at": "2026-09-07T07:14:43+00:00"
+    "signed_at": "2026-09-07T07:22:52+00:00"
   },
-  "source_revision": "bf3845dc16d4ef92fc38a16e5a58de7eb9451785",
+  "source_revision": "6decad19515da9a4bb5c69193d5ef34c4af9ea8f",
   "version": "8.0.0-test"
 }
