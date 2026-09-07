@@ -180,11 +180,20 @@ def test_manifest_records_the_revision_it_was_built_from() -> None:
         ["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=False
     ).stdout.strip()
     manifest = json.loads(MANIFEST.read_text())
-    assert manifest["source_revision"] == head, (
-        "the release manifest names a different revision than the tree it is being verified "
-        "against; rebuild it with: uv run python -m tools.release_build --version "
-        f"{manifest['version']}"
-    )
+    recorded = manifest["source_revision"]
+    if recorded != head:
+        # Writing the manifest creates a commit after the one it records, so it can never name the
+        # commit that carries it. Only source drift matters; release artifacts describing the
+        # release do not.
+        drifted = release_build._source_paths_changed_between(recorded, head)
+        assert drifted is not None, (
+            f"the manifest records {recorded[:12]}, which cannot be compared with HEAD"
+        )
+        assert not drifted, (
+            "the release manifest describes a different source tree than the one being verified "
+            f"({', '.join(sorted(drifted)[:5])}); rebuild it with: uv run python -m "
+            f"tools.release_build --version {manifest['version']}"
+        )
     assert "dirty" in manifest, "the manifest must say whether the tree it was built from was clean"
 
 

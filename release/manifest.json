@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-09-04T16:51:35+00:00",
+  "built_at": "2026-09-07T07:14:32+00:00",
   "dirty": false,
   "images": [
     {
@@ -32,7 +32,7 @@
       "format": "CycloneDX",
       "generated": true,
       "path": "release/sbom-python-8.0.0-test.json",
-      "sha256": "3e49e9d923e80b9bf3d7cba0e76219d1d9633e4998374b5bf25d167c9a879e6d",
+      "sha256": "7e43b6cb34f886586bd0cbcf2f324e36c64cf5cc5563fa2f9a7df557d6bb5155",
       "spec_version": "1.6"
     }
   },
@@ -41,10 +41,10 @@
     "algorithm": "Ed25519",
     "public_key_path": "release/signing-key.pub",
     "public_key_sha256": "2be2af2008681e8064886f750a9924a61dcc32da11b9811200d8f04f882aebf0",
-    "signature": "NPd/O10wZ9mAuG1jce65ylB5WAZkp7AkTd78UEvnbRF7npoY05pRsNiGlMVV8ad1bIl5wetp5U6/OZDa+R1mBw==",
+    "signature": "nIYa08/M1AbzduXETduQIJBEe3dmbsD4an0peJF9PywGyZny1M2bLSyWMI71nBjA1hYXiIpf2/m+9P/ygnSBDg==",
     "signature_path": "release/manifest.sig",
-    "signed_at": "2026-09-04T16:51:48+00:00"
+    "signed_at": "2026-09-07T07:14:43+00:00"
   },
-  "source_revision": "d000cd982724119baf0351034505b9810c455dfc",
+  "source_revision": "bf3845dc16d4ef92fc38a16e5a58de7eb9451785",
   "version": "8.0.0-test"
 }

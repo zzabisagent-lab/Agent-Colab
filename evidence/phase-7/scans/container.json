@@ -1,16 +1,171 @@
 {
-  "blocking": 0,
+  "blocking": 22,
   "counts": {
     "CRITICAL": 0,
-    "HIGH": 0,
+    "HIGH": 22,
     "LOW": 0,
     "MEDIUM": 0,
     "UNKNOWN": 0
   },
-  "findings": [],
+  "findings": [
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-11352",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "curl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-11586",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "curl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-12064",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "curl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-8286",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "curl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-8458",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "curl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-8925",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "curl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-8927",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "curl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-9547",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "curl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-11352",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libcurl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-11586",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libcurl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-12064",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libcurl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-8286",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libcurl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-8458",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libcurl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-8925",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libcurl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-8927",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libcurl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "8.22.0-r0",
+      "id": "CVE-2026-9547",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libcurl 8.20.0-r0"
+    },
+    {
+      "fixed_version": "2.41.6-r0",
+      "id": "CVE-2026-53612",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libuuid 2.41.4-r0"
+    },
+    {
+      "fixed_version": "2.41.6-r0",
+      "id": "CVE-2026-53613",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libuuid 2.41.4-r0"
+    },
+    {
+      "fixed_version": "2.41.6-r0",
+      "id": "CVE-2026-53614",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libuuid 2.41.4-r0"
+    },
+    {
+      "fixed_version": "2.41.6-r0",
+      "id": "CVE-2026-76642",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libuuid 2.41.4-r0"
+    },
+    {
+      "fixed_version": "2.41.6-r1",
+      "id": "CVE-2026-78408",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libuuid 2.41.4-r0"
+    },
+    {
+      "fixed_version": "2.41.6-r0",
+      "id": "CVE-2026-78410",
+      "image": "agent-colab/web-admin:8.0.0-test",
+      "severity": "HIGH",
+      "title": "libuuid 2.41.4-r0"
+    }
+  ],
   "images": [
     {
-      "image_id": "sha256:e8b1dbefaa41e67e52d895f60056b2955644414c9c76f735f23fa998276f8831",
+      "image_id": "sha256:e24fa79c8fb26ed42a0e8bbac4c0374e49b450e176444623bdcf9763c8586891",
       "name": "server",
       "tag": "agent-colab/server:8.0.0-test"
     },
@@ -21,7 +176,7 @@
     }
   ],
   "ran": true,
-  "ran_at": "2026-09-03T22:15:06+00:00",
+  "ran_at": "2026-09-07T07:15:38+00:00",
   "scan": "container",
   "schema_id": "colab.security-scan.v1",
   "tool": "trivy"

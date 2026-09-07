@@ -79,8 +79,19 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def build_image(name: str, dockerfile: str, tag: str) -> dict[str, Any]:
-    build = _docker(["build", "-f", dockerfile, "-t", tag, "."], check=False)
+def build_image(name: str, dockerfile: str, tag: str, *, fresh: bool = True) -> dict[str, Any]:
+    """Build one image. ``fresh`` refuses the layer cache, which a release build must.
+
+    A cached build silently ships whatever packages were current when the layer was first made.
+    That is how a released web-admin image kept ``curl 8.20.0-r0`` for four days after a fixed
+    version existed: the Dockerfile ran ``apk upgrade`` and Docker reused the layer from before the
+    advisories, so the scan found 22 High findings against an image the build reported as fresh.
+    ``--pull`` refreshes the base image for the same reason.
+    """
+    args = ["build", "-f", dockerfile, "-t", tag]
+    if fresh:
+        args += ["--pull", "--no-cache"]
+    build = _docker([*args, "."], check=False)
     if build.returncode != 0:
         return {"name": name, "tag": tag, "built": False, "reason": build.stderr[-800:]}
     inspect = _docker(["image", "inspect", tag, "--format", "{{.Id}}"], check=False)
