@@ -58,6 +58,23 @@ def _agent_of(session: Session, principal: Principal) -> str:
     return str(row[0])
 
 
+class PollBody(BaseModel):
+    agent_id: str
+    max_items: int = Field(default=1, ge=1, le=100)
+
+
+@router.post("/work/poll")
+def poll(body: PollBody, request: Request, principal: PrincipalDep) -> dict[str, Any]:
+    if principal.account_type != "agent" or principal.credential_kind != "service_token":
+        raise ApiError(403, "AGENT_SERVICE_TOKEN_REQUIRED", "agent service token required")
+    return dispatch(request, principal, wk.WorkPoll(**body.model_dump()))
+
+
+@router.post("/work/{work_item_id}/start")
+def start(work_item_id: str, request: Request, principal: PrincipalDep) -> dict[str, Any]:
+    return dispatch(request, principal, wk.WorkStart(work_item_id=work_item_id))
+
+
 @router.get("/work/{work_item_id}")
 def get_work_item(work_item_id: str, request: Request, principal: PrincipalDep) -> dict[str, Any]:
     runtime: Runtime = request.app.state.runtime

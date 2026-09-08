@@ -132,6 +132,9 @@ def create_app(settings: Settings | None = None, clock: Clock | None = None) -> 
     mattermost_link.register()
     schedule_router_handlers.register()  # P5 schedule verbs on the /colab grammar
     brainstorm_handlers.register()  # P6-02: `/colab brainstorm ...` slash handlers
+    from server.connection_relay import wire_telegram_test_client
+
+    wire_telegram_test_client(app)
     app.state.telegram_webhook_secret = None  # env AGENT_COLAB_TELEGRAM_WEBHOOK_SECRET by default
     # P4-08 admin security: CSRF (innermost), session policy (idle/MFA gate/break-glass), headers
     from server.security.csrf import CsrfMiddleware

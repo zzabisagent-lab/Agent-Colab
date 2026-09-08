@@ -20,6 +20,10 @@ def test_compose_defines_all_services_with_healthchecks() -> None:
     assert all(p.startswith(expected_prefix) for p in services["server"]["ports"])
     assert all(p.startswith(expected_prefix) for p in services["web-admin"]["ports"])
 
+    assert services["server"]["environment"]["AGENT_COLAB_BASE_URL"] == (
+        "http://${AGENT_COLAB_PUBLISH_HOST:-127.0.0.1}:8080"
+    )
+
 
 def test_images_are_pinned() -> None:
     compose = yaml.safe_load((ROOT / "compose.yaml").read_text(encoding="utf-8"))

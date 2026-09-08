@@ -1,3 +1,4 @@
+import { DEFAULT_RUNNER_KIND, RUNNER_KINDS } from './runnerKinds'
 import { type FormEvent, useCallback, useEffect, useState } from 'react'
 import { ApiError, get, patch, post } from '../../api/client'
 
@@ -17,6 +18,9 @@ const ADAPTER_TYPES = ['mcp', 'webhook', 'mattermost_bot']
 const base = '/api/v1/agents'
 
 export function AgentsPage() {
+  const [oneTimeToken, setOneTimeToken] = useState<string | null>(null)
+  const [runnerKind, setRunnerKind] = useState(DEFAULT_RUNNER_KIND)
+  const [instructions, setInstructions] = useState<unknown>(null)
   const [agents, setAgents] = useState<AgentView[]>([])
   const [error, setError] = useState<string | null>(null)
   const [notice, setNotice] = useState<string | null>(null)
@@ -54,19 +58,23 @@ export function AgentsPage() {
   function create(e: FormEvent) {
     e.preventDefault()
     void run(
-      () => post(base, {
-        agent_id: agentId,
-        display_name: displayName,
-        adapter_type: adapterType,
-        endpoint: endpointUrl ? { url: endpointUrl } : {},
-        credential_ref: credentialRef || null,
-        roles: roles.split(',').map((r) => r.trim()).filter(Boolean),
-        limits: {
-          concurrent_tasks: Number(concurrent),
-          requests_per_minute: Number(rate),
-          daily_cost_units: Number(dailyCost),
-        },
-      }),
+      async () => {
+        setOneTimeToken(null)
+        const registered = await post<{ service_token?: string }>(base, {
+          agent_id: agentId,
+          display_name: displayName,
+          adapter_type: adapterType,
+          endpoint: endpointUrl ? { url: endpointUrl } : {},
+          credential_ref: credentialRef || null,
+          roles: roles.split(',').map((r) => r.trim()).filter(Boolean),
+          limits: {
+            concurrent_tasks: Number(concurrent),
+            requests_per_minute: Number(rate),
+            daily_cost_units: Number(dailyCost),
+          },
+        })
+        setOneTimeToken(registered.service_token ?? null)
+      },
       'AGENT_REGISTERED',
     )
   }
@@ -81,6 +89,16 @@ export function AgentsPage() {
   return (
     <section>
       <h1>Agents</h1>
+      {oneTimeToken && <aside aria-label="One-time service token">
+        <p>Save this service token on the runner host now. Agent-Colab will not show it again.</p>
+        <code>{oneTimeToken}</code>
+        <button onClick={() => setOneTimeToken(null)}>Dismiss token</button>
+      </aside>}
+      <label htmlFor="runner-kind">Runner kind for connection instructions</label>
+      <select id="runner-kind" value={runnerKind} onChange={(e) => { setRunnerKind(e.target.value); setInstructions(null) }}>
+        {RUNNER_KINDS.map((kind) => <option key={kind}>{kind}</option>)}
+      </select>
+      {instructions !== null && <pre aria-label="Connection instructions">{JSON.stringify(instructions, null, 2)}</pre>}
       {error && <p role="alert" className="error">{error}</p>}
       {notice && <p role="status">{notice}</p>}
       <form onSubmit={create} aria-labelledby="add-agent">
@@ -123,6 +141,7 @@ export function AgentsPage() {
                 <button onClick={() => void run(() => post(`${base}/${a.agent_id}/activate`, {}), 'AGENT_ACTIVATED')}>Activate</button>
                 <button onClick={() => void run(() => post(`${base}/${a.agent_id}/suspend`, {}), 'AGENT_SUSPENDED')}>Suspend</button>
                 <button onClick={() => void run(() => post(`${base}/${a.agent_id}/revoke`, {}), 'AGENT_REVOKED')}>Revoke</button>
+                <button onClick={() => void run(async () => setInstructions(await get(`${base}/${a.agent_id}/connection-instructions?runner_kind=${runnerKind}`)), 'CONNECTION_INSTRUCTIONS_READY')}>Connection instructions</button>
                 <button onClick={() => editLimits(a)}>Edit limits</button>
               </td>
             </tr>

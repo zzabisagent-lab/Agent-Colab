@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 
 from server.agents import limits as lim
 from server.agents import registry as reg
+from server.agents.runner_catalog import DEFAULT_KIND
 from server.api.deps import current_principal
 from server.api.dispatch import dispatch
 from server.api.errors import ApiError
@@ -179,3 +180,27 @@ def lifecycle(agent_id: str, request: Request, principal: PrincipalDep) -> dict[
             "online": state.online,
             "history": list(state.history),
         }
+
+
+@router.get("/{agent_id}/connection-instructions")
+def connection_instructions(
+    agent_id: str, request: Request, principal: PrincipalDep, runner_kind: str = DEFAULT_KIND
+) -> dict[str, Any]:
+    from server.agents.runner_catalog import KINDS
+    from server.connections import agent_instructions
+
+    if runner_kind not in KINDS:
+        raise ApiError(422, "RUNNER_KIND_INVALID", "unsupported runner kind")
+    runtime = request.app.state.runtime
+    with session_scope(runtime.session_factory) as session:
+        row = reg.load_agent(session, _ws(request, principal, session), agent_id)
+        if row is None:
+            raise ApiError(404, "NOT_FOUND", "agent not found")
+        view = reg.public_view(row)
+    return agent_instructions(
+        request.app.state.settings.base_url,
+        agent_id,
+        str(view["account_id"]),
+        str(view["adapter_type"]),
+        runner_kind,
+    )

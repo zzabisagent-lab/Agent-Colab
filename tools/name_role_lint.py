@@ -47,6 +47,11 @@ ALLOW_PRODUCT = (
     "docs/plan-baseline.md",
     "server/schedules/",  # spike/reference comments only; checked below for role usage
 )
+# Exact executable catalogs are configuration labels, not permission/role definitions.
+RUNNER_CATALOGS = {
+    "server/agents/runner_catalog.py",
+    "web-admin/src/features/agents/runnerKinds.ts",
+}
 SKIP_DIRS = {"node_modules", ".venv", "dist", "__pycache__"}
 
 
@@ -78,7 +83,7 @@ def main() -> int:
                 problems.append(f"NAME {f.relative_to(ROOT)}:{i}: {line.strip()[:100]}")
     for f in _files(SCAN_CORE):
         rel = str(f.relative_to(ROOT))
-        if rel.startswith(ALLOW_PRODUCT):
+        if rel.startswith(ALLOW_PRODUCT) or rel in RUNNER_CATALOGS:
             continue
         for i, line in enumerate(f.read_text(encoding="utf-8", errors="ignore").splitlines(), 1):
             if PRODUCT_NAMES.search(line):
