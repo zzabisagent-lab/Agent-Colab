@@ -32,7 +32,7 @@ services:
       - bootstrap:/var/lib/agent-colab/bootstrap
       - artifacts:/var/lib/agent-colab/artifacts
     ports:
-      - "127.0.0.1:8080:8080"
+      - "${AGENT_COLAB_PUBLISH_HOST:-127.0.0.1}:8080:8080"
     depends_on:
       postgres:
         condition: service_healthy
@@ -47,7 +47,7 @@ services:
       context: .
       dockerfile: deploy/dev/Dockerfile.web-admin
     ports:
-      - "127.0.0.1:8081:8080"
+      - "${AGENT_COLAB_PUBLISH_HOST:-127.0.0.1}:8081:8080"
     depends_on:
       server:
         condition: service_healthy
