@@ -20,6 +20,13 @@ Resume point for any new session. Baseline: `docs/baseline/` (v8). Rules: `AGENT
 
 Phase 7 progress (size-weighted): 0 / 26
 
+Continuation implementation on `feat/v7-complete-agent-collaboration-runtime`:
+fixed two verifier-identified release blockers without changing Phase 7 package
+status: `/readyz` now fails closed when no database is configured or a database
+probe fails, and restore now validates a tombstone ledger before invoking
+`pg_restore`. Local `make ci`, targeted blocker probes, and dev Compose health
+checks passed; broader Phase 7 package acceptance remains open.
+
 ## Phase 6 (PASSED) — branch `phase-6`, tag `phase-6-passed`
 
 ### Phase 6 package status
