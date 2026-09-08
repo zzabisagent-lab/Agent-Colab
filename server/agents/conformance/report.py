@@ -5,18 +5,14 @@ from __future__ import annotations
 import datetime as dt
 import json
 from dataclasses import asdict, dataclass, field
-from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
 
+from server.paths import schemas_path
+
 SCHEMA_ID = "colab.adapter-conformance-report.v1"
-SCHEMA_PATH = (
-    Path(__file__).resolve().parents[3]
-    / "schemas"
-    / "documents"
-    / "adapter-conformance-report.v1.schema.json"
-)
+SCHEMA_PATH = schemas_path("documents", "adapter-conformance-report.v1.schema.json")
 
 CHECK_TITLES: dict[str, str] = {
     "CS-01": "probe identity stability",

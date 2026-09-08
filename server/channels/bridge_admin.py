@@ -11,7 +11,6 @@ import json
 import uuid
 from dataclasses import dataclass
 from functools import lru_cache
-from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
@@ -21,14 +20,9 @@ from sqlalchemy.orm import Session
 
 from server.channels import telegram_contract as tc
 from server.channels.telegram.client import TelegramClient
+from server.paths import schemas_path
 
-SCHEMA = (
-    Path(__file__).resolve().parents[2]
-    / "schemas"
-    / "api"
-    / "bridge"
-    / "telegram-bridge.v1.schema.json"
-)
+SCHEMA = schemas_path("api", "bridge", "telegram-bridge.v1.schema.json")
 
 
 class BridgeAdminError(ValueError):

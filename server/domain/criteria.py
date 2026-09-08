@@ -16,18 +16,13 @@ import hashlib
 import json
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
 
-SCHEMA_PATH = (
-    Path(__file__).resolve().parents[2]
-    / "schemas"
-    / "api"
-    / "task"
-    / "acceptance-criteria.v1.schema.json"
-)
+from server.paths import schemas_path
+
+SCHEMA_PATH = schemas_path("api", "task", "acceptance-criteria.v1.schema.json")
 CHECK_TYPES: tuple[str, ...] = ("evidence", "test_command", "artifact_hash", "human_attest")
 STATEMENT_MAX_CHARS = 2000
 CRITERIA_ID_PREFIX = "crit-"

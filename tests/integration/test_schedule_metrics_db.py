@@ -213,7 +213,8 @@ def test_metrics_api_requires_schedule_or_admin_rights(
     database_url: str, sd: Seed, expectations: dict[str, int]
 ) -> None:
     app = create_app(
-        Settings(database_url=database_url, base_url="http://t", master_key_b64=sd.master_key_b64)
+        Settings(database_url=database_url, base_url="http://t", master_key_b64=sd.master_key_b64),
+        clock=FixedClock(NOW),
     )
     with TestClient(app) as client:
         r = client.get("/api/v1/schedules/metrics", headers=sd.headers("admin1", "r"))

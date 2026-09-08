@@ -163,7 +163,10 @@ def dispatch(
 
 
 def default_runtime(
-    session_factory: Any, settings: Any, authorizer: bus.AuthorizerLike | None = None
+    session_factory: Any,
+    settings: Any,
+    authorizer: bus.AuthorizerLike | None = None,
+    clock: Clock | None = None,
 ) -> Runtime:
     from server.secrets.envelope import MasterKey
 
@@ -174,5 +177,5 @@ def default_runtime(
         session_factory=session_factory,
         authorizer=authorizer if authorizer is not None else BusAuthorizer(),
         crypto=crypto,
-        clock=SystemClock(),
+        clock=clock or SystemClock(),
     )

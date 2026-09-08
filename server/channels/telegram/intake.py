@@ -11,14 +11,14 @@ import json
 from collections.abc import Callable, Iterator
 from dataclasses import dataclass, field
 from functools import lru_cache
-from pathlib import Path
 from typing import Any, Protocol
 
 from jsonschema import Draft202012Validator
 
 from server.channels.telegram.client import TelegramClient
+from server.paths import schemas_path
 
-SCHEMA_PATH = Path(__file__).resolve().parents[3] / "schemas" / "api" / "telegram"
+SCHEMA_PATH = schemas_path("api", "telegram")
 UPDATE_SCHEMA = SCHEMA_PATH / "webhook-update.v1.schema.json"
 GENERAL_TOPIC_THREAD_ID: int | None = None  # spec: General topic = thread id omitted (never 1)
 

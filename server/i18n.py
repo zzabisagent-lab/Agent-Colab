@@ -9,9 +9,10 @@ from __future__ import annotations
 
 import json
 from functools import lru_cache
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1] / "i18n"
+from server.paths import i18n_path
+
+ROOT = i18n_path()
 SUPPORTED = ("en", "ko")
 DEFAULT_LANGUAGE = "en"
 

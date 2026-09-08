@@ -2,9 +2,11 @@ SHELL := /bin/bash
 export PATH := $(HOME)/.local/bin:$(PATH)
 UV ?= uv
 PNPM ?= pnpm
-export AGENT_COLAB_TEST_DATABASE_URL ?= postgresql://colab@127.0.0.1:54329/colab_test
+TEST_POSTGRES_PASSWORD ?= colab
+TEST_POSTGRES_PORT ?= 54329
+TEST_POSTGRES_CONTAINER ?= agent-colab-test-pg
 
-.PHONY: bootstrap lint typecheck test test-db build check-docs secret-scan ci compose-up compose-down web-install
+.PHONY: bootstrap lint typecheck test test-db test-db-up test-db-down build check-docs secret-scan ci compose-up compose-down web-install
 
 bootstrap: web-install
 	$(UV) sync --all-extras
@@ -26,8 +28,25 @@ typecheck:
 test:
 	$(UV) run pytest
 
-test-db:
-	$(UV) run pytest -m db
+test-db-up:
+	docker rm -f $(TEST_POSTGRES_CONTAINER) >/dev/null 2>&1 || true
+	docker run -d --name $(TEST_POSTGRES_CONTAINER) \
+		-e POSTGRES_USER=colab \
+		-e POSTGRES_PASSWORD=$(TEST_POSTGRES_PASSWORD) \
+		-e POSTGRES_DB=colab_test \
+		-p 127.0.0.1:$(TEST_POSTGRES_PORT):5432 \
+		postgres:16.11-alpine >/dev/null
+	@for i in {1..60}; do \
+		docker exec $(TEST_POSTGRES_CONTAINER) pg_isready -U colab -d colab_test >/dev/null 2>&1 && exit 0; \
+		sleep 1; \
+	done; \
+	echo "test PostgreSQL did not become ready" >&2; exit 1
+
+test-db-down:
+	docker rm -f $(TEST_POSTGRES_CONTAINER) >/dev/null 2>&1 || true
+
+test-db: test-db-up
+	AGENT_COLAB_TEST_DATABASE_URL=postgresql://colab:$(TEST_POSTGRES_PASSWORD)@127.0.0.1:$(TEST_POSTGRES_PORT)/colab_test $(UV) run pytest -m db
 
 build:
 	$(UV) build

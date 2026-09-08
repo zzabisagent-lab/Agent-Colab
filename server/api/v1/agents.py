@@ -24,7 +24,7 @@ PrincipalDep = Annotated[Principal, Depends(current_principal)]
 class RegisterBody(BaseModel):
     agent_id: str = Field(pattern=r"^agent-[a-z0-9][a-z0-9-]{1,62}$")
     display_name: str = Field(min_length=1, max_length=120)
-    adapter_type: str = Field(pattern="^(mcp|webhook|mattermost_bot)$")
+    adapter_type: str = Field(pattern=r"^[a-z][a-z0-9_]{1,63}$")
     endpoint: dict[str, Any] = Field(default_factory=dict)
     credential_ref: str | None = None
     owner_account_id: str | None = None

@@ -1,0 +1,46 @@
+.git
+.gitignore
+.dockerignore
+
+# Python
+.venv
+__pycache__
+*.py[cod]
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.coverage
+coverage.xml
+htmlcov
+*.egg-info
+build
+dist
+
+# Node / web
+node_modules
+web-admin/node_modules
+web-admin/dist
+npm-debug.log*
+pnpm-debug.log*
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+*_TOKEN
+*_SECRET
+
+# Logs and runtime artifacts
+*.log
+logs
+.cache
+tmp
+temp
+.agent

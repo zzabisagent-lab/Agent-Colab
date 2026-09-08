@@ -26,10 +26,10 @@ from sqlalchemy.orm import Session
 from server.domain.clock import Clock, SystemClock
 from server.notifications import outbox as ob
 from server.notifications.selectors import channel_destinations, resolve_recipients
+from server.paths import policy_path, schemas_path
 
-ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_RULES = ROOT / "policy" / "notification-rules.yaml"
-RULES_SCHEMA = ROOT / "schemas" / "api" / "notification" / "notification-rule.v1.schema.json"
+DEFAULT_RULES = policy_path("notification-rules.yaml")
+RULES_SCHEMA = schemas_path("api", "notification", "notification-rule.v1.schema.json")
 PER_RECIPIENT_CHANNELS = ("mattermost:thread", "mattermost:dm", "work_item", "smtp")
 CHANNEL_POST_CHANNELS = (
     "mattermost:approval_channel",
