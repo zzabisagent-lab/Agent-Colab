@@ -1,14 +1,22 @@
 import { useResource } from '../../lib/useList'
 
-interface Dependency { name: string; ok: boolean; detail?: string; checked_at?: string }
+interface Dependency { name: string; ok: boolean | null; detail?: string; checked_at?: string }
+type CounterValue = number | string | boolean | null | Record<string, unknown>
 interface Overview {
   dependencies: Dependency[]
-  tasks: Record<string, number>
-  agents: Record<string, number>
-  outbox: Record<string, { pending: number; dead: number }>
+  tasks: Record<string, CounterValue>
+  agents: Record<string, CounterValue>
+  outbox: Record<string, { pending?: number; dead?: number }>
   last_backup?: string | null
   maintenance?: { active: boolean; reason?: string } | null
   alerts?: string[]
+}
+
+function renderCounterValue(value: CounterValue): string | number {
+  if (value === null) return '—'
+  if (typeof value === 'boolean') return value ? 'true' : 'false'
+  if (typeof value === 'object') return JSON.stringify(value)
+  return value
 }
 
 export function OverviewPage() {
@@ -32,11 +40,11 @@ export function OverviewPage() {
       </table>
       <section aria-label="Counters">
         <h2>Tasks</h2>
-        <dl>{Object.entries(data?.tasks ?? {}).map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+        <dl>{Object.entries(data?.tasks ?? {}).map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{renderCounterValue(v)}</dd></div>)}</dl>
         <h2>Agents</h2>
-        <dl>{Object.entries(data?.agents ?? {}).map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+        <dl>{Object.entries(data?.agents ?? {}).map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{renderCounterValue(v)}</dd></div>)}</dl>
         <h2>Outbox</h2>
-        <dl>{Object.entries(data?.outbox ?? {}).map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v.pending} pending · {v.dead} dead</dd></div>)}</dl>
+        <dl>{Object.entries(data?.outbox ?? {}).map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v.pending ?? 0} pending · {v.dead ?? 0} dead</dd></div>)}</dl>
         <p>Last backup: {data?.last_backup ?? '—'} · Maintenance: {data?.maintenance?.active ? `on (${data.maintenance.reason ?? ''})` : 'off'}</p>
       </section>
     </section>
