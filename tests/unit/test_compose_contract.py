@@ -16,8 +16,9 @@ def test_compose_defines_all_services_with_healthchecks() -> None:
     for name, svc in services.items():
         assert "healthcheck" in svc, name
     assert "ports" not in services["postgres"], "PostgreSQL must not be published"
-    assert all(p.startswith("127.0.0.1:") for p in services["server"]["ports"])
-    assert all(p.startswith("127.0.0.1:") for p in services["web-admin"]["ports"])
+    expected_prefix = "${AGENT_COLAB_PUBLISH_HOST:-127.0.0.1}:"
+    assert all(p.startswith(expected_prefix) for p in services["server"]["ports"])
+    assert all(p.startswith(expected_prefix) for p in services["web-admin"]["ports"])
 
 
 def test_images_are_pinned() -> None:
