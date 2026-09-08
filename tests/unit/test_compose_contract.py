@@ -36,4 +36,5 @@ def test_web_admin_nginx_serves_admin_assets_before_spa_fallback() -> None:
     config = (ROOT / "deploy" / "dev" / "nginx.conf").read_text(encoding="utf-8")
     assert "location /admin/assets/" in config
     assert "alias /usr/share/nginx/html/assets/" in config
+    assert "location = / { return 302 $scheme://$http_host/admin/login; }" in config
     assert "location /admin/ { try_files $uri /index.html; }" in config
