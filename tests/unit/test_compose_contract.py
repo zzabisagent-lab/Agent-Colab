@@ -30,3 +30,10 @@ def test_images_are_pinned() -> None:
         for line in df.read_text(encoding="utf-8").splitlines():
             if line.startswith("FROM "):
                 assert ":" in line and "latest" not in line, line
+
+
+def test_web_admin_nginx_serves_admin_assets_before_spa_fallback() -> None:
+    config = (ROOT / "deploy" / "dev" / "nginx.conf").read_text(encoding="utf-8")
+    assert "location /admin/assets/" in config
+    assert "alias /usr/share/nginx/html/assets/" in config
+    assert "location /admin/ { try_files $uri /index.html; }" in config
