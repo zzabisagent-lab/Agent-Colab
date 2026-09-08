@@ -168,3 +168,10 @@ def update_template(
 @router.delete("/channel-templates/{template_id}")
 def delete_template(template_id: str, request: Request, principal: PrincipalDep) -> dict[str, Any]:
     return dispatch(request, principal, ch.DeleteChannelTemplate(template_id=template_id))
+
+
+@router.get("/providers/connection-instructions")
+def connection_instructions(request: Request, principal: PrincipalDep) -> dict[str, Any]:
+    from server.connections import provider_instructions
+
+    return provider_instructions(request.app.state.settings.base_url)

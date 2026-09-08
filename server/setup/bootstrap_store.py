@@ -21,17 +21,12 @@ from typing import Any
 from jsonschema import Draft202012Validator
 
 from server.domain.clock import Clock, isoformat_utc
+from server.paths import schemas_path
 from server.setup.errors import SetupError
 from server.setup.state import STAGE_ORDINAL, SetupState
 
 DEFAULT_PATH = Path("/var/lib/agent-colab/bootstrap/state.json")
-SCHEMA_PATH = (
-    Path(__file__).resolve().parents[2]
-    / "schemas"
-    / "api"
-    / "setup"
-    / "bootstrap-state.v1.schema.json"
-)
+SCHEMA_PATH = schemas_path("api", "setup", "bootstrap-state.v1.schema.json")
 
 # Keys that may never appear (case-insensitive substring match), except the explicit allowlist.
 _DENIED_KEY_PATTERN = re.compile(

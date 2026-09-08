@@ -11,7 +11,6 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from functools import lru_cache
-from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
@@ -25,14 +24,9 @@ from server.artifacts.storage import (
 )
 from server.channels.telegram.client import TelegramClient
 from server.channels.telegram.intake import InboundAttachment
+from server.paths import schemas_path
 
-POLICY_SCHEMA = (
-    Path(__file__).resolve().parents[3]
-    / "schemas"
-    / "api"
-    / "telegram"
-    / "attachment-policy.v1.schema.json"
-)
+POLICY_SCHEMA = schemas_path("api", "telegram", "attachment-policy.v1.schema.json")
 DEFAULT_MAX_BYTES = 20 * 1024 * 1024
 DEFAULT_ALLOWED_MIME_PREFIXES: tuple[str, ...] = (
     "image/",

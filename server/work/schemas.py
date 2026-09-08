@@ -4,13 +4,14 @@ from __future__ import annotations
 
 import json
 from functools import cache, lru_cache
-from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
 
-SCHEMAS_DIR = Path(__file__).resolve().parents[2] / "schemas"
+from server.paths import schemas_path
+
+SCHEMAS_DIR = schemas_path()
 ADAPTER_SCHEMAS = {
     "work_item": "adapters/work-item.v1.schema.json",
     "delivery_receipt": "adapters/delivery-receipt.v1.schema.json",

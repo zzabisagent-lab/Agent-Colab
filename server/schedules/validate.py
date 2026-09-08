@@ -5,17 +5,17 @@ from __future__ import annotations
 import json
 import re
 from functools import lru_cache
-from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 
+from server.paths import schemas_path
 from server.schedules.contract import RunKind, ScheduleContractError, check_run_kind
 from server.schedules.cron import CronError, load_zone
 from server.schedules.cron import validate as validate_cron
 
-SCHEMA_DIR = Path(__file__).resolve().parents[2] / "schemas" / "api" / "schedule"
+SCHEMA_DIR = schemas_path("api", "schedule")
 FORBIDDEN_KEYS = frozenset(
     {"shell", "command", "script", "exec", "args", "cmd", "argv", "bash", "sh"}
 )

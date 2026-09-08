@@ -22,11 +22,11 @@ from typing import Any
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from server.agents.adapters.contract import adapter_types
 from server.events.canonical import canonical_json
 from server.events.hashing import sha256_hex
 from server.events.store import EventStore
 
-ADAPTER_TYPES = ("mcp", "webhook", "mattermost_bot")
 STATUSES = ("pending", "active", "suspended", "revoked", "offline")
 LIMIT_KEYS = (
     "concurrent_tasks",
@@ -73,7 +73,7 @@ def validate_agent_id(agent_id: str) -> None:
 
 
 def validate_adapter_type(adapter_type: str) -> None:
-    if adapter_type not in ADAPTER_TYPES:
+    if adapter_type not in adapter_types():
         raise RegistryError("AGENT_ADAPTER_TYPE_INVALID", adapter_type)
 
 

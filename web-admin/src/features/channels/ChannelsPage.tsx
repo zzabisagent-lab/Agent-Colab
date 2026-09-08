@@ -1,3 +1,4 @@
+import { ProviderConnections } from '../bridges/ProviderConnections'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ApiError, get } from '../../api/client'
@@ -21,6 +22,7 @@ export function ChannelsPage() {
   return (
     <main className="page">
       <h1>Channels</h1>
+      <ProviderConnections />
       {error && <p role="alert" className="error">{error}</p>}
       <table>
         <caption>Imported Mattermost channels</caption>

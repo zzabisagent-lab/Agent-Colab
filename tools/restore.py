@@ -21,7 +21,29 @@ from pathlib import Path
 from tools.backup import libpq_url, pg_bin, pg_env
 
 
+def _load_verified_ledger(ledger_path: Path | None) -> list[dict[str, object]]:
+    """Load and verify the tombstone ledger before any database mutation.
+
+    A restore without the post-backup tombstone ledger is unsafe: it can resurrect
+    hard-deleted DEKs from the dump.  Fail closed before invoking ``pg_restore``.
+    """
+
+    if ledger_path is None:
+        raise ValueError("restore ledger required before database mutation")
+    entries = json.loads(ledger_path.read_text(encoding="utf-8"))
+    if not isinstance(entries, list):
+        raise ValueError("restore ledger must be a JSON array")
+
+    from server.application.hard_delete import verify_exported_ledger
+
+    problems = verify_exported_ledger(entries)
+    if problems:
+        raise RuntimeError(json.dumps({"ledger": {"verified": False, "problems": problems}}))
+    return entries
+
+
 def run_restore(dump: Path, database_url: str, ledger_path: Path | None) -> dict[str, object]:
+    entries = _load_verified_ledger(ledger_path)
     subprocess.run(
         [
             str(pg_bin() / "pg_restore"),
@@ -35,19 +57,12 @@ def run_restore(dump: Path, database_url: str, ledger_path: Path | None) -> dict
         capture_output=True,
     )
     report: dict[str, object] = {"restored": str(dump), "ledger": None}
-    if ledger_path is None:
-        return report
     from sqlalchemy import create_engine
     from sqlalchemy.orm import Session
 
-    from server.application.hard_delete import reconcile_tombstones, verify_exported_ledger
+    from server.application.hard_delete import reconcile_tombstones
     from server.db.engine import normalize_url
 
-    entries = json.loads(ledger_path.read_text(encoding="utf-8"))
-    problems = verify_exported_ledger(entries)
-    if problems:
-        report["ledger"] = {"verified": False, "problems": problems}
-        return report
     engine = create_engine(normalize_url(database_url))
     with Session(engine) as session, session.begin():
         outcome = reconcile_tombstones(session, entries, dt.datetime.now(dt.UTC))

@@ -490,3 +490,124 @@ def test_bus_commands_bind_the_inbox_to_the_credential(engine: Engine) -> None:
                 wk.WorkPoll(agent_id=AGENT), ctx(s, SERVICE, "acct-inbox-service", "bus-poll-3")
             )
         assert exc3.value.code == "AGENT_NOT_FOUND"
+
+
+def _runner_identity(session: Session, suffix: str) -> tuple[uuid.UUID, str]:
+    account = uuid.uuid4()
+    agent = "agent-runner-" + suffix
+    session.execute(
+        text(
+            "INSERT INTO accounts (id, account_id, workspace_id, account_type, display_name) "
+            "VALUES (:i, :a, :w, 'agent', :a)"
+        ),
+        {"i": account, "a": "acct-runner-" + suffix, "w": WS},
+    )
+    session.execute(
+        text(
+            "INSERT INTO agents (id, agent_id, workspace_id, account_id, adapter_type, "
+            "status, display_name) VALUES (:i, :g, :w, :a, 'mcp', 'active', :g)"
+        ),
+        {"i": uuid.uuid4(), "g": agent, "w": WS, "a": account},
+    )
+    return account, agent
+
+
+def test_poll_own_and_spoofed_agent(database_url, engine):
+    from fastapi.testclient import TestClient
+
+    from server.config import Settings
+    from server.identity.principals import token_hash
+    from server.main import create_app
+
+    token = "local-test-poll-credential"
+    clock = FixedClock(T0)
+    from sqlalchemy.orm import Session
+
+    with Session(engine) as session, session.begin():
+        account, agent = _runner_identity(session, "own")
+        session.execute(
+            text(
+                "INSERT INTO service_credentials (id, account_id, fingerprint, token_hash) "
+                "VALUES (:i, :a, :f, :h)"
+            ),
+            {
+                "i": uuid.uuid4(),
+                "a": account,
+                "f": "runner-poll-test",
+                "h": token_hash(token),
+            },
+        )
+        item = _enqueue(session, clock, "rest-runner-poll", agent=agent)
+    app = create_app(Settings(database_url=database_url))
+    app.state.runtime.authorizer = AllowAllAuthorizer()
+    app.state.runtime.clock = clock
+    client = TestClient(app)
+    assert client.post("/api/v1/work/poll", json={"agent_id": agent}).status_code == 401
+    headers = {"Authorization": "Bearer " + token, "Idempotency-Key": "poll-own"}
+    own = client.post("/api/v1/work/poll", json={"agent_id": agent}, headers=headers)
+    assert own.status_code == 200
+    assert item.work_item_id in [i["work_item_id"] for i in own.json()["items"]]
+    headers["Idempotency-Key"] = "poll-other"
+    other = client.post("/api/v1/work/poll", json={"agent_id": OTHER}, headers=headers)
+    assert other.status_code == 404
+
+
+def test_runner_rest_roundtrip_and_instructions(database_url, engine):
+    import subprocess
+    from unittest.mock import Mock
+
+    from fastapi.testclient import TestClient
+
+    from server.config import Settings
+    from server.identity.principals import token_hash
+    from server.main import create_app
+    from server.runner import Config, RestClient, Runner
+    from server.usage.versions import activate_from_file
+
+    token = "local-test-runner-roundtrip"
+    clock = FixedClock(T0)
+    with Session(engine) as session, session.begin():
+        account, agent = _runner_identity(session, "roundtrip")
+        session.execute(
+            text(
+                "INSERT INTO service_credentials (id, account_id, fingerprint, token_hash) "
+                "VALUES (:i, :a, :f, :h)"
+            ),
+            {
+                "i": uuid.uuid4(),
+                "a": account,
+                "f": "runner-roundtrip",
+                "h": token_hash(token),
+            },
+        )
+        activate_from_file(session)
+        item = _enqueue(session, clock, "runner-roundtrip", agent=agent)
+    app = create_app(Settings(database_url=database_url, base_url="http://testserver"))
+    app.state.runtime.authorizer = AllowAllAuthorizer()
+    app.state.runtime.clock = clock
+    http = TestClient(app)
+    cfg = Config.from_env(
+        {
+            "AGENT_COLAB_BASE_URL": "http://testserver",
+            "AGENT_COLAB_AGENT_ID": agent,
+            "AGENT_COLAB_SERVICE_TOKEN": token,
+        }
+    )
+    client = RestClient(cfg, http)
+    runner = Runner(
+        cfg, client, Mock(return_value=subprocess.CompletedProcess([], 0, "report", "")), clock
+    )
+    assert runner.once() == 1
+    status = client.get(item.work_item_id)
+    assert status["status"] == "RESULT_RECEIVED"
+    assert any(r["result_ref"] for r in status["receipts"])
+    headers = {"Authorization": "Bearer " + token}
+    for kind in ["openclaw", "hermes", "chatgpt", "codex", "claude", "claude-code", "gemini"]:
+        res = http.get(
+            f"/api/v1/agents/{agent}/connection-instructions?runner_kind={kind}", headers=headers
+        )
+        assert res.status_code == 200
+        assert token not in res.text
+        assert res.json()["account_id"] == "acct-runner-roundtrip"
+    assert http.get("/api/v1/providers/connection-instructions").status_code == 401
+    assert http.get("/api/v1/providers/connection-instructions", headers=headers).status_code == 200

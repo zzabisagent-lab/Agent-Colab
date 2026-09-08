@@ -15,8 +15,9 @@ from typing import Any
 from jsonschema import Draft202012Validator, FormatChecker
 
 from server.events.hashing import compute_content_hash
+from server.paths import schemas_path
 
-SCHEMAS_DIR = Path(__file__).resolve().parents[2] / "schemas" / "events"
+SCHEMAS_DIR = schemas_path("events")
 
 
 class ContractError(ValueError):

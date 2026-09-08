@@ -15,7 +15,6 @@ import uuid
 from dataclasses import dataclass
 from enum import StrEnum
 from functools import lru_cache
-from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
@@ -24,6 +23,7 @@ from sqlalchemy.orm import Session
 
 from server.events.canonical import canonical_json
 from server.events.chain import VERIFICATION_CHAIN, chain_hash, hashed_row_fields, last_hash
+from server.paths import schemas_path
 from server.verification.independence import (
     Identity,
     VerificationIndependenceError,
@@ -31,12 +31,7 @@ from server.verification.independence import (
     effective_principal,
 )
 
-VERDICT_SCHEMA = (
-    Path(__file__).resolve().parents[2]
-    / "schemas"
-    / "documents"
-    / "verification-verdict.v1.schema.json"
-)
+VERDICT_SCHEMA = schemas_path("documents", "verification-verdict.v1.schema.json")
 
 
 class VerificationStatus(StrEnum):

@@ -11,7 +11,6 @@ import json
 import uuid
 from dataclasses import dataclass
 from functools import lru_cache
-from pathlib import Path
 from typing import Any
 
 import yaml
@@ -19,9 +18,10 @@ from jsonschema import Draft202012Validator
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-ROOT = Path(__file__).resolve().parents[2]
-TEMPLATES_PATH = ROOT / "policy" / "channel-templates.yaml"
-SCHEMA_PATH = ROOT / "schemas" / "api" / "channel" / "channel-template.v1.schema.json"
+from server.paths import policy_path, schemas_path
+
+TEMPLATES_PATH = policy_path("channel-templates.yaml")
+SCHEMA_PATH = schemas_path("api", "channel", "channel-template.v1.schema.json")
 DEFAULT_TEMPLATE_IDS = ("work", "brainstorm", "approval", "ops")
 
 

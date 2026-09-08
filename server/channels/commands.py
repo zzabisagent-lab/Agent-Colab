@@ -17,12 +17,13 @@ import json
 import re
 from dataclasses import dataclass, field
 from functools import cache
-from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
 
-SCHEMAS_DIR = Path(__file__).resolve().parents[2] / "schemas" / "api" / "commands"
+from server.paths import schemas_path
+
+SCHEMAS_DIR = schemas_path("api", "commands")
 SCHEMA_ID_BASE = "https://agent-colab.dev/schemas/api/commands"
 COMMAND_PREFIXES = ("/colab", "@colab")
 READ = "task.read"  # read verbs share the task-scoped read permission (§6.9 vocabulary)

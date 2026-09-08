@@ -1,3 +1,4 @@
+import { ProviderConnections } from './ProviderConnections'
 import { useCallback, useEffect, useState, type FormEvent } from 'react'
 import { useParams } from 'react-router-dom'
 import { ApiError, get, post } from '../../api/client'
@@ -48,6 +49,7 @@ export function BridgesPage() {
   return (
     <main className="page">
       <h1>Telegram Bridges</h1>
+      <ProviderConnections />
       <p>Channel <code>{channelId}</code></p>
       {error && <p role="alert" className="error">{error}</p>}
       {notice && <p role="status">{notice}</p>}

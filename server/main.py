@@ -6,7 +6,6 @@ import argparse
 import os
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI
@@ -50,8 +49,10 @@ from server.application import schedule_runs
 from server.brainstorm import router_handlers as brainstorm_handlers
 from server.config import PRODUCT_NAME, Settings, get_settings
 from server.db.engine import make_engine, make_session_factory
+from server.domain.clock import Clock
 from server.identity import mattermost_link
 from server.observability.health import router as health_router
+from server.paths import web_admin_dist
 from server.schedules import router_handlers as schedule_router_handlers
 
 API_VERSION = "v1"
@@ -75,7 +76,7 @@ async def _lifespan(app: FastAPI) -> AsyncIterator[None]:
             await gateway.stop()
 
 
-def create_app(settings: Settings | None = None) -> FastAPI:
+def create_app(settings: Settings | None = None, clock: Clock | None = None) -> FastAPI:
     settings = settings or get_settings()
     app = FastAPI(
         title=PRODUCT_NAME, version="0.0.0", docs_url=None, redoc_url=None, lifespan=_lifespan
@@ -85,8 +86,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         make_session_factory(make_engine(settings.database_url)) if settings.database_url else None
     )
     app.state.runtime = (
-        default_runtime(app.state.session_factory, settings) if app.state.session_factory else None
+        default_runtime(app.state.session_factory, settings, clock=clock)
+        if app.state.session_factory
+        else None
     )
+    if clock is not None:
+        app.state.clock = clock
     app.add_exception_handler(ApiError, api_error_handler)
     app.include_router(health_router)
     app.include_router(verification_router)
@@ -127,6 +132,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     mattermost_link.register()
     schedule_router_handlers.register()  # P5 schedule verbs on the /colab grammar
     brainstorm_handlers.register()  # P6-02: `/colab brainstorm ...` slash handlers
+    from server.connection_relay import wire_telegram_test_client
+
+    wire_telegram_test_client(app)
     app.state.telegram_webhook_secret = None  # env AGENT_COLAB_TELEGRAM_WEBHOOK_SECRET by default
     # P4-08 admin security: CSRF (innermost), session policy (idle/MFA gate/break-glass), headers
     from server.security.csrf import CsrfMiddleware
@@ -177,7 +185,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 "work_item": NoopProvider(),
             }
         )
-    dist = Path(__file__).resolve().parents[1] / "web-admin" / "dist"
+    dist = web_admin_dist()
     if dist.exists():  # built console (production images copy it here); dev uses Vite's proxy
         from fastapi.responses import FileResponse
         from fastapi.staticfiles import StaticFiles

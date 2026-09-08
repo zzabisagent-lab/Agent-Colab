@@ -16,8 +16,13 @@ def test_compose_defines_all_services_with_healthchecks() -> None:
     for name, svc in services.items():
         assert "healthcheck" in svc, name
     assert "ports" not in services["postgres"], "PostgreSQL must not be published"
-    assert all(p.startswith("127.0.0.1:") for p in services["server"]["ports"])
-    assert all(p.startswith("127.0.0.1:") for p in services["web-admin"]["ports"])
+    expected_prefix = "${AGENT_COLAB_PUBLISH_HOST:-127.0.0.1}:"
+    assert all(p.startswith(expected_prefix) for p in services["server"]["ports"])
+    assert all(p.startswith(expected_prefix) for p in services["web-admin"]["ports"])
+
+    assert services["server"]["environment"]["AGENT_COLAB_BASE_URL"] == (
+        "http://${AGENT_COLAB_PUBLISH_HOST:-127.0.0.1}:8080"
+    )
 
 
 def test_images_are_pinned() -> None:
@@ -29,3 +34,13 @@ def test_images_are_pinned() -> None:
         for line in df.read_text(encoding="utf-8").splitlines():
             if line.startswith("FROM "):
                 assert ":" in line and "latest" not in line, line
+
+
+def test_web_admin_nginx_serves_admin_assets_before_spa_fallback() -> None:
+    config = (ROOT / "deploy" / "dev" / "nginx.conf").read_text(encoding="utf-8")
+    assert "location /admin/assets/" in config
+    assert "alias /usr/share/nginx/html/assets/" in config
+    assert "location = / { return 302 $scheme://$http_host/admin/login; }" in config
+    assert "location /admin/" in config
+    assert "try_files $uri /index.html;" in config
+    assert 'add_header Cache-Control "no-store" always;' in config

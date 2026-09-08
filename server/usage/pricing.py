@@ -13,9 +13,10 @@ from typing import Any
 import yaml
 
 from server.domain import defaults
+from server.paths import policy_path
 from server.work.schemas import AdapterSchemaError, validate
 
-PRICING_PATH = Path(__file__).resolve().parents[2] / "policy" / "pricing.yaml"
+PRICING_PATH = policy_path("pricing.yaml")
 
 USAGE_UNAVAILABLE_REASONS = frozenset({"ADAPTER_NO_METERING", "MODEL_UNKNOWN", "ERROR"})
 

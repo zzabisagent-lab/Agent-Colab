@@ -17,12 +17,12 @@ from typing import Any
 import yaml
 from jsonschema import Draft202012Validator
 
+from server.paths import policy_path, schemas_path
 from server.policy.engine import PolicyEngine
 from server.policy.model import Constraints, Role
 
-ROOT = Path(__file__).resolve().parents[2]
-POLICY_DIR = ROOT / "policy"
-SCHEMA_DIR = ROOT / "schemas" / "api" / "policy"
+POLICY_DIR = policy_path()
+SCHEMA_DIR = schemas_path("api", "policy")
 FILES = ("permissions", "risk-rules", "default-roles", "capabilities", "verification-rules")
 RISK_ORDER = ("LOW", "MEDIUM", "HIGH", "CRITICAL")
 
